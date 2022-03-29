@@ -1,0 +1,19 @@
+
+$main-color:#3E4851;
+$text-nav-color:#ffff;
+$text-nav-hover:#cccc;
+
+$status-waiting-color:#FA6767;
+$status-waiting-background:rgba(250, 0, 0, 0.2);
+$status-doing-color:rgb(250, 104, 0);
+$status-doing-background:rgba(250, 104, 0,0.2);
+$status-done-color:rgb(66, 209, 157);
+$status-done-background:rgba(66, 209, 157,0.2);
+
+$admin-btn-color:#3758FA;
+$admin-background:#FAFBFE;
+html{
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+}   
