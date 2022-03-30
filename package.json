@@ -23,6 +23,7 @@
     "react-scripts": "5.0.0",
     "reactstrap": "^9.0.1",
     "rsuite-daterangepicker": "^3.0.5",
+    "sass": "^1.49.9",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
