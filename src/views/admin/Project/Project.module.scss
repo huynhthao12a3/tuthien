@@ -10,12 +10,12 @@
     .filterBlock{
        
         .filterBlockSpan{
-            background-color: #ffff;
+            background-color: var(--admin-background);
             margin-left: 30px;
             margin-right: 15px;
             height: 100%;
             padding: 15px;
-            border-radius: 5px;
+            border-radius: var(--boder-radius);
             .searchContent{
                 font-size: 1rem;
                
@@ -25,6 +25,14 @@
             // }
         }
 
+    }
+    .listPoject{
+        background-color: var(--admin-background);
+        padding: 15px;
+        border-radius: var(--boder-radius);
+        .textCenter{
+            border-bottom-color: rgba(204, 204, 204,0.4) !important;
+        }
     }
 }
 // scss chung
@@ -46,11 +54,10 @@
     box-shadow: none !important;
 }
 .rangeDate{
-    height: 2.5rem;
     width: 100%;
-    // svg{
-    //     display: none;
-    // }
+    svg{
+        display: none;
+    }
 }
 .rangeDate:hover{
   border-color:#333 ;

@@ -13,6 +13,24 @@ $status-done-background:rgba(66, 209, 157,0.2);
 $admin-btn-color:#3758FA;
 $admin-background:#FAFBFE; */
 
+:root{
+    --main-color:#3E4851;
+    --text-nav-color:#ffff;
+    --text-nav-hover:#cccc;
+
+    --status-waiting-color:#FA6767;
+    --status-waiting-background:rgba(250, 0, 0, 0.2);
+    --status-doing-color:rgb(250, 104, 0);
+    --status-doing-background:rgba(250, 104, 0,0.2);
+    --status-done-color:rgb(66, 209, 157);
+    --status-done-background:rgba(66, 209, 157,0.2);
+
+    --admin-btn-color:#3758FA;
+    --admin-background:#FAFBFE;
+
+    --boder-radius:5px;
+}
+
 html{
     font-size: 1rem;
     font-family: 'Roboto', sans-serif;
@@ -21,11 +39,24 @@ html{
 .css-1s2u09g-control{
     box-shadow: none;
 }
+/* input */
+.css-1okebmr-indicatorSeparator{
+    background-color: transparent !important;
+}
+
+
 /* // DateRangePicker */
 .rs-picker-toggle-read-only{
     width: 100% !important;
 } 
 .rs-picker-toggle{
     margin-top: 5px;
-    height: 50px !important;
+    height: 50px;
+}
+.rs-picker-toggle-value{
+    line-height: 2rem;
+    width: 100%;
+    text-align: start;
+    font-size: 0.875rem;
+    color: #333 !important;
 }
