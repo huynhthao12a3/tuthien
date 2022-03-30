@@ -1,0 +1,58 @@
+
+.project{
+    background-color: #F0F3FC;
+    .titleBlock{
+        margin-left: 30px;
+        .titleProject{
+            font-size: 1.25rem;
+        }
+    }
+    .filterBlock{
+       
+        .filterBlockSpan{
+            background-color: #ffff;
+            margin-left: 30px;
+            margin-right: 15px;
+            height: 100%;
+            padding: 15px;
+            border-radius: 5px;
+            .searchContent{
+                font-size: 1rem;
+               
+            }
+            // .searchInput:focus{
+              
+            // }
+        }
+
+    }
+}
+// scss chung
+.Inputfocus:focus{
+    color: #495057;
+    background-color: #fff;
+    border-color: #c1c9d0;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none !important;
+}
+.Inputfocus{
+    line-height: 2.5rem;
+    color: #495057;
+    background-color: #fff;
+    border-color: #c1c9d0;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none !important;
+}
+.rangeDate{
+    height: 2.5rem;
+    width: 100%;
+    // svg{
+    //     display: none;
+    // }
+}
+.rangeDate:hover{
+  border-color:#333 ;
+}
+

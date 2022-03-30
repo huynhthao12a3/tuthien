@@ -1,5 +1,5 @@
 
-$main-color:#3E4851;
+/* $main-color:#3E4851;
 $text-nav-color:#ffff;
 $text-nav-hover:#cccc;
 
@@ -11,9 +11,21 @@ $status-done-color:rgb(66, 209, 157);
 $status-done-background:rgba(66, 209, 157,0.2);
 
 $admin-btn-color:#3758FA;
-$admin-background:#FAFBFE;
+$admin-background:#FAFBFE; */
+
 html{
     font-size: 1rem;
     font-family: 'Roboto', sans-serif;
     box-sizing: border-box;
-}   
+}  
+.css-1s2u09g-control{
+    box-shadow: none;
+}
+/* // DateRangePicker */
+.rs-picker-toggle-read-only{
+    width: 100% !important;
+} 
+.rs-picker-toggle{
+    margin-top: 5px;
+    height: 50px !important;
+}
