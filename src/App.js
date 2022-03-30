@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import Project from './views/admin/Project';
+
 import AdminNavbar from './shares/Navbar';
 import {
   BrowserRouter,
@@ -10,7 +12,8 @@ function App() {
     
     <AdminNavbar/>
     </BrowserRouter>
-  );
-}
+  )
+
+  }
 
 export default App;
