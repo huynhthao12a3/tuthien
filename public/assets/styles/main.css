@@ -13,9 +13,9 @@ $status-done-background:rgba(66, 209, 157,0.2);
 $admin-btn-color:#3758FA;
 $admin-background:#FAFBFE; */
 
-html{
+body{
     font-size: 1rem;
-    font-family: 'Roboto', sans-serif;
+    font-family: Roboto, sans-serif !important;
     box-sizing: border-box;
 }  
 .css-1s2u09g-control{
