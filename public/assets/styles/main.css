@@ -1,18 +1,4 @@
 
-/* $main-color:#3E4851;
-$text-nav-color:#ffff;
-$text-nav-hover:#cccc;
-
-$status-waiting-color:#FA6767;
-$status-waiting-background:rgba(250, 0, 0, 0.2);
-$status-doing-color:rgb(250, 104, 0);
-$status-doing-background:rgba(250, 104, 0,0.2);
-$status-done-color:rgb(66, 209, 157);
-$status-done-background:rgba(66, 209, 157,0.2);
-
-$admin-btn-color:#3758FA;
-$admin-background:#FAFBFE; */
-
 :root{
     --main-color:#3E4851;
     --text-nav-color:#ffff;
@@ -32,8 +18,9 @@ $admin-background:#FAFBFE; */
 }
 
 html{
+
     font-size: 1rem;
-    font-family: 'Roboto', sans-serif;
+    font-family: Roboto, sans-serif !important;
     box-sizing: border-box;
 }  
 .css-1s2u09g-control{
@@ -43,7 +30,13 @@ html{
 .css-1okebmr-indicatorSeparator{
     background-color: transparent !important;
 }
-
+.dropdonor .dropdown-menu{
+   left: 40% !important;
+    right: 0px;
+}
+.dropdonor .dropdown-item{
+    text-decoration:none !important;
+}
 
 /* // DateRangePicker */
 .rs-picker-toggle-read-only{

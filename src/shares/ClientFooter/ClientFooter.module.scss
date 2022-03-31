@@ -1,0 +1,11 @@
+.wrapFooter{
+    background-color: var(--main-color);
+    .title{
+        font-size: 0.875rem;
+        color:var(--status-waiting-color);
+    }
+    .content{
+        color: #E4E4E4;
+        font-size: 0.75rem;
+    }
+}
