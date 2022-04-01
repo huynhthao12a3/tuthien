@@ -1,0 +1,40 @@
+
+.checkboxFour{
+    padding:3px 0px ;
+    .labelCheck{
+        margin-left: 5px;
+        cursor: pointer;
+        font-size: 0.857rem;
+    }
+    
+    .fillerBlockCheck{
+        opacity: 1;
+        // width: 1rem;
+        // height: 1rem;
+    
+    }
+    .fillerBlockCheck[type='checkbox']:after{
+        width: 1.1rem;
+        height: 1.1rem;
+        border-radius: 3px;
+        top: -1px;
+        left: -1px;
+        position: relative;
+        background-color: #ffffff;
+        border: 2px solid #ccc;
+        content: "";
+        display: inline-block;
+        visibility: visible;
+        border: 1px solid rgba($color: #333, $alpha: 0.6);
+    }
+    .fillerBlockCheck[type='checkbox']:checked:after {
+    
+        background-color: rgb(17, 96, 206);
+        content: '';
+        display: inline-block;
+        visibility: visible;
+        
+        border: 2px solid #ccc;
+    }
+    
+}

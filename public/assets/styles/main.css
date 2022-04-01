@@ -27,6 +27,17 @@ html{
     box-shadow: none;
 }
 /* input */
+.input{
+    border-radius:var(--boder-radius) ;
+    border: none;
+}
+.input:focus{
+    outline: none;
+}
+.btn.btnPri{
+    background-color: var(--admin-btn-color) ;
+    color: var(--text-nav-color) ;
+}
 .css-1okebmr-indicatorSeparator{
     background-color: transparent !important;
 }
@@ -52,4 +63,8 @@ html{
     text-align: start;
     font-size: 0.875rem;
     color: #333 !important;
+}
+.fillerBlock{
+    display: flex;
+    flex-direction: column;
 }
