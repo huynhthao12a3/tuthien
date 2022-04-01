@@ -1,6 +1,10 @@
+
+.bannerRow{
+    --bs-gutter-x: 0rem !important;
+}
 .bannerProject{
+    padding: 0px;
     position: relative;
-    width: 100%;
     height: 415px;
     align-items: center;
     display: flex;
@@ -8,6 +12,7 @@
     justify-content: center;
     background-image: url(https://www.givetrack.org/src/assets/images/exploreanddiscover-opacity.3edd8a8ebec3c00190beb0934146576a.png);
     .bannerBlock{
+    
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -17,11 +22,11 @@
             font-size: 2.5rem;
             color: #fff;
             font-weight: 300;
-            font-family: Karla,sans-serif;
+           
             margin: 0;
         }
         .bannerDescription{
-            font-family: Roboto,sans-serif;
+           
             color: #fff;
             font-weight: 300;
             font-size: 1rem;
@@ -45,13 +50,15 @@
 }
 // check box
 .projectWrap{
+    --bs-gutter-x: 0rem !important;
     padding-top: 40px;
     padding-bottom: 40px;
     .fillter{
         padding-left: 85px;
+        padding-bottom:20px ;
         .filterTitle{
             
-            font-family: Karla,sans-serif;
+           
             font-weight: 300;
             color: #2d2d2d;
             font-size: 22px;
@@ -59,7 +66,7 @@
         }
         .fillterStatus{
             padding-top: 1rem;
-            font-family: Karla,sans-serif;
+           
             font-weight: 300;
             color: #2d2d2d;
             font-size: 1.125rem;
@@ -69,7 +76,7 @@
 }
 // card
     .card{
-        padding: 0px 30px !important;
+        padding: 0px 30px 30px !important;
         display: inline-block;
         .cardBlock{
            
@@ -148,15 +155,17 @@
         }
     }
 }
-.ButtonSecondary{
-    display: inline-block;
-    max-width: 180px;
-    width: 50%;
-    color: #fff;
-    font-size: 1rem;
-    background-color: var(--status-doing-color);
-}
-.ButtonSecondary:hover{
-    color: #ccc;
+.btnWrap{
+    .ButtonSecondary{
+        display: inline-block;
+        max-width: 180px;
+        width: 50%;
+        color: #fff;
+        font-size: 1rem;
+        background-color: var(--status-doing-color);
+    }
+    .ButtonSecondary:hover{
+        color: #ccc;
+    }
 }
    

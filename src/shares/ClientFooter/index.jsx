@@ -9,36 +9,43 @@ ClientFooter.propTypes = {
 
 function ClientFooter(props) {
     return (
-        <div className={clsx(Style.wrapFooter, " w-100 d-flex justify-content-start p-3 ")}>
-            <div className='row d-flex'>
-                <div className={ clsx(Style.about, "col-3 ps-5 pe-5")}>
-                    <span className={clsx(Style.title)}>Giới Thiệu</span>
-                    <p className={clsx(Style.content)}>Chúng tôi tận dụng Bitcoin và công nghệ Blockchain để tài trợ cho các dự án toàn cầu có tác động đến môi trường và sức khỏe cộng đồng cao bằng cách sử dụng một nền tảng quyên góp hoàn toàn minh bạch.
+        <div className={clsx(Style.wrapFooter, " w-100 d-flex justify-content-start p-3 ps-5 pe-5 ")}>
+            <div className='row d-flex w-100'>
+                <div className={ clsx(Style.about, "col-6 col-lg-3")}>
+                    <span className={clsx(Style.title)}>Liên hệ</span>
+                    <p className={clsx(Style.content)}>
+                        TẤM LÒNG VÀNG
                       <br/>  
-                        Được cung cấp bởi rsk.<br/>
-                        Được xây dựng bởi KOIBANX.<br/>
-                        Được thiết kế bởi ATIX Labs.<br/>
-                        Được duy trì và cải tiến bởi ZIRCONTech.
+                       Địa chỉ: KP5, Phường Trảng Dài ,Thành<br/>
+                        phố Biên Hòa, Tỉnh Đồng Nai<br/>
+                        Hotline 0909001122<br/>
+                        Email: iotfoftwarevn@gmail.com
                     </p>
                 </div>
-                <div className={ clsx(Style.contact, "col-3 ps-5 pe-5")}>
-                    <span className={clsx(Style.title)}>Liên Hệ</span>
-                    <p className={clsx(Style.content)}>CHUNG
-                        contact@givetrack.org
-                        Các tổ chức phi chính phủ<br/>
-
-                        ngo@givetrack.org
-                        HỖ TRỢ KỸ THUẬT<br/>
-
-                        support@givetrack.org
+                <div className={ clsx(Style.contact, "col-6  col-lg-3")}>
+                    <span className={clsx(Style.title)}>Thông tin</span>
+                    <p className={clsx(Style.content)}>Giới thiệu<br/>
+                        hướng dẫn quyên góp
+                        <br/>
+                        Hướng dẫn tạo dự án
                     </p>
                 </div>
-                <div className={ clsx(Style.infomation, "col-3 ps-5 pe-5")}>
-                    <span className={clsx(Style.title)}>Thông Tin</span>
-                    <p className={clsx(Style.content)}>Câu hỏi thường gặp
-                    Điều khoản sử dụng
-                    Chính sách bảo mật
-                    </p>
+                <div className={ clsx(Style.infomation, "col-6  col-lg-3 d-flex")}>
+                    <span className={clsx(Style.title)}>Theo dõi chúng tôi</span>
+                    <a href='' style={{fonSize:'1rem', color:'#E4E4E4' ,margin:'4px 0px 0px'} } >
+                        <span style={{fontSize:"1rem",color:'#E4E4E4',paddingRight:'5px' }} class="mdi mdi-facebook"></span>
+                        facebook
+                    </a>
+                    <a  href='' style={{fonSize:'1rem', color:'#E4E4E4'} } >
+                        <span style={{fontSize:"1rem",color:'#E4E4E4',paddingRight:'5px' }}class="mdi mdi-arrow-left-drop-circle"></span>
+                        
+                        youtobe
+                    </a>
+                    <a  href='' style={{fonSize:'1rem', color:'#E4E4E4'} } >
+                       
+                        <span style={{fontSize:"1rem",color:'#E4E4E4',paddingRight:'5px' }} class="mdi mdi-instagram"></span>
+                        instagram
+                    </a>
                 </div>
             </div>
         </div>
