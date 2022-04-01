@@ -17,7 +17,7 @@
     --boder-radius:5px;
 }
 
-html{
+body{
 
     font-size: 1rem;
     font-family: Roboto, sans-serif !important;
@@ -52,4 +52,9 @@ html{
     text-align: start;
     font-size: 0.875rem;
     color: #333 !important;
+}
+
+/* Thanh progress  */
+.progress-bar {
+    background-color: #6fcf97 !important;
 }

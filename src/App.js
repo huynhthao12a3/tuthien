@@ -9,12 +9,14 @@ import ClientFooter from './shares/ClientFooter';
 import {
   BrowserRouter,
 } from 'react-router-dom';
+import ProjectDetail from './views/client/Project/ProjectDetali';
 function App() {
   return (
     <BrowserRouter>
     
     <ClientNavbar/>
-    <div style={{height: '100vh'}}></div>
+    {/* <div style={{height: '100vh'}}></div> */}
+    <ProjectDetail/>
     <ClientFooter/>
     </BrowserRouter>
   )
