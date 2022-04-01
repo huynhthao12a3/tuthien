@@ -1,5 +1,6 @@
 import Style from './ClientNavbar.module.scss'
 import React from 'react';
+import { Router } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Navbar from 'react-bootstrap/Navbar'
 import ContainerFluid from 'react-bootstrap/Container'
@@ -8,6 +9,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import logo from '../../assets/images/logo.png'
 import { mainColor } from '../../assets/js/main.js'
 import defaultAvatar from '../../assets/images/default-avatar.jpg'
+import Project from '../../views/client/Project';
 import {
     BrowserRouter,
     Switch,
@@ -27,6 +29,8 @@ const styles = {
 function ClientNavbar(props) {
     const info = "tranthuan12a3@gmail.com"
     return (
+        <>
+    
         <Navbar id="admin-navbar" collapseOnSelect expand="lg" style={styles} variant="dark">
             <div className='container-fluid'>
                 <Navbar.Brand href="/dashboard">
@@ -65,6 +69,9 @@ function ClientNavbar(props) {
 
             </div>
         </Navbar>
+       
+        </>
+
     );
 }
 

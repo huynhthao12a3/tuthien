@@ -27,6 +27,17 @@ body{
     box-shadow: none;
 }
 /* input */
+.input{
+    border-radius:var(--boder-radius) ;
+    border: none;
+}
+.input:focus{
+    outline: none;
+}
+.btn.btnPri{
+    background-color: var(--admin-btn-color) ;
+    color: var(--text-nav-color) ;
+}
 .css-1okebmr-indicatorSeparator{
     background-color: transparent !important;
 }
@@ -54,7 +65,13 @@ body{
     color: #333 !important;
 }
 
+
 /* Thanh progress  */
 .progress-bar {
     background-color: #6fcf97 !important;
+}
+
+.fillerBlock{
+    display: flex;
+    flex-direction: column;
 }
