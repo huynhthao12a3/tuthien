@@ -48,7 +48,7 @@ function ClientProject()
            </div>
            <div className={clsx( Style.projectWrap,"row 4")}>
                 {/* bộ lọc */} 
-                <div className={clsx(Style.fillter,"col-md-3 col-12 pb-3")}>
+                <div className={clsx(Style.fillter,"col-lg-3 col-11 pb-3")}>
                   <h4 className={clsx(Style.filterTitle," ")}>Bộ Lọc</h4>
                     <div className={clsx(Style.fillerBlock,"row")}>
                         <div className="d-flex col-6 col-md-12" style={{flexDirection:'column'}}>

@@ -13,3 +13,14 @@
     display: flex;
     flex-direction: column;
 }
+@media (max-width:970px) {
+    .about ,.contact ,.infomation{
+        .title{
+            display: block;
+            text-align: center;
+        }
+        .content , a{
+            text-align: center;
+        }
+    }
+}

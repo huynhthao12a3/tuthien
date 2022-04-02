@@ -1,4 +1,5 @@
 
+
 #admin-navbar #nav-dropdown {
     color: #ccc;
     &:active, &:hover, &:focus {
@@ -34,27 +35,44 @@
         color: #fff !important;
     }
  }
-.nav{
-    flex: 4;
+ .adminNavbar{
     display: flex;
-    justify-content: center;
-}
-.DropAvatar{
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    text-align: end;
-    .dropEmail{
-        color: var(--text-nav-hover);
-        padding: 5px 20px 0px 20px;
-        margin-bottom: -5px;
+    
+    .navbarWrap{
+        padding: 0px 6px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        .nav{
+            flex: 4;
+            display: flex;
+            justify-content: center;
+        }
+        .DropAvatar{
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            text-align: end;
+            .dropEmail{
+                color: var(--text-nav-hover);
+                padding: 5px 20px 0px 20px;
+                margin-bottom: -5px;
+            }
+            .DropDonor{
+                padding-top: 0px;
+            }
+        }
+        @media(max-width:1200px){
+            .dropEmail{
+                display: none;
+            }
+        }
+
     }
-    .DropDonor{
-        padding-top: 0px;
-    }
 }
-@media(max-width:1200px){
-    .dropEmail{
-        display: none;
+@media (min-width:758px) {
+    .adminNavbar{
+        --bs-gutter-x: 0rem !important;
     }
 }

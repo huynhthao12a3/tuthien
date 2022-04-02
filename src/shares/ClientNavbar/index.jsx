@@ -1,5 +1,5 @@
 import Style from './ClientNavbar.module.scss'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Router } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Navbar from 'react-bootstrap/Navbar'
@@ -28,11 +28,17 @@ const styles = {
 };
 function ClientNavbar(props) {
     const info = "tranthuan12a3@gmail.com"
+    const [windowWidth,setWindowWidth] = useState(window.innerWidth)
+    useEffect(()=>{
+        setWindowWidth(window.innerWidth)
+        
+    })
+    
     return (
         <>
     
-        <Navbar id="admin-navbar" collapseOnSelect expand="lg" style={styles} variant="dark">
-            <div className='container-fluid'>
+        <Navbar id="admin-navbar" className={clsx(Style.adminNavbar,'row  ps-4 pe-4')} collapseOnSelect expand="lg" style={styles} variant="dark">
+            <div className={clsx(Style.navbarWrap)}>
                 <Navbar.Brand href="/dashboard">
                     <img
                         alt="logo"
