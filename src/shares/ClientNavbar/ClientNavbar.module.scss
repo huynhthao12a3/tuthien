@@ -1,43 +1,11 @@
 
 
-#admin-navbar #nav-dropdown {
-    color: #ccc;
-    &:active, &:hover, &:focus {
-        text-decoration: none;
-    }
-}
-#admin-navbar .admin-nav-link{
-    position: relative;
 
-    &::before {
-        content: "";
-        display: block;
-        position: absolute;
-        bottom: 0px;
-        left: 0;
-        height: 2px;
-        width: 100%;
-        background-color: #fff;
-        transform-origin: right top;
-        transform: scale(0, 1);
-        transition: color 0.5s, transform 0.3s ease-out;
-    }
-
-    &:hover,
-    &:hover::before {
-    transform-origin: left top ;
-    transform: scale(1, 1) ;
-    text-decoration: none !important;
-    }
-
-    &.active {
-        text-decoration: none ;
-        color: #fff !important;
-    }
- }
  .adminNavbar{
+    width: 100%;
+    // --bs-gutter-x: 0rem !important;
     display: flex;
-    
+    margin: 0px;
     .navbarWrap{
         padding: 0px 6px;
         width: 100%;
@@ -71,8 +39,8 @@
 
     }
 }
-@media (min-width:758px) {
-    .adminNavbar{
-        --bs-gutter-x: 0rem !important;
-    }
-}
+// @media (min-width:758px) {
+//     .adminNavbar{
+//         --bs-gutter-x: 1.5rem !important;
+//     }
+// }

@@ -1,6 +1,6 @@
 
 .bannerRow{
-    --bs-gutter-x: 0rem !important;
+    // --bs-gutter-x: 0rem !important;
 }
 .bannerProject{
     padding: 0px;
@@ -51,7 +51,7 @@
 }
 // check box
 .projectWrap{
-    --bs-gutter-x: 0rem !important;
+    // --bs-gutter-x: 0rem !important;
     padding-top: 40px;
     padding-bottom: 40px;
     .fillter{
@@ -173,15 +173,15 @@
     .fillter{
         padding-left:38px !important ;
     }
-    .fillerBlock{
-        --bs-gutter-x: 0rem !important;
-    }
-    .bannerRow{
-        --bs-gutter-x: 1.5rem !important;
-    }
-    .projectWrap{
-        --bs-gutter-x: 1.5rem !important;
-    }
+    // .fillerBlock{
+    //     --bs-gutter-x: 0rem !important;
+    // }
+    // .bannerRow{
+    //     --bs-gutter-x: 1.5rem !important;
+    // }
+    // .projectWrap{
+    //     --bs-gutter-x: 1.5rem !important;
+    // }
     .bannerTitle{
         font-size: 1.6875rem !important;
     }
@@ -196,7 +196,7 @@
             margin-bottom: 10px;
             padding-left: 1em;
             margin-right: 0rem !important;
-            padding-left: 0rem !important;
+            
         }
         .bannerBtn{
             width: 80% !important;

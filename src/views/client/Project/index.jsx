@@ -27,26 +27,29 @@ function ClientProject()
       const aa='50%'
     return(
         <>
-           <div className={clsx(Style.bannerRow,"row")}>
-                <div className={clsx(Style.bannerProject)} >
-                    <div className={clsx(Style.bannerBlock)}>
-                        <div className={clsx(Style.bannerTitle)}>
-                            <h1 className={clsx(Style.bannerTitle)}>Danh Sách Các Dự Án</h1>
-                            <span className={clsx(Style.bannerDescription)}>Tìm Kiếm Tất Cả Dự Án Đang Có Trên Website</span>
-                        </div>
-                        <div >
+        <div className="container-fluid w-100">
+          <div className={clsx(Style.bannerRow,"row")}>
+                  <div className={clsx(Style.bannerProject)} >
+                      <div className={clsx(Style.bannerBlock)}>
+                          <div className={clsx(Style.bannerTitle)}>
+                              <h1 className={clsx(Style.bannerTitle)}>Danh Sách Các Dự Án</h1>
+                              <span className={clsx(Style.bannerDescription)}>Tìm Kiếm Tất Cả Dự Án Đang Có Trên Website</span>
+                          </div>
+                          <div >
 
-                        </div>
-                        <div className={clsx(Style.bannerSearch)}>
-                            <input className={clsx(Style.bannerInput,"input")} placeholder="Tên dự án"
-                              onChange={(e)=>{setSearch(e.target.value)}}
-                            ></input>
-                            <button className={clsx(Style.bannerBtn, "btn btnPri")}>Tìm Kiếm</button>
-                        </div>
-                    </div>
-                </div>
-           </div>
-           <div className={clsx( Style.projectWrap,"row 4")}>
+                          </div>
+                          <div className={clsx(Style.bannerSearch)}>
+                              <input className={clsx(Style.bannerInput,"input")} placeholder="Tên dự án"
+                                onChange={(e)=>{setSearch(e.target.value)}}
+                              ></input>
+                              <button className={clsx(Style.bannerBtn, "btn btnPri")}>Tìm Kiếm</button>
+                          </div>
+                      </div>
+                  </div>
+            </div>
+        </div>
+        <div className="container-fluid w-100">
+            <div className={clsx( Style.projectWrap,"row 4")}>
                 {/* bộ lọc */} 
                 <div className={clsx(Style.fillter,"col-lg-3 col-11 pb-3")}>
                   <h4 className={clsx(Style.filterTitle," ")}>Bộ Lọc</h4>
@@ -163,10 +166,12 @@ function ClientProject()
                       </div>
                     </div>
                 </div>
-           </div>
+            </div>
             <div className={clsx(Style.btnWrap)} style={{display:'flex' ,justifyContent:'center' ,padding:'10px 10px 20px'}}>
                 <button className={clsx(Style.ButtonSecondary,"btn")}>Xem Thêm</button>
             </div>
+        </div>
+          
            
 
         </>

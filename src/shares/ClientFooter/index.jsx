@@ -9,7 +9,7 @@ ClientFooter.propTypes = {
 
 function ClientFooter(props) {
     return (
-        <div className={clsx(Style.wrapFooter, " w-100 d-flex justify-content-start p-3 ps-lg-5 pe-lg-5 ")}>
+        <div className={clsx(Style.wrapFooter, " container-fluid w-100 d-flex justify-content-start p-3 ps-lg-5 pe-lg-5 ")}>
             <div className='row d-flex w-100'>
                 <div className={ clsx(Style.about, "col-12 col-md-3")}>
                     <span className={clsx(Style.title)}>Liên hệ</span>

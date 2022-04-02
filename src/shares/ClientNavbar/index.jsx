@@ -37,7 +37,7 @@ function ClientNavbar(props) {
     return (
         <>
     
-        <Navbar id="admin-navbar" className={clsx(Style.adminNavbar,'row  ps-4 pe-4')} collapseOnSelect expand="lg" style={styles} variant="dark">
+        <Navbar id="admin-navbar" className={clsx(Style.adminNavbar,'w-100 container-fluid ps-4 pe-4')} collapseOnSelect expand="lg" style={styles} variant="dark">
             <div className={clsx(Style.navbarWrap)}>
                 <Navbar.Brand href="/dashboard">
                     <img
