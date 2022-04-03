@@ -1,0 +1,38 @@
+.main{
+    width: 100%;
+    background-color: var(--background-main-color);
+    .titleWrap{
+        padding:20px 0px 0px;
+        .title{
+            font-size: 1.25rem;
+            color: var(--main-color);
+        }
+    }
+    .imgavatar, .information{
+        padding: 20px;
+        margin-top: 10px;
+        background-color: #fff;
+        border-radius: var(--boder-radius);
+    }
+    .imgavatar{
+        .imgTaitle{
+            font-size: 0.875rem;
+            
+        }
+        .imgavatar_item{
+          max-height: 350px;
+          margin-top: 10px;
+          width: 100%;
+        }
+        .btnMoreImg{
+            margin-right: 0px;
+            margin-top: 10px;
+            color: var(--text-nav-color);
+            background-color: var( --admin-btn-color) ;
+            border-radius: var(--boder-radius);
+        }
+    }
+    .information{
+      
+    }
+}
