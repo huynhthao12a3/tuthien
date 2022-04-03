@@ -2,9 +2,19 @@
 .project{
     background-color: #F0F3FC;
     .titleBlock{
+        display: flex;
+        justify-content: space-between;
         margin-left: 30px;
         .titleProject{
             font-size: 1.25rem;
+        }
+        .btnCreateProject{
+            background-color: var( --admin-btn-color);
+            color: var(--text-nav-color);
+        }
+        .btnCreateProject:hover{
+           text-decoration: none;
+           opacity: 0.9;
         }
     }
     .filterBlock{
@@ -27,9 +37,13 @@
 
     }
     .listPoject{
+        overflow: visible;
         background-color: var(--admin-background);
         padding: 15px;
         border-radius: var(--boder-radius);
+        .table_responsive{
+            overflow: visible;
+        }
         .textCenter{
             border-bottom-color: rgba(204, 204, 204,0.4) !important;
         }
@@ -62,4 +76,29 @@
 .rangeDate:hover{
   border-color:#333 ;
 }
+.btnDrop{
+    padding: 0px !important;
+    .iconDrop{
+        font-size: 1.2rem;
+        color: #333 !important;
+    }
+}
+.listDrop{
+    padding: 0px;
+    .itemDrop{
+        text-decoration: none;
+        i{
+            padding-right: 10px;
+        }
+    }
+}
+.btnDrop:focus{
+    
+    background-color: #fff;
+    border-color: #c1c9d0;
+    outline: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none !important
+}
+
 
