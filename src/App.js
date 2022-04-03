@@ -15,7 +15,7 @@ function App() {
   return (
     <BrowserRouter>
     
-    <ClientNavbar/>
+    <AdminNavbar/>
 
     <ProjectDetail/>
 

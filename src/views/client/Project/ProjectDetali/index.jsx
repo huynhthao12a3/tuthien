@@ -62,8 +62,8 @@ function ProjectDetail(props) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 col-lg-7 offset-lg-1">
-                            <div className={clsx(Style.color, 'd-flex')}>
+                        <div className=" col-12 col-lg-7 offset-lg-1">
+                            <div className={clsx(Style.color, 'd-flex my-3 my-lg-0')}>
                                 <i className="mdi mdi-account-multiple-outline fs-1 me-3"></i>
                                 <div className="">
                                     <p className="mb-0">{fakeDataProject.userType}</p>
@@ -72,14 +72,14 @@ function ProjectDetail(props) {
                             </div>
                             <h1>{fakeDataProject.projectName}</h1>
                             <p>{fakeDataProject.shortDescription}</p>
-                            <div className="ProgressBarContent">
-                                <p className={clsx(Style.color)}>Tiến trình</p>
+                            <div className="ProgressBarContent my-3 my-lg-0">
+                                <p className={clsx(Style.color, 'mb-1')}>Tiến trình</p>
                                 <ProgressBar striped now={progress} label={`${progress} %`} />
                                 <span>{formatNumber(amountNowFormat)} / {formatNumber(amountNeedFormat)} VNĐ</span>
                             </div>
-                            <div className="d-flex justify-content-between">
+                            <div className="mt-4 d-flex justify-content-between">
 
-                                <div className="border-start mt-3 px-3 d-flex flex-column">
+                                <div className="border-start px-3 d-flex flex-column">
                                     <span ><i className="mdi mdi-history pe-2"></i>Trạng thái</span>
                                     <span className={clsx(Style.color, 'text-uppercase')}>{fakeDataProject.status}</span>
                                 </div>

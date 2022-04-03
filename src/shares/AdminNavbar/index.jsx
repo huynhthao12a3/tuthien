@@ -3,11 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
-import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import logo from '../../assets/images/logo.png'
+import logoDefault from '../../assets/images/logo-default.png'
 import { mainColor } from '../../assets/js/main.js'
 import defaultAvatar from '../../assets/images/default-avatar.jpg'
+
 import {
     BrowserRouter,
     Switch,
@@ -16,6 +17,8 @@ import {
     NavLink,
     useRouteMatch
 } from "react-router-dom";
+import Icon from '../Icon';
+import Nav from "react-bootstrap/Nav";
 
 AdminNavbar.propTypes = {
 
@@ -24,18 +27,21 @@ const styles = {
     backgroundColor: '#3E4851',
 };
 function AdminNavbar(props) {
-    const info = "huynhthao12a3@gmail.com | Admin"
+    const info = "huynhthao12a3@gmail.com"
     return (
-        <Navbar id="admin-navbar" collapseOnSelect expand="lg" style={styles} variant="dark">
+        <Navbar id="admin-navbar" collapseOnSelect expand="xl" style={styles} variant="dark">
             <Container>
                 <Navbar.Brand href="/dashboard">
                     <img
                         alt="logo"
-                        src={logo}
-                        width="50"
-                        height="50"
-                        className="d-inline-block align-top"
+                        src={logoDefault}
+
+                        className="img-fluid d-inline-block align-top"
                     />{' '}
+                    {/* <div style={{ width: '100px', height: '80px' }}>
+
+                        <Icon />
+                    </div> */}
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
@@ -51,11 +57,15 @@ function AdminNavbar(props) {
                     </Nav>
 
 
-                    <NavDropdown title={info} id="nav-dropdown" className="d-none d-xl-block">
-                        <NavDropdown.Item >Cá nhân</NavDropdown.Item>
-                        <NavDropdown.Item >Đăng xuất</NavDropdown.Item>
-                    </NavDropdown>
-                    <img id="admin-img-avatar" src={defaultAvatar} alt="" width="30" height="30" className="d-none d-xl-block rounded-circle" />
+
+                    <div className="d-none d-xxl-flex flex-column text-end">
+                        <span id="admin-navbar-email" className="px-3 ">{info}</span>
+                        <NavDropdown title={'Admin'} id="nav-dropdown" className='dropdonor '>
+                            <NavDropdown.Item >Cá nhân</NavDropdown.Item>
+                            <NavDropdown.Item >Đăng xuất</NavDropdown.Item>
+                        </NavDropdown>
+                    </div>
+                    <img id="admin-img-avatar" src={defaultAvatar} alt="" width="40" height="40" className="d-none d-xxl-block rounded-circle" />
 
                 </Navbar.Collapse>
 
