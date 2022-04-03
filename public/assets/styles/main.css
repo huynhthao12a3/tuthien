@@ -17,6 +17,31 @@
     --boder-radius:5px;
 }
 
+/* các nút cho các trạng thái  */
+
+/* đang chờ */
+.waitingStatus ,.doingStatus ,.doneStatus{
+    border-radius: var(--boder-radius);
+    text-align: center;
+    display: inline-block;
+    line-height: 1.5rem;
+    width: 134px;
+}
+.waitingStatus{
+    background-color: var( --status-waiting-background) !important;
+    color: var(--status-waiting-color);
+}
+.doingStatus{
+    background-color: var(--status-doing-background) !important;
+    color: var(--status-doing-color);
+}
+.doneStatus{
+    background-color: var(--status-done-background) !important;
+    color: var(--status-done-color);
+}
+/* đang thực thi */
+/* đã hoàng thành */
+
 html{
 
     font-size: 1rem;
@@ -69,4 +94,12 @@ html{
 .fillerBlock{
     display: flex;
     flex-direction: column;
+}
+/* // project admin */
+.project-admin .dropdown-toggle::after{
+    content: '';
+    display: none;
+}
+.css-26l3qy-menu{
+    z-index: 10 !important;
 }
