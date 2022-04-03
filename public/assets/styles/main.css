@@ -18,6 +18,7 @@
     --boder-radius:5px;
 }
 
+
 /* các nút cho các trạng thái  */
 
 /* đang chờ */
@@ -44,11 +45,13 @@
 /* đã hoàng thành */
 
 html{
-
     font-size: 1rem;
     font-family: Roboto, sans-serif !important;
     box-sizing: border-box;
 }  
+body{
+    font-family: Roboto, sans-serif !important;
+} 
 /* navbar client */
 
 .css-1s2u09g-control{
@@ -92,6 +95,13 @@ html{
     font-size: 0.875rem;
     color: #333 !important;
 }
+
+
+/* Thanh progress  */
+.progress-bar {
+    background-color: #6fcf97 !important;
+}
+
 .fillerBlock{
     display: flex;
     flex-direction: column;

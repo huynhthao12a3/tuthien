@@ -11,14 +11,19 @@ import AddProject from './views/admin/Project/Add';
 import {
   BrowserRouter,
 } from 'react-router-dom';
+import ProjectDetail from './views/client/Project/ProjectDetali';
 function App() {
   return (
     <BrowserRouter>
     
+
     <AdminNavbar/>
-    <AddProject/>
+
+    <ProjectDetail/>
     {/* <div style={{height: '100vh'}}></div> */}
-    <AdminFooter/>
+    <ClientFooter/>
+
+  
     </BrowserRouter>
   )
 
