@@ -16,12 +16,14 @@ function App() {
   return (
     <BrowserRouter>
     
+
     <AdminNavbar/>
 
-    <AddProject/>
+    <ProjectDetail/>
     {/* <div style={{height: '100vh'}}></div> */}
-    <AdminFooter/>
+    <ClientFooter/>
 
+  
     </BrowserRouter>
   )
 

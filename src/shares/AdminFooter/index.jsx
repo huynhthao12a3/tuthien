@@ -7,11 +7,11 @@ AdminFooter.propTypes = {
 
 function AdminFooter(props) {
     return (
-        <div id="admin-footer" className=" w-100 d-flex justify-content-between p-3 ">
+        <footer id="admin-footer" className="position-absolute container-fluid d-flex justify-content-between p-3 ">
 
             <p className="text-light">2022 © Tấm Lòng Vàng</p>
             <p className="m-0 text-light">Phiên bản 1.0</p>
-        </div>
+        </footer>
     );
 }
 

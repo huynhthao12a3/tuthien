@@ -48,6 +48,9 @@ html{
     font-family: Roboto, sans-serif !important;
     box-sizing: border-box;
 }  
+body{
+    font-family: Roboto, sans-serif !important;
+} 
 /* navbar client */
 
 .css-1s2u09g-control{

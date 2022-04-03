@@ -30,7 +30,7 @@ function AdminNavbar(props) {
     const info = "huynhthao12a3@gmail.com"
     return (
         <Navbar id="admin-navbar" collapseOnSelect expand="xl" style={styles} variant="dark">
-            <Container>
+            <div className='container-fluid'>
                 <Navbar.Brand href="/dashboard">
                     <img
                         alt="logo"
@@ -45,7 +45,7 @@ function AdminNavbar(props) {
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="me-auto">
+                    <Nav className="mx-auto">
                         <Nav.Link className="admin-nav-link pe-3" as={NavLink} to="/dashboard"><i className="mdi mdi-home-outline me-2"></i>Trang chủ</Nav.Link>
                         <Nav.Link className="admin-nav-link pe-3" as={NavLink} to="/project"><i className="mdi mdi-archive-outline me-2"></i>Dự án</Nav.Link>
                         <Nav.Link className="admin-nav-link pe-3" as={NavLink} to="/user"><i className="mdi mdi-account-box-outline me-2"></i>Người dùng</Nav.Link>
@@ -70,7 +70,7 @@ function AdminNavbar(props) {
                 </Navbar.Collapse>
 
 
-            </Container>
+            </div>
         </Navbar>
     );
 }

@@ -7,6 +7,7 @@ import ProgressBar from 'react-bootstrap/ProgressBar'
 import Button from 'react-bootstrap/Button'
 import Nav from "react-bootstrap/Nav";
 import { NavLink } from "react-router-dom";
+import Iframe from 'react-iframe'
 ProjectDetail.propTypes = {
 
 };
@@ -24,8 +25,9 @@ function ProjectDetail(props) {
         
         Mỗi bưu kiện đều có ghi chú từ quỹ Ngày mai hoang dã với dòng chữ Zulu nói "Umuntu ngumuntu ngabuntu" có nghĩa là "Người là vì người", một thông điệp về tình đoàn kết và sự sẻ chia nhân văn của chúng ta trong thời điểm khó khăn này.`,
         category: ['Lũ lụt', 'Thiên tai', 'Con người'],
-        location: 'Thành phố Biên Hòa, tỉnh Đồng Nai',
+        location: 'Phường Trảng Dài, Thành phố Biên Hòa, tỉnh Đồng Nai',
         impact: '500 người dân Châu Phi',
+        dateStart: '02/01/2022',
         dateEnd: '10/11/2022',
         amountNeed: '3005000000',
         status: 'Đang thực thi',
@@ -38,12 +40,18 @@ function ProjectDetail(props) {
     function formatNumber(num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
     }
+    // Amount
     const amountNowFormat = Number(amountNow)
     const amountNeedFormat = Number(fakeDataProject.amountNeed)
     const progress = Math.floor((amountNowFormat / amountNeedFormat) * 100)
+
+    // URL map location
+    const urlLocation = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDEhyx111_aA4TIk0BPHGyLTOZnIFChjGc&q=" + fakeDataProject.location.replaceAll(' ', '+');
+    console.log(urlLocation)
     return (
         <>
-            <div className={clsx(Style.headerProject, 'py-2 p-md-5')}>
+            {/* Header dự án  */}
+            <div className={clsx(Style.headerProject, 'py-3 p-md-5 ')}>
                 <div className="container d-flex justify-content-between">
                     <div className="row">
 
@@ -55,8 +63,8 @@ function ProjectDetail(props) {
                                 </div>
                                 <div className=" col-12">
                                     {
-                                        fakeDataProject.category.map((item) =>
-                                            <span className="d-inline-block me-1 me-md-4 "><i className={clsx(Style.color, 'mdi mdi-label-outline pe-1 pe-md-2')}></i>{item}</span>
+                                        fakeDataProject.category.map((item, index) =>
+                                            <span key={index} className="d-inline-block me-1 me-md-4 "><i className={clsx(Style.color, 'mdi mdi-label-outline pe-1 pe-md-2')}></i>{item}</span>
                                         )
                                     }
                                 </div>
@@ -77,20 +85,23 @@ function ProjectDetail(props) {
                                 <ProgressBar striped now={progress} label={`${progress} %`} />
                                 <span>{formatNumber(amountNowFormat)} / {formatNumber(amountNeedFormat)} VNĐ</span>
                             </div>
-                            <div className="mt-4 d-flex justify-content-between">
+                            <div className="my-4 d-flex justify-content-between">
 
                                 <div className="border-start px-3 d-flex flex-column">
                                     <span ><i className="mdi mdi-history pe-2"></i>Trạng thái</span>
                                     <span className={clsx(Style.color, 'text-uppercase')}>{fakeDataProject.status}</span>
                                 </div>
-                                <Button className={clsx(Style.backgroundColor, 'px-5 text-dark border-0')}>Quyên góp</Button>
+                                <Button className={clsx(Style.backgroundColor, 'px-5 text-light border-0')}><i className='mdi mdi-heart-outline me-1'></i>Theo dõi</Button>
                             </div>
+                            <Button className={clsx(Style.backgroundColor, 'px-5 text-light border-0 w-100 fw-bold')}><i className='mdi mdi-currency-btc me-1'></i>Quyên góp</Button>
+
                         </div>
 
                     </div>
                 </div>
-
             </div>
+
+            {/* Thanh menu chi tiết dự án  */}
             <div className={clsx(Style.projectDetailMenu)}>
                 <div className="container">
 
@@ -103,13 +114,60 @@ function ProjectDetail(props) {
                 </div>
             </div>
 
-            <div id="overview" class="py-5 ">
+            {/* Tổng quan dự án  */}
+            <div id="overview" className="py-5 ">
                 <div className="container">
                     <div className="row">
-                        <div className="col-12 col-md-12">
+                        <div className="col-12 col-lg-6">
                             <h2>Giới thiệu về dự án</h2>
                             <div className={clsx(Style.line)}><hr /></div>
+                            <div className='my-5'>
+                                <h3 className={clsx(Style.color, 'mb-4')}><i className='mdi mdi-format-page-break me-3'></i>Tổng quan</h3>
+                                <p>{fakeDataProject.summary}</p>
+                            </div>
+                            <div className='my-5'>
+                                <h3 className={clsx(Style.color, 'mb-4')}><i className='mdi mdi-alert-outline me-3'></i>Vấn đề cần giải quyết</h3>
+                                <p>{fakeDataProject.problemToAddress}</p>
+                            </div>
+                            <div className='my-5'>
+                                <h3 className={clsx(Style.color, 'mb-4')}><i className='mdi mdi-lightbulb-on-outline me-3'></i>Giải pháp</h3>
+                                <p>{fakeDataProject.solution}</p>
+                            </div>
+                        </div>
+                        <div className="col-12 col-lg-5 offset-lg-1 ">
 
+                            <Iframe url={urlLocation}
+                                width="100%"
+                                height="450px"
+                                display="initial"
+                                position="relative"
+                                allow="fullscreen" />
+                            <div className='container border p-4 bg-light'>
+                                <h4 className='fs-6 lh-base'><i className='mdi mdi-map-marker-outline me-2'></i>{fakeDataProject.location}</h4>
+                                <div className="row">
+
+                                    <div className='col-12 col-lg-6 '>
+                                        <div className="p-2">
+                                            <p className='m-0 mt-3 fs-5'>Quản lý dự án</p>
+                                            <p className='m-0 fw-light '>{fakeDataProject.userCreateName}</p>
+                                            <p className='m-0 mt-3 fs-5'>Loại dự án</p>
+                                            <ul className='m-0 fw-light '>{fakeDataProject.category.map((item, index) => (
+                                                <li key={index}>{item}</li>
+                                            ))}</ul>
+                                            <p className='m-0 mt-3 fs-5'>Đối tượng cần hỗ trợ</p>
+                                            <p className='m-0 fw-light '>{fakeDataProject.impact}</p>
+                                        </div>
+                                    </div>
+                                    <div className='col-12 col-lg-6'>
+                                        <div className="p-2">
+                                            <p className='m-0 mt-3 fs-5'>Ngày bắt đầu</p>
+                                            <p className='m-0 fw-light '>{fakeDataProject.dateStart}</p>
+                                            <p className='m-0 mt-3 fs-5'>Ngày kết thúc</p>
+                                            <p className='m-0 fw-light '>{fakeDataProject.dateEnd}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
