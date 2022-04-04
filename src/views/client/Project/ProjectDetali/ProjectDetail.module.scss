@@ -1,16 +1,12 @@
-.headerProject {
+.headerProject, .process {
     background-color: #444;
     color: #fff;
 }
 .progressBar {
-    background-color: #6fcf97 !important;
+    background-color: var(--givetrack-color) !important;
 }
-.color {
-    color: #6fcf97 !important;
-}
-.backgroundColor {
-    background-color: #EF991F !important;
-}
+
+
 
 .projectDetailMenu {
     background-color: #EDECEC;
@@ -21,11 +17,42 @@
 .line {
     width: 5%;
     & > hr {
-        border: 2px solid #6fcf97;
+        border: 2px solid var(--givetrack-color);
         margin: 0;
         width: 100%;
         height: 0 !important;
         border-radius: 10px;
         opacity: 1;
+    }
+}
+
+// Dùng chung
+.baseColor {
+    color: var(--givetrack-color) !important;
+}
+.backgroundBaseColor {
+    background-color: var(--givetrack-color) !important;
+}
+.foreignColor {
+    color: #EF991F !important;
+}
+.backgroundForeignColor {
+    background-color: #EF991F !important;
+}
+
+// Tab content
+#tabContent  {
+    & .navItem {
+
+        & > button[aria-selected="true"] {
+            background-color: var(--givetrack-color) !important;
+        }
+        & .tabLine {
+            border-top: 1px solid #68737db4;
+            width: 50px;
+        }
+    }
+    & .title {
+        letter-spacing: 1px;
     }
 }
