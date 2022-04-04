@@ -12,32 +12,40 @@ import Select from 'react-select'
 import { Link } from "react-router-dom";
 
 function Project(){
-    // select danh muc
+    // select ------------------------------------------
+        // select danh muc
     const filtercategory = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }, { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }, { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }, { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }, { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' }
+        { value: '1', label: 'Thiên tai' },
+        { value: '2', label: 'Trẻ em' },
+        { value: '3', label: 'Sức khỏe' },
+        { value: '4', label: 'Con người' },
+        { value: '5', label: 'Xã hội' },
       ]
-    // select trạng thái
+        // select trạng thái
       const filterStatus = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
+        { value: '1', label: 'đang chờ duyệt' },
+        { value: '2', label: 'đang thực thi' },
+        { value: '3', label: 'hoàng thành' },
       
       ]
-    // select chủ đề
+        // select chủ đề
       const filterTopic = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
+        { value: '1', label: 'chủ đề 1' },
+        { value: '2', label: 'chủ đề 2' },
       ]
-    // daterangpicker
+    // xử lý hiện labe của 
+    function HandleGetLable(filterlist,index){
+        
+            return(
+                filterlist.find(function(itemCategoty){
+                        if (itemCategoty.value===(index+'')){
+                            return itemCategoty
+                        }
+                })
+            )
+        
+    }
+    // daterangpicker ---------------------------------------
     const {
         allowedMaxDays,
         allowedDays,
@@ -72,45 +80,35 @@ function Project(){
         },
     ];
 
-    // biến tạm
-    const status={ 1:'đang chờ duyệt',2:'đang thực thi',3:'hoàng thành'}
-    const category={
-        1:'thiên tai',
-        2:'trẻ em',
-        3:'sức khỏe',
-        4:'con người',
-        5:'xã hội',
-        6:'sức khỏe',
-    }
-    // danh sách ảo
+    // api fake
     const arr=[
-        // {
-        // "id": 1,
-        // "Name": "cứu trợ miền trung",
-        // "address": "miền trung",
-        // "category": 1,
-        // "dateCreate":'23/09/2021',
-        // "createUse": "trần văn thuận",
-        // "status": 1,
-        // },
-        // {
-        //     "id": 2,
-        //     "Name": "cứu trợ miền trung",
-        //     "address": "miền trung",
-        //     "category": 1,
-        //     "dateCreate":'23/09/2021',
-        //     "createUse": "trần văn thuận",
-        //     "status": 2,
-        // },
-        // {
-        //     "id": 3,
-        //     "Name": "cứu trợ miền trung",
-        //     "address": "miền trung",
-        //     "category": 1,
-        //     "dateCreate":'23/09/2021',
-        //     "createUse": "trần văn thuận",
-        //     "status": 3,
-        // },
+        {
+        "id": 1,
+        "Name": "cứu trợ miền trung",
+        "address": "miền trung",
+        "category": 1,
+        "dateCreate":'23/09/2021',
+        "createUse": "trần văn thuận",
+        "status": 1,
+        },
+        {
+            "id": 2,
+            "Name": "cứu trợ miền trung",
+            "address": "miền trung",
+            "category": 1,
+            "dateCreate":'23/09/2021',
+            "createUse": "trần văn thuận",
+            "status": 2,
+        },
+        {
+            "id": 3,
+            "Name": "cứu trợ miền trung",
+            "address": "miền trung",
+            "category": 1,
+            "dateCreate":'23/09/2021',
+            "createUse": "trần văn thuận",
+            "status": 3,
+        },
     ]
     const [arrayPost, setArrayPost] = useState(arr)
     // chứa bộ lọc
@@ -121,20 +119,38 @@ function Project(){
         topic:'',
         dataup:"",
     }
-    const [filterInputs,setFilterInputs]= useState('')
-    const [project,setProject]=useState({
-        id:1,
-        Name:'',
-        address:'',
-        category:'',
-        dateCreate:'23/09/2021',
-        createUse:'',
-        status:1
+    const [inputSearch,setInputSearch]= useState('')
+    const [inputCategoty,setInputCategoty]= useState('')
+    const [inputStatus,setInputStatus]= useState('')
+    const [inputTopic,setInputTopic]= useState('')
+    const [inputDate,setInputDate]=useState('')
+    // tổng lại các filter
+    const [filter,setFilter]=useState({
+        search:'',
+        catergory:1,
+        status:1,
+        topic:1,
+        date:"",
     })
+    // get_project api............................
     useEffect(()=>{
-        console.log( 'filterInputs',filterInputs)
-    },[filterInputs])
 
+        // setFilter({
+        //     search:inputSearch,
+        //     catergory:inputCategoty,
+        //     status:inputStatus,
+        //     topic:inputTopic,
+        //     date:inputDate,
+        // })
+
+        // console.log( 'inputCategoty',filter)
+        console.log(inputSearch,'inputSearch')
+        console.log(inputCategoty.value,'inputCategoty')
+        console.log(inputStatus.value,'inputStatus')
+        console.log(inputTopic.value,'inputTopic')
+        console.log(inputDate,'inputDate')
+    },[inputSearch],[inputCategoty],[inputStatus],[inputTopic],[inputDate])
+    console.log(inputDate)
     return(
         <>
             <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
@@ -153,25 +169,25 @@ function Project(){
                             <div className={''}>
                                 <h5 className={clsx(Style.searchContent,'')}>Tìm kiếm</h5>
                                 <div className="form-group">
-                                    <input id="ipt-text-search" type="text" className={clsx(Style.searchInput, Style.Inputfocus, 'form-control')}  placeholder="Tìm theo tên dự án" autoComplete="off" />
+                                    <input value={inputSearch} onChange={(e)=>{setInputSearch(e.target.value)}} id="ipt-text-search" type="text" className={clsx(Style.searchInput, Style.Inputfocus, 'form-control')}  placeholder="Tìm theo tên dự án" autoComplete="off" />
                                 </div>
                             </div>
                             <div className={'mt-4'}>
                                 <h5 className={clsx(Style.searchContent,'')}>Danh mục</h5>
                                 <div className="form-group">
-                                    <Select defaultValue={filterInputs} onChange={setFilterInputs}  className={clsx( Style.Inputfocus)} placeholder='danh mục' options={filtercategory} />
+                                    <Select defaultValue={inputCategoty} onChange={setInputCategoty}  className={clsx( Style.Inputfocus)} placeholder='danh mục' options={filtercategory} />
                                 </div>
                             </div>
                             <div className={'mt-4'}>
                                 <h5 className={clsx(Style.searchContent,'')}>Trạng thái</h5>
                                 <div className="form-group">
-                                    <Select className={clsx( Style.Inputfocus)} placeholder='danh mục' options={filterStatus} />
+                                    <Select defaultValue={inputStatus} onChange={setInputStatus} className={clsx( Style.Inputfocus)}  placeholder='trạng thái' options={filterStatus} />
                                 </div>
                             </div>
                             <div className={'mt-4'}>
                                 <h5 className={clsx(Style.searchContent,'')}>Chủ thể</h5>
                                 <div className="form-group">
-                                    <Select className={clsx( Style.Inputfocus)} placeholder='danh mục' options={filterTopic} />
+                                    <Select defaultValue={inputTopic} onChange={setInputTopic} className={clsx( Style.Inputfocus)} placeholder='chủ đề' options={filterTopic} />
                                 </div>
                             </div>
                              <div className="mt-4">
@@ -179,7 +195,7 @@ function Project(){
                                 <div class="form-group" style={{ position: 'relative' }}>
                                 <DateRangePicker className={clsx(Style.rangeDate,Style.Inputfocus)}
                                     disabledDate={afterToday()}
-                                    // onChange={(value) => { setDateValue([value.select]) }}
+                                    onChange={(value) => { setInputDate([value.select]) }}
                                     // onOk={value=>{setDateValue(value)}}
                                     ari
                                     format='dd/MM/yyyy'
@@ -220,11 +236,15 @@ function Project(){
                                                                 <td>{item.id}</td>
                                                                 <td>{item.Name}</td>
                                                                 <td>{item.address}</td>
-                                                                <td>{category[item.category]}</td>
+                                                                {/* filterStatus[item.category] */}
+                                                                <td>{
+                                                                    HandleGetLable(filtercategory,item.category).label
+                                                                }</td>
                                                                 <td>{item.createUse}</td>
                                                                 <td>{item.dateCreate}</td>
+                                                                {/* filterStatus[item.status] */}
                                                                 <td>
-                                                                    <span  className={clsx( item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatus' : 'doneStatus') )}>{status[item.status]}</span> 
+                                                                    <span  className={clsx( item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatus' : 'doneStatus') )}>{ HandleGetLable(filterStatus,item.status).label}</span> 
                                                                 </td>
                                                                 <td>
                                                                 <td className=" text-center align-middle ">

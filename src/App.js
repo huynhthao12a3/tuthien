@@ -8,10 +8,11 @@ import ClientNavbar from './shares/ClientNavbar';
 import ClientFooter from './shares/ClientFooter';
 import ClientProject from './views/client/Project';
 import AddProject from './views/admin/Project/Add';
+import ProjectDetail from './views/client/Project/ProjectDetali';
 import {
   BrowserRouter,
 } from 'react-router-dom';
-import ProjectDetail from './views/client/Project/ProjectDetali';
+// import ProjectDetail from './views/client/Project/ProjectDetali';
 function App() {
   return (
     <BrowserRouter>
@@ -19,7 +20,7 @@ function App() {
 
     <AdminNavbar/>
 
-    <ProjectDetail/>
+    <Project/>
     {/* <div style={{height: '100vh'}}></div> */}
     <ClientFooter/>
 

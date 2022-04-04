@@ -114,3 +114,17 @@ body{
 .css-26l3qy-menu{
     z-index: 10 !important;
 }
+/* add project */
+.addprojectmain .Add_category__ywTfX{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+.addprojectmain .css-1rhbuit-multiValue{
+ 
+}
+.add-project_editor .ck-editor__main{
+    height:250px ;
+}   
+.ck-editor__main .ck-editor__editable_inline{
+    height: 100%;
+}
