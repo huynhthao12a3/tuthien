@@ -441,8 +441,8 @@ function ProjectDetail(props) {
     return (
         <>
             {/* Header dự án  */}
+            <div className={clsx(Style.headerProject, 'py-3 p-md-5 ')} >
 
-            <div className={clsx(Style.headerProject, 'py-3 p-md-5 ')}>
 
                 <div className="container d-flex justify-content-between">
                     <div className="row">
