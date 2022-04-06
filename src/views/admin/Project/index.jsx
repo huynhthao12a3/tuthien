@@ -8,10 +8,12 @@ import DateRangePicker from 'rsuite/DateRangePicker';
 import { startOfDay, endOfDay, addDays, subDays } from 'date-fns';
 import 'rsuite/dist/rsuite-rtl.min.css'
 import Dropdown from 'react-bootstrap/Dropdown'
+import * as $ from "jquery"
 import Select from 'react-select'
 import { Link } from "react-router-dom";
 
 function Project(){
+
     // select ------------------------------------------
         // select danh muc
     const filtercategory = [
@@ -26,7 +28,6 @@ function Project(){
         { value: '1', label: 'đang chờ duyệt' },
         { value: '2', label: 'đang thực thi' },
         { value: '3', label: 'hoàng thành' },
-      
       ]
         // select chủ đề
       const filterTopic = [
@@ -109,48 +110,58 @@ function Project(){
             "createUse": "trần văn thuận",
             "status": 3,
         },
+        {
+            "id": 4,
+            "Name": "cứu trợ miền trung",
+            "address": "miền trung",
+            "category": 1,
+            "dateCreate":'23/09/2021',
+            "createUse": "trần văn thuận",
+            "status": 1,
+        },
     ]
-    const [arrayPost, setArrayPost] = useState(arr)
+    const [arrayProject, setArrayProject] = useState(arr)
     // chứa bộ lọc
-    const filterObj={
-        search:'',
-        category:'',
-        status:'',
-        topic:'',
-        dataup:"",
-    }
     const [inputSearch,setInputSearch]= useState('')
     const [inputCategoty,setInputCategoty]= useState('')
     const [inputStatus,setInputStatus]= useState('')
     const [inputTopic,setInputTopic]= useState('')
     const [inputDate,setInputDate]=useState('')
-    // tổng lại các filter
-    const [filter,setFilter]=useState({
-        search:'',
-        catergory:1,
-        status:1,
-        topic:1,
-        date:"",
-    })
     // get_project api............................
     useEffect(()=>{
 
-        // setFilter({
-        //     search:inputSearch,
-        //     catergory:inputCategoty,
-        //     status:inputStatus,
-        //     topic:inputTopic,
-        //     date:inputDate,
-        // })
+        setInputDate($(".rs-picker-toggle-value")[0].innerHTML)
 
-        // console.log( 'inputCategoty',filter)
-        console.log(inputSearch,'inputSearch')
-        console.log(inputCategoty.value,'inputCategoty')
-        console.log(inputStatus.value,'inputStatus')
-        console.log(inputTopic.value,'inputTopic')
-        console.log(inputDate,'inputDate')
-    },[inputSearch],[inputCategoty],[inputStatus],[inputTopic],[inputDate])
-    console.log(inputDate)
+        // const getAllProject = async () => {
+        //     try {
+        //         const params = {
+        //             keyword: inputSearch,
+        //             categoryid: inputCategoty.value,
+        //             statusid: inputStatus.value,
+        //             topicId:inputTopic.value,
+        //             date:inputDate,
+        //         };
+        //         const response = await Product.getAll(params);
+        //         setArrayProject(response.data)
+        //     }
+        //     catch (e) {
+        //         console.error(e)
+        //     }
+        // }
+        // getAllProject()
+
+        // console.log(inputSearch,'inputSearch')
+        // console.log(inputCategoty.value,'inputCategoty')
+        // console.log(inputStatus.value,'inputStatus')
+        // console.log(inputTopic.value,'inputTopic')
+        // console.log(inputDate,'inputDate')
+    },[inputSearch ,inputCategoty , inputStatus ,inputTopic ,inputDate])
+    // sự kiện thay đổi trạng thái 
+    const handleAcceptProject=(item)=>
+    {
+
+    }
+
     return(
         <>
             <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
@@ -193,10 +204,11 @@ function Project(){
                              <div className="mt-4">
                                 <h5 className={clsx(Style.searchContent,'')}>Ngày đăng</h5>
                                 <div class="form-group" style={{ position: 'relative' }}>
-                                <DateRangePicker className={clsx(Style.rangeDate,Style.Inputfocus)}
+                                <DateRangePicker className={clsx(Style.rangeDate,Style.Inputfocus,'projectDaterang')}
                                     disabledDate={afterToday()}
-                                    onChange={(value) => { setInputDate([value.select]) }}
+                                    // onChange={(value:[,]=>{this.setInputDate({date})}}
                                     // onOk={value=>{setDateValue(value)}}
+                                    // onSelect={value => {console.log(value, 'yyyy/MM/dd')}}
                                     ari
                                     format='dd/MM/yyyy'
                                     defaultValue={[new Date(), new Date()]}
@@ -205,7 +217,7 @@ function Project(){
                                     // ref={textRef}
                                 >
                                 </DateRangePicker>
-                                   
+                              
                                 </div>
                             </div>
                         </div>
@@ -229,7 +241,7 @@ function Project(){
                                             </thead>
                                             <tbody>
                                                 {
-                                                    arrayPost.map(function(item,index,arr){
+                                                    arrayProject.map(function(item,index,arr){
                                                         return(
                                                             <tr style={{lineHeight:'2rem'}}>
                                                                 <th scope="row">{index}</th>
@@ -244,7 +256,11 @@ function Project(){
                                                                 <td>{item.dateCreate}</td>
                                                                 {/* filterStatus[item.status] */}
                                                                 <td>
-                                                                    <span  className={clsx( item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatus' : 'doneStatus') )}>{ HandleGetLable(filterStatus,item.status).label}</span> 
+                                                                    <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatus' : 'doneStatus') )}>{ HandleGetLable(filterStatus,item.status).label}
+                                                                        <div onClick={handleAcceptProject(item.id)} className={clsx(Style.changeStatus,'changeStatus')}>
+                                                                            <span>duyệt bài viết</span>
+                                                                        </div>
+                                                                    </span> 
                                                                 </td>
                                                                 <td>
                                                                 <td className=" text-center align-middle ">
@@ -281,7 +297,7 @@ function Project(){
                     </div>
                 </div>
             </div>
-                              
+              
 
                                
  

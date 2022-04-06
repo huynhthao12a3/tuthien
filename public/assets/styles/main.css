@@ -36,6 +36,9 @@
     background-color: var( --status-waiting-background) !important;
     color: var(--status-waiting-color);
 }
+.waitingStatus:hover .changeStatus{
+    display: block !important;
+}
 .doingStatus{
     background-color: var(--status-doing-background) !important;
     color: var(--status-doing-color);
@@ -84,8 +87,22 @@ body{
 }
 
 /* // DateRangePicker */
+/* .projectDaterang{
+    position: relative;
+}
+.rs-picker-daterange-panel
+{
+    left: 340px !important;
+    top: 500px !important;
+} */
+.rs-picker-daterange-menu{
+    left: 350px !important;
+    top: 300px !important;
+}
 .rs-picker-toggle-read-only{
+    position: relative;
     width: 100% !important;
+   
 } 
 .rs-picker-toggle{
     margin-top: 5px;

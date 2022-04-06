@@ -8,7 +8,7 @@ import ClientNavbar from './shares/ClientNavbar';
 import ClientFooter from './shares/ClientFooter';
 import ClientProject from './views/client/Project';
 import AddProject from './views/admin/Project/Add';
-import ProjectDetail from './views/client/Project/ProjectDetali';
+// import ProjectDetail from './views/client/Project/ProjectDetali';
 import {
   BrowserRouter,
 } from 'react-router-dom';
@@ -20,7 +20,7 @@ function App() {
 
     <AdminNavbar/>
 
-    <Project/>
+    <AddProject/>
     {/* <div style={{height: '100vh'}}></div> */}
     <ClientFooter/>
 

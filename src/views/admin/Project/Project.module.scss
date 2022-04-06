@@ -1,6 +1,7 @@
 
 .project{
     background-color: #F0F3FC;
+    padding-bottom: 50px;
     .titleBlock{
         display: flex;
         justify-content: space-between;
@@ -43,6 +44,28 @@
         border-radius: var(--boder-radius);
         .table_responsive{
             overflow: visible;
+            cursor: pointer;
+            .StatusItem{
+                .changeStatus{
+                    display: none;
+                    position: absolute;
+                    left: 0;
+                    right: 0;
+                    top: 100%;
+                    background-color: #fff;
+                    box-shadow: 1px 2px 10px rgba(204, 204, 204,0.4);
+                    opacity: 0.8;
+                    color: var(--main-color);
+                    border-radius: var(--boder-radius);
+                    cursor: pointer;
+                }
+                
+                .changeStatus:hover{
+                    opacity: 1;
+                }
+            }
+            
+           
         }
         .textCenter{
             border-bottom-color: rgba(204, 204, 204,0.4) !important;
