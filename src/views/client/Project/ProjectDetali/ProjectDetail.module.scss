@@ -6,12 +6,21 @@
     background-color: var(--givetrack-color) !important;
 }
 .coinBtn {
-    border: 1px solid #EF991F;
+    border: 2px solid #EF991F;
     border-radius: 10px;
 }
-
-
-.projectDetailMenu {
+.submitCointBtn:hover i {
+    color: #EF991F;
+}
+.inputTrx {
+    & input {
+        border-radius: 0;
+        border: none;
+        border-bottom: 2px solid #EF991F;
+    }
+}
+    
+    .projectDetailMenu {
     background-color: #EDECEC;
 }
 .projectDetailItem:hover {
@@ -52,7 +61,7 @@
         }
         & .tabLine {
             border-top: 1px solid #68737db4;
-            width: 50px;
+            width: 30px;
         }
     }
     & .title {

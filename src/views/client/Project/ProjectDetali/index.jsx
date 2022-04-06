@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import clsx from "clsx";
@@ -58,7 +58,7 @@ function ProjectDetail(props) {
     const amountNow = '2100000000' // từ smart contract
 
     function formatNumber(num) {
-        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
     // Amount
     const amountNowFormat = Number(amountNow)
@@ -110,7 +110,6 @@ function ProjectDetail(props) {
             expenses: [
                 {
                     id: 92,
-                    expenseDate: "2021-01-08T00:00:00.000Z",
                     createdDate: "2021-04-21T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "31700000",
@@ -120,7 +119,6 @@ function ProjectDetail(props) {
                 },
                 {
                     id: 93,
-                    expenseDate: "2021-12-08T00:00:00.000Z",
                     createdDate: "2021-04-22T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "220100000",
@@ -130,7 +128,6 @@ function ProjectDetail(props) {
                 },
                 {
                     id: 94,
-                    expenseDate: "2021-02-11T00:00:00.000Z",
                     createdDate: "2021-04-21T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "31700000",
@@ -140,7 +137,6 @@ function ProjectDetail(props) {
                 },
                 {
                     id: 95,
-                    expenseDate: "2021-01-08T00:00:00.000Z",
                     createdDate: "2021-04-22T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "220100000",
@@ -190,7 +186,6 @@ function ProjectDetail(props) {
             expenses: [
                 {
                     id: 101,
-                    expenseDate: "2021-12-24T00:00:00.000Z",
                     createdDate: "2021-04-21T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "5700000",
@@ -200,7 +195,6 @@ function ProjectDetail(props) {
                 },
                 {
                     id: 103,
-                    expenseDate: "2021-11-02T00:00:00.000Z",
                     createdDate: "2021-04-22T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "120100000",
@@ -210,7 +204,6 @@ function ProjectDetail(props) {
                 },
                 {
                     id: 104,
-                    expenseDate: "2021-03-22T00:00:00.000Z",
                     createdDate: "2021-04-22T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "120100000",
@@ -259,7 +252,6 @@ function ProjectDetail(props) {
             expenses: [
                 {
                     id: 105,
-                    expenseDate: "2021-02-11T00:00:00.000Z",
                     createdDate: "2021-04-21T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "31700000",
@@ -269,7 +261,6 @@ function ProjectDetail(props) {
                 },
                 {
                     id: 109,
-                    expenseDate: "2021-01-08T00:00:00.000Z",
                     createdDate: "2021-04-22T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "220100000",
@@ -318,7 +309,6 @@ function ProjectDetail(props) {
             expenses: [
                 {
                     id: 115,
-                    expenseDate: "2021-02-11T00:00:00.000Z",
                     createdDate: "2021-04-21T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "31700000",
@@ -328,7 +318,6 @@ function ProjectDetail(props) {
                 },
                 {
                     id: 119,
-                    expenseDate: "2021-01-08T00:00:00.000Z",
                     createdDate: "2021-04-22T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "220100000",
@@ -338,7 +327,6 @@ function ProjectDetail(props) {
                 },
                 {
                     id: 221,
-                    expenseDate: "2021-01-08T00:00:00.000Z",
                     createdDate: "2021-04-22T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "123400000",
@@ -348,7 +336,6 @@ function ProjectDetail(props) {
                 },
                 {
                     id: 222,
-                    expenseDate: "2021-01-08T00:00:00.000Z",
                     createdDate: "2021-04-22T00:00:00.000Z",
                     type: "Thanh toán",
                     amount: "300500000",
@@ -410,7 +397,110 @@ function ProjectDetail(props) {
         },
     ]
 
-    // Setting slider artical 
+    // Data những người quyên góp từ API
+    const fakeDateDonors = [
+        {
+            id: 1,
+            userCreate: "Nguyễn An",
+            avatar: "https://i.pinimg.com/736x/fa/02/02/fa0202572e8aa734cedb154c413a4846.jpg",
+            projectId: 91,
+            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
+            amount: "132.05",
+            currency: "TRX",
+            createTime: "10/11/2022",
+            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
+        },
+        {
+            id: 2,
+            userCreate: "Nguyễn Bảo",
+            avatar: "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg",
+            projectId: 91,
+            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
+            amount: "222.05",
+            currency: "TRX",
+            createTime: "10/11/2022",
+            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
+        },
+        {
+            id: 3,
+            userCreate: "Lê Thị Bảo",
+            avatar: "https://9mobi.vn/cf/images/2015/04/nkk/hinh-avatar-dep-1.jpg",
+            projectId: 91,
+            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
+            amount: "1322.9",
+            currency: "TRX",
+            createTime: "10/11/2022",
+            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
+        },
+        {
+            id: 4,
+            userCreate: "Huỳnh Tùng Anh",
+            avatar: "https://i.pinimg.com/736x/fa/02/02/fa0202572e8aa734cedb154c413a4846.jpg",
+            projectId: 91,
+            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
+            amount: "505",
+            currency: "TRX",
+            createTime: "10/12/2022",
+            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
+        },
+        {
+            id: 5,
+            userCreate: "Lê Văn Bào",
+            avatar: "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg",
+            projectId: 91,
+            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
+            amount: "132.05",
+            currency: "TRX",
+            createTime: "01/12/2022",
+            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
+        },
+        {
+            id: 6,
+            userCreate: "Nguyễn Bảo",
+            avatar: "https://9mobi.vn/cf/images/2015/04/nkk/hinh-avatar-dep-1.jpg",
+            projectId: 91,
+            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
+            amount: "222.55",
+            currency: "TRX",
+            createTime: "10/11/2022",
+            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
+        },
+        {
+            id: 7,
+            userCreate: "Lê Thị Bảo",
+            avatar: "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg",
+            projectId: 91,
+            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
+            amount: "1322.2",
+            currency: "TRX",
+            createTime: "10/11/2022",
+            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
+        },
+        {
+            id: 8,
+            userCreate: "Huỳnh Tùng Anh",
+            avatar: "https://9mobi.vn/cf/images/2015/04/nkk/hinh-avatar-dep-1.jpg",
+            projectId: 91,
+            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
+            amount: "505.1",
+            currency: "TRX",
+            createTime: "10/12/2022",
+            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
+        },
+        // {
+        //     id: 9,
+        //     userCreate: "Lê Văn Bào",
+        //     avatar: "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg",
+        //     projectId: 91,
+        //     projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
+        //     amount: "132.05",
+        //     currency: "TRX",
+        //     createTime: "01/12/2022",
+        //     transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
+        // },
+    ]
+
+    // Setting slider 
     const settingSliderArtical = {
         dots: true,
         slidesToShow: 3,
@@ -438,12 +528,60 @@ function ProjectDetail(props) {
             }
         ]
     }
+
+    const settingSliderDonors = {
+        dots: true,
+        slidesToShow: 8,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        adaptiveHeight: true,
+        arrows: false,
+        responsive: [
+            {
+                breakpoint: 1400,
+                settings: {
+                    slidesToShow: 6,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 576,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                }
+            }
+        ]
+    }
+
+    // API giá TRX
+    const [valueTrx, setValueTrx] = useState(1);
+    const [trxPrice, setTrxPrice] = useState();
+    useEffect(() => {
+        fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=vnd")
+            .then(res => res.json())
+            .then(res => { setTrxPrice(res.tron.vnd) })
+    }, [])
+    // console.log(trxPrice)
     return (
         <>
             {/* Header dự án  */}
-            <div className={clsx(Style.headerProject, 'py-3 p-md-5 ')} >
-
-
+            <div className={clsx(Style.headerProject, 'py-5 ')} >
                 <div className="container d-flex justify-content-between">
                     <div className="row">
 
@@ -487,7 +625,7 @@ function ProjectDetail(props) {
                                 </div>
                                 <Button className={clsx(Style.backgroundForeignColor, 'px-5 text-light border-0')}><i className='mdi mdi-heart-outline me-1'></i>Theo dõi</Button>
                             </div>
-                            <Button className={clsx(Style.backgroundForeignColor, 'px-5 text-light border-0 w-100 fw-bold')}><i className='mdi mdi-currency-btc me-1'></i>Quyên góp</Button>
+                            {/* <Button className={clsx(Style.backgroundForeignColor, 'px-5 text-light border-0 w-100 fw-bold')}><i className='mdi mdi-currency-btc me-1'></i>Quyên góp</Button> */}
 
                         </div>
 
@@ -498,11 +636,11 @@ function ProjectDetail(props) {
             {/* Thanh menu chi tiết dự án  */}
             <div className={clsx(Style.projectDetailMenu)} >
                 <div className="container">
-                    <div className="d-flex justify-content-around">
+                    <div className="d-flex justify-content-around flex-wrap">
                         <a className={clsx(Style.projectDetailItem, 'd-block py-3  px-3 text-muted text-decoration-none')} href="#overview">Giới thiệu</a>
                         <a className={clsx(Style.projectDetailItem, 'd-block py-3  px-3 text-muted text-decoration-none')} href="#process">Tiến trình dự án</a>
                         <a className={clsx(Style.projectDetailItem, 'd-block py-3  px-3 text-muted text-decoration-none')} href="#artical">Cập nhật mới nhất</a>
-                        <a className={clsx(Style.projectDetailItem, 'd-block py-3  px-3 text-muted text-decoration-none')} href="#donation">Người quyên góp</a>
+                        <a className={clsx(Style.projectDetailItem, 'd-block py-3  px-3 text-muted text-decoration-none')} href="#donors">Người quyên góp</a>
                     </div>
                 </div>
             </div >
@@ -529,7 +667,7 @@ function ProjectDetail(props) {
                         </div>
                         <div className="col-12 col-lg-5 offset-lg-1 ">
 
-                            {/* Google map  */}
+                            {/* Google map & chi tiết dự án */}
                             <Iframe url={urlLocation}
                                 width="100%"
                                 height="300px"
@@ -563,16 +701,38 @@ function ProjectDetail(props) {
                                 </div>
                             </div>
 
-                            {/* Donate  */}
+                            {/* Đóng góp  */}
                             <div className="border mt-5 bg-white">
-                                <h4 className={clsx(Style.backgroundBaseColor, 'p-4 text-center text-white')}><i className='mdi mdi-coin me-2'></i>Đóng góp</h4>
-                                <p className="text-center mt-4 mb-1">Chọn loại tiền điện tử</p>
+                                <div className={clsx(Style.backgroundBaseColor, 'container')} >
+
+                                    <div className='row align-items-center py-3'>
+                                        <div className="col-4 ">
+                                            <img className="img-fluid rounded-3" src="https://i.ytimg.com/vi/tSWzwHea7x0/hqdefault.jpg" alt="project img" />
+                                        </div>
+                                        <div className="col-8">
+                                            <h4 className='m-0 fs-5 text-center text-white'><i className='mdi mdi-coin me-2'></i>{fakeDataProject.projectName}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p className="text-center mt-5 mb-1">Chọn loại tiền điện tử</p>
                                 <button className={clsx(Style.coinBtn, 'mx-auto px-4 py-1 d-flex justify-content-between bg-white')}>
                                     <img src={trxCoin} alt="tiền điện tử" width="24" height="24" className="me-2" />
                                     <span className="fw-bold">Tron</span>
-                                    {/* https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=vnd */}
                                 </button>
+                                <p className="text-center mt-4 mb-1">Nhập số tiền muốn đóng góp</p>
+                                <div className="d-flex flex-row justify-content-center">
 
+                                    <div className={clsx(Style.inputTrx, 'd-flex flex-column text-center px-2')}>
+                                        <input type="number" inputMode="numeric" className=" fs-4 py-1 text-center fw-bolder" value={valueTrx} onChange={(e) => setValueTrx(e.target.value)} />
+                                        <span className=" text-muted p-2 ">~ {formatNumber(valueTrx * trxPrice)}</span>
+                                    </div>
+                                    <div className="d-flex flex-column justify-content-center">
+                                        <div className="fw-bold">TRX</div>
+                                        <div className=" text-center"><i className="mdi mdi-swap-vertical border rounded-circle fw-bolder p-1"></i></div>
+                                        <div className="fw-bold">VNĐ</div>
+                                    </div>
+                                </div>
+                                <button className={clsx(Style.submitCointBtn, Style.backgroundBaseColor, "fs-5 w-100 mt-5 p-2 text-white text-center text-uppercase")}>Tiếp tục<i className="mdi mdi-arrow-right-drop-circle-outline ms-1"></i></button>
                             </div>
                         </div>
                     </div>
@@ -660,7 +820,7 @@ function ProjectDetail(props) {
                                                                         <div className="expense-body-header d-flex justify-content-around flex-column flex-md-row">
                                                                             <span className="">
                                                                                 <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-calendar-check me-1"></i>Ngày</div>
-                                                                                <div>{moment(itemExpense.expenseDate).format("DD/MM/YYYY")}</div>
+                                                                                <div>{moment(itemExpense.createdDate).format("DD/MM/YYYY")}</div>
                                                                             </span>
                                                                             <span className="">
                                                                                 <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-magnify me-1"></i>Loại</div>
@@ -684,7 +844,7 @@ function ProjectDetail(props) {
                                                                         </div>
                                                                         <div className="expense-body-transaction">
                                                                             <p className={clsx(Style.foreignColor, 'm-0')}><i className="mdi mdi-repeat me-1"></i>Lịch sử giao dịch</p>
-                                                                            <a href={"https://tronscan.org/#/contract/" + fakeDataProject.addressContract} target="blank" className={clsx(Style.baseColor, 'text-decoration-none')}>Xem trên Blockchain</a>
+                                                                            <a href={"https://tronscan.org/#/contract/" + fakeDataProject.addressContract} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, 'text-decoration-none')}>Xem trên Blockchain</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -742,6 +902,43 @@ function ProjectDetail(props) {
                                                 <div className={clsx(Style.footer)}>
                                                     <a href="./chi-tiet-bai-viet" className='text-decoration-none '>Xem chi tiết<i className="mdi mdi-arrow-right-bold-circle-outline ms-2"></i></a>
                                                 </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </Slider>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Những người quyên góp  */}
+            <div id="donors" className="py-5">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <h2>Người quyên góp</h2>
+                            <div className={clsx(Style.line)}><hr /></div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12 py-4">
+
+                            <Slider {...settingSliderDonors}>
+                                {
+                                    fakeDateDonors.map((item, index) => (
+                                        <div key={index} className={clsx(Style.articalDetail, "d-flex flex-column  p-3 ")}>
+                                            <div className="rounded-circle d-inline-block mx-auto p-2 border">
+                                                <img src={item.avatar} alt="hình đại diện" width="100px" height="100px" className=" rounded-circle" />
+                                            </div>
+                                            <div className="my-3">
+                                                <p className="m-0 text-center">{item.userCreate}</p>
+                                                <div className="m-0 d-flex justify-content-center">
+                                                    <img src={trxCoin} alt="coin" className="" width="16px" />
+                                                    <span className="ms-1 fw-bold">{item.amount}</span>
+                                                </div>
+                                                <a href={"https://tronscan.org/#/transaction/" + item.transactionId} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết</a>
+
                                             </div>
                                         </div>
                                     ))
