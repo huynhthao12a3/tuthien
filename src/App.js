@@ -12,6 +12,10 @@ import ProjectDetail from './views/client/Project/ProjectDetali';
 import {
   BrowserRouter,
 } from 'react-router-dom';
+
+// React Slick
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 // import ProjectDetail from './views/client/Project/ProjectDetali';
 function App() {
   return (
@@ -20,7 +24,7 @@ function App() {
 
     <AdminNavbar/>
 
-    <Project/>
+    <ProjectDetail/>
     {/* <div style={{height: '100vh'}}></div> */}
     <ClientFooter/>
 

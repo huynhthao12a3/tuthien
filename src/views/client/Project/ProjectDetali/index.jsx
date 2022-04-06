@@ -7,6 +7,8 @@ import ProgressBar from 'react-bootstrap/ProgressBar'
 import Button from 'react-bootstrap/Button'
 import Nav from "react-bootstrap/Nav";
 import { NavLink } from "react-router-dom";
+import trxCoin from "../../../../assets/images/trx-coin.svg"
+// Dùng chung
 import SetInnerHTML from "../../../../shares/setInnerHTML"
 //  Google map 
 import Iframe from 'react-iframe'
@@ -19,6 +21,9 @@ import 'react-medium-image-zoom/dist/styles.css'
 
 // Thư viện xử lý ngày tháng 
 import moment from 'moment'
+
+// Slider trong React Slick
+import Slider from "react-slick";
 ProjectDetail.propTypes = {
 
 };
@@ -219,7 +224,7 @@ function ProjectDetail(props) {
             id: 185,
             projectId: 91,
             title: "Sự tin cậy cho các gia đình của HABANATHI ORPHANS",
-            status: "Đang thực hiện",
+            status: "Đã hoàn thành",
             shortDescription: "<p>Đây là những trẻ em dễ bị tổn thương nhất trong cộng đồng lân cận khu bảo tồn động vật hoang dã của chúng tôi. Hầu hết sống với đại gia đình sau khi mồ côi, thường là do nhiễm HIV.</p><br><p>Chúng tôi sẽ làm việc cùng với Mục sư Bonga của Tổ chức từ thiện Habanathi EC (người hỗ trợ trẻ mồ côi và người chăm sóc chúng) để mua thực phẩm cho 15 gia đình. Mỗi gói thực phẩm có giá 35 đô la.</p>",
             content: '<p>Cảm ơn bạn đã hỗ trợ những thành viên dễ bị tổn thương nhất trong cộng đồng của chúng tôi ở Nam Phi, những đứa trẻ mồ côi. Hầu hết các em đều mồ côi vì HIV. Một số sống với các gia đình khác (ví dụ như Dì và Chú) trong khi những người khác sống một mình trong các hộ gia đình có trẻ em làm chủ hộ. Các khoản quyên góp bitcoin cho sự kiện quan trọng này đã tài trợ 2 tháng hỗ trợ thực phẩm cho 30 trẻ em được hỗ trợ bởi trung tâm cộng đồng Hambanathi dành cho trẻ mồ côi! Mục tiêu ban đầu là hỗ trợ lương thực trong 1 tháng, nhưng nhờ sự thành công của chiến dịch và sự tăng trưởng về giá trị của Bitcoin, chúng tôi đã có thể tăng gấp đôi số tiền ủng hộ của mình. Cảm ơn bạn đã cung cấp thực phẩm này cho cộng đồng tuyệt vời của chúng tôi.</p>',
             file: [
@@ -274,17 +279,171 @@ function ProjectDetail(props) {
                 },
             ],
         },
+        {
+            id: 186,
+            projectId: 91,
+            title: "Sự tin cậy cho các gia đình của HABANATHI ORPHANS",
+            status: "Đang thực hiện",
+            shortDescription: "<p>Chúng tôi sẽ làm việc cùng với Mục sư Bonga của Tổ chức từ thiện Habanathi EC (người hỗ trợ trẻ mồ côi và người chăm sóc chúng) để mua thực phẩm cho 15 gia đình. Mỗi gói thực phẩm có giá 35 đô la.</p>",
+            content: '<p>Cảm ơn bạn đã hỗ trợ những thành viên dễ bị tổn thương nhất trong cộng đồng của chúng tôi ở Nam Phi, những đứa trẻ mồ côi. Hầu hết các em đều mồ côi vì HIV. Một số sống với các gia đình khác (ví dụ như Dì và Chú) trong khi những người khác sống một mình trong các hộ gia đình có trẻ em làm chủ hộ. Các khoản quyên góp bitcoin cho sự kiện quan trọng này đã tài trợ 2 tháng hỗ trợ thực phẩm cho 30 trẻ em được hỗ trợ bởi trung tâm cộng đồng Hambanathi dành cho trẻ mồ côi! Mục tiêu ban đầu là hỗ trợ lương thực trong 1 tháng, nhưng nhờ sự thành công của chiến dịch và sự tăng trưởng về giá trị của Bitcoin, chúng tôi đã có thể tăng gấp đôi số tiền ủng hộ của mình. Cảm ơn bạn đã cung cấp thực phẩm này cho cộng đồng tuyệt vời của chúng tôi.</p>',
+            file: [
+                {
+                    id: 41,
+                    fileName: "Name",
+                    filePath: "https://www.angelcharity.org/wp-content/uploads/hero-background.jpg"
+                },
+                {
+                    id: 43,
+                    fileName: "Name",
+                    filePath: "https://www.victoriavn.com/images/HOATDONGXAHOI/43075330_540345303071029_8671747087559294976_n.jpg"
+                },
+                {
+                    id: 45,
+                    fileName: "Name",
+                    filePath: "https://www.victoriavn.com/images/HOATDONGXAHOI/42851986_540345116404381_7244991666593988608_n.jpg"
+                },
+                {
+                    id: 49,
+                    fileName: "Name",
+                    filePath: "https://daklak24h.com.vn/images/news/2018/4/23/anh-nam(1).jpg"
+                },
+
+                {
+                    id: 51,
+                    fileName: "Name",
+                    filePath: "https://static.republika.co.id/uploads/images/inpicture_slide/suasana-market-day-charity-program-yang-digelar-oleh-_171101060617-578.jpg"
+                }
+
+            ],
+            expenses: [
+                {
+                    id: 115,
+                    expenseDate: "2021-02-11T00:00:00.000Z",
+                    createdDate: "2021-04-21T00:00:00.000Z",
+                    type: "Thanh toán",
+                    amount: "31700000",
+                    description: "<p>Thức ăn đóng hộp cho trẻ mồ côi và gia đình của họ: 60 lon Hành tây cà chua trộn 30 lon Đậu sốt cà chua 40 lon Rau trộn cà ri (Một nửa hóa đơn này dành cho Mốc 1)</p>",
+                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
+                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
+                },
+                {
+                    id: 119,
+                    expenseDate: "2021-01-08T00:00:00.000Z",
+                    createdDate: "2021-04-22T00:00:00.000Z",
+                    type: "Thanh toán",
+                    amount: "220100000",
+                    description: "<p>Trả cho tổ chức từ thiện Hambanathi Community thêm một tháng thực phẩm cho tất cả 30 trẻ mồ côi (và các gia đình khác) trong một tháng nữa. Người quản lý cũng có toàn quyền sử dụng một số quỹ này cho các nhu cầu cấp thiết của trường học, bao gồm cả giày đi học cho trẻ em.",
+                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
+                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
+                },
+                {
+                    id: 221,
+                    expenseDate: "2021-01-08T00:00:00.000Z",
+                    createdDate: "2021-04-22T00:00:00.000Z",
+                    type: "Thanh toán",
+                    amount: "123400000",
+                    description: "<p>Trả cho tổ chức từ thiện Hambanathi Community thêm một tháng thực phẩm cho tất cả 30 trẻ mồ côi (và các gia đình khác) trong một tháng nữa. Người quản lý cũng có toàn quyền sử dụng một số quỹ này cho các nhu cầu cấp thiết của trường học, bao gồm cả giày đi học cho trẻ em.",
+                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
+                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
+                },
+                {
+                    id: 222,
+                    expenseDate: "2021-01-08T00:00:00.000Z",
+                    createdDate: "2021-04-22T00:00:00.000Z",
+                    type: "Thanh toán",
+                    amount: "300500000",
+                    description: "<p>Trả cho tổ chức từ thiện Hambanathi Community thêm một tháng thực phẩm cho tất cả 30 trẻ mồ côi (và các gia đình khác) trong một tháng nữa. Người quản lý cũng có toàn quyền sử dụng một số quỹ này cho các nhu cầu cấp thiết của trường học, bao gồm cả giày đi học cho trẻ em.",
+                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
+                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
+                },
+            ],
+        },
 
     ]
+
+    // Data bài viết từ API 
+    const fakeDateArtical = [
+        {
+            id: 114,
+            proj_id: 91,
+            title: "Xe cứu thương này trông nhỏ nhưng bên trong có rất nhiều!",
+            content: "<p>Gửi các nhà tài trợ, cảm ơn bạn rất nhiều vì những món quà hào phóng của bạn đối với...</p><p>Số tiền huy động được thông qua chiến dịch GiveTrack này sẽ vẫn RẤT có giá trị đối với chi phí vận hành. Xe cấp cứu sẽ đến Mombasa, trên bờ biển Kenya, trong hai hoặc ba tuần tới, và sau đó chúng tôi sẽ sử dụng một số tiền từ chiến dịch này để chuyển xe từ Mombasa đến bệnh viện Whisper ở Jinja, Uganda.</p>",
+            createTime: "2021-08-10T00:00:00.000Z",
+            createUser: "Huỳnh Thảo",
+            filePath: "https://hadoantv.com/wp-content/uploads/2021/06/download-POLICE-SIMULATOR-PATROL-OFFICERS-hadoan-tv.jpg"
+        },
+        {
+            id: 115,
+            proj_id: 91,
+            title: "Vẫn bị kẹt trong cổng!",
+            content: "<p>Các nhà tài trợ thân mến, chúng tôi hy vọng sẽ có thêm tin tức cho bạn vào lúc này, nhưng thật đáng tiếc là hiện tại xe cấp cứu vẫn đang mắc kẹt ở Mombasa, cảng nơi nó được dỡ hàng, cách bệnh viện 650 dặm. Đại lý nhập khẩu cho biết nó có vấn đề về máy móc, đây là một điều bất ngờ đối với chúng tôi. Chúng tôi có thể sẽ cần cử ai đó đến Mombasa để phân loại nó.</p><p>Số tiền huy động được thông qua chiến dịch GiveTrack này sẽ vẫn RẤT có giá trị đối với chi phí vận hành. Xe cấp cứu sẽ đến Mombasa, trên bờ biển Kenya, trong hai hoặc ba tuần tới, và sau đó chúng tôi sẽ sử dụng một số tiền từ chiến dịch này để chuyển xe từ Mombasa đến bệnh viện Whisper ở Jinja, Uganda.</p>",
+            createTime: "2021-10-12T00:00:00.000Z",
+            createUser: "Huỳnh Thảo",
+            filePath: "https://wp-mktg.prod.getty1.net/istockcontentredesign/wp-content/uploads/sites/5/bfi_thumb/2021_Composite_2304x1274_hero.jpg-37i4184kuwatssx9bxo96d6at0qnxmhzifjt0wa2iz0qmzinw.jpeg"
+        },
+        {
+            id: 117,
+            proj_id: 91,
+            title: "Những gì chúng tôi hiện đang làm, không có xe cứu thương!",
+            content: "<p>Một lần nữa, xin cảm ơn các bạn đã đóng góp cho buổi quyên góp xe cứu thương! </p> <p>Số tiền huy động được thông qua chiến dịch GiveTrack này sẽ vẫn RẤT có giá trị đối với chi phí vận hành. Xe cấp cứu sẽ đến Mombasa, trên bờ biển Kenya, trong hai hoặc ba tuần tới, và sau đó chúng tôi sẽ sử dụng một số tiền từ chiến dịch này để chuyển xe từ Mombasa đến bệnh viện Whisper ở Jinja, Uganda.</p>",
+            createTime: "2021-11-10T00:00:00.000Z",
+            createUser: "Huỳnh Thảo",
+            filePath: "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/compositing/jcr%3Acontent/main-pars/image/compositing_1408x792.jpg"
+        },
+        {
+            id: 119,
+            proj_id: 91,
+            title: "Xe cứu thương!",
+            content: "<p>Một lần nữa, xin cảm ơn các bạn đã đóng góp cho buổi quyên góp xe cứu thương!</p><p>Số tiền huy động được thông qua chiến dịch GiveTrack này sẽ vẫn RẤT có giá trị đối với chi phí vận hành. Xe cấp cứu sẽ đến Mombasa, trên bờ biển Kenya, trong hai hoặc ba tuần tới, và sau đó chúng tôi sẽ sử dụng một số tiền từ chiến dịch này để chuyển xe từ Mombasa đến bệnh viện Whisper ở Jinja, Uganda.</p>",
+            createTime: "2021-10-20T00:00:00.000Z",
+            createUser: "Huỳnh Thảo",
+            filePath: "https://hadoantv.com/wp-content/uploads/2021/06/download-POLICE-SIMULATOR-PATROL-OFFICERS-hadoan-tv.jpg"
+        },
+        {
+            id: 121,
+            proj_id: 91,
+            title: "Đọc bản cập nhật cuối cùng của chúng tôi!",
+            content: "<p>Xe cứu thương hiện đã kết thúc hành trình đường biển từ Dubai đến Mombasa, cảng chính của Kenya. Chúng tôi đang sắp xếp để ai đó thu thập nó và mang nó đến bệnh viện ở Uganda, vì vậy chúng tôi sẽ có thêm...</p><p>Số tiền huy động được thông qua chiến dịch GiveTrack này sẽ vẫn RẤT có giá trị đối với chi phí vận hành. Xe cấp cứu sẽ đến Mombasa, trên bờ biển Kenya, trong hai hoặc ba tuần tới, và sau đó chúng tôi sẽ sử dụng một số tiền từ chiến dịch này để chuyển xe từ Mombasa đến bệnh viện Whisper ở Jinja, Uganda.</p><p>Số tiền huy động được thông qua chiến dịch GiveTrack này sẽ vẫn RẤT có giá trị đối với chi phí vận hành. Xe cấp cứu sẽ đến Mombasa, trên bờ biển Kenya, trong hai hoặc ba tuần tới, và sau đó chúng tôi sẽ sử dụng một số tiền từ chiến dịch này để chuyển xe từ Mombasa đến bệnh viện Whisper ở Jinja, Uganda.</p>",
+            createTime: "2022-01-20T00:00:00.000Z",
+            createUser: "Huỳnh Thảo",
+            filePath: "https://www.eye-image.nl/assets/files/eye-image-homepage.1920x0x0x100.jpg"
+        },
+    ]
+
+    // Setting slider artical 
+    const settingSliderArtical = {
+        dots: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        adaptiveHeight: true,
+
+        responsive: [
+            {
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    arrows: false
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: false
+                }
+            }
+        ]
+    }
     return (
         <>
             {/* Header dự án  */}
-<<<<<<< HEAD
-            
+
             <div className={clsx(Style.headerProject, 'py-3 p-md-5 ')}>
-=======
-            <div className={clsx(Style.headerProject, 'py-3 p-md-5 ')} >
->>>>>>> 7c16a0f18ab834e8c5f548389e1b338db5bac7a5
+
                 <div className="container d-flex justify-content-between">
                     <div className="row">
 
@@ -370,13 +529,14 @@ function ProjectDetail(props) {
                         </div>
                         <div className="col-12 col-lg-5 offset-lg-1 ">
 
+                            {/* Google map  */}
                             <Iframe url={urlLocation}
                                 width="100%"
-                                height="450px"
+                                height="300px"
                                 display="initial"
                                 position="relative"
                                 allow="fullscreen" />
-                            <div className='container border p-4 bg-light'>
+                            <div className=' border p-4 bg-light'>
                                 <h4 className='fs-6 lh-base'><i className='mdi mdi-map-marker-outline me-2'></i>{fakeDataProject.location}</h4>
                                 <div className="row">
 
@@ -401,6 +561,18 @@ function ProjectDetail(props) {
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            {/* Donate  */}
+                            <div className="border mt-5 bg-white">
+                                <h4 className={clsx(Style.backgroundBaseColor, 'p-4 text-center text-white')}><i className='mdi mdi-coin me-2'></i>Đóng góp</h4>
+                                <p className="text-center mt-4 mb-1">Chọn loại tiền điện tử</p>
+                                <button className={clsx(Style.coinBtn, 'mx-auto px-4 py-1 d-flex justify-content-between bg-white')}>
+                                    <img src={trxCoin} alt="tiền điện tử" width="24" height="24" className="me-2" />
+                                    <span className="fw-bold">Tron</span>
+                                    {/* https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=vnd */}
+                                </button>
+
                             </div>
                         </div>
                     </div>
@@ -452,7 +624,7 @@ function ProjectDetail(props) {
                                                 <SetInnerHTML text={item.shortDescription} />
                                             </div>
 
-                                            <div className="row my-5">
+                                            <div className="row mt-5">
                                                 <div className="col-12 col-lg-6">
                                                     <div className="mb-5">
                                                         <h3 className="fs-5 mb-4 text-uppercase">Chúng tôi đã làm gì ?</h3>
@@ -474,7 +646,7 @@ function ProjectDetail(props) {
 
                                                 </div>
                                                 <div className="col-12 col-lg-6">
-                                                    <div className="mb-5">
+                                                    <div className="">
                                                         <h3 className="fs-5 mb-4 text-uppercase">Chi phí</h3>
                                                         {/* Danh sách chi phí  */}
                                                         {
@@ -531,6 +703,54 @@ function ProjectDetail(props) {
                     </div>
                 </div>
             </div >
+
+            {/* Các bài viết của dự án  */}
+            <div id="artical" className={clsx(Style.artical, 'py-5')}>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12">
+                            <h2>Cập nhật mới nhất</h2>
+                            <div className={clsx(Style.line)}><hr /></div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12 py-4">
+
+                            <Slider {...settingSliderArtical}>
+                                {
+                                    fakeDateArtical.map((item, index) => (
+                                        <div key={index} className={clsx(Style.articalDetail, " p-4 ")}>
+                                            <div className={clsx(Style.articalDetailWrap, 'position-relative p-3 rounded-3 shadow')}>
+
+                                                <div className={clsx(Style.header)}>
+                                                    <img src={item.filePath} alt="hình ảnh bài viết" className="" />
+                                                </div>
+
+                                                <div className={clsx(Style.body, ' px-3 py-4')}>
+                                                    <a href="./chi-tiet-bai-viet" className='text-decoration-none'>
+                                                        <h4 className="fs-4 text-center text-uppercase">{item.title}</h4>
+                                                    </a>
+                                                    <div className="d-flex justify-content-between my-4">
+
+                                                        <p className='m-0 fst-italic '><i className="mdi mdi-account-edit me-1"></i>{item.createUser}</p>
+                                                        <p className='m-0 fst-italic'>{moment(item.createTime).format("DD/MM/YYYY")}<i className="mdi mdi-calendar-check ms-1"></i></p>
+                                                    </div>
+                                                    <div className={clsx(Style.bodyDesc)}>
+                                                        <SetInnerHTML text={item.content} />
+                                                    </div>
+                                                </div>
+                                                <div className={clsx(Style.footer)}>
+                                                    <a href="./chi-tiet-bai-viet" className='text-decoration-none '>Xem chi tiết<i className="mdi mdi-arrow-right-bold-circle-outline ms-2"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </Slider>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }
