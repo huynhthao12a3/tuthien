@@ -1,0 +1,68 @@
+.main{
+    padding-bottom: 20px;
+    width: 100%;
+    background-color: var(--background-main-color);
+    .titleWrap{
+        padding:20px 0px 0px;
+        .title{
+            font-size: 1.25rem;
+            color: var(--main-color);
+        }
+    }
+    .imgavatar, .information, .detailWrap{
+        padding: 20px;
+        margin-top: 10px;
+        background-color: #fff;
+        border-radius: var(--boder-radius);
+    }
+    .imgavatar{
+        .imgTaitle{
+            font-size: 0.875rem;
+            
+        }
+        .imgavatar_item{
+          max-height: 350px;
+          margin-top: 10px;
+          width: 100%;
+          
+        }
+        .btnMoreImg{
+            position: relative;
+            max-width: 160px;
+            margin-right: 0px;
+            margin-top: 10px;
+            color: var(--text-nav-color);
+            background-color: var( --admin-btn-color) ;
+            border-radius: var(--boder-radius);
+        }
+    }
+    .information{
+       
+    }
+    .detailWrap{
+    }
+    .createbtn{
+        max-width: 160px;
+        color: var(--text-nav-color);
+        margin-top: 10px;
+        background-color: var( --admin-btn-color) ;
+        border-radius: var(--boder-radius);
+    }
+    .createbtn:hover{
+        color: var(--text-nav-color);
+        opacity: 0.9;
+    }
+}
+label{
+    margin-top: 10px;
+}
+input{
+    border-radius: var(--boder-radius);
+    border-color:rgba(204, 204, 204,0.5) ;
+    padding: 4px;
+    
+}
+input:focus{
+    outline: none;
+    border-color:rgba(204, 204, 204,0.5) ;
+}

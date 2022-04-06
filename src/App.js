@@ -7,7 +7,8 @@ import AdminFooter from './shares/AdminFooter';
 import ClientNavbar from './shares/ClientNavbar';
 import ClientFooter from './shares/ClientFooter';
 import ClientProject from './views/client/Project';
-import AddProject from './views/admin/Project/Add';
+import AddProject from './views/client/Project/Add';
+import EditProject from './views/admin/Project/Edit';
 // import ProjectDetail from './views/client/Project/ProjectDetali';
 import {
   BrowserRouter,
@@ -20,7 +21,7 @@ function App() {
 
     <AdminNavbar/>
 
-    <AddProject/>
+    <EditProject/>
     {/* <div style={{height: '100vh'}}></div> */}
     <ClientFooter/>
 

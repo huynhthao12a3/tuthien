@@ -258,7 +258,7 @@ function Project(){
                                                                 <td>
                                                                     <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatus' : 'doneStatus') )}>{ HandleGetLable(filterStatus,item.status).label}
                                                                         <div onClick={handleAcceptProject(item.id)} className={clsx(Style.changeStatus,'changeStatus')}>
-                                                                            <span>duyệt bài viết</span>
+                                                                            <span>duyệt dự án</span>
                                                                         </div>
                                                                     </span> 
                                                                 </td>

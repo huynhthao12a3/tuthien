@@ -1,16 +1,90 @@
-import clsx from 'clsx'
 import Style from './Add.module.scss'
+import clsx from 'clsx'
 import default_img from "../../../../assets/images/default_image.png"
 import React, { Component,useEffect,useMemo, useState } from 'react';
-import { MakeUrl } from '../../../../utils/utils';
+import { MakeUrl,removeUnicode } from '../../../../utils/utils';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Select from 'react-select'
+import alertify from 'alertifyjs';
 
 const API_URL = "https://77em4-8080.sse.codesandbox.io";
 const UPLOAD_ENDPOINT = "upload_files";
 function AddProject(){
-    //upload img ckeditor
+
+    const projectObj={
+        urlImg:'',
+        projectname:'',
+        projecturl:'',
+        description:'',
+        summary:'',
+        problem:'',
+        solution:'',
+        category:[],
+        address:'',
+        target:'',
+        enddate:'',
+        moneyNeeded:''
+    }
+    const categoryOptions = useMemo(
+        () => [
+          { value: "1", label: "Apple" },
+          { value: "2", label: "Banana" },
+          { value: "3", label: "Orange" },
+          { value: "4", label: "Berry" },
+        ],
+        []
+      );
+    const imgFormat=['jpeg','gif','png','tiff','raw','psd','jpg']
+
+    //................................................ useState
+    const [imgAvatar,setImgAvatar]= useState('') // ảnh hiện ra màn hình
+    const [imgValue,setImgValue]=useState('')   // ảnh dùng để add vào formData
+    const [selected, setSelected] = useState([]);// lưu các giá trị danh mục
+    const [projectValue,setProjectValue]=useState({...projectObj}) // dữ liệu đẩy lên API
+    
+    //............................................useEffect
+    // lưu đường dẩn ảnh vào trong "projectValue" để đẩy lên API
+    useEffect(async()=>{
+        if(imgAvatar!=='')
+        {
+            // kiểm tra định dạng ảnh
+            let resultimg= imgFormat.find(function(item){
+                return removeUnicode((imgAvatar.name).slice((imgAvatar.name).lastIndexOf('.')+1))===removeUnicode(item)
+            })
+            // đẩy hình ảnh lên data và lưu lại đường dẩn ảnh tại database
+            // if(resultimg)
+            // {
+            //     let form = new FormData();
+            //     form.append('files',imgValue);
+            //     const response = await ProjectAPI.uploadImg(form);
+            //     setProjectValue({...projectValue,urlImg: response.data})
+            //     if (response.isSuccess) {
+            //         localStorage.setItem('user-token', JSON.stringify(response.data))
+                    
+            //     }
+            //     else {
+            //         alertify.alert('upload ảnh thất bại')
+            //     }
+            // }
+            // else{
+            //     alertify.alert('chỉ nhận file ảnh có đuôi là jpeg,gif,png,tiff,raw,psd')
+            //     setImgAvatar('')
+            //     setImgValue('')
+            // }
+        }
+    },[imgAvatar])
+    // xử lý input
+    useEffect(()=>{
+        projectValue.projecturl= MakeUrl(projectValue.projectname)
+        projectValue.category=selected.map(function(item){
+            return item.value
+        })
+        console.log(projectValue)
+    },[projectValue][selected])
+    
+    //.......................................... function
+    //upload img  của ckeditor
     function uploadAdapter(loader) {
         return {
           upload: () => {
@@ -38,57 +112,24 @@ function AddProject(){
             });
           }
         };
-      }
-      function uploadPlugin(editor) {
+    }
+    function uploadPlugin(editor) {
         editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
           return uploadAdapter(loader);
         };
-      }
-    //
-
-    const [imgAvatar,setImgAvatar]= useState('')
-    const [selected, setSelected] = useState([]);
-    const projectObj={
-        urlImg:'',
-        projectname:'',
-        projecturl:'',
-        description:'',
-        summary:'',
-        problem:'',
-        solution:'',
-        category:[],
-        address:'',
-        target:'',
-        enddate:'',
-        moneyNeeded:''
     }
-    const [projectValue,setProjectValue]=useState({...projectObj})
-
+    // xử lý lấy ảnh hiện lên màn hình
     const handlePreviewAvatar = async (e) => {
         const file = e.target.files[0];
         setProjectValue({...projectValue, urlImg:e.target.files[0]})
-        // setImgValue(e.target.files[0])
+        setImgValue(e.target.files[0])
         file.review = URL.createObjectURL(file)
         setImgAvatar(file)
     }
-    useEffect(()=>{
-        projectValue.projecturl= MakeUrl(projectValue.projectname)
-        projectValue.category=selected.map(function(item){
-            return item.value
-        })
-        console.log(projectValue.category)
-    },[projectValue][selected])
-    
-    
-    const options = useMemo(
-        () => [
-          { value: "apple", label: "Apple" },
-          { value: "banana", label: "Banana" },
-          { value: "orange", label: "Orange" },
-          { value: "berry", label: "Berry" },
-        ],
-        []
-      );
+    // tạo project
+    const handleCreate=()=>{
+
+    }
     return(
         <>
         <div className={clsx(Style.main,'addprojectmain')}>
@@ -104,7 +145,7 @@ function AddProject(){
                 <div className='row'>
                     <span className={clsx(Style.imgTaitle)}>chọn hình đại diện</span>
                     <div className="col-12">
-                        {/* src={imgPost.review ? imgPost.review : default_img} */}
+                        {/* src={imgAvatar.review ? imgAvatar.review : default_img} */}
                         <img id="img-banner" src={imgAvatar.review ?imgAvatar.review: default_img}  className={clsx(Style.imgavatar_item,"img-auto-size")}  onerror="this.src='/default_image.png'" />
                         <div className='w-100 d-flex justify-content-end'>
                             <button  className={clsx(Style.btnMoreImg,'btn')}>
@@ -151,6 +192,7 @@ function AddProject(){
             </div>
             <div className={clsx(Style.detailWrap,"container")}>
                 <div className="col-12">
+                    <h3>Chi tiết dự án</h3>
                     <label>Tóm lược</label>
                     <div className="add-project_editor">
                                 <CKEditor
@@ -235,7 +277,7 @@ function AddProject(){
                 </div>
                 <div className='col-12'>
                     <label>Danh mục</label>   
-                    <Select value={selected}  onChange={setSelected} className={clsx(Style.category,'w-100 ps-2 pe-2')} options={options} defaultValue={options} isMulti />
+                    <Select value={selected}  onChange={setSelected} className={clsx(Style.category,'w-100 ps-2 pe-2')} options={categoryOptions} defaultValue={categoryOptions} isMulti />
                 </div>
                 <div className='col-12'>
                     <label>Vị trí</label>
@@ -249,13 +291,13 @@ function AddProject(){
                     <label>Ngày kết thúc kêu gọi</label>
                     <input  value={projectValue.enddate} onChange={(e)=>{setProjectValue({...projectValue,enddate:e.target.value})}}className={clsx(Style.finaldate,'w-100 ps-2 pe-2')} id='nameProject' type="text" />
                 </div>
-                <div className='col-12'>
+                {/* <div className='col-12'>
                     <label>Số tiền kêu gọi</label>
                     <input  value={projectValue.moneyNeeded} onChange={(e)=>{setProjectValue({...projectValue,moneyNeeded:e.target.value})}}className={clsx(Style.moneyNeeded,'w-100 ps-2 pe-2')} id='nameProject' type="text" />
-                </div>
+                </div> */}
             </div>
             <div className='d-flex justify-content-end container'>
-                <button className={clsx(Style.createbtn,'btn')}>Tạo dự án</button>
+                <button onClick={handleCreate} className={clsx(Style.createbtn,'btn')}>Tạo dự án</button>
             </div>
         </div>
         
