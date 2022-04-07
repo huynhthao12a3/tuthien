@@ -153,3 +153,26 @@ body{
 .ck-editor__main .ck-editor__editable_inline{
     height: 100%;
 }
+.datepicker-addProject .rs-picker-toggle-textbox.rs-picker-toggle-read-only
+{
+    padding: 10px !important;
+    
+}
+.datepicker-addProject .rs-picker-toggle-value{
+    
+    display: block;
+    text-align: center;
+    width: 100% !important;
+}
+.datepicker-addProject .rs-picker-toggle-clean.rs-btn-close{
+    display: none;
+}
+.datepicker-addProject .rs-picker-toggle-caret.rs-icon{
+    display: none;
+}
+/* bỏ mục thêm ảnh */
+.removeImg .ck-file-dialog-button{
+    display: none !important;
+}
+
+

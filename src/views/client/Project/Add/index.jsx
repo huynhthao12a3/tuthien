@@ -1,4 +1,4 @@
-import Style from './Add.module.scss'
+import Style from "./Add.module.scss"
 import clsx from 'clsx'
 import default_img from "../../../../assets/images/default_image.png"
 import React, { Component,useEffect,useMemo, useState } from 'react';
@@ -7,9 +7,15 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import Select from 'react-select'
 import alertify from 'alertifyjs';
+import projectApi from "../../../../api/Project";
+import { DatePicker } from 'rsuite';
+import { addDays } from 'date-fns';
+import moment from 'moment';
 
 const API_URL = "https://77em4-8080.sse.codesandbox.io";
 const UPLOAD_ENDPOINT = "upload_files";
+
+
 function AddProject(){
 
     const projectObj={
@@ -46,41 +52,47 @@ function AddProject(){
     //............................................useEffect
     // lưu đường dẩn ảnh vào trong "projectValue" để đẩy lên API
     useEffect(async()=>{
-        if(imgAvatar!=='')
+        if(imgValue!=='')
         {
             // kiểm tra định dạng ảnh
             let resultimg= imgFormat.find(function(item){
-                return removeUnicode((imgAvatar.name).slice((imgAvatar.name).lastIndexOf('.')+1))===removeUnicode(item)
+                return removeUnicode((imgValue.name).slice((imgValue.name).lastIndexOf('.')+1))===removeUnicode(item)
             })
             // đẩy hình ảnh lên data và lưu lại đường dẩn ảnh tại database
-            // if(resultimg)
-            // {
-            //     let form = new FormData();
-            //     form.append('files',imgValue);
-            //     const response = await ProjectAPI.uploadImg(form);
-            //     setProjectValue({...projectValue,urlImg: response.data})
-            //     if (response.isSuccess) {
-            //         localStorage.setItem('user-token', JSON.stringify(response.data))
+            if(resultimg)
+            {
+                let form = new FormData();
+                // console.log(imgValue,'imgValue')
+                form.append('Image',imgValue);
+                form.append('TypeImage',"project");
+                const response = await projectApi.uploadFile(form);
+                setProjectValue({...projectValue,urlImg: response.data})
+                if (response.isSuccess) {
+                    localStorage.setItem('user-token', JSON.stringify(response.data))
                     
-            //     }
-            //     else {
-            //         alertify.alert('upload ảnh thất bại')
-            //     }
-            // }
-            // else{
-            //     alertify.alert('chỉ nhận file ảnh có đuôi là jpeg,gif,png,tiff,raw,psd')
-            //     setImgAvatar('')
-            //     setImgValue('')
-            // }
+                }
+                else {
+                    alertify.alert('upload ảnh thất bại')
+                }
+            }
+            else{
+                alertify.alert('chỉ nhận file ảnh có đuôi là jpeg,gif,png,tiff,raw,psd')
+                setImgAvatar('')
+                setImgValue('')
+            }
         }
-    },[imgAvatar])
+    },[useEffect])
     // xử lý input
     useEffect(()=>{
-        projectValue.projecturl= MakeUrl(projectValue.projectname)
+       
+        setProjectValue({...projectValue,projecturl:MakeUrl(projectValue.projectname)})
+    },[projectValue.projectname])
+    useEffect(()=>{
+       
         projectValue.category=selected.map(function(item){
             return item.value
         })
-        console.log(projectValue)
+        // console.log(projectValue)
     },[projectValue][selected])
     
     //.......................................... function
@@ -113,23 +125,36 @@ function AddProject(){
           }
         };
     }
+
     function uploadPlugin(editor) {
         editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
           return uploadAdapter(loader);
         };
     }
     // xử lý lấy ảnh hiện lên màn hình
-    const handlePreviewAvatar = async (e) => {
-        const file = e.target.files[0];
-        setProjectValue({...projectValue, urlImg:e.target.files[0]})
+    const handlePreviewAvatar = (e) => {
         setImgValue(e.target.files[0])
+        const file = e.target.files[0]
         file.review = URL.createObjectURL(file)
         setImgAvatar(file)
     }
+    console.log(imgAvatar,'imgAvatar')
+    console.log(imgValue,'imgValue')
     // tạo project
     const handleCreate=()=>{
 
     }
+
+    
+    function disabledDate(current) {
+        // Can not select days before today and today
+        return current && current < moment().endOf('day');
+    }
+    const CustomDatePicker = ({ placement }) => (
+        <DatePicker placement={placement} placeholder={new Date} 
+        format='dd/MM/yyyy' defaultValue={new Date}  disabledDate={disabledDate}
+        />
+    );
     return(
         <>
         <div className={clsx(Style.main,'addprojectmain')}>
@@ -142,9 +167,9 @@ function AddProject(){
             </div>
             {/* chọn hình ảnh */}
             <div className={clsx(Style.imgavatar,'container w-100')}>
-                <div className='row'>
-                    <span className={clsx(Style.imgTaitle)}>chọn hình đại diện</span>
-                    <div className="col-12">
+                <div className='row p-4'>
+                    <span className={clsx(Style.imgTaitle)}>Chọn hình đại diện</span>
+                    <div className="col-12 ">
                         {/* src={imgAvatar.review ? imgAvatar.review : default_img} */}
                         <img id="img-banner" src={imgAvatar.review ?imgAvatar.review: default_img}  className={clsx(Style.imgavatar_item,"img-auto-size")}  onerror="this.src='/default_image.png'" />
                         <div className='w-100 d-flex justify-content-end'>
@@ -157,147 +182,108 @@ function AddProject(){
                 </div>
             </div>
             <div className={clsx(Style.information,'container')}>
-                <div className='row'>
+                <div className='row p-4'>
                     <h3>Thông tin</h3>
-                    <div className='col-12'>
+                    <div className='col-12 '>
                         <label htmlFor="nameProject">Tên dự án</label>
-                        <input value={projectValue.projectname} onChange={(e)=>{setProjectValue({...projectValue,projectname:e.target.value})}} className={clsx(Style.nameProject,'w-100 ps-2 pe-2')} id='nameProject' type="text" />
+                        <input value={projectValue.projectname} onChange={(e)=>{setProjectValue({...projectValue,projectname:e.target.value})}} className={clsx(Style.nameProject,'w-100 ps-2 pe-2 ')} id='nameProject' type="text" />
                     </div>
-                    <div className='col-12'>
+                    <div className='col-12 mt-2'>
                         <label htmlFor="urlProject">Đường dẫn</label>
                         <input value={projectValue.projecturl} onChange={(e)=>{setProjectValue({...projectValue,projecturl:e.target.value})}} className={clsx(Style.urlProject,'w-100 ps-2 pe-2')} id='urlProject' type="text" />
                     </div>
-                    <div className='col-12'>
-                        <label>Mô tả ngắn (description seo)</label>
-                        {/* <Select options={options} defaultValue={options} isMulti /> */}
-                        <div className="add-project_editor">
-                            <CKEditor
-                                editor={ ClassicEditor }
-                                data={projectValue.description}
-                                onChange={ ( event, editor ) => {
-                                    const data = editor.getData();
-                                    setProjectValue({...projectValue,description:data})
-                                } }
-                                config={{
-                                    extraPlugins: [uploadPlugin]
-                                  }}
-                                //   onReady={(editor) => {}}
-                                //   onBlur={(event, editor) => {}}
-                                //   onFocus={(event, editor) => {}}
-                               
-                            />
-                        </div>
+                    <div className='col-12 mt-2'>
+                        <label>Mô tả ngắn (description)</label>
+                        
+                        <input value={projectValue.description} onChange={(e)=>{setProjectValue({...projectValue,description:e.target.value})}} className={clsx(Style.urlProject,'w-100 ps-2 pe-2')} id='urlProject' type="text" />
                     </div>
                 </div>
             </div>
             <div className={clsx(Style.detailWrap,"container")}>
-                <div className="col-12">
-                    <h3>Chi tiết dự án</h3>
-                    <label>Tóm lược</label>
-                    <div className="add-project_editor">
-                                <CKEditor
-                                    editor={ ClassicEditor }
-                                    data={projectValue.summary}
-                                    // onReady={ editor => {
-                                    //     // You can store the "editor" and use when it is needed.
-                                    //     // console.log( 'Editor is ready to use!', editor );
-                                    // } }
-                                    onChange={ ( event, editor ) => {
-                                        const data = editor.getData();
-                                        setProjectValue({...projectValue,summary:data})
-                                        // setEditorValue(data)
-                                        //console.log( { event, editor, data } );
-                                        // console.log('setEditorValue',editorValue)
-                                    } }
-                                    // onBlur={ ( event, editor ) => {
-                                    //     console.log( 'Blur.', editor );
-                                    // } }
-                                    // onFocus={ ( event, editor ) => {
-                                    //     console.log( 'Focus.', editor );
-                                    // 
-                                // } 
-                                // }
-                                />
+                <div className="row p-4">
+                    <div className="col-12 ">
+                        <h3>Chi tiết dự án</h3>
+                        <label>Tóm lược</label>
+                        <div className="add-project_editor removeImg">
+                                    <CKEditor
+                                        editor={ ClassicEditor }
+                                        data={projectValue.summary}
+                               
+                                        onChange={ ( event, editor ) => {
+                                            const data = editor.getData();
+                                            setProjectValue({...projectValue,summary:data})
+                                          
+                                        } }
+                                        config={{
+                                            extraPlugins: [uploadPlugin],
+                                            removePlugins :['image','MediaEmbed','Table'],
+                                        }}
+                                  
+                                    />
+                        </div>
                     </div>
-                </div>
-                <div className="col-12">
-                    <label>Vấn đề cần giải quyết</label>
-                    <div className="add-project_editor">
-                                <CKEditor
-                                    editor={ ClassicEditor }
-                                    data={projectValue.problem}
-                                    // onReady={ editor => {
-                                    //     // You can store the "editor" and use when it is needed.
-                                    //     // console.log( 'Editor is ready to use!', editor );
-                                    // } }
-                                    onChange={ ( event, editor ) => {
-                                        const data = editor.getData();
-                                        setProjectValue({...projectValue,problem:data})
-                                        // setEditorValue(data)
-                                        //console.log( { event, editor, data } );
-                                        // console.log('setEditorValue',editorValue)
-                                    } }
-                                    // onBlur={ ( event, editor ) => {
-                                    //     console.log( 'Blur.', editor );
-                                    // } }
-                                    // onFocus={ ( event, editor ) => {
-                                    //     console.log( 'Focus.', editor );
-                                    // 
-                                // } 
-                                // }
-                                />
+                    <div className="col-12 mt-3">
+                        <label>Vấn đề cần giải quyết</label>
+                        <div className="add-project_editor removeImg">
+                                    <CKEditor
+                                        editor={ ClassicEditor }
+                                        data={projectValue.problem}
+                           
+                                        onChange={ ( event, editor ) => {
+                                            const data = editor.getData();
+                                            setProjectValue({...projectValue,problem:data})
+                                        
+                                        } }
+                                        config={{
+                                            extraPlugins: [uploadPlugin],
+                                            removePlugins :['image','MediaEmbed','Table'],
+                                        }}
+                                  
+                                    />
+                        </div>
+                    </div> <div className="col-12 mt-3">
+                        <label>Giải pháp</label>
+                        <div className="add-project_editor removeImg">
+                                    <CKEditor
+                                        editor={ ClassicEditor }
+                                        data={projectValue.solution}
+                                        onChange={ ( event, editor ) => {
+                                            const data = editor.getData();
+                                            setProjectValue({...projectValue,solution:data})
+                                           
+                                        } }
+                                        config={{
+                                            extraPlugins: [uploadPlugin],
+                                            removePlugins :['MediaEmbed','Table'],
+                                        }}
+                                    />
+                        </div>
                     </div>
-                </div> <div className="col-12">
-                    <label>Giải pháp</label>
-                    <div className="add-project_editor">
-                                <CKEditor
-                                    editor={ ClassicEditor }
-                                    data={projectValue.solution}
-                                    // onReady={ editor => {
-                                    //     // You can store the "editor" and use when it is needed.
-                                    //     // console.log( 'Editor is ready to use!', editor );
-                                    // } }
-                                    onChange={ ( event, editor ) => {
-                                        const data = editor.getData();
-                                        setProjectValue({...projectValue,solution:data})
-                                        // setEditorValue(data)
-                                        //console.log( { event, editor, data } );
-                                        // console.log('setEditorValue',editorValue)
-                                    } }
-                                    // onBlur={ ( event, editor ) => {
-                                    //     console.log( 'Blur.', editor );
-                                    // } }
-                                    // onFocus={ ( event, editor ) => {
-                                    //     console.log( 'Focus.', editor );
-                                    // 
-                                // } 
-                                // }
-                                />
+                    <div className='col-12 mt-3 w-100'>
+                        <label>Danh mục</label>   
+                        <Select value={selected}  onChange={setSelected} className={clsx(Style.category,'w-100')} options={categoryOptions} defaultValue={categoryOptions} isMulti />
                     </div>
+                    <div className='col-12 mt-3'>
+                        <label>Vị trí</label>
+                        <input  value={projectValue.address} onChange={(e)=>{setProjectValue({...projectValue,address:e.target.value})}} className={clsx(Style.address,'w-100 ps-2 pe-2')} id='nameProject' type="text" />
+                    </div>
+                    <div className='col-12 mt-3'>
+                        <label>Đối tượng cần hỗ trơ</label>
+                        <input  value={projectValue.target} onChange={(e)=>{setProjectValue({...projectValue,target:e.target.value})}} className={clsx(Style.target,'w-100 ps-2 pe-2')} id='nameProject' type="text" />
+                    </div>
+                    <div className='col-12 mt-3 datepicker-addProject' >
+                        <label className='d-block'>Ngày kết thúc kêu gọi</label>
+                        <CustomDatePicker  placement="rightEnd"/>
+                        {/* <input  value={projectValue.enddate} onChange={(e)=>{setProjectValue({...projectValue,enddate:e.target.value})}}className={clsx(Style.finaldate,'w-100 ps-2 pe-2')} id='nameProject' type="text" /> */}
+                    </div>
+                    {/* <div className='col-12'>
+                        <label>Số tiền kêu gọi</label>
+                        <input  value={projectValue.moneyNeeded} onChange={(e)=>{setProjectValue({...projectValue,moneyNeeded:e.target.value})}}className={clsx(Style.moneyNeeded,'w-100 ps-2 pe-2')} id='nameProject' type="text" />
+                    </div> */}
                 </div>
-                <div className='col-12'>
-                    <label>Danh mục</label>   
-                    <Select value={selected}  onChange={setSelected} className={clsx(Style.category,'w-100 ps-2 pe-2')} options={categoryOptions} defaultValue={categoryOptions} isMulti />
-                </div>
-                <div className='col-12'>
-                    <label>Vị trí</label>
-                    <input  value={projectValue.address} onChange={(e)=>{setProjectValue({...projectValue,address:e.target.value})}} className={clsx(Style.address,'w-100 ps-2 pe-2')} id='nameProject' type="text" />
-                </div>
-                <div className='col-12'>
-                    <label>Đối tượng cần hỗ trơ</label>
-                    <input  value={projectValue.target} onChange={(e)=>{setProjectValue({...projectValue,target:e.target.value})}} className={clsx(Style.target,'w-100 ps-2 pe-2')} id='nameProject' type="text" />
-                </div>
-                <div className='col-12'>
-                    <label>Ngày kết thúc kêu gọi</label>
-                    <input  value={projectValue.enddate} onChange={(e)=>{setProjectValue({...projectValue,enddate:e.target.value})}}className={clsx(Style.finaldate,'w-100 ps-2 pe-2')} id='nameProject' type="text" />
-                </div>
-                {/* <div className='col-12'>
-                    <label>Số tiền kêu gọi</label>
-                    <input  value={projectValue.moneyNeeded} onChange={(e)=>{setProjectValue({...projectValue,moneyNeeded:e.target.value})}}className={clsx(Style.moneyNeeded,'w-100 ps-2 pe-2')} id='nameProject' type="text" />
-                </div> */}
             </div>
             <div className='d-flex justify-content-end container'>
-                <button onClick={handleCreate} className={clsx(Style.createbtn,'btn')}>Tạo dự án</button>
+                <button onClick={handleCreate} className={clsx(Style.createbtn,'btn')}>Tiếp tục</button>
             </div>
         </div>
         

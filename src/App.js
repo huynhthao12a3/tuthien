@@ -9,6 +9,7 @@ import ClientFooter from './shares/ClientFooter';
 import ClientProject from './views/client/Project';
 import AddProject from './views/client/Project/Add';
 import EditProject from './views/admin/Project/Edit';
+import AddProcess from './views/client/Project/Process/Add';
 // import ProjectDetail from './views/client/Project/ProjectDetali';
 import {
   BrowserRouter,
@@ -16,8 +17,8 @@ import {
 } from 'react-router-dom';
 
 // React Slick
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 // import ProjectDetail from './views/client/Project/ProjectDetali';
 import ProjectDetail from "./views/client/Project/ProjectDetali";
 import ArticalDetail from "./views/client/Project/ArticalDetail";
@@ -56,6 +57,7 @@ function App() {
 </Switch>
 
     
+
     </BrowserRouter>
   )
 
