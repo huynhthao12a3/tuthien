@@ -1,41 +1,50 @@
+#admin-navbar {
+    & #nav-dropdown {
+        color: #000;
+        padding: 0;
+        &:active, &:hover, &:focus {
+            text-decoration: none !important;
+        }
+    }
 
-#admin-navbar #nav-dropdown {
-    color: #ccc;
-    &:active, &:hover, &:focus {
-        text-decoration: none;
+    & .admin-nav-link{
+        position: relative;
+        color: var(--nav-color);
+        &::before {
+            content: "";
+            display: block;
+            position: absolute;
+            bottom: 0px;
+            left: 8px;
+            right: 8px;
+            height: 3px;
+            border-radius:4px;
+            width: calc(100% - 16px);;
+            background-color: var(--nav-color);
+            transform-origin: right top;
+            transform: scale(0, 1);
+            transition: color 0.5s, transform 0.3s ease-out;
+        }
+    
+        &:hover,
+        &:hover::before {
+            transform-origin: left top ;
+            transform: scale(1, 1) ;
+            text-decoration: none !important;
+        }
+    
+        &.active {
+            text-decoration: none !important;
+            &::before {
+                transform-origin: left top ;
+                transform: scale(1, 1) ;
+            }
+        }
+     }
+
+     &-email {
+        margin-bottom: -5px;
+        color: var(--text-nav-hover);
     }
 }
-#admin-navbar .admin-nav-link{
-    position: relative;
 
-    &::before {
-        content: "";
-        display: block;
-        position: absolute;
-        bottom: 0px;
-        left: 0;
-        height: 2px;
-        width: 100%;
-        background-color: #fff;
-        transform-origin: right top;
-        transform: scale(0, 1);
-        transition: color 0.5s, transform 0.3s ease-out;
-    }
-
-    &:hover,
-    &:hover::before {
-    transform-origin: left top ;
-    transform: scale(1, 1) ;
-    text-decoration: none !important;
-    }
-
-    &.active {
-        text-decoration: none ;
-        color: #fff !important;
-    }
- }
- 
-#admin-navbar-email {
-    margin-bottom: -5px;
-    color: var(--text-nav-hover);
-}

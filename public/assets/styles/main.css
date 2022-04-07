@@ -17,8 +17,13 @@
 
     --boder-radius:5px;
 
-    /* givetrack color  */
-    --givetrack-color: #6fcf97;
+    /* love color green  */
+    --nav-color: #58A578;
+    --love-color-1: #8FD192;
+    --love-color-2: #C8C8A9;
+    --love-color-3: #F9CDAD;
+    --love-color-4: #FC9D9A;
+    --love-color-5: #FE4365;
 }
 
 
@@ -119,7 +124,7 @@ body{
 
 /* Thanh progress  */
 .progress-bar {
-    background-color: #6fcf97 !important;
+    background-color: var(--love-color-1) !important;
 }
 
 .fillerBlock{
