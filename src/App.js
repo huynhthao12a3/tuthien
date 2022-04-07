@@ -17,25 +17,22 @@ import {
 } from 'react-router-dom';
 
 // React Slick
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-// import ProjectDetail from './views/client/Project/ProjectDetali';
-import ProjectDetail from "./views/client/Project/ProjectDetali";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import ProjectDetail from "./views/client/Project/ProjectDetail";
 import ArticalDetail from "./views/client/Project/ArticalDetail";
+import ClientLayout from './layouts/ClientLayout';
+import AdminLayout from './layouts/AdminLayout';
 function App() {
   return (
     <BrowserRouter>
     
-<Switch>
-    <Route exact path="/">
-        <ClientNavbar/>
-      </Route>
-      <Route exact path="/admin">
-        <AdminNavbar/>
-      </Route>
-</Switch>
+     <Switch>
+         <Route  path="/admin" component={AdminLayout}/>
+         <Route  path="/" component={ClientLayout}/>
+     </Switch>
 
-    <Switch>
+    {/* <Switch>
       
       <Route exact path="/">
         <AddProject />
@@ -54,9 +51,12 @@ function App() {
       <Route exact path="/admin">
         <AdminFooter/>
       </Route>
-</Switch>
+</Switch> */}
 
+{/* <ClientNavbar/>
     
+<ProjectDetail />
+<ClientFooter/> */}
 
     </BrowserRouter>
   )

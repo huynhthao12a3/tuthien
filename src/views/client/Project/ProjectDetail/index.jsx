@@ -25,11 +25,8 @@ import moment from 'moment'
 // Slider trong React Slick
 import Slider from "react-slick";
 
-import AddProject from "./../Add/index";
-import {
-    BrowserRouter,
-    Route, Switch
-} from 'react-router-dom';
+import AddProject from "../Add/index";
+
 ProjectDetail.propTypes = {
 
 };
@@ -954,16 +951,7 @@ function ProjectDetail(props) {
                     </div>
                 </div>
             </div>
-            {/* <Switch>
 
-                <Route exact path="/create-project">
-        <AddProject />
-      </Route>
-                <Route exact path="/create-project">
-                    <AddProject />
-                </Route>
-
-            </Switch> */}
         </>
 
     );
