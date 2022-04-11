@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {
     BrowserRouter,
@@ -10,6 +10,10 @@ import AdminFooter from '../shares/AdminFooter';
 import ProjectDetail from '../views/client/Project/ProjectDetail';
 import AddProject from "./../views/client/Project/Add/index";
 import AddProcess from "./../views/client/Project/Process/Add";
+import AdminLogin from '../views/admin/Login';
+import Project from "./../views/admin/Project/index";
+import ProtectedRoute from '../shares/ProtectedRoute'
+import * as $ from 'jquery'
 AdminLayout.propTypes = {
     
 };
@@ -20,17 +24,30 @@ function AdminLayout(props) {
     //     strict: true,
     //     sensitive: true
     //   })
+    // const infoString = localStorage.getItem('admin-info')
+    // const [adminInfo, setAdminInfo] = useState(JSON.parse(infoString))
+    // const handleAdminInfo = (data) => {
+    //     localStorage.setItem('admin-info', JSON.stringify(data))
+    //     setAdminInfo(data)
+    // }
+    // if(!adminInfo) {
+    //     return <AdminLogin handleAdminInfo={handleAdminInfo}/>
+    // }
+    // const footerAdminHeight = $('#admin-footer').height()
+    // console.log("footer admin:",footerAdminHeight)
     return (
         <>
-        <AdminNavbar/>
-            <Switch>
-                <Route  path="/admin/add-project" component={AddProject}/>
-                <Route  path="/admin/add-process" component={AddProcess}/>
-                <Route  path="/admin/project-detail/:id" component={ProjectDetail}/>
-                {/* <Route  path="/admin" component={AddProject}/> */}
-                {/* {match ? <ProjectDetail match={match}/> : <AddProject/>} */}
-            </Switch>
-        <AdminFooter/>
+
+            <AdminNavbar />
+                <Switch>
+                    {/* <Route exact path="/admin" component={AdminLogin}/> */}
+                    <Route exact path="/admin/login" component={AdminLogin}/>
+                    <ProtectedRoute exact path="/admin/project" component={Project}/>
+                    <ProtectedRoute exact path="/admin/news" component={AddProject}/>
+                    <ProtectedRoute exact path="/admin/add-process" component={AddProcess}/>
+                    <ProtectedRoute exact path="/admin/project-detail/:id" component={ProjectDetail}/>
+                </Switch>
+            <AdminFooter/>
         </>
     );
 }

@@ -7,12 +7,11 @@ const projectApi = {
         return axiosClient.post(url, data, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                'uploadImage':'project'
             }
         })
     },
     createProject: (data) => {
-        const url ='/project/createproject'
+        const url ='/project/create-project'
         return axiosClient.post(url, data, {
             headers: {
                 'Authorization': token
@@ -27,12 +26,12 @@ const projectApi = {
             }
         })
     },
-    getAll(params) {
-        const url = '/project/get-projects'
-        return axiosClient.get(url, {params: params})
+    getAll() {
+        const url = '/Project/get-project'
+        return axiosClient.post(url)
     },
     get: (id) => {
-        const url = `/project/get-project/${id}`
+        const url = `/Project/get-project/${id}`
         return axiosClient.get(url)
     },
 }

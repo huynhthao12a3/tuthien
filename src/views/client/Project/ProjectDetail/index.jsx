@@ -26,6 +26,7 @@ import moment from 'moment'
 import Slider from "react-slick";
 
 import AddProject from "../Add/index";
+import projectApi from '../../../../api/Project';
 
 ProjectDetail.propTypes = {
 
@@ -580,6 +581,16 @@ function ProjectDetail(props) {
             .then(res => res.json())
             .then(res => { setTrxPrice(res.tron.vnd) })
     }, [])
+
+    useEffect(() => {
+
+        const fetchApi = async () => {
+            const response = await projectApi.getAll()
+            console.log(response)
+        }
+        fetchApi()
+    }, [])
+    console.log("URL: ", process.env.REACT_APP_API_URL)
     // console.log(trxPrice)
     return (
         <>
@@ -673,7 +684,7 @@ function ProjectDetail(props) {
                             {/* Google map & chi tiết dự án */}
                             <Iframe url={urlLocation}
                                 width="100%"
-                                height="300px"
+                                height="400px"
                                 display="initial"
                                 position="relative"
                                 allow="fullscreen" />
