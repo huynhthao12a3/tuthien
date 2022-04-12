@@ -12,7 +12,7 @@
     --status-done-color:rgb(66, 209, 157);
     --status-done-background:rgba(66, 209, 157,0.2);
 
-    --admin-btn-color:#3758FA;
+    --admin-btn-color:#8FD192;
     --admin-background:#FAFBFE;
 
     --boder-radius:5px;
@@ -174,5 +174,8 @@ body{
 .removeImg .ck-file-dialog-button{
     display: none !important;
 }
-
-
+/* // alert */
+.ajs-button.ajs-ok{
+    color: var( --text-nav-color);
+    border-radius: var(--boder-radius);
+}

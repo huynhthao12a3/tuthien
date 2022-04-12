@@ -11,13 +11,22 @@ import projectApi from "../../../../api/Project";
 import { DatePicker } from 'rsuite';
 import { addDays } from 'date-fns';
 import moment from 'moment';
-
+import { Link } from "react-router-dom";
+import * as $ from "jquery"
+import {
+    BrowserRouter,
+    Route, Switch
+  } from 'react-router-dom';
+import AddProcess from "../Process/Add";
+import categoryApi from "../../../../api/Category";
 const API_URL = "https://77em4-8080.sse.codesandbox.io";
 const UPLOAD_ENDPOINT = "upload_files";
 
 
 function AddProject(){
 
+
+   
     const projectObj={
         urlImg:'',
         projectname:'',
@@ -29,27 +38,39 @@ function AddProject(){
         category:[],
         address:'',
         target:'',
-        enddate:'',
-        moneyNeeded:''
+        enddate:"",
     }
-    const categoryOptions = useMemo(
-        () => [
-          { value: "1", label: "Apple" },
-          { value: "2", label: "Banana" },
-          { value: "3", label: "Orange" },
-          { value: "4", label: "Berry" },
-        ],
-        []
-      );
     const imgFormat=['jpeg','gif','png','tiff','raw','psd','jpg']
 
     //................................................ useState
+    const [dateValue,setDateValue] =useState(new Date())
     const [imgAvatar,setImgAvatar]= useState('') // ảnh hiện ra màn hình
     const [imgValue,setImgValue]=useState('')   // ảnh dùng để add vào formData
     const [selected, setSelected] = useState([]);// lưu các giá trị danh mục
     const [projectValue,setProjectValue]=useState({...projectObj}) // dữ liệu đẩy lên API
+    const [categoryOptions,setCategoryOptions]= useState([])
     
     //............................................useEffect
+
+    useEffect(async()=>{
+        const getAllUsers = async () => {
+            try {
+                const response = await categoryApi.getProject();
+                setCategoryOptions(response.data.map((item)=>{
+                    return({
+                        value:item.id,
+                        label:item.categoryName
+                    })
+                }))
+            }
+            catch (e) {
+                console.error(e)
+            }
+        }
+        getAllUsers()
+    },[])
+    // console.log("cate",categoryOptions)
+
     // lưu đường dẩn ảnh vào trong "projectValue" để đẩy lên API
     useEffect(async()=>{
         if(imgValue!=='')
@@ -65,11 +86,10 @@ function AddProject(){
                 // console.log(imgValue,'imgValue')
                 form.append('Image',imgValue);
                 form.append('TypeImage',"project");
+
                 const response = await projectApi.uploadFile(form);
                 setProjectValue({...projectValue,urlImg: response.data})
                 if (response.isSuccess) {
-                    localStorage.setItem('user-token', JSON.stringify(response.data))
-                    
                 }
                 else {
                     alertify.alert('upload ảnh thất bại')
@@ -81,14 +101,22 @@ function AddProject(){
                 setImgValue('')
             }
         }
-    },[useEffect])
+    },[imgValue])
     // xử lý input
     useEffect(()=>{
        
         setProjectValue({...projectValue,projecturl:MakeUrl(projectValue.projectname)})
     },[projectValue.projectname])
+
     useEffect(()=>{
-       
+        // const today=dateValue
+        // console.log("dateValue",dateValue)
+        setProjectValue({...projectValue,enddate:dateValue})
+        // setProjectValue({...projectValue,enddate:(today.getDate()+"/"+(today.getMonth()+1)+"/"+(today.getFullYear()))})
+
+    },[dateValue])
+    useEffect(()=>{
+        
         projectValue.category=selected.map(function(item){
             return item.value
         })
@@ -96,65 +124,57 @@ function AddProject(){
     },[projectValue][selected])
     
     //.......................................... function
-    //upload img  của ckeditor
-    function uploadAdapter(loader) {
-        return {
-          upload: () => {
-            return new Promise((resolve, reject) => {
-              const body = new FormData();
-              loader.file.then((file) => {
-                body.append("files", file);
-                // let headers = new Headers();
-                // headers.append("Origin", "http://localhost:3000");
-                fetch(`${API_URL}/${UPLOAD_ENDPOINT}`, {
-                  method: "post",
-                  body: body
-                  // mode: "no-cors"
-                })
-                  .then((res) => res.json())
-                  .then((res) => {
-                    resolve({
-                      default: `${API_URL}/${res.filename}`
-                    });
-                  })
-                  .catch((err) => {
-                    reject(err);
-                  });
-              });
-            });
-          }
-        };
-    }
-
-    function uploadPlugin(editor) {
-        editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
-          return uploadAdapter(loader);
-        };
-    }
+   
     // xử lý lấy ảnh hiện lên màn hình
     const handlePreviewAvatar = (e) => {
         setImgValue(e.target.files[0])
         const file = e.target.files[0]
         file.review = URL.createObjectURL(file)
+        // console.log(file)
         setImgAvatar(file)
     }
-    console.log(imgAvatar,'imgAvatar')
-    console.log(imgValue,'imgValue')
     // tạo project
     const handleCreate=()=>{
 
     }
 
-    
     function disabledDate(current) {
         // Can not select days before today and today
         return current && current < moment().endOf('day');
     }
     const CustomDatePicker = ({ placement }) => (
-        <DatePicker placement={placement} placeholder={new Date} 
-        format='dd/MM/yyyy' defaultValue={new Date}  disabledDate={disabledDate}
+        <DatePicker placement={placement} 
+        format='dd/MM/yyyy' defaultValue={dateValue}
+        onChange={(e)=>{setDateValue(e)}}
+        disabledDate={disabledDate}
         />
     );
+    const handlecheckValues=()=>{
+        if(
+        projectValue.urlImg!=='' &&  
+        projectValue.projectname!=='' &&                            
+        projectValue. projecturl!=='' && 
+        projectValue.description!=='' && 
+        projectValue.summary!=='' && 
+        projectValue.problem!=='' && 
+        projectValue.solution!=='' && 
+        projectValue.category.length>0 && 
+        projectValue.address!=='' && 
+        projectValue.target!=='' && 
+        projectValue.enddate!=="")
+        {
+            // $('.ajs-button.ajs-ok').css({"background-color": "var(--admin-btn-color)"});
+            // alertify.alert('Thông báo', `Thành công`);
+
+            return  {pathname:"/add-process",state:projectValue }
+        }
+        else{
+          
+            // $('.ajs-button.ajs-ok').css({"background-color": "var(--status-waiting-color)"});
+            // alertify.alert('Thông báo', `vui lòng không bỏ trống các trường `);
+            return false
+        }
+    }
     return(
         <>
         <div className={clsx(Style.main,'addprojectmain')}>
@@ -171,7 +191,7 @@ function AddProject(){
                     <span className={clsx(Style.imgTaitle)}>Chọn hình đại diện</span>
                     <div className="col-12 ">
                         {/* src={imgAvatar.review ? imgAvatar.review : default_img} */}
-                        <img id="img-banner" src={imgAvatar.review ?imgAvatar.review: default_img}  className={clsx(Style.imgavatar_item,"img-auto-size")}  onerror="this.src='/default_image.png'" />
+                        <img id="img-banner" src={imgAvatar.review ?imgAvatar.review: default_img}  className={clsx(Style.imgavatar_item,"img-auto-size")}  />
                         <div className='w-100 d-flex justify-content-end'>
                             <button  className={clsx(Style.btnMoreImg,'btn')}>
                                 <span style={{cursor:"pointer", position: "absolute",textAlign:"center",fontSize:"1rem",lineHeight:"1.7rem", width: "100%", left: "0", right: "0" }}>Chọn hình đại điện</span>
@@ -215,7 +235,7 @@ function AddProject(){
                                           
                                         } }
                                         config={{
-                                            extraPlugins: [uploadPlugin],
+                                          
                                             removePlugins :['image','MediaEmbed','Table'],
                                         }}
                                   
@@ -235,7 +255,7 @@ function AddProject(){
                                         
                                         } }
                                         config={{
-                                            extraPlugins: [uploadPlugin],
+                                            // extraPlugins: [uploadPlugin],
                                             removePlugins :['image','MediaEmbed','Table'],
                                         }}
                                   
@@ -253,7 +273,7 @@ function AddProject(){
                                            
                                         } }
                                         config={{
-                                            extraPlugins: [uploadPlugin],
+                                            // extraPlugins: [uploadPlugin],
                                             removePlugins :['MediaEmbed','Table'],
                                         }}
                                     />
@@ -282,11 +302,10 @@ function AddProject(){
                     </div> */}
                 </div>
             </div>
-            <div className='d-flex justify-content-end container'>
-                <button onClick={handleCreate} className={clsx(Style.createbtn,'btn')}>Tiếp tục</button>
+            <div className='d-flex justify-content-end container'>              
+                    <Link  to={handlecheckValues}  className={clsx(Style.createbtn,'btn')}>Tiếp tục</Link>
             </div>
         </div>
-        
            
         </>
     )
