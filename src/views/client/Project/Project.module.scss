@@ -1,4 +1,30 @@
+.imgCard {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+.baseColor {
+    color: var(--nav-color);
+}
+.titleProject:hover {
+    color: var(--nav-color) !important;
+}
+.btnDetail {
+    border: 1px solid var(--love-color-1);
+    border-radius: 8px;
+    &:hover {
+        color: var(--nav-color) !important;
 
+    }
+}
+.ButtonSecondary {
+    background-color: var(--love-color-5) ;
+    border-radius: 8px;
+
+}
+.projectWrapItem {
+    border-radius: 16px;
+}
 .bannerRow{
     // --bs-gutter-x: 0rem !important;
 }
@@ -10,7 +36,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-image: url(https://www.givetrack.org/src/assets/images/exploreanddiscover-opacity.3edd8a8ebec3c00190beb0934146576a.png);
+    background-image: url(https://cdn.vox-cdn.com/thumbor/vsBw7Je1VZjgqW5xb9k8WOmsqZY=/0x183:1754x1060/fit-in/1200x600/cdn.vox-cdn.com/uploads/chorus_asset/file/19411688/GettyImages_1060748862.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
     .bannerBlock{
     
         display: flex;
@@ -43,166 +72,163 @@
                 padding-left: 1rem;
             }
             .bannerBtn{
-
+                background-color: var(--love-color-1);
             }
         }  
 
     }
 }
-// check box
-.projectWrap{
-    // --bs-gutter-x: 0rem !important;
-    padding-top: 40px;
-    padding-bottom: 40px;
-    .fillter{
-        padding-left: 85px;
-        padding-bottom:20px ;
-        .filterTitle{
+// // check box
+// .projectWrap{
+//     // --bs-gutter-x: 0rem !important;
+//     padding-top: 40px;
+//     padding-bottom: 40px;
+//     .fillter{
+//         padding-left: 85px;
+//         padding-bottom:20px ;
+//         .filterTitle{
             
            
-            font-weight: 300;
-            color: #2d2d2d;
-            font-size: 22px;
-            margin: 0;
-        }
-        .fillterStatus{
-            padding-top: 1rem;
+//             font-weight: 300;
+//             color: #2d2d2d;
+//             font-size: 22px;
+//             margin: 0;
+//         }
+//         .fillterStatus{
+//             padding-top: 1rem;
            
-            font-weight: 300;
-            color: #2d2d2d;
-            font-size: 1.125rem;
-        }
+//             font-weight: 300;
+//             color: #2d2d2d;
+//             font-size: 1.125rem;
+//         }
        
-    }
-}
-// card
-    .card{
-        padding: 0px 30px 30px !important;
-        display: inline-block;
-        .cardBlock{
+//     }
+// }
+// // card
+//     .card{
+//         padding: 0px 30px 30px !important;
+//         display: inline-block;
+//         .cardBlock{
            
-            border-radius: var(--boder-radius);
-            width: 100%;
-            // background-color: aqua;
-            border: none;
-            box-shadow: 2px 1px 5px rgba($color: #ccc, $alpha: 0.5);
-            overflow: hidden;
+//             border-radius: var(--boder-radius);
+//             width: 100%;
+//             // background-color: aqua;
+//             border: none;
+//             box-shadow: 2px 1px 5px rgba($color: #ccc, $alpha: 0.5);
+//             overflow: hidden;
            
-            .imgCard{
-                max-height: 270px;
-                overflow: hidden;
-            }
-        
-        .bodyCard{
-
-            .linkCard{
-                color: #2d2d2d;
-                font-size: 1.25rem;
-                text-decoration: none;
-                font-weight: 500;
-                padding: 0px 0px 10px;
-            }
-            .linkCard:hover{
-                text-decoration: underline;
-            }
-            .textCard{
-                margin-top: 8px;
-                font-size: 0.875rem;
-                color: var(--main-color);
-            }
-            .cardPercent{
-                position: relative;
-                height: 8px;
-                background-color: rgba(45, 45, 45,0.1);
-                // box-shadow: 1px 2px 1px rgba($color: #ccc, $alpha: 0.5);
-                border-radius: var( --boder-radius);
-                overflow: hidden;
-            }
-            .childrenPercent{
-                display: inline-block;
-                position: absolute;
-                top: 0;
-                left: 0;
-                bottom: 0;
-                background-color: var( --status-done-color);
-                
-            }
-           .cardStatus{
-               height: 70px;
-               background-color: rgba(66, 206, 157, 0.1);
-                display: flex;
-                .status{
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;
-                    align-self: center;
-                }
-           }
-           
-        }
-        .cardFooter{
-            padding: 0px 16px 16px ;
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-            .cardFooterlink{
-                text-decoration: none;
-                font-size: 0.857rem;
-                color: var( --main-color);
-            }
-            .cardFooterBtn{
-                border: 1px solid rgb(66, 206, 157);
-            }
-        }
-    }
-}
-.btnWrap{
-    .ButtonSecondary{
-        display: inline-block;
-        max-width: 180px;
-        width: 50%;
-        color: #fff;
-        font-size: 1rem;
-        background-color: var(--status-doing-color);
-    }
-    .ButtonSecondary:hover{
-        color: #ccc;
-    }
-}
-@media (max-width:768px) {
-    .fillter{
-        padding-left:38px !important ;
-    }
-    // .fillerBlock{
-    //     --bs-gutter-x: 0rem !important;
-    // }
-    // .bannerRow{
-    //     --bs-gutter-x: 1.5rem !important;
-    // }
-    // .projectWrap{
-    //     --bs-gutter-x: 1.5rem !important;
-    // }
-    .bannerTitle{
-        font-size: 1.6875rem !important;
-    }
-    .bannerSearch{
-        flex-direction: column;
-        align-items: center;
-        .bannerInput{
-            line-height: 1.5rem !important;
-            width: 80% !important;
-            padding: 10px ;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            padding-left: 1em;
-            margin-right: 0rem !important;
             
-        }
-        .bannerBtn{
-            width: 80% !important;
-            padding: 10px ;
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-    }
-}
+        
+//         .bodyCard{
+
+//             .linkCard{
+//                 color: #2d2d2d;
+//                 font-size: 1.25rem;
+//                 text-decoration: none;
+//                 font-weight: 500;
+//                 padding: 0px 0px 10px;
+//             }
+//             .linkCard:hover{
+//                 text-decoration: underline;
+//             }
+//             .textCard{
+//                 margin-top: 8px;
+//                 font-size: 0.875rem;
+//                 color: var(--main-color);
+//             }
+//             .cardPercent{
+//                 position: relative;
+//                 height: 8px;
+//                 background-color: rgba(45, 45, 45,0.1);
+//                 // box-shadow: 1px 2px 1px rgba($color: #ccc, $alpha: 0.5);
+//                 border-radius: var( --boder-radius);
+//                 overflow: hidden;
+//             }
+//             .childrenPercent{
+//                 display: inline-block;
+//                 position: absolute;
+//                 top: 0;
+//                 left: 0;
+//                 bottom: 0;
+//                 background-color: var( --status-done-color);
+                
+//             }
+//            .cardStatus{
+//                height: 70px;
+//                background-color: rgba(66, 206, 157, 0.1);
+//                 display: flex;
+//                 .status{
+//                     padding: 10px;
+//                     display: flex;
+//                     flex-direction: column;
+//                     align-self: center;
+//                 }
+//            }
+           
+//         }
+//         .cardFooter{
+//             padding: 0px 16px 16px ;
+//             display: flex;
+//             width: 100%;
+//             justify-content: space-between;
+//             .cardFooterlink{
+//                 text-decoration: none;
+//                 font-size: 0.857rem;
+//                 color: var( --main-color);
+//             }
+//             .cardFooterBtn{
+//                 border: 1px solid rgb(66, 206, 157);
+//             }
+//         }
+//     }
+// }
+// .btnWrap{
+//     .ButtonSecondary{
+//         display: inline-block;
+//         max-width: 180px;
+//         width: 50%;
+//         color: #fff;
+//         font-size: 1rem;
+//         background-color: var(--status-doing-color);
+//     }
+//     .ButtonSecondary:hover{
+//         color: #ccc;
+//     }
+// }
+// @media (max-width:768px) {
+//     .fillter{
+//         padding-left:38px !important ;
+//     }
+//     // .fillerBlock{
+//     //     --bs-gutter-x: 0rem !important;
+//     // }
+//     // .bannerRow{
+//     //     --bs-gutter-x: 1.5rem !important;
+//     // }
+//     // .projectWrap{
+//     //     --bs-gutter-x: 1.5rem !important;
+//     // }
+//     .bannerTitle{
+//         font-size: 1.6875rem !important;
+//     }
+//     .bannerSearch{
+//         flex-direction: column;
+//         align-items: center;
+//         .bannerInput{
+//             line-height: 1.5rem !important;
+//             width: 80% !important;
+//             padding: 10px ;
+//             margin-top: 10px;
+//             margin-bottom: 10px;
+//             padding-left: 1em;
+//             margin-right: 0rem !important;
+            
+//         }
+//         .bannerBtn{
+//             width: 80% !important;
+//             padding: 10px ;
+//             margin-top: 10px;
+//             margin-bottom: 10px;
+//         }
+//     }
+// }

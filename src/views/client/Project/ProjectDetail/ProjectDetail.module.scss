@@ -18,7 +18,7 @@
     }
 }
     
-    .projectDetailMenu {
+.projectDetailMenu {
     background-color: #EDECEC;
 }
 .projectDetailItem:hover {
@@ -92,7 +92,7 @@
             & .bodyDesc {
                 display: -webkit-box;
                 max-height:10rem;
-            -webkit-box-orient: vertical;
+                -webkit-box-orient: vertical;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: normal;

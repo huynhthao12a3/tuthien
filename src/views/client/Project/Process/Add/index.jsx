@@ -10,102 +10,94 @@ import Select from 'react-select'
 import { set } from "date-fns";
 import * as alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
+import { useLocation } from "react-router-dom";
+import projectApi from "../../../../../api/Project";
+import Dropdown from 'react-bootstrap/Dropdown'
 
-    // select trạng thái
-    var resultChange=false
 function AddProcess(props){
-    //------------------------------------------giá trị khởi tạo
-    const projectObj=props.location.state
-  
-    
-    // const processObj={
-    //         urlPath:[],
-    //         title:"",
-    //         description:"",
-    //         content:"",
-    //         status:1,
-    // }
 
-    const filterStatus = [
-        { value: '1', label: 'đang chờ duyệt' },
-        { value: '2', label: 'đang thực thi' },
-        { value: '3', label: 'hoàng thành' },
-    ]
-    //----------------------------------------------- useState
-    // const [processValue,setProcessValue]= useState(processObj)
+    //---------------------------------------------------------------------------giá trị khởi tạo
+    const  location  = useLocation().pathname;
+    const projectObj=props.location.state
+
+    //------------------------------------------------------------------------------------- useState
     const [listProcessValue,setListProcessValue]= useState([])
     const [urlPath,setUrlPath]= useState([])
     const [title,setTitle]= useState('')
-    const [description,setDescription] =useState('')
+    const [shortDescription,setshortDescription] =useState('')
     const [content,setContent]= useState('')
-    const [inputStatus,setInputStatus]= useState(1)// lưu trạng thái tạm
+    const [amountNeed,setAmountNeed] = useState(0)
     const [imgValue,setImgValue]= useState([])
+    const [indexProcess,setIndexProcess]=useState(-1)
+    // const [inputStatus,setInputStatus]= useState(1)// lưu trạng thái tạm
+    // const [listFile,setListFile]=useState([])
     
-    //------------------------------------------------ useEffect
+    //--------------------------------------------------------------------------------- useEffect
     useEffect(()=>{
-        // setProcessValue({...processValue,status:inputStatus.value})
-    },[inputStatus])
-
-    // useEffect(()=>{
-    //     console.log(processValue)
-      
-    // },[processValue])
-
-    useEffect(()=>{
-        console.log("listProcessValue",listProcessValue)
+         console.log("listProcessValue",listProcessValue)
         
     },[listProcessValue])
     
     useEffect(()=>{
         const btntMoreImg = $('.btntMoreImg')
         const btndeleteImg = $('.btndeleteImg')
-        if(imgValue.length>=5)
-        {   
-            btntMoreImg.addClass('disabled')
-        }
-        else{
-            btntMoreImg.removeClass('disabled')
-        }
-        if(imgValue.length>=1)
+        if(location==="/add-process")
         {
-            btndeleteImg.removeClass('disabled')
-        }
-        else{
+            btntMoreImg.addClass('disabled')
             btndeleteImg.addClass('disabled')
         }
+        else{
+            if(imgValue.length>=5){ btntMoreImg.addClass('disabled')}
+            else{ btntMoreImg.removeClass('disabled') }
+            if(imgValue.length>=1) { btndeleteImg.removeClass('disabled') }
+            else{ btndeleteImg.addClass('disabled') }
+        }
     },[imgValue])
-    //------------------------------------------------ function
+
+    useEffect(()=>{
+        const btnUpdate =$('.updateProcess')
+        if(Number(indexProcess) >= 0)
+        {
+            btnUpdate.removeClass('disabled')
+        }
+        else{
+            btnUpdate.addClass('disabled')
+        }
+        console.log("indexProcess",indexProcess)
+    },[indexProcess])
+    //------------------------------------------------------------------------ function
+    
     // xử lý hiện ảnh lên màn hình
     const handleMoreImg=(e)=>{
         const file = e.target.files[0]
         file.review = URL.createObjectURL(file)
         setImgValue([...imgValue,file])
     }
+
     // xóa hình ảnh
     const handleDeleteImg= ()=>{
         var arr = [...imgValue]
         arr.pop()
         setImgValue(arr)
     }
+
+    // xử lý thêm process vào danh sách 
     const handleAddProcess=()=>{
-        if( imgValue.length>0 &&
-            title.length > 8 &&
-            description.length>8 &&
-            content.length>8 &&
-            inputStatus!=='')
+        if( 
+            title !== "" &&
+            shortDescription !=="" &&
+            content !=="" &&  amountNeed>0 )
         {
             setListProcessValue([...listProcessValue,{
-                imgValue ,
                 title,
-                description,
+                shortDescription,
                 content,
-                inputStatus}])
-            setImgValue([])
-            setUrlPath([])
+                amountNeed,
+            }])
             setTitle('')
-            setDescription('')
+            setshortDescription('')
             setContent('')
-            setInputStatus(1)
+            setAmountNeed(0)
              $('.ajs-button.ajs-ok').css({"background-color": "var(--admin-btn-color)"});
 
             alertify.alert('Thông báo', `Thêm tiến trình vào dự án  ${projectObj.projectname}  thành công!`);
@@ -116,18 +108,110 @@ function AddProcess(props){
         }
         
     }
+
+    // lấy item của danh sách
     const calbackGetProcess=(index)=>{
-        setImgValue(listProcessValue[index].imgValue)
-        // setUrlPath(listProcessValue[index].urlPath)
+        setIndexProcess(index)
+        setAmountNeed(listProcessValue[index].amountNeed)
         setTitle(listProcessValue[index].title)
-        setDescription(listProcessValue[index].description)
+        setshortDescription(listProcessValue[index].shortDescription)
         setContent(listProcessValue[index].content)
-        setInputStatus(listProcessValue[index].inputStatus)
-        // setProcessValue({...listProcessValue[index]})
+    }
+   
+    // cập nhật process
+    const handleUpdateProcess =()=>{
+        if( 
+            title !== "" &&
+            shortDescription !=="" &&
+            content !=="" &&  amountNeed>0 )
+        {
+            const arrProcess=[...listProcessValue]
+            arrProcess[indexProcess]={
+                title,
+                shortDescription,
+                content,
+                amountNeed,
+            }
+            setListProcessValue(arrProcess)
+            setTitle('')
+            setshortDescription('')
+            setContent('')
+            setAmountNeed(0)
+            setIndexProcess(-1)
+            $('.ajs-button.ajs-ok').css({"background-color": "var(--admin-btn-color)"});
+
+            alertify.alert('Thông báo', `Sửa tiến trình của dự án  ${projectObj.projectname}  thành công!`);
+        }
+        else{
+            $('.ajs-button.ajs-ok').css({"background-color": "var(--status-waiting-color)"});
+            alertify.alert('Thông báo', `Sửa tiến trình của dự án  ${projectObj.projectname}  thất bại !`);
+        }
+       
+    }
+    const HandleDeleteProcess =(index)=>{
+        alertify.confirm('Confirm Title','Confirm Message', 
+            function(){
+                 alertify.success('Ok')
+            },
+            function()
+            { 
+                alertify.error('Cancel')
+            });
+    }
+    // đẩy lên Api
+    const handleFinal=async()=>{
+    
+        try{
+            const data={
+                    "title": projectObj.projectname,
+                    "shortDescription": projectObj.description,
+                    "projectStatus": 1,
+                    "friendlyUrl": projectObj.projecturl,
+                    "summary": projectObj.summary,
+                    "problemToAddress": projectObj.problem,
+                    "solution": projectObj.solution,
+                    "location": projectObj.address,
+                    "impact": projectObj.target,
+                    "endDate":projectObj.endDate,
+                    "addressContract": "string",
+                    "amountNeed": listProcessValue.reduce(function(total,number)
+                    {
+                        return total +number.amountNeed
+                    },0),
+                    "process":listProcessValue.map( function(item){
+                        return({
+                            "title": item.title,
+                            "shortDescription": item.shortDescription,
+                            "content": item.content,
+                        })
+                    }),  
+                    "category": (projectObj.category).map(function(item){
+                        return({
+                            "categoryId": Number(item)
+                        })
+                    }),
+                    "banner": {
+                        "fileName":projectObj.urlImg.fileName ,
+                        "filePath": projectObj.urlImg.filePath,
+                        "friendlyUrl": projectObj.urlImg.friendlyUrl,
+                        "note": projectObj.urlImg.note
+                    }
+              
+            }
+                const response = await projectApi.createProject(data);
+                console.log(response.data)
+                if (response.isSuccess) {
+                    alertify.alert('Tạo dự án thành công')
+                }
+                else {
+                    alertify.alert('Tạo dự án thất bại')
+                }
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
 
-  
-   
     return(
         <>
          <div className={clsx(Style.main)}>
@@ -182,13 +266,13 @@ function AddProcess(props){
                             </div>
                             <div className={clsx('col-12 pt-3')}>
                                 {/* <div className={clsx(Style.editor,' add-project_editor removeImg')}> */}
-                                    <label htmlFor="nameProject">Mô tả ngắn (descriptiona)</label>
+                                    <label htmlFor="nameProject">Mô tả ngắn (shortDescriptiona)</label>
                                     <CKEditor
                                         editor={ ClassicEditor }
-                                        data={description}
+                                        data={shortDescription}
                                         onChange={ ( event, editor ) => {
                                             const data = editor.getData();
-                                            setDescription(data)
+                                            setshortDescription(data)
                                            
                                         } }
                                         config={{
@@ -221,15 +305,17 @@ function AddProcess(props){
                                 </div>
                                 
                             </div>
-                            {/* <div className={clsx('col-12')}>
-                               
-                                <label htmlFor="nameProject">Trạng thái</label>
-                                <div className="form-group">
-                                    <Select defaultValue={inputStatus} onChange={setInputStatus} className={clsx( Style.Inputfocus)}  placeholder='trạng thái' options={filterStatus} />
-                                </div>
-                            </div> */}
+                            <div className={clsx('col-12 pt-3 ')}>
+                                
+                                <label htmlFor="nameProject">Số tiền cần thiết (VND)</label>
+                                <input value={amountNeed} onChange={(e)=>{if(Number.isFinite(Number(e.target.value))){
+                                    setAmountNeed(Number(e.target.value))
+                                  
+                                } }} className={clsx(Style.title,'w-100 ps-2 pe-2 ')} id='nameProject' type="text" />
+                            </div>
                             <div className='d-flex justify-content-end container'>
-                                <button href="nava" onClick={handleAddProcess} className={clsx(Style.createbtn,'btn')}>Thêm</button>
+                                <button href="nava" onClick={handleAddProcess} className={clsx(Style.createbtn,'btn me-2')}>Thêm</button>
+                                <button href="nava" onClick={handleUpdateProcess} className={clsx(Style.createbtn,'btn updateProcess')}>Cập Nhật</button>
                             </div>
                         </div>
                        
@@ -244,7 +330,6 @@ function AddProcess(props){
                                         <tr style={{color:"#666", fontSize:"0.857rem"}}>
                                             <th scope="col">#</th>
                                             <th scope="col">Tiêu đề</th>
-                                          
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -255,7 +340,19 @@ function AddProcess(props){
                                                         <tr className={clsx(Style.itemProcess,"cursor-pointer")} onClick={()=>{calbackGetProcess(index)}}>
                                                             <th>{index}</th>
                                                             <th>{item.title}</th>
+                                                            <td className=" text-center align-middle ">
+                                                                    <Dropdown className="d-inline mx-2" >
+                                                                        <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin" )}>
+                                                                                 <i className={clsx(Style.iconDrop, "text-light mdi mdi-dots-vertical font-18  text-primary")}></i>
+                                                                        </Dropdown.Toggle>
+
+                                                                        <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
+                                                                            <Dropdown.Item onClick={()=>{HandleDeleteProcess(index)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore pe-2"></i>Xóa</Dropdown.Item>
+                                                                        </Dropdown.Menu>
+                                                                    </Dropdown>
+                                                                </td>
                                                         </tr>
+                                                        
                                                     </>
                                                 )
                                             })
@@ -265,6 +362,9 @@ function AddProcess(props){
                                 </table>
                             </div>
                                 
+                        </div>
+                        <div className='d-flex justify-content-end container'>
+                                <button href="nava" onClick={handleFinal} className={clsx(Style.Btnfinal,'btn')}>Hoàn thành</button>
                         </div>
                     </div>
                     

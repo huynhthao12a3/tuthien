@@ -18,12 +18,15 @@ import {
     Route, Switch
   } from 'react-router-dom';
 import AddProcess from "../Process/Add";
+import categoryApi from "../../../../api/Category";
 const API_URL = "https://77em4-8080.sse.codesandbox.io";
 const UPLOAD_ENDPOINT = "upload_files";
 
 
 function AddProject(){
 
+
+   
     const projectObj={
         urlImg:'',
         projectname:'',
@@ -37,15 +40,6 @@ function AddProject(){
         target:'',
         enddate:"",
     }
-    const categoryOptions = useMemo(
-        () => [
-          { value: "1", label: "Apple" },
-          { value: "2", label: "Banana" },
-          { value: "3", label: "Orange" },
-          { value: "4", label: "Berry" },
-        ],
-        []
-      );
     const imgFormat=['jpeg','gif','png','tiff','raw','psd','jpg']
 
     //................................................ useState
@@ -54,8 +48,29 @@ function AddProject(){
     const [imgValue,setImgValue]=useState('')   // ảnh dùng để add vào formData
     const [selected, setSelected] = useState([]);// lưu các giá trị danh mục
     const [projectValue,setProjectValue]=useState({...projectObj}) // dữ liệu đẩy lên API
+    const [categoryOptions,setCategoryOptions]= useState([])
     
     //............................................useEffect
+
+    useEffect(async()=>{
+        const getAllUsers = async () => {
+            try {
+                const response = await categoryApi.getProject();
+                setCategoryOptions(response.data.map((item)=>{
+                    return({
+                        value:item.id,
+                        label:item.categoryName
+                    })
+                }))
+            }
+            catch (e) {
+                console.error(e)
+            }
+        }
+        getAllUsers()
+    },[])
+    // console.log("cate",categoryOptions)
+
     // lưu đường dẩn ảnh vào trong "projectValue" để đẩy lên API
     useEffect(async()=>{
         if(imgValue!=='')
@@ -75,7 +90,6 @@ function AddProject(){
                 const response = await projectApi.uploadFile(form);
                 setProjectValue({...projectValue,urlImg: response.data})
                 if (response.isSuccess) {
-                    alertify.alert('upload ảnh thành công')
                 }
                 else {
                     alertify.alert('upload ảnh thất bại')
@@ -93,9 +107,13 @@ function AddProject(){
        
         setProjectValue({...projectValue,projecturl:MakeUrl(projectValue.projectname)})
     },[projectValue.projectname])
+
     useEffect(()=>{
-        const today=dateValue
-        setProjectValue({...projectValue,enddate:(today.getDate()+"/"+(today.getMonth()+1)+"/"+(today.getFullYear()))})
+        // const today=dateValue
+        // console.log("dateValue",dateValue)
+        setProjectValue({...projectValue,enddate:dateValue})
+        // setProjectValue({...projectValue,enddate:(today.getDate()+"/"+(today.getMonth()+1)+"/"+(today.getFullYear()))})
+
     },[dateValue])
     useEffect(()=>{
         
@@ -112,7 +130,7 @@ function AddProject(){
         setImgValue(e.target.files[0])
         const file = e.target.files[0]
         file.review = URL.createObjectURL(file)
-        console.log(file)
+        // console.log(file)
         setImgAvatar(file)
     }
     // tạo project
@@ -133,7 +151,7 @@ function AddProject(){
     );
     const handlecheckValues=()=>{
         if(
-            // projectValue.urlImg!=='' &&  
+        projectValue.urlImg!=='' &&  
         projectValue.projectname!=='' &&                            
         projectValue. projecturl!=='' && 
         projectValue.description!=='' && 
@@ -151,7 +169,7 @@ function AddProject(){
             return  {pathname:"/add-process",state:projectValue }
         }
         else{
-            
+          
             // $('.ajs-button.ajs-ok').css({"background-color": "var(--status-waiting-color)"});
             // alertify.alert('Thông báo', `vui lòng không bỏ trống các trường `);
             return false

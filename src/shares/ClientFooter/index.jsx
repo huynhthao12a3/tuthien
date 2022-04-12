@@ -9,7 +9,7 @@ ClientFooter.propTypes = {
 
 function ClientFooter(props) {
     return (
-        <div id="client-footer" className=" position-absolute start-0 end-0 bg-light border-top">
+        <div id="client-footer" className="   bg-light border-top">
 
             <div className={clsx(Style.wrapFooter, " container py-5")}>
                 <div className='row'>

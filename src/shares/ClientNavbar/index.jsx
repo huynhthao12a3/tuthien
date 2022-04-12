@@ -84,7 +84,7 @@
 // export default
 //     ClientNavbar;
 
-import Style from './ClientNavbar.module.scss'
+import Style from './ClientNavbar.scss'
 import React from 'react';
 import PropTypes from 'prop-types';
 import Navbar from 'react-bootstrap/Navbar'
@@ -101,21 +101,29 @@ import {
     Route,
     Link,
     NavLink,
-    useRouteMatch
+    useRouteMatch,
+    useLocation
 } from "react-router-dom";
-import Icon from '../Icon';
 import Nav from "react-bootstrap/Nav";
 import clsx from "clsx";
+
 
 // import AdminNavbar from "./index";
 ClientNavbar.propTypes = {
 
 };
 
-function ClientNavbar(props) {
-    const info = "huynhthao12a3@gmail.com"
+function ClientNavbar() {
+    const clientInfo = JSON.parse(localStorage.getItem('client-info'))
+    // console.log(process.env.REACT_APP_URL)
+    const handleLogout = () => {
+        localStorage.clear();
+        window.location.pathname = '/dashboard'
+    }
+    const location = useLocation().pathname
+    console.log(location)
     return (
-        <Navbar id="admin-navbar" collapseOnSelect expand="xl" className={clsx(Style.clientNavbar, "bg-light text-dark shadow")}>
+        <Navbar id="client-navbar" collapseOnSelect expand="xl" className={clsx(Style.clientNavbar, "bg-light text-dark shadow border-bottom")}>
             <div className='container-fluid'>
                 <Navbar.Brand href="/dashboard">
                     <img
@@ -132,25 +140,36 @@ function ClientNavbar(props) {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mx-auto">
-                        <Nav.Link className="admin-nav-link text-uppercase text-center fw-bold" as={NavLink} to="/dashboard"><i className="mdi mdi-home-outline me-2"></i>Trang chủ</Nav.Link>
-                        <Nav.Link className="admin-nav-link text-uppercase text-center fw-bold" as={NavLink} to="/project"><i className="mdi mdi-archive-outline me-2"></i>Dự án</Nav.Link>
-                        <Nav.Link className="admin-nav-link text-uppercase text-center fw-bold" as={NavLink} to="/user"><i className="mdi mdi-account-box-outline me-2"></i>Tin tức</Nav.Link>
-                        <Nav.Link className="admin-nav-link text-uppercase text-center fw-bold" as={NavLink} to="/donation"><i className="mdi mdi-history me-2"></i>Hướng dẫn</Nav.Link>
-                        <Nav.Link className="admin-nav-link text-uppercase text-center fw-bold" as={NavLink} to="/news"><i className="mdi mdi-newspaper me-2"></i>Giới thiệu</Nav.Link>
-                        <Nav.Link className={clsx(Style.createProject, " text-uppercase rounded-3 px-3 mx-3 text-decoration-none text-center fw-bold")} as={NavLink} to="/create-project">Tạo dự án</Nav.Link>
+                        <Nav.Link className={clsx(location === "/dashboard" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/dashboard"><i className="mdi mdi-home-outline me-2"></i>Trang chủ</Nav.Link>
+                        <Nav.Link className={clsx(location === "/project" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/project"><i className="mdi mdi-archive-outline me-2"></i>Dự án</Nav.Link>
+                        <Nav.Link className={clsx(location === "/news" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/news"><i className="mdi mdi-account-box-outline me-2"></i>Tin tức</Nav.Link>
+                        <Nav.Link className={clsx(location === "/tutorial" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/tutorial"><i className="mdi mdi-history me-2"></i>Hướng dẫn</Nav.Link>
+                        <Nav.Link className={clsx(location === "/introduce" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/introduce"><i className="mdi mdi-newspaper me-2"></i>Giới thiệu</Nav.Link>
+                        <Nav.Link className={clsx(location === "/add-project" ? "active" : "", "create-project text-uppercase rounded-3 px-3 mx-3 text-decoration-none text-center fw-bold")} as={NavLink} to="/add-project">Tạo dự án</Nav.Link>
 
                     </Nav>
 
 
+                    <div className="m-3 d-flex justify-content-end ">
+                        {
+                            clientInfo ?
+                                (<div className="d-flex flex-column text-end">
+                                    <span id="admin-navbar-email " className="px-2 text-dark">{clientInfo.fullName}</span>
+                                    <NavDropdown title={'Donor'} id="nav-dropdown" className='text-dark px-2'>
+                                        <NavDropdown.Item >Cá nhân</NavDropdown.Item>
+                                        <NavDropdown.Item onClick={handleLogout} >Đăng xuất</NavDropdown.Item>
+                                    </NavDropdown>
+                                </div>) : (
+                                    <div className="d-flex text-end align-items-center">
+                                        <Link to="/login" className="text-decoration-none text-muted fw-bold border-end px-2 text-center">Đăng Nhập</Link>
+                                        <Link to="/register" className="text-decoration-none text-muted fw-bold border-start px-2 text-center">Đăng Ký</Link>
+                                    </div>
+                                )
+                        }
 
-                    <div className="d-none d-xxl-flex flex-column text-end">
-                        <span id="admin-navbar-email " className="px-2 text-dark">{info}</span>
-                        <NavDropdown title={'Donor'} id="nav-dropdown" className='text-dark px-2'>
-                            <NavDropdown.Item >Cá nhân</NavDropdown.Item>
-                            <NavDropdown.Item >Đăng xuất</NavDropdown.Item>
-                        </NavDropdown>
+
+                        <img id="admin-img-avatar" src={clientInfo ? process.env.REACT_APP_URL + clientInfo.avatar : defaultAvatar} alt="" width="40" height="40" className=" rounded-circle" />
                     </div>
-                    <img id="admin-img-avatar" src={defaultAvatar} alt="" width="40" height="40" className="d-none d-xxl-block rounded-circle" />
 
                 </Navbar.Collapse>
 
