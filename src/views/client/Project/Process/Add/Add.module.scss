@@ -16,7 +16,20 @@
            max-width: 100px;
            
         }
+        .btnLessImg{
+            height: 100%;
+            padding: 6px 0px;
+            position: relative;
+            width: 100%;
+            margin-right: 0px;
+            margin-top: 20px;
+            color: var(--text-nav-color);
+            background-color: var(--love-color-4) ;
+            border-radius: var(--boder-radius);
+            line-height: 1rem;
+        }
         .btnMoreImg{
+            padding: 0px;
             position: relative;
             max-width: 160px;
             margin-right: 0px;
@@ -33,9 +46,11 @@
     .process_list{
         margin-left: 5px;
         margin-top: 10px;
-        height: 100px;
         background-color: #fff;
         border-radius: var(--boder-radius);
+        .itemProcess:hover{
+            background-color: var(--love-color-2);
+        }
     }
     .createbtn{
         max-width: 160px;

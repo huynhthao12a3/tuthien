@@ -168,7 +168,7 @@ function ClientProject()
                 </div>
             </div>
             <div className={clsx(Style.btnWrap)} style={{display:'flex' ,justifyContent:'center' ,padding:'10px 10px 20px'}}>
-                <button className={clsx(Style.ButtonSecondary,"btn")}>Xem Thêm</button>
+                <Link to='/add-process' className={clsx(Style.ButtonSecondary,"btn")}>Xem Thêm</Link>
             </div>
         </div>
           
