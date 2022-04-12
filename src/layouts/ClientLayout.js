@@ -37,7 +37,7 @@ function ClientLayout(props) {
             <Switch>
                 {/* Route không cần Login vẫn xem được */}
                 <Route exact path="/project" component={ClientProject}/>
-                <Route exact path="/project-detail/:id" component={ProjectDetail}/>
+                <Route exact path="/project-detail/:id/:friendlyurl" component={ProjectDetail}/>
                 <Route exact path="/login" component={ClientLogin}/>
                 
                 {/* Route bắt buộc phải Login mới xemm được */}

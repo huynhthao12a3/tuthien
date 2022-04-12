@@ -8,29 +8,72 @@ import { Link } from "react-router-dom"
 import { padding, style } from "@mui/system"
 import Radio from "../../../shares/Radio"
 import ProgressBar from "react-bootstrap/ProgressBar";
+import projectApi from '../../../api/Project'
+import SetInnerHTML from "./../../../shares/setInnerHTML/index";
+import * as $ from 'jquery'
 function ClientProject() {
 
 
-  // search
-  const [search, setSearch] = useState('')
-  // checkbox
+
   const statusArray = [
     { id: 1, name: 'Đang chờ duyệt' },
     { id: 2, name: 'Đang thực thi' },
     { id: 3, name: 'Hoàn thành' }
   ]
-  const categoryArray = [
-    { id: 1, name: 'Thiên nhiên' },
-    { id: 2, name: 'Trẻ em' },
-    { id: 3, name: 'Con người' },
-    { id: 4, name: 'Thiên tai' },
-    { id: 5, name: 'Xây nhà' },
-    { id: 6, name: 'Xây nhà 1' },
-    { id: 7, name: 'Xây nhà 2' }
-  ]
-  const [fillerStatusCheckbox, setFillerStatusCheckbox] = useState([])
-  const [fillerCategotyCheckbox, setFillerCategotyCheckbox] = useState([])
-  //
+  // const categoryArray = [
+  //   { id: 1, name: 'Thiên nhiên' },
+  //   { id: 2, name: 'Trẻ em' },
+  //   { id: 3, name: 'Con người' },
+  //   { id: 4, name: 'Thiên tai' },
+  //   { id: 5, name: 'Xây nhà' },
+  //   { id: 6, name: 'Xây nhà 1' },
+  //   { id: 7, name: 'Xây nhà 2' }
+  // ]
+
+  // search
+  const [filterSearch, setFilterSearch] = useState('')
+  const handleSearch = () => {
+    const value = $('.input').val()
+    setFilterSearch(value)
+  }
+  // checkbox
+  const [fillerStatusCheckbox, setFillerStatusCheckbox] = useState(0)
+  const [fillerCategoryCheckbox, setFillerCategoryCheckbox] = useState(0)
+
+  console.log('status :', fillerStatusCheckbox)
+  console.log('category :', fillerCategoryCheckbox)
+  const [projectList, setProjectList] = useState([])
+  const [categoryArray, setCategoryArray] = useState([])
+
+  // Lấy danh sách project
+  useEffect(() => {
+    const fetchDataProjectList = async () => {
+      const params = {
+        keyword: filterSearch,
+        categoryid: fillerCategoryCheckbox,
+        status: fillerStatusCheckbox
+      }
+      const response = await projectApi.getAll(params)
+      if (response.isSuccess) {
+        setProjectList(response.data)
+        console.log('danh sách project: ', response.data)
+      }
+    }
+
+    fetchDataProjectList()
+  }, [fillerStatusCheckbox, fillerCategoryCheckbox, filterSearch])
+
+  // Lấy danh mục
+  useEffect(() => {
+    const fetchDataCategory = async () => {
+      const response = await projectApi.getCategoryProject()
+      if (response.isSuccess) {
+        setCategoryArray(response.data)
+        console.log('category: ', response.data)
+      }
+    }
+    fetchDataCategory()
+  }, [])
   // const fakeData
   function formatNumber(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
@@ -56,76 +99,114 @@ function ClientProject() {
 
               </div>
               <div className={clsx(Style.bannerSearch)}>
-                <input className={clsx(Style.bannerInput, "input")} placeholder="Tên dự án"
-                  onChange={(e) => { setSearch(e.target.value) }}
-                ></input>
-                <button className={clsx(Style.bannerBtn, "btn text-white ")}>Tìm Kiếm</button>
+                <input className={clsx(Style.bannerInput, "input")} placeholder="Tên dự án" />
+                <button className={clsx(Style.bannerBtn, "btn text-white ")} onClick={handleSearch}>Tìm Kiếm</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="container-fluid p-5 d-flex flex-column">
-        <div className="row">
+      <div className="container-fluid ">
+        <div className="p-3 p-lg-5">
 
-          {/* Bộ lọc  */}
-          <div className="col-12 col-md-3 border-start p-3 m-0 ">
-            <h4 className="text-uppercase fw-bold">Bộ Lọc</h4>
-            <div className="my-3" >
-              <h5 className="" >Trạng Thái</h5>
-              <Radio array={statusArray} start={[fillerStatusCheckbox, setFillerStatusCheckbox]} />
-            </div>
-            <div className="my-3" >
-              <h5 className="">Danh Mục</h5>
-              <Radio array={categoryArray} start={[fillerCategotyCheckbox, setFillerCategotyCheckbox]} />
-            </div>
-          </div>
-          <div className="col-12 col-md-9 m-0">
-            <div className="row">
+          <div className="row">
 
-              {/* Danh sách dự án  */}
-              <div className='col-12  col-md-6 p-3'>
-                <div className={clsx(Style.projectWrapItem, " shadow")}>
-                  <div className="w-100 ">
-                    <img src="https://api.givetrack.org/project/91/cover-image" className={clsx(Style.imgCard)} alt="hình ảnh dự án" />
-                  </div>
-                  <div className="p-3  " >
-                    <Link to="#" className={clsx(Style.titleProject, "text-decoration-none text-uppercase fs-5 fw-bold text-dark")}>cứu trợ miền trung lũ lụt</Link>
-                    <p className="my-3">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <div className="ProgressBarContent px-3 py-1 bg-light rounded-3">
-                      <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
-                      <ProgressBar striped now={progress} label={`${progress} %`} />
-                      <span className="fw-bold text-muted">{formatNumber(amountNowFormat)} / {formatNumber(amountNeedFormat)} VNĐ</span>
-                    </div>
-                    <div className="border-start px-3 py-1 my-3 d-flex flex-column ">
-                      <span ><i className="mdi mdi-history fs-5 pe-2"></i>Trạng thái</span>
-                      <span className={clsx(Style.baseColor, 'text-uppercase')}>Đang thực thi</span>
-                    </div>
-                    <div className='d-flex flex-column flex-lg-row align-items-center  justify-content-between '>
-                      <div className="d-flex align-items-center ">
-                        <span><i className="mdi mdi-account-multiple-outline fs-5 me-1 pe-2"></i></span>
-                        <p className='text-decoration-none m-0'>Huỳnh Thảo</p>
-                      </div>
-                      <button className={clsx(Style.btnDetail, 'bg-white px-4 py-2 fw-bold')}>Xem chi tiết</button>
-                    </div>
-
-
-                  </div>
+            {/* Bộ lọc  */}
+            <div className="col-12 col-md-3 border-start p-3 m-0 ">
+              <h4 className="text-uppercase fw-bold">Bộ Lọc</h4>
+              <div className="my-3" >
+                <h5 className="" >Trạng Thái</h5>
+                {/* <Radio array={statusArray} start={[fillerStatusCheckbox, setFillerStatusCheckbox]} /> */}
+                <div className='mt-2'>
+                  <input type='radio' checked={fillerStatusCheckbox === 0} onChange={() => setFillerStatusCheckbox(0)} className='me-2' />
+                  <label className='m-0' htmlFor={0} >Tất cả</label>
                 </div>
+                {
+
+                  statusArray.map((item) =>
+                  (
+                    <div key={item.id} className='mt-2'>
+                      <input type='radio' checked={fillerStatusCheckbox === item.id} onChange={() => setFillerStatusCheckbox(item.id)} className='me-2' />
+                      <label className='m-0' htmlFor={item.id} >{item.name}</label>
+                    </div>
+                  )
+                  )
+                }
+              </div>
+              <div className="my-3" >
+                <h5 className="">Danh Mục</h5>
+                {/* <Radio array={categoryArray} start={[fillerCategoryCheckbox, setFillerCategoryCheckbox]} /> */}
+                <div className='mt-2'>
+                  <input type='radio' checked={fillerCategoryCheckbox === 0} onChange={() => setFillerCategoryCheckbox(0)} className='me-2' />
+                  <label className='m-0' htmlFor={0} >Tất cả</label>
+                </div>
+                {
+                  categoryArray.map((item) =>
+                  (
+                    <div key={item.id} className='mt-2'>
+                      <input type='radio' checked={fillerCategoryCheckbox === item.id} onChange={() => setFillerCategoryCheckbox(item.id)} className='me-2' />
+                      <label className='m-0' htmlFor={item.id} >{item.categoryName}</label>
+                    </div>
+                  )
+                  )
+                }
+              </div>
+            </div>
+            <div className="col-12 col-md-9 m-0">
+              <div className="row">
+
+                {/* Danh sách dự án  */}
+                {
+                  projectList.map((item, index) => (
+                    <div key={index} className={clsx(Style.projectItem, 'col-12  col-md-4 p-3')}>
+                      <div className={clsx(Style.projectWrapItem, " shadow d-flex flex-column")}>
+                        <div className="w-100 ">
+                          <img src={process.env.REACT_APP_URL + item.bannerPath} className={clsx(Style.imgCard)} alt="hình ảnh dự án" />
+                        </div>
+                        <div className="p-3 " >
+                          <Link to={"/project-detail/" + item.id + "/" + item.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.titleProject, " d-block my-4 text-decoration-none text-uppercase fs-5 fw-bold text-dark")}>{item.title}</Link>
+                          <div className={clsx(Style.shortDescription)}>
+                            <SetInnerHTML text={item.shortDescription} />
+                          </div>
+                          <div className="ProgressBarContent px-3 my-4  bg-light rounded-3">
+                            <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
+                            <ProgressBar striped now={Math.floor((Number(item.amountNow + '1') / Number(item.amountNow + '10')) * 100)} label={`${Math.floor((Number(item.amountNow + '1') / Number(item.amountNow + '10')) * 100)} %`} />
+                            <span className="fw-bold text-muted">{formatNumber(item.amountNow)} / {formatNumber(item.amountNeed)} VNĐ</span>
+                          </div>
+                          <div className="border-start px-3 py-1 my-3 d-flex flex-column ">
+                            <span ><i className="mdi mdi-history fs-5 pe-2"></i>Trạng thái</span>
+                            <span className={clsx(Style.baseColor, 'text-uppercase')}>{item.status === 1 ? "Đang chờ duyệt" : (item.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</span>
+                          </div>
+                          <div className='d-flex flex-column flex-xl-row align-items-center  justify-content-between '>
+                            <div className="d-flex align-items-center ">
+                              <span><i className="mdi mdi-account-multiple-outline fs-5 me-1 pe-2"></i></span>
+                              <p className='text-decoration-none m-0 text-uppercase'>{item.userCreate}</p>
+                            </div>
+                            <Link to={"/project-detail/" + item.id + "/" + item.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.btnDetail, 'text-muted text-decoration-none bg-white px-4 py-2 fw-bold')}>Xem chi tiết</Link>
+                          </div>
+
+
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                }
+
+
+
+
+
+
               </div>
 
-
-
-
-
-            </div>
-
-            {/* Xem Thêm  */}
-            <div className="w-100 mt-5 d-flex justify-content-center">
-              <button className={clsx(Style.ButtonSecondary, "py-2 px-3 fw-bold text-light")}>Xem Thêm</button>
+              {/* Xem Thêm  */}
+              <div className="w-100 mt-5 d-flex justify-content-center">
+                <button className={clsx(Style.ButtonSecondary, "py-2 px-3 fw-bold text-light")}>Xem Thêm</button>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
 
 
@@ -143,7 +224,7 @@ function ClientProject() {
       {/* </div>
               <div className="d-flex col-6 col-md-12" style={{ flexDirection: 'column' }}>
                 <h5 className={clsx(Style.fillterStatus)}>Danh Mục</h5>
-                <Radio array={categoryArray} start={[fillerCategotyCheckbox, setFillerCategotyCheckbox]} />
+                <Radio array={categoryArray} start={[fillerCategoryCheckbox, setFillerCategoryCheckbox]} />
 
               </div>
             </div>

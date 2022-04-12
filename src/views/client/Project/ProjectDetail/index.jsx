@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { Link, useParams } from 'react-router-dom';
 import clsx from "clsx";
 import Style from "./ProjectDetail.module.scss"
 import ProgressBar from 'react-bootstrap/ProgressBar'
@@ -33,7 +33,64 @@ ProjectDetail.propTypes = {
 };
 
 function ProjectDetail(props) {
+    const [dataProject, setDataProject] = useState({
+        userCreateId: 1,
+        title: "Hỗ trợ lũ lụt đồng bào miền trung",
+        shortDescription: "<p>Để cung cấp phương tiện di chuyển cứu người cho bà mẹ và trẻ em, ở một đất nước mà xe cứu thương vẫn còn hiếm.</p>",
+        addressContract: null,
+        category: [
+            "Trẻ em",
+            "Khí hậu",
+            "Khắc phục thiên tai",
+            "Sức khỏe"
+        ],
+        userCreate: "huỳnh thảo",
+        createTime: "0001-01-01T00:00:00",
+        amountNow: 0,
+        amountNeed: 10000000,
+        status: 1,
+        summary: "<p>Đảm bảo các gia1 đình dễ bị tổn thương ở nông thôn Nam Phi giữ thức ăn trên bàn trong cuộc khủng hoảng COVID 19...</p>",
+        problemToAddress: "<p>Đảm bảo 2các gia đình dễ bị tổn thương ở nông thôn Nam Phi giữ thức ăn trên bàn trong cuộc khủng hoảng COVID 19...</p>",
+        solution: "<p>Đảm bảo các gia đì3nh dễ bị tổn thương ở nông thôn Nam Phi giữ thức ăn trên bàn trong cuộc khủng hoảng COVID 19...</p>",
+        location: "thành phố bà rịa - vũng tàu, việt nam",
+        impact: "500 người dân",
+        endDate: "2022-09-11T09:12:22.737",
+        userType: 0,
+        bannerPath: "\\uploads\\Images\\project\\12042022_024329_quyengop.png",
+        processes: [
+            {
+                processId: 6,
+                title: "process 1",
+                status: 1,
+                shortDescription: "<p>Đảm bảo các gia đình dễ bị tổn thương ở nông thôn Nam Phi giữ thức ăn trên bàn trong cuộc khủng hoảng COVID 19... Để cung cấp phương tiện di chuyển cứu người cho bà mẹ và trẻ em, ở một đất nước mà xe cứu thương vẫn còn hiếm.</p>",
+                content: "<p>Đảm bảo các gia đình dễ bị tổn thương ở nông thôn Nam Phi giữ thức ăn trên bàn trong cuộc khủng hoảng COVID 19... Để cung cấp phương tiện di chuyển cứu người cho bà mẹ và trẻ em, ở một đất nước mà xe cứu thương vẫn còn hiếm.</p><p>Đảm bảo các gia đình dễ bị tổn thương ở nông thôn Nam Phi giữ thức ăn trên bàn trong cuộc khủng hoảng COVID 19... Để cung cấp phương tiện di chuyển cứu người cho bà mẹ và trẻ em, ở một đất nước mà xe cứu thương vẫn còn hiếm.</p>",
+                listImages: [],
+                expenses: []
+            },
+            {
+                processId: 7,
+                title: "process 2",
+                status: 1,
+                shortDescription: "<p>Đảm bảo các gia đình dễ bị tổn thương ở nông thôn Nam Phi giữ thức ăn trên bàn trong cuộc khủng hoảng COVID 19... Để cung cấp phương tiện di chuyển cứu người cho bà mẹ và trẻ em, ở một đất nước mà xe cứu thương vẫn còn hiếm.</p>",
+                content: "<p>Đảm bảo các gia đình dễ bị tổn thương ở nông thôn Nam Phi giữ thức ăn trên bàn trong cuộc khủng hoảng COVID 19... Để cung cấp phương tiện di chuyển cứu người cho bà mẹ và trẻ em, ở một đất nước mà xe cứu thương vẫn còn hiếm.</p><p>Đảm bảo các gia đình dễ bị tổn thương ở nông thôn Nam Phi giữ thức ăn trên bàn trong cuộc khủng hoảng COVID 19... Để cung cấp phương tiện di chuyển cứu người cho bà mẹ và trẻ em, ở một đất nước mà xe cứu thương vẫn còn hiếm.</p>",
+                listImages: [],
+                expenses: []
+            }
+        ],
+        files: null,
+        articals: null
 
+    })
+    const { id } = useParams()
+    console.log(id)
+    useEffect(() => {
+        const fetchDataProject = async () => {
+            const response = await projectApi.get(id)
+            setDataProject(response.data)
+            console.log('project :', response.data)
+        }
+        fetchDataProject()
+    }, [id])
     // Data Project từ API 
     const fakeDataProject = {
         projectId: 91,
@@ -70,7 +127,7 @@ function ProjectDetail(props) {
     const progress = Math.floor((amountNowFormat / amountNeedFormat) * 100)
 
     // URL map location
-    const urlLocation = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDEhyx111_aA4TIk0BPHGyLTOZnIFChjGc&q=" + fakeDataProject.location.replaceAll(' ', '+');
+    const urlLocation = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDEhyx111_aA4TIk0BPHGyLTOZnIFChjGc&q=" + dataProject.location.replaceAll(' ', '+');
 
     // Data tiến trình project từ API
     const fakeDataProcess = [
@@ -582,15 +639,15 @@ function ProjectDetail(props) {
             .then(res => { setTrxPrice(res.tron.vnd) })
     }, [])
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const fetchApi = async () => {
-            const response = await projectApi.getAll()
-            console.log(response)
-        }
-        fetchApi()
-    }, [])
-    console.log("URL: ", process.env.REACT_APP_API_URL)
+    //     const fetchApi = async () => {
+    //         const response = await projectApi.getAll()
+    //         console.log(response)
+    //     }
+    //     fetchApi()
+    // }, [])
+    // console.log("URL: ", process.env.REACT_APP_API_URL)
     // console.log(trxPrice)
     return (
         <>
@@ -603,11 +660,11 @@ function ProjectDetail(props) {
                             <div className="row text-center ">
 
                                 <div className="col-12">
-                                    <img className="img-fluid" src={fakeDataProject.image} alt="project img" />
+                                    <img className="img-fluid" src={process.env.REACT_APP_URL + dataProject.bannerPath} alt="project img" />
                                 </div>
                                 <div className=" col-12">
                                     {
-                                        fakeDataProject.category.map((item, index) =>
+                                        dataProject.category.map((item, index) =>
                                             <span key={"project" + index} className="d-inline-block me-1 me-md-4 "><i className={clsx(Style.baseColor, 'mdi mdi-label-outline pe-1 pe-md-2')}></i>{item}</span>
                                         )
                                     }
@@ -618,24 +675,24 @@ function ProjectDetail(props) {
                             <div className={clsx(Style.baseColor, 'd-flex align-items-center my-3 my-lg-0')}>
                                 <i className="mdi mdi-account-multiple-outline fs-1 me-3 pe-2 border-end"></i>
                                 <div className="">
-                                    <p className="mb-0">{fakeDataProject.userType}</p>
-                                    <Link to={`/profile/${fakeDataProject.userCreateId}`} className={clsx(Style.baseColor, 'text-decoration-none')}>{fakeDataProject.userCreateName}</Link>
+                                    <p className=" mb-0 py-1">{dataProject.userType === 0 ? 'Cá nhân' : 'Tổ chức'}</p>
+                                    <Link to={`/profile/${dataProject.userCreateId}`} className={clsx(Style.baseColor, 'text-uppercase text-decoration-none')}>{dataProject.userCreate}</Link>
                                 </div>
                             </div>
 
-                            <h1>{fakeDataProject.projectName}</h1>
-                            <SetInnerHTML text={fakeDataProject.shortDescription} />
+                            <h1 className="py-3">{dataProject.title}</h1>
+                            <SetInnerHTML text={dataProject.shortDescription} />
 
                             <div className="ProgressBarContent my-3 my-lg-0">
                                 <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
-                                <ProgressBar striped now={progress} label={`${progress} %`} />
-                                <span>{formatNumber(amountNowFormat)} / {formatNumber(amountNeedFormat)} VNĐ</span>
+                                <ProgressBar striped now={Math.floor((Number(dataProject.amountNow + '1') / Number(dataProject.amountNow + '10')) * 100)} label={`${Math.floor((Number(dataProject.amountNow + '1') / Number(dataProject.amountNow + '10')) * 100)} %`} />
+                                <span>{formatNumber(dataProject.amountNow)} / {formatNumber(dataProject.amountNeed)} VNĐ</span>
                             </div>
                             <div className="my-4 d-flex justify-content-between">
 
                                 <div className="border-start px-3 d-flex flex-column">
                                     <span ><i className="mdi mdi-history pe-2"></i>Trạng thái</span>
-                                    <span className={clsx(Style.baseColor, 'text-uppercase')}>{fakeDataProject.status}</span>
+                                    <span className={clsx(Style.baseColor, 'text-uppercase')}>{dataProject.status === 1 ? "Đang chờ duyệt" : (dataProject.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</span>
                                 </div>
                                 <Button className={clsx(Style.backgroundForeignColor, 'px-5 text-light border-0')}><i className='mdi mdi-heart-outline me-1'></i>Theo dõi</Button>
                             </div>
@@ -668,15 +725,15 @@ function ProjectDetail(props) {
                             <div className={clsx(Style.line)}><hr /></div>
                             <div className='my-5' >
                                 <h3 className={clsx(Style.baseColor, 'mb-4')}><i className='mdi mdi-format-page-break me-3'></i>Tổng quan</h3>
-                                <SetInnerHTML text={fakeDataProject.summary} />
+                                <SetInnerHTML text={dataProject.summary} />
                             </div>
                             <div className='my-5'>
                                 <h3 className={clsx(Style.baseColor, 'mb-4')}><i className='mdi mdi-alert-outline me-3'></i>Vấn đề cần giải quyết</h3>
-                                <SetInnerHTML text={fakeDataProject.problemToAddress} />
+                                <SetInnerHTML text={dataProject.problemToAddress} />
                             </div>
                             <div className='my-5'>
                                 <h3 className={clsx(Style.baseColor, 'mb-4')}><i className='mdi mdi-lightbulb-on-outline me-3'></i>Giải pháp</h3>
-                                <SetInnerHTML text={fakeDataProject.solution} />
+                                <SetInnerHTML text={dataProject.solution} />
                             </div>
                         </div>
                         <div className="col-12 col-lg-5 offset-lg-1 ">
@@ -689,27 +746,27 @@ function ProjectDetail(props) {
                                 position="relative"
                                 allow="fullscreen" />
                             <div className=' border p-4 bg-light'>
-                                <h4 className='fs-6 lh-base'><i className='mdi mdi-map-marker-outline me-2'></i>{fakeDataProject.location}</h4>
+                                <h4 className='fs-6 lh-base'><i className='mdi mdi-map-marker-outline me-2'></i>{dataProject.location}</h4>
                                 <div className="row">
 
                                     <div className='col-12 col-lg-6 '>
                                         <div className="p-2">
                                             <p className='m-0 mt-3 fs-5'>Quản lý dự án</p>
-                                            <p className='m-0 fw-light '>{fakeDataProject.userCreateName}</p>
+                                            <p className='m-0 fw-light text-uppercase'>{dataProject.userCreate}</p>
                                             <p className='m-0 mt-3 fs-5'>Loại dự án</p>
-                                            <ul className='m-0 fw-light '>{fakeDataProject.category.map((item, index) => (
+                                            <ul className='m-0 fw-light '>{dataProject.category.map((item, index) => (
                                                 <li key={"caterogy" + index}>{item}</li>
                                             ))}</ul>
                                             <p className='m-0 mt-3 fs-5'>Đối tượng cần hỗ trợ</p>
-                                            <p className='m-0 fw-light '>{fakeDataProject.impact}</p>
+                                            <p className='m-0 fw-light '>{dataProject.impact}</p>
                                         </div>
                                     </div>
                                     <div className='col-12 col-lg-6'>
                                         <div className="p-2">
                                             <p className='m-0 mt-3 fs-5'>Ngày bắt đầu</p>
-                                            <p className='m-0 fw-light '>{fakeDataProject.dateStart}</p>
+                                            <p className='m-0 fw-light '>{moment(dataProject.createTime).format('DD /MM/yyyy')}</p>
                                             <p className='m-0 mt-3 fs-5'>Ngày kết thúc</p>
-                                            <p className='m-0 fw-light '>{fakeDataProject.dateEnd}</p>
+                                            <p className='m-0 fw-light '>{moment(dataProject.endDate).format('DD/MM/yyyy')}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -721,10 +778,10 @@ function ProjectDetail(props) {
 
                                     <div className='row align-items-center py-3'>
                                         <div className="col-4 ">
-                                            <img className="img-fluid rounded-3" src="https://i.ytimg.com/vi/tSWzwHea7x0/hqdefault.jpg" alt="project img" />
+                                            <img className="img-fluid rounded-3" src={process.env.REACT_APP_URL + dataProject.bannerPath} alt="project img" />
                                         </div>
                                         <div className="col-8">
-                                            <h4 className='m-0 fs-5 text-center text-white'><i className='mdi mdi-coin me-2'></i>{fakeDataProject.projectName}</h4>
+                                            <h4 className='m-0 fs-5 text-center text-white'><i className='mdi mdi-coin me-2'></i>{dataProject.title}</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -763,7 +820,7 @@ function ProjectDetail(props) {
                         </div>
                         <div className="col-12 col-lg-6 text-end border-end">
                             <p className={clsx(Style.baseColor, 'm-0 fs-5')}>Mục tiêu của chúng tôi</p>
-                            <p className={clsx(Style.foreignColor, 'm-0')}>{formatNumber(amountNeedFormat)} VNĐ</p>
+                            <p className={clsx(Style.foreignColor, 'm-0')}>{formatNumber(dataProject.amountNeed)} VNĐ</p>
                         </div>
                     </div>
 
@@ -772,24 +829,24 @@ function ProjectDetail(props) {
                         <div className="col-12">
                             <ul className="nav nav-pills my-5" id="pills-tab" role="tablist">
                                 {
-                                    fakeDataProcess.map((item, index) => (
+                                    dataProject.processes.map((item, index) => (
                                         <li key={"nav-item" + index} className={clsx(Style.navItem, "d-flex align-items-center")} role="presentation">
                                             <button className={clsx("bg-transparent px-3 text-white border border-1 rounded-pill ", index === 0 ? "active" : "")} id={"pills-" + index + '-tab'} data-bs-toggle="pill" data-bs-target={"#pills-" + index} type="button" role="tab" aria-controls={"pills-" + index} aria-selected={index == 0 ? "true" : "false"}>T {index + 1}</button>
-                                            {index < fakeDataProcess.length - 1 ? <div className={clsx(Style.tabLine)}></div> : ""}
+                                            {index < dataProject.processes.length - 1 ? <div className={clsx(Style.tabLine)}></div> : ""}
                                         </li>
                                     ))
                                 }
                             </ul>
                             <div className="tab-content" id="pills-tabContent">
                                 {
-                                    fakeDataProcess.map((item, index) => (
+                                    dataProject.processes.map((item, index) => (
                                         <div key={"tab-content" + index} className={clsx("tab-pane fade", index === 0 ? "show active" : "")} id={"pills-" + index} role="tabpanel" aria-labelledby={"pills-" + index + "-tab"}>
 
                                             <div className={clsx(Style.baseColor, 'd-flex align-items-center my-5')}>
                                                 <i className="mdi mdi-chart-donut fs-1 me-3 pe-3 border-end"></i>
                                                 <div className="">
                                                     <p className="mb-0  text-uppercase">Trạng thái</p>
-                                                    <p className={clsx(Style.foreignColor, 'm-0 fs-5 text-uppercase')}>{item.status}</p>
+                                                    <p className={clsx(Style.foreignColor, 'm-0 fs-5 text-uppercase')}>{item.status === 1 ? "Chưa bắt đầu" : (item.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</p>
                                                 </div>
                                             </div>
 
@@ -801,17 +858,17 @@ function ProjectDetail(props) {
                                             <div className="row mt-5">
                                                 <div className="col-12 col-lg-6">
                                                     <div className="mb-5">
-                                                        <h3 className="fs-5 mb-4 text-uppercase">Chúng tôi đã làm gì ?</h3>
+                                                        <h3 className="fs-5 mb-4 text-uppercase">Nội dung</h3>
                                                         <SetInnerHTML text={item.content} />
                                                     </div>
                                                     <div className="mb-5">
                                                         <h3 className="fs-5 mb-4 text-uppercase">Hình ảnh</h3>
                                                         {
 
-                                                            item.file.map((itemImage) => (
-                                                                <span key={"image" + itemImage.id} className="p-3">
+                                                            item.listImages.map((itemImage, index) => (
+                                                                <span key={"image" + index} className="p-3">
                                                                     <Zoom>
-                                                                        <img src={itemImage.filePath} width="100px" height="100px" alt="" />
+                                                                        <img src={process.env.REACT_APP_URL + '/' + itemImage} width="100px" height="100px" alt="" />
                                                                     </Zoom>
                                                                 </span>
                                                             ))
@@ -838,7 +895,7 @@ function ProjectDetail(props) {
                                                                             </span>
                                                                             <span className="">
                                                                                 <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-magnify me-1"></i>Loại</div>
-                                                                                <div>{itemExpense.type}</div>
+                                                                                <div>Thanh Toán</div>
                                                                             </span>
                                                                             <span className="">
                                                                                 <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-coin me-1"></i>Số tiền</div>
@@ -847,7 +904,7 @@ function ProjectDetail(props) {
                                                                             <span className="">
                                                                                 <div className={clsx(Style.foreignColor)}><i className="mdi mdi-file-check me-1"></i>Hóa đơn</div>
                                                                                 <div className="text-md-center">
-                                                                                    <a href={itemExpense.filePath} download className={clsx(Style.foreignColor)}><i className="mdi mdi-briefcase-download fs-4"></i></a>
+                                                                                    <a href={itemExpense.list} download className={clsx(Style.foreignColor)}><i className="mdi mdi-briefcase-download fs-4"></i></a>
                                                                                 </div>
                                                                             </span>
                                                                         </div>
@@ -858,7 +915,7 @@ function ProjectDetail(props) {
                                                                         </div>
                                                                         <div className="expense-body-transaction">
                                                                             <p className={clsx(Style.foreignColor, 'm-0')}><i className="mdi mdi-repeat me-1"></i>Lịch sử giao dịch</p>
-                                                                            <a href={"https://tronscan.org/#/contract/" + fakeDataProject.addressContract} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, 'text-decoration-none')}>Xem trên Blockchain</a>
+                                                                            <a href={"https://tronscan.org/#/contract/" + dataProject.addressContract} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, 'text-decoration-none')}>Xem trên Blockchain</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>

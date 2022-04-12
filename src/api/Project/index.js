@@ -26,14 +26,18 @@ const projectApi = {
             }
         })
     },
-    getAll() {
+    getAll(params) {
         const url = '/Project/get-project'
-        return axiosClient.post(url)
+        return axiosClient.get(url,{params})
     },
     get: (id) => {
         const url = `/Project/get-project/${id}`
         return axiosClient.get(url)
     },
+    getCategoryProject: ()=>{
+        const url = `/Category/get-project-categories`
+        return axiosClient.get(url)
+    }
 }
 
 export default projectApi;
