@@ -10,9 +10,10 @@ import Select from 'react-select'
 import { set } from "date-fns";
 import * as alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import projectApi from "../../../../../api/Project";
 import Dropdown from 'react-bootstrap/Dropdown'
+import {DocTienBangChu} from "../../../../../utils/utils"
 
 function AddProcess(props){
 
@@ -20,39 +21,31 @@ function AddProcess(props){
     const  location  = useLocation().pathname;
     const projectObj=props.location.state
 
-    //------------------------------------------------------------------------------------- useState
+ 
+
+
+    //------------------------------------------------------------------------------------- hook
     const [listProcessValue,setListProcessValue]= useState([])
-    const [urlPath,setUrlPath]= useState([])
     const [title,setTitle]= useState('')
     const [shortDescription,setshortDescription] =useState('')
-    const [content,setContent]= useState('')
     const [amountNeed,setAmountNeed] = useState(0)
-    const [imgValue,setImgValue]= useState([])
     const [indexProcess,setIndexProcess]=useState(-1)
+    const [amountWord,setAmountWord] = useState('')
+    const history= useHistory()
+
+    // const [urlPath,setUrlPath]= useState([])
+    // const [imgValue,setImgValue]= useState([])
+  
     // const [inputStatus,setInputStatus]= useState(1)// lưu trạng thái tạm
     // const [listFile,setListFile]=useState([])
     
     //--------------------------------------------------------------------------------- useEffect
-    useEffect(()=>{
-         console.log("listProcessValue",listProcessValue)
-        
-    },[listProcessValue])
     
+  
+
     useEffect(()=>{
-        const btntMoreImg = $('.btntMoreImg')
-        const btndeleteImg = $('.btndeleteImg')
-        if(location==="/add-process")
-        {
-            btntMoreImg.addClass('disabled')
-            btndeleteImg.addClass('disabled')
-        }
-        else{
-            if(imgValue.length>=5){ btntMoreImg.addClass('disabled')}
-            else{ btntMoreImg.removeClass('disabled') }
-            if(imgValue.length>=1) { btndeleteImg.removeClass('disabled') }
-            else{ btndeleteImg.addClass('disabled') }
-        }
-    },[imgValue])
+        setAmountWord(DocTienBangChu(amountNeed))
+    },[amountNeed])
 
     useEffect(()=>{
         const btnUpdate =$('.updateProcess')
@@ -65,39 +58,22 @@ function AddProcess(props){
         }
         console.log("indexProcess",indexProcess)
     },[indexProcess])
+    
     //------------------------------------------------------------------------ function
     
-    // xử lý hiện ảnh lên màn hình
-    const handleMoreImg=(e)=>{
-        const file = e.target.files[0]
-        file.review = URL.createObjectURL(file)
-        setImgValue([...imgValue,file])
-    }
-
-    // xóa hình ảnh
-    const handleDeleteImg= ()=>{
-        var arr = [...imgValue]
-        arr.pop()
-        setImgValue(arr)
-    }
-
     // xử lý thêm process vào danh sách 
     const handleAddProcess=()=>{
-        if( 
-            title !== "" &&
-            shortDescription !=="" &&
-            content !=="" &&  amountNeed>0 )
+        if( title !== "" && shortDescription !==""&&  amountNeed>0 )
         {
             setListProcessValue([...listProcessValue,{
                 title,
                 shortDescription,
-                content,
                 amountNeed,
             }])
             setTitle('')
             setshortDescription('')
-            setContent('')
             setAmountNeed(0)
+            setIndexProcess(-1)
              $('.ajs-button.ajs-ok').css({"background-color": "var(--admin-btn-color)"});
 
             alertify.alert('Thông báo', `Thêm tiến trình vào dự án  ${projectObj.projectname}  thành công!`);
@@ -115,27 +91,21 @@ function AddProcess(props){
         setAmountNeed(listProcessValue[index].amountNeed)
         setTitle(listProcessValue[index].title)
         setshortDescription(listProcessValue[index].shortDescription)
-        setContent(listProcessValue[index].content)
     }
    
     // cập nhật process
     const handleUpdateProcess =()=>{
-        if( 
-            title !== "" &&
-            shortDescription !=="" &&
-            content !=="" &&  amountNeed>0 )
+        if( title !== "" && shortDescription !=="" && amountNeed>0 )
         {
             const arrProcess=[...listProcessValue]
             arrProcess[indexProcess]={
                 title,
                 shortDescription,
-                content,
                 amountNeed,
             }
             setListProcessValue(arrProcess)
             setTitle('')
             setshortDescription('')
-            setContent('')
             setAmountNeed(0)
             setIndexProcess(-1)
             $('.ajs-button.ajs-ok').css({"background-color": "var(--admin-btn-color)"});
@@ -148,19 +118,23 @@ function AddProcess(props){
         }
        
     }
+
+    // xóa process
     const HandleDeleteProcess =(index)=>{
-        alertify.confirm('Confirm Title','Confirm Message', 
+        alertify.confirm('Thông báo','bạn có chắc muốn xóa tiến trình này', 
             function(){
-                 alertify.success('Ok')
+                const arr1 =[...listProcessValue.slice(0,index),...listProcessValue.slice(index+1)]
+                setListProcessValue(arr1)
+                alertify.success('xóa thành công') 
             },
             function()
             { 
-                alertify.error('Cancel')
+                alertify.error('đã hủy xóa')
             });
     }
+
     // đẩy lên Api
     const handleFinal=async()=>{
-    
         try{
             const data={
                     "title": projectObj.projectname,
@@ -182,7 +156,8 @@ function AddProcess(props){
                         return({
                             "title": item.title,
                             "shortDescription": item.shortDescription,
-                            "content": item.content,
+                            "content": '',
+                            "amountNeed": item.amountNeed,
                         })
                     }),  
                     "category": (projectObj.category).map(function(item){
@@ -202,6 +177,7 @@ function AddProcess(props){
                 console.log(response.data)
                 if (response.isSuccess) {
                     alertify.alert('Tạo dự án thành công')
+                    history.push("/dashboard")
                 }
                 else {
                     alertify.alert('Tạo dự án thất bại')
@@ -220,28 +196,23 @@ function AddProcess(props){
                 <div className={clsx('row pt-3')}>
                     <div className="col-12 col-md-9">
                         <h3 className={clsx(Style.title_content,"pb-3")}>Thêm tiến trình</h3>
-                        <div className={clsx(Style.img_wrap,'row')}>
+                        {/* <div className={clsx(Style.img_wrap,'row')}>
                             <h5 style={{fontSize:'1.2rem'}}>Hình Ảnh</h5>
                             
                             <div className="col-2">
-                            {/* imgAvatar.review ?imgAvatar.review: */}
                                 <img id="img-banner" src={imgValue.length>0?imgValue[0].review: default_img}  className={clsx(Style.img_item,"img-auto-size")}  />
                             </div>
                             
                             <div className="col-2">
-                            {/* imgAvatar.review ?imgAvatar.review: */}
                                 <img id="img-banner"src={imgValue.length>1?imgValue[1].review: default_img}   className={clsx(Style.img_item,"img-auto-size")}  />
                             </div>
                             <div className="col-2">
-                            {/* imgAvatar.review ?imgAvatar.review: */}
                                 <img id="img-banner" src={imgValue.length>2?imgValue[2].review: default_img}   className={clsx(Style.img_item,"img-auto-size")}   />
                             </div>
                             <div className="col-2">
-                            {/* imgAvatar.review ?imgAvatar.review: */}
                                 <img id="img-banner" src={imgValue.length>3?imgValue[3].review: default_img}   className={clsx(Style.img_item,"img-auto-size")}  />
                             </div>
                             <div className="col-2">
-                            {/* imgAvatar.review ?imgAvatar.review: */}
                                 <img id="img-banner" src={imgValue.length>4?imgValue[4].review: default_img}   className={clsx(Style.img_item,"img-auto-size")}  />
                             </div>
                            
@@ -256,7 +227,7 @@ function AddProcess(props){
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         <div className={clsx(Style.information_wrap,'row p-4')}>
                             <h5>Thông tin</h5>
                             <div className={clsx('col-12 pt-3 ')}>
@@ -264,8 +235,8 @@ function AddProcess(props){
                                 <label htmlFor="nameProject">Tiêu đề</label>
                                 <input value={title} onChange={(e)=>setTitle(e.target.value)} className={clsx(Style.title,'w-100 ps-2 pe-2 ')} id='nameProject' type="text" />
                             </div>
-                            <div className={clsx('col-12 pt-3')}>
-                                {/* <div className={clsx(Style.editor,' add-project_editor removeImg')}> */}
+                            <div className={clsx(Style.editor,' add-project_editor col-12 pt-3 removeImg')}>
+                                
                                     <label htmlFor="nameProject">Mô tả ngắn (shortDescriptiona)</label>
                                     <CKEditor
                                         editor={ ClassicEditor }
@@ -280,29 +251,7 @@ function AddProcess(props){
                                             removePlugins :['MediaEmbed','Table'],
                                         }}
                                     />
-                                {/* </div> */}
-                                
-                            </div>
-                            <div className={clsx('col-12 pt-3')}>
-                              
-                                <div className={clsx(Style.editor,' add-project_editor removeImg')}>
-                                    <label htmlFor="nameProject">Nội dung</label>
-                                    <CKEditor
-                                            editor={ ClassicEditor }
-                                            data={content}
-                            
-                                            onChange={ ( event, editor ) => {
-                                                const data = editor.getData();
-                                                setContent(data)
-                                            
-                                            } }
-                                            config={{
-                                                // extraPlugins: [uploadPlugin],
-                                                removePlugins :['image','MediaEmbed','Table'],
-                                            }}
-                                    
-                                        />
-                                </div>
+                           
                                 
                             </div>
                             <div className={clsx('col-12 pt-3 ')}>
@@ -312,6 +261,9 @@ function AddProcess(props){
                                     setAmountNeed(Number(e.target.value))
                                   
                                 } }} className={clsx(Style.title,'w-100 ps-2 pe-2 ')} id='nameProject' type="text" />
+                                <span className={clsx(Style.wrap_amountWord,'mt-2 d-inline-block font-weight-bold')}>Thành tiền : 
+                                    <span className={clsx(Style.amountWord,'text-danger')}> {amountWord} </span>
+                                </span>
                             </div>
                             <div className='d-flex justify-content-end container'>
                                 <button href="nava" onClick={handleAddProcess} className={clsx(Style.createbtn,'btn me-2')}>Thêm</button>
@@ -319,7 +271,7 @@ function AddProcess(props){
                             </div>
                         </div>
                        
-                    </div>
+                    </div> 
                     <div className="col-md-3 col-12 ">
                         <h3 className={clsx(Style.title_content,"pb-3")} >Danh sách tiến trình</h3>
                         <div className={clsx(Style.process_list,'row ')}>
@@ -337,9 +289,9 @@ function AddProcess(props){
                                             listProcessValue.map(function(item,index){
                                                 return(
                                                     <>
-                                                        <tr className={clsx(Style.itemProcess,"cursor-pointer")} onClick={()=>{calbackGetProcess(index)}}>
-                                                            <th>{index}</th>
-                                                            <th>{item.title}</th>
+                                                        <tr className={clsx(Style.itemProcess,"cursor-pointer")} >
+                                                            <th onClick={()=>{calbackGetProcess(index)}}>{index}</th>
+                                                            <th onClick={()=>{calbackGetProcess(index)}}>{item.title}</th>
                                                             <td className=" text-center align-middle ">
                                                                     <Dropdown className="d-inline mx-2" >
                                                                         <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin" )}>
