@@ -15,57 +15,72 @@ import projectApi from "../../../../../api/Project";
 import Dropdown from 'react-bootstrap/Dropdown'
 import {DocTienBangChu} from "../../../../../utils/utils"
 
-function AddProcess(props){
+
+function AddProcess(props) {
 
     //---------------------------------------------------------------------------giá trị khởi tạo
-    const  location  = useLocation().pathname;
-    const projectObj=props.location.state
+    const location = useLocation().pathname;
+    const projectObj = props.location.state
+    const history = useHistory()
 
- 
+    //------------------------------------------------------------------------------------- useState
+    const [listProcessValue, setListProcessValue] = useState([])
+    const [urlPath, setUrlPath] = useState([])
+    const [title, setTitle] = useState('')
+    const [shortDescription, setshortDescription] = useState('')
+    const [content, setContent] = useState('')
+    const [amountNeed, setAmountNeed] = useState(0)
+    const [imgValue, setImgValue] = useState([])
+    const [indexProcess, setIndexProcess] = useState(-1)
+    const [amountWord,setAmountWord]=useState('')
 
-
-    //------------------------------------------------------------------------------------- hook
-    const [listProcessValue,setListProcessValue]= useState([])
-    const [title,setTitle]= useState('')
-    const [shortDescription,setshortDescription] =useState('')
-    const [amountNeed,setAmountNeed] = useState(0)
-    const [indexProcess,setIndexProcess]=useState(-1)
-    const [amountWord,setAmountWord] = useState('')
-    const history= useHistory()
-
-    // const [urlPath,setUrlPath]= useState([])
-    // const [imgValue,setImgValue]= useState([])
-  
     // const [inputStatus,setInputStatus]= useState(1)// lưu trạng thái tạm
     // const [listFile,setListFile]=useState([])
-    
+
     //--------------------------------------------------------------------------------- useEffect
-    
-  
 
     useEffect(()=>{
         setAmountWord(DocTienBangChu(amountNeed))
     },[amountNeed])
 
-    useEffect(()=>{
-        const btnUpdate =$('.updateProcess')
-        if(Number(indexProcess) >= 0)
-        {
+    useEffect(() => {
+        console.log("listProcessValue", listProcessValue)
+
+    }, [listProcessValue])
+
+    useEffect(() => {
+        const btnUpdate = $('.updateProcess')
+        if (Number(indexProcess) >= 0) {
             btnUpdate.removeClass('disabled')
         }
-        else{
+        else {
             btnUpdate.addClass('disabled')
         }
-        console.log("indexProcess",indexProcess)
-    },[indexProcess])
-    
+        console.log("indexProcess", indexProcess)
+    }, [indexProcess])
     //------------------------------------------------------------------------ function
-    
+
+    // xử lý hiện ảnh lên màn hình
+    const handleMoreImg = (e) => {
+        const file = e.target.files[0]
+        file.review = URL.createObjectURL(file)
+        setImgValue([...imgValue, file])
+    }
+
+    // xóa hình ảnh
+    const handleDeleteImg = () => {
+        var arr = [...imgValue]
+        arr.pop()
+        setImgValue(arr)
+    }
+
     // xử lý thêm process vào danh sách 
-    const handleAddProcess=()=>{
-        if( title !== "" && shortDescription !==""&&  amountNeed>0 )
-        {
-            setListProcessValue([...listProcessValue,{
+    const handleAddProcess = () => {
+        if (
+            title !== "" &&
+            shortDescription !== ""
+            && amountNeed > 0) {
+            setListProcessValue([...listProcessValue, {
                 title,
                 shortDescription,
                 amountNeed,
@@ -76,29 +91,32 @@ function AddProcess(props){
             setIndexProcess(-1)
              $('.ajs-button.ajs-ok').css({"background-color": "var(--admin-btn-color)"});
 
+
             alertify.alert('Thông báo', `Thêm tiến trình vào dự án  ${projectObj.projectname}  thành công!`);
         }
-        else{
-            $('.ajs-button.ajs-ok').css({"background-color": "var(--status-waiting-color)"});
+        else {
+            $('.ajs-button.ajs-ok').css({ "background-color": "var(--status-waiting-color)" });
             alertify.alert('Thông báo', `Thêm tiến trình vào dự án  ${projectObj.projectname}  thất bại !`);
         }
-        
+
     }
 
     // lấy item của danh sách
-    const calbackGetProcess=(index)=>{
+    const calbackGetProcess = (index) => {
         setIndexProcess(index)
         setAmountNeed(listProcessValue[index].amountNeed)
         setTitle(listProcessValue[index].title)
         setshortDescription(listProcessValue[index].shortDescription)
     }
-   
+
     // cập nhật process
+
     const handleUpdateProcess =()=>{
         if( title !== "" && shortDescription !=="" && amountNeed>0 )
         {
             const arrProcess=[...listProcessValue]
             arrProcess[indexProcess]={
+
                 title,
                 shortDescription,
                 amountNeed,
@@ -108,15 +126,15 @@ function AddProcess(props){
             setshortDescription('')
             setAmountNeed(0)
             setIndexProcess(-1)
-            $('.ajs-button.ajs-ok').css({"background-color": "var(--admin-btn-color)"});
+            $('.ajs-button.ajs-ok').css({ "background-color": "var(--admin-btn-color)" });
 
             alertify.alert('Thông báo', `Sửa tiến trình của dự án  ${projectObj.projectname}  thành công!`);
         }
-        else{
-            $('.ajs-button.ajs-ok').css({"background-color": "var(--status-waiting-color)"});
+        else {
+            $('.ajs-button.ajs-ok').css({ "background-color": "var(--status-waiting-color)" });
             alertify.alert('Thông báo', `Sửa tiến trình của dự án  ${projectObj.projectname}  thất bại !`);
         }
-       
+
     }
 
     // xóa process
@@ -130,10 +148,12 @@ function AddProcess(props){
             function()
             { 
                 alertify.error('đã hủy xóa')
+
             });
     }
 
     // đẩy lên Api
+
     const handleFinal=async()=>{
         try{
             const data={
@@ -182,14 +202,16 @@ function AddProcess(props){
                 else {
                     alertify.alert('Tạo dự án thất bại')
                 }
+
         }
         catch (error) {
             console.log(error);
         }
     }
 
-    return(
+    return (
         <>
+
          <div className={clsx(Style.main)}>
             <div id='nava' className="container-fluid p-5 ">
                 
@@ -237,22 +259,22 @@ function AddProcess(props){
                             </div>
                             <div className={clsx(Style.editor,' add-project_editor col-12 pt-3 removeImg')}>
                                 
+
                                     <label htmlFor="nameProject">Mô tả ngắn (shortDescriptiona)</label>
                                     <CKEditor
-                                        editor={ ClassicEditor }
+                                        editor={ClassicEditor}
                                         data={shortDescription}
-                                        onChange={ ( event, editor ) => {
+                                        onChange={(event, editor) => {
                                             const data = editor.getData();
                                             setshortDescription(data)
-                                           
-                                        } }
+
+                                        }}
                                         config={{
-                                          
-                                            removePlugins :['MediaEmbed','Table'],
+
+                                            removePlugins: ['MediaEmbed', 'Table'],
                                         }}
                                     />
-                           
-                                
+                    
                             </div>
                             <div className={clsx('col-12 pt-3 ')}>
                                 
@@ -268,8 +290,11 @@ function AddProcess(props){
                             <div className='d-flex justify-content-end container'>
                                 <button href="nava" onClick={handleAddProcess} className={clsx(Style.createbtn,'btn me-2')}>Thêm</button>
                                 <button href="nava" onClick={handleUpdateProcess} className={clsx(Style.createbtn,'btn updateProcess')}>Cập Nhật</button>
+
                             </div>
+
                         </div>
+
                        
                     </div> 
                     <div className="col-md-3 col-12 ">
@@ -293,37 +318,39 @@ function AddProcess(props){
                                                             <th onClick={()=>{calbackGetProcess(index)}}>{index}</th>
                                                             <th onClick={()=>{calbackGetProcess(index)}}>{item.title}</th>
                                                             <td className=" text-center align-middle ">
+
+
                                                                     <Dropdown className="d-inline mx-2" >
-                                                                        <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin" )}>
-                                                                                 <i className={clsx(Style.iconDrop, "text-light mdi mdi-dots-vertical font-18  text-primary")}></i>
+                                                                        <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin")}>
+                                                                            <i className={clsx(Style.iconDrop, "text-light mdi mdi-dots-vertical font-18  text-primary")}></i>
                                                                         </Dropdown.Toggle>
 
                                                                         <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                            <Dropdown.Item onClick={()=>{HandleDeleteProcess(index)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore pe-2"></i>Xóa</Dropdown.Item>
+                                                                            <Dropdown.Item onClick={() => { HandleDeleteProcess(index) }} className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore pe-2"></i>Xóa</Dropdown.Item>
                                                                         </Dropdown.Menu>
                                                                     </Dropdown>
                                                                 </td>
-                                                        </tr>
-                                                        
-                                                    </>
-                                                )
-                                            })
-                                        }
-                                        
-                                    </tbody>
-                                </table>
+                                                            </tr>
+
+                                                        </>
+                                                    )
+                                                })
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
-                                
+                            <div className='d-flex justify-content-end container'>
+                                <button href="nava" onClick={handleFinal} className={clsx(Style.Btnfinal, 'btn')}>Hoàn thành</button>
+                            </div>
                         </div>
-                        <div className='d-flex justify-content-end container'>
-                                <button href="nava" onClick={handleFinal} className={clsx(Style.Btnfinal,'btn')}>Hoàn thành</button>
-                        </div>
+
                     </div>
-                    
+
                 </div>
-                
             </div>
-        </div>
         </>
     )
 }

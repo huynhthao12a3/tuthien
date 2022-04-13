@@ -794,7 +794,7 @@ function ProjectDetail(props) {
                                 <div className="d-flex flex-row justify-content-center">
 
                                     <div className={clsx(Style.inputTrx, 'd-flex flex-column text-center px-2')}>
-                                        <input type="number" inputMode="numeric" className=" fs-4 py-1 text-center fw-bolder" value={valueTrx} onChange={(e) => setValueTrx(e.target.value)} />
+                                        <input type="number" inputMode="numeric" min="1" className=" fs-4 py-1 text-center fw-bolder" value={valueTrx} onChange={(e) => setValueTrx(e.target.value)} />
                                         <span className=" text-muted p-2 ">~ {formatNumber(valueTrx * trxPrice)}</span>
                                     </div>
                                     <div className="d-flex flex-column justify-content-center">
@@ -842,12 +842,18 @@ function ProjectDetail(props) {
                                     dataProject.processes.map((item, index) => (
                                         <div key={"tab-content" + index} className={clsx("tab-pane fade", index === 0 ? "show active" : "")} id={"pills-" + index} role="tabpanel" aria-labelledby={"pills-" + index + "-tab"}>
 
-                                            <div className={clsx(Style.baseColor, 'd-flex align-items-center my-5')}>
-                                                <i className="mdi mdi-chart-donut fs-1 me-3 pe-3 border-end"></i>
-                                                <div className="">
-                                                    <p className="mb-0  text-uppercase">Trạng thái</p>
-                                                    <p className={clsx(Style.foreignColor, 'm-0 fs-5 text-uppercase')}>{item.status === 1 ? "Chưa bắt đầu" : (item.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</p>
+                                            <div className={clsx(Style.baseColor, 'd-flex justify-content-between align-items-center my-5')}>
+                                                <div className="d-flex align-items-center">
+                                                    <i className="mdi mdi-chart-donut fs-1 me-3 pe-3 border-end"></i>
+                                                    <div className="">
+                                                        <p className="mb-0  text-uppercase">Trạng thái</p>
+                                                        <p className={clsx(Style.foreignColor, 'm-0 fs-5 text-uppercase')}>{item.status === 1 ? "Chưa bắt đầu" : (item.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</p>
+                                                    </div>
                                                 </div>
+                                                <Link to={{
+                                                    pathname: "/update-process/" + item.processId,
+                                                    state: item // chuyền dữ liệu qua Update-process
+                                                }} className={clsx(Style.baseColor, Style.editProcess, "py-2 px-4 px-lg-5 fw-light rounded-3  text-uppercase text-decoration-none")} >Chỉnh sửa</Link>
                                             </div>
 
                                             <div className='my-5'>
@@ -856,74 +862,82 @@ function ProjectDetail(props) {
                                             </div>
 
                                             <div className="row mt-5">
-                                                <div className="col-12 col-lg-6">
-                                                    <div className="mb-5">
-                                                        <h3 className="fs-5 mb-4 text-uppercase">Nội dung</h3>
-                                                        <SetInnerHTML text={item.content} />
-                                                    </div>
-                                                    <div className="mb-5">
-                                                        <h3 className="fs-5 mb-4 text-uppercase">Hình ảnh</h3>
-                                                        {
+                                                {
+                                                    item.content ?
+                                                        <div className="col-12 col-lg-6">
+                                                            <div className="mb-5">
+                                                                <h3 className="fs-5 mb-4 text-uppercase">Nội dung</h3>
+                                                                <SetInnerHTML text={item.content} />
+                                                            </div>
+                                                            <div className="mb-5">
+                                                                <h3 className="fs-5 mb-4 text-uppercase">Hình ảnh</h3>
+                                                                {
+                                                                    item.listImages.length > 0 ?
+                                                                        item.listImages.map((itemImage, index) => (
+                                                                            <span key={"image" + index} className="p-3">
+                                                                                <Zoom>
+                                                                                    <img src={process.env.REACT_APP_URL + '/' + itemImage.filePath} width="100px" height="100px" alt="" />
+                                                                                </Zoom>
+                                                                            </span>
+                                                                        )) : ""
+                                                                }
+                                                            </div>
 
-                                                            item.listImages.map((itemImage, index) => (
-                                                                <span key={"image" + index} className="p-3">
-                                                                    <Zoom>
-                                                                        <img src={process.env.REACT_APP_URL + '/' + itemImage} width="100px" height="100px" alt="" />
-                                                                    </Zoom>
-                                                                </span>
-                                                            ))
-                                                        }
-                                                    </div>
-
-                                                </div>
-                                                <div className="col-12 col-lg-6">
-                                                    <div className="">
-                                                        <h3 className="fs-5 mb-4 text-uppercase">Chi phí</h3>
-                                                        {/* Danh sách chi phí  */}
-                                                        {
-                                                            item.expenses.map((itemExpense) => (
-                                                                <div key={"expense" + itemExpense.id} className={clsx(Style.expenseCard, 'p-2')}>
-                                                                    <div className={clsx(Style.expenseHeader, Style.foreignColor, 'd-flex justify-content-between fs-5')}>
-                                                                        <span className='text-uppercase m-0'>Tổng chi</span>
-                                                                        <span className='text-uppercase m-0'>{formatNumber(Number(itemExpense.amount))} VNĐ</span>
-                                                                    </div>
-                                                                    <div className={clsx(Style.expenseBody, 'p-4 bg-white text-dark')}>
-                                                                        <div className="expense-body-header d-flex justify-content-around flex-column flex-md-row">
-                                                                            <span className="">
-                                                                                <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-calendar-check me-1"></i>Ngày</div>
-                                                                                <div>{moment(itemExpense.createdDate).format("DD/MM/YYYY")}</div>
-                                                                            </span>
-                                                                            <span className="">
-                                                                                <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-magnify me-1"></i>Loại</div>
-                                                                                <div>Thanh Toán</div>
-                                                                            </span>
-                                                                            <span className="">
-                                                                                <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-coin me-1"></i>Số tiền</div>
-                                                                                <div>{itemExpense.amount} vnd</div>
-                                                                            </span>
-                                                                            <span className="">
-                                                                                <div className={clsx(Style.foreignColor)}><i className="mdi mdi-file-check me-1"></i>Hóa đơn</div>
-                                                                                <div className="text-md-center">
-                                                                                    <a href={itemExpense.list} download className={clsx(Style.foreignColor)}><i className="mdi mdi-briefcase-download fs-4"></i></a>
+                                                        </div> : ""
+                                                }
+                                                {
+                                                    item.expenses.length > 0 ?
+                                                        <div className="col-12 col-lg-6">
+                                                            <div className="">
+                                                                <h3 className="fs-5 mb-4 text-uppercase">Chi phí</h3>
+                                                                {/* Danh sách chi phí  */}
+                                                                {
+                                                                    item.expenses.map((itemExpense, index) => (
+                                                                        <div key={index} className={clsx(Style.expenseCard, 'p-2')}>
+                                                                            <div className={clsx(Style.expenseHeader, Style.foreignColor, 'd-flex justify-content-between fs-5')}>
+                                                                                <span className='text-uppercase m-0'>Tổng chi</span>
+                                                                                <span className='text-uppercase m-0'>{formatNumber(Number(itemExpense.amount))} VNĐ</span>
+                                                                            </div>
+                                                                            <div className={clsx(Style.expenseBody, 'p-4 bg-white text-dark')}>
+                                                                                <div className="expense-body-header d-flex justify-content-around flex-column flex-md-row">
+                                                                                    <span className="">
+                                                                                        <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-calendar-check me-1"></i>Ngày</div>
+                                                                                        <div>{moment(itemExpense.createdDate).format("DD/MM/YYYY")}</div>
+                                                                                    </span>
+                                                                                    <span className="">
+                                                                                        <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-magnify me-1"></i>Loại</div>
+                                                                                        <div>Thanh Toán</div>
+                                                                                    </span>
+                                                                                    <span className="">
+                                                                                        <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-coin me-1"></i>Số tiền</div>
+                                                                                        <div>{itemExpense.amount} vnd</div>
+                                                                                    </span>
+                                                                                    <span className="">
+                                                                                        <div className={clsx(Style.foreignColor)}><i className="mdi mdi-file-check me-1"></i>Hóa đơn</div>
+                                                                                        <div className="text-md-center">
+                                                                                            <a href={itemExpense.list} download className={clsx(Style.foreignColor)}><i className="mdi mdi-briefcase-download fs-4"></i></a>
+                                                                                        </div>
+                                                                                    </span>
                                                                                 </div>
-                                                                            </span>
-                                                                        </div>
 
-                                                                        <div className="expense-body-desc my-5">
-                                                                            <p className={clsx(Style.foreignColor, 'm-0 mb-2')}><i className="mdi mdi-eye-outline me-1"></i>Mô tả</p>
-                                                                            <SetInnerHTML text={itemExpense.description} />
+                                                                                <div className="expense-body-desc my-5">
+                                                                                    <p className={clsx(Style.foreignColor, 'm-0 mb-2')}><i className="mdi mdi-eye-outline me-1"></i>Mô tả</p>
+                                                                                    <SetInnerHTML text={itemExpense.description} />
+                                                                                </div>
+                                                                                <div className="expense-body-transaction">
+                                                                                    <p className={clsx(Style.foreignColor, 'm-0')}><i className="mdi mdi-repeat me-1"></i>Lịch sử giao dịch</p>
+                                                                                    <a href={"https://tronscan.org/#/contract/" + dataProject.addressContract} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, 'text-decoration-none')}>Xem trên Blockchain</a>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
-                                                                        <div className="expense-body-transaction">
-                                                                            <p className={clsx(Style.foreignColor, 'm-0')}><i className="mdi mdi-repeat me-1"></i>Lịch sử giao dịch</p>
-                                                                            <a href={"https://tronscan.org/#/contract/" + dataProject.addressContract} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, 'text-decoration-none')}>Xem trên Blockchain</a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            ))
-                                                        }
+                                                                    ))
+                                                                }
 
-                                                    </div>
-                                                </div>
+                                                            </div>
+                                                        </div> : ""
+                                                }
+
+
                                             </div>
 
                                         </div>
@@ -971,7 +985,7 @@ function ProjectDetail(props) {
                                                     </div>
                                                 </div>
                                                 <div className={clsx(Style.footer)}>
-                                                    <a href="./chi-tiet-bai-viet" className='text-decoration-none '>Xem chi tiết<i className="mdi mdi-arrow-right-bold-circle-outline ms-2"></i></a>
+                                                    <Link to={{ pathname: '/bai-viet/' + item.id + '/' + item.title }} className='text-decoration-none '>Xem chi tiết<i className="mdi mdi-arrow-right-bold-circle-outline ms-2"></i></Link>
                                                 </div>
                                             </div>
                                         </div>

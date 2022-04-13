@@ -12,12 +12,10 @@ import * as alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import Dropdown from 'react-bootstrap/Dropdown'
 
-function UpdateProcess(){
+function UpdateProcess(props){
     //-------------------------------------------------------- giá trị khởi tạo
-    const process={
-        title:'cứu trợ miền trung',
-        shortDescription:"cứu trợ j đó",
-    }
+    console.log("props",props.location.state)
+    const process=props.location.state
     const  location  = useLocation().pathname;
     const listTypeExpen=[
         { value: '1', label: 'Thanh toán' },

@@ -14,6 +14,7 @@ import ClientLogin from "./../views/client/Login/index";
 import ProtectedRoute from '../shares/ProtectedRoute'
 import UpdateProcess from '../views/client/Project/Process/Update'; 
 import * as $ from 'jquery'
+import ArticalDetail from "./../views/client/Project/ArticalDetail/index";
 
 
 ClientLayout.propTypes = {
@@ -41,11 +42,14 @@ function ClientLayout(props) {
                 <Route exact path="/project" component={ClientProject}/>
                 <Route exact path="/project-detail/:id/:friendlyurl" component={ProjectDetail}/>
                 <Route exact path="/login" component={ClientLogin}/>
+                <Route exact path="/bai-viet/:id/:friendlyurl" component={ArticalDetail}/>
                 
                 {/* Route bắt buộc phải Login mới xemm được */}
                 <ProtectedRoute exact path="/add-project" component={AddProject} role='client'/>
                 <ProtectedRoute exact path="/add-process" component={AddProcess} role='client'/>
-                <ProtectedRoute exact path="/update-process" component={UpdateProcess} role='client'/>
+
+                <ProtectedRoute exact path="/update-process/:id" component={UpdateProcess} role='client'/>
+
             </Switch>
         <ClientFooter/>
         </>

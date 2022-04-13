@@ -65,6 +65,13 @@
     & .title {
         letter-spacing: 1px;
     }
+    & .editProcess {
+        border: 1px solid var(--love-color-2);
+        // color:  var(--love-color-2) !important;
+        &:hover {
+            background-color: rgba(221, 221, 221,0.2);
+        }
+    }
 }
 
 // Artical Project 
