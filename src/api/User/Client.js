@@ -1,6 +1,5 @@
 import axiosClient from "../axiosClient";
 
-const token =""
 
 const clientUser = {
     uploadFile:(data)=>{
@@ -25,11 +24,7 @@ const clientUser = {
     }, 
     updateUser: (data) => {
         const url = `/user/update-user/${data.userId}`
-        return axiosClient.put(url, data, {
-            headers: {
-                'Authorization': token
-            }
-        })
+        return axiosClient.put(url, data)
     }, 
     
 }

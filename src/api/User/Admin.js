@@ -1,14 +1,17 @@
 import axiosClient from "../axiosClient";
 
-const token =""
+// const adminToken = localStorage.getItem('admin-info') ? JSON.parse(localStorage.getItem('admin-info')).token : null
+// const clientToken = localStorage.getItem('client-info') ? JSON.parse(localStorage.getItem('client-info')).token : null
 
+// const token = adminToken ? adminToken : clientToken
+// const authorizationToken = token ? token : ""
+// console.log('authorizationToken : ',authorizationToken);
 const adminUser = {
     uploadFile:(data)=>{
         const url = '/file/upload-image'
         return axiosClient.post(url, data, {
             headers:{
                 'Content-Type': 'multipart/form-data',
-                'uploadImage':'user'
             }
         })
     },
@@ -30,27 +33,15 @@ const adminUser = {
     }, 
     lock: (id) => {
         const url = `/user/lock-user/${id}`
-        return axiosClient.patch(url, {
-            headers: {
-                'Authorization': token
-            }
-        })
+        return axiosClient.patch(url)
     },
     unLock: (id) => {
         const url = `/user/unlock-user/${id}`
-        return axiosClient.patch(url, {
-            headers: {
-                'Authorization': token
-            }
-        })
+        return axiosClient.patch(url)
     },
     updateUser: (data) => {
         const url = `/user/update-user/${data.userId}`
-        return axiosClient.put(url, data, {
-            headers: {
-                'Authorization': token
-            }
-        })
+        return axiosClient.put(url, data)
     }, 
     
 }

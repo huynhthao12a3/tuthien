@@ -1,31 +1,21 @@
 import axiosClient from "../axiosClient";
 
-const token =""
 const newsApi = {
     uploadFile: (data) => {
         const url = '/file/upload-image'
         return axiosClient.post(url, data, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                'uploadImage':'news'
             }
         })
     },
     createNews: (data) => {
         const url ='/news/create-news'
-        return axiosClient.post(url, data, {
-            headers: {
-                'Authorization': token
-            }
-        })
+        return axiosClient.post(url, data)
     },
     editNews: (data) => {
         const url =`/news/edit-news/${data.id}`
-        return axiosClient.post(url, data, {
-            headers: {
-                'Authorization': token
-            }
-        })
+        return axiosClient.post(url, data)
     },
     
     getAll(params) {

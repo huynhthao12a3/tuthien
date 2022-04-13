@@ -1,31 +1,21 @@
 import axiosClient from "../axiosClient";
 
-const token =""
 const processApi = {
     uploadFile: (data) => {
         const url = '/file/upload-image'
         return axiosClient.post(url, data, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                'uploadImage':'process'
             }
         })
     },
     createProcess: (data) => {
         const url ='/process/create-process'
-        return axiosClient.post(url, data, {
-            headers: {
-                'Authorization': token
-            }
-        })
+        return axiosClient.post(url, data)
     },
     editProcess: (data) => {
         const url =`/process/edit-process/${data.id}`
-        return axiosClient.post(url, data, {
-            headers: {
-                'Authorization': token
-            }
-        })
+        return axiosClient.post(url, data)
     },
     
     getAll(params) {

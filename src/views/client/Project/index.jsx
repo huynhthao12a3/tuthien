@@ -158,7 +158,7 @@ function ClientProject() {
                 {/* Danh sách dự án  */}
                 {
                   projectList.map((item, index) => (
-                    <div key={index} className={clsx(Style.projectItem, 'col-12  col-md-4 p-3')}>
+                    <div key={index} className={clsx(Style.projectItem, 'col-12  col-md-6 p-2 p-lg-4')}>
                       <div className={clsx(Style.projectWrapItem, " shadow d-flex flex-column")}>
                         <div className="w-100 ">
                           <img src={process.env.REACT_APP_URL + item.bannerPath} className={clsx(Style.imgCard)} alt="hình ảnh dự án" />

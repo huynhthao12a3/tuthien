@@ -1,9 +1,19 @@
 import axios from "axios";
 import queryString from "query-string";
+
+// Authorization token 
+const adminToken = localStorage.getItem('admin-info') ? JSON.parse(localStorage.getItem('admin-info')).token : null
+const clientToken = localStorage.getItem('client-info') ? JSON.parse(localStorage.getItem('client-info')).token : null
+
+const token = adminToken ? adminToken : clientToken
+const authorizationToken = token ? token : ""
+console.log('authorizationToken : ',authorizationToken);
+
 const axiosClient = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
     headers: {
-        'CONTENT-TYPE': 'application/json'
+        'CONTENT-TYPE': 'application/json',
+        'Authorization':  `Bearer ${authorizationToken}`
     }, 
     paramsSerializer: params => queryString.stringify(params),
   });
