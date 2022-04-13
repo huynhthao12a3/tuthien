@@ -11,6 +11,7 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import projectApi from '../../../api/Project'
 import SetInnerHTML from "./../../../shares/setInnerHTML/index";
 import * as $ from 'jquery'
+import charityBanner from '../../../assets/images/charity_banner.jpg'
 function ClientProject() {
 
 
@@ -32,6 +33,7 @@ function ClientProject() {
 
   // search
   const [filterSearch, setFilterSearch] = useState('')
+  const [currentPage, setCurrentPage] = useState(0)
   const handleSearch = () => {
     const value = $('.input').val()
     setFilterSearch(value)
@@ -40,10 +42,11 @@ function ClientProject() {
   const [fillerStatusCheckbox, setFillerStatusCheckbox] = useState(0)
   const [fillerCategoryCheckbox, setFillerCategoryCheckbox] = useState(0)
 
-  console.log('status :', fillerStatusCheckbox)
-  console.log('category :', fillerCategoryCheckbox)
+  // console.log('status :', fillerStatusCheckbox)
+  // console.log('category :', fillerCategoryCheckbox)
   const [projectList, setProjectList] = useState([])
   const [categoryArray, setCategoryArray] = useState([])
+  // console.log('currentpage:', currentPage)
 
   // Lấy danh sách project
   useEffect(() => {
@@ -51,7 +54,8 @@ function ClientProject() {
       const params = {
         keyword: filterSearch,
         categoryid: fillerCategoryCheckbox,
-        status: fillerStatusCheckbox
+        status: fillerStatusCheckbox,
+        currentpage: 0
       }
       const response = await projectApi.getAll(params)
       if (response.isSuccess) {
@@ -59,9 +63,25 @@ function ClientProject() {
         console.log('danh sách project: ', response.data)
       }
     }
-
     fetchDataProjectList()
   }, [fillerStatusCheckbox, fillerCategoryCheckbox, filterSearch])
+
+  useEffect(() => {
+    const fetchDataProjectList = async () => {
+      const params = {
+        keyword: filterSearch,
+        categoryid: fillerCategoryCheckbox,
+        status: fillerStatusCheckbox,
+        currentpage: currentPage
+      }
+      const response = await projectApi.getAll(params)
+      if (response.isSuccess) {
+        setProjectList([...projectList, ...response.data])
+        console.log('danh sách project: ', projectList)
+      }
+    }
+    fetchDataProjectList()
+  }, [currentPage])
 
   // Lấy danh mục
   useEffect(() => {
@@ -161,7 +181,9 @@ function ClientProject() {
                     <div key={index} className={clsx(Style.projectItem, 'col-12  col-md-6 p-2 p-lg-4')}>
                       <div className={clsx(Style.projectWrapItem, " shadow d-flex flex-column")}>
                         <div className="w-100 ">
-                          <img src={process.env.REACT_APP_URL + item.bannerPath} className={clsx(Style.imgCard)} alt="hình ảnh dự án" />
+                          <img src={process.env.REACT_APP_URL + item.bannerPath}
+                            onError={(e) => (e.target.onerror = null, e.target.src = charityBanner)}
+                            className={clsx(Style.imgCard)} alt="hình ảnh dự án" />
                         </div>
                         <div className="p-3 " >
                           <Link to={"/project-detail/" + item.id + "/" + item.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.titleProject, " d-block my-4 text-decoration-none text-uppercase fs-5 fw-bold text-dark")}>{item.title}</Link>
@@ -200,7 +222,7 @@ function ClientProject() {
 
               {/* Xem Thêm  */}
               <div className="w-100 mt-5 d-flex justify-content-center">
-                <button className={clsx(Style.ButtonSecondary, "py-2 px-3 fw-bold text-light")}>Xem Thêm</button>
+                <button className={clsx(Style.ButtonSecondary, "py-2 px-3 fw-bold text-light")} onClick={() => setCurrentPage(currentPage + 1)}>Xem Thêm</button>
               </div>
             </div>
           </div>

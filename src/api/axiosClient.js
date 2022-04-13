@@ -13,7 +13,7 @@ const axiosClient = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
     headers: {
         'CONTENT-TYPE': 'application/json',
-        'Authorization':  `Bearer ${authorizationToken}`
+        'Authorization':  authorizationToken
     }, 
     paramsSerializer: params => queryString.stringify(params),
   });
