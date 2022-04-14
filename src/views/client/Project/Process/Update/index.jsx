@@ -11,28 +11,41 @@ import Select from 'react-select'
 import * as alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import Dropdown from 'react-bootstrap/Dropdown'
+import processApi from "../../../../../api/Process";
+ 
 
 function UpdateProcess(props){
     //-------------------------------------------------------- giá trị khởi tạo
-    console.log("props",props.location.state)
+    const location = useLocation().pathname.slice(useLocation().pathname.lastIndexOf("/")+1);
+    
     const process=props.location.state
-    const  location  = useLocation().pathname;
+    console.log("process",process)
+    const history = useHistory()
     const listTypeExpen=[
         { value: '1', label: 'Thanh toán' },
       ]
     //---------------------------------------------------------- hook
     const [processValue,setProcessValue]=useState(process)
     const [imgValue,setImgValue]= useState([])
-    const [content,setContent]= useState('')
     const [indexExpense,setIndexExpense]=useState(-1)
     // expense
     const [description,setDescription]= useState('')
     const [typeEpen, setTypeEpen] = useState(listTypeExpen[0]);
     const [amountNeed,setAmountNeed] = useState(0)
     const [amountWord,setAmountWord] = useState('')
-    const [listExpense,setListExpense]= useState([])
+    const [listExpense,setListExpense]= useState(process.expenses.map(function(item){
+        return({
+            id:item.expenseId,
+            description:item.description,
+            typepen:typeEpen,
+            amount:item.amount,
+        })
+    }))
 
     //---------------------------------------------------------- useEffect
+    useEffect(()=>{
+        console.log("listExpense",listExpense)
+    },[listExpense])
     useEffect(()=>{
         const btnUpdate =$('.updateProcess')
         if(Number(indexExpense) >= 0)
@@ -109,14 +122,13 @@ function UpdateProcess(props){
     // lấy item của danh sách
     const calbackGetProcess=(index)=>{
         setDescription(listExpense[index].description)
-        setTypeEpen(listExpense[index].typepen)
+        setTypeEpen(listTypeExpen[0])
         setAmountNeed(listExpense[index].amount)
         setIndexExpense(index)
     }
    
     // cập nhật expense
     const handleUpdateProcess =()=>{
-        console.log(123)
         if( description !== "" && typeEpen !=="" &&  amountNeed>0 )
         {
             const arrExpense=[...listExpense]
@@ -154,6 +166,53 @@ function UpdateProcess(props){
             { 
                 alertify.error('đã hủy xóa')
             });
+    }
+    // up lên API
+    const handleFinal=async()=>{
+        
+        try{
+            const data ={
+                "id":location,
+                "title": processValue.title,
+                "shortDescription": processValue.shortDescription,
+                "content": processValue.content,
+                "expenses":listExpense.map(function(item){
+                   
+                        return({
+                            "id": item.id,
+                            "description": item.description,
+                            "type": item.typepen.label,
+                            "amount": item.amount
+                        })
+                    
+                       
+                })
+                ,
+                "files": imgValue.map(function(item,index){
+                    return({
+                        "id": index,
+                        "fileName": item.fileName,
+                        "filePath": item.filePath,
+                        "friendlyUrl":item.friendlyUrl,
+                        "note": item.note
+                    })
+                })
+                
+            }
+            const response = await processApi.editProcess(data);
+            console.log(response.data)
+            if (response.isSuccess) {
+                alertify.alert('Tạo dự án thành công')
+                history.push("/dashboard")
+            }
+            else {
+                alertify.alert('Tạo dự án thất bại')
+            }
+        }
+        catch(error)
+        {
+            console.log(error);
+        }
     }
     return(
         <>
@@ -225,10 +284,10 @@ function UpdateProcess(props){
                                     <label htmlFor="nameProject">Nội dung tiến trình</label>
                                     <CKEditor
                                             editor={ ClassicEditor }
-                                            data={content}
+                                            data={processValue.content}
                                             onChange={ ( event, editor ) => {
                                                 const data = editor.getData();
-                                                setContent(data)
+                                                setProcessValue({...processValue,content:data})
                                             } }
                                             config={{
                                                 removePlugins :['image','MediaEmbed','Table'],
@@ -236,15 +295,7 @@ function UpdateProcess(props){
                                         />
                                 </div>
                             </div>
-                        {/* số tiền cần thiết cho tiến trình */}
-                            <div className={clsx('col-12 pt-3 ')}>   
-                                    <label htmlFor="amound">Số tiền cần thiết cho tiến trình (VND)</label>
-                                    <input id='amound' value={amountNeed} onChange={(e)=>{if(Number.isFinite(Number(e.target.value))){
-                                            setAmountNeed(Number(e.target.value))} }} className={clsx(Style.title,'w-100 ps-2 pe-2 ')}  type="text" />
-                                    <span className={clsx(Style.wrap_amountWord,'mt-2 d-inline-block font-weight-bold')}>Thành tiền : 
-                                        <span className={clsx(Style.amountWord,'text-danger')}> {amountWord} </span>
-                                    </span>
-                            </div>
+                        
                         </div>
                
                         {/* danh sách  */}
@@ -347,8 +398,8 @@ function UpdateProcess(props){
                                     </div>       
                                 </div>
                             <div className='d-flex justify-content-end container'>
-                                {/* onClick={handleFinal} */}
-                                <button href="nava" className={clsx(Style.Btnfinal,'btn')}>Hoàn thành</button>
+                                
+                                <button  onClick={handleFinal}  href="nava" className={clsx(Style.Btnfinal,'btn')}>Hoàn thành</button>
                             </div>
                        </div>
                     </div>
