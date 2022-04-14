@@ -902,7 +902,7 @@ function ProjectDetail(props) {
                                                                                 <div className="expense-body-header d-flex justify-content-around flex-column flex-md-row">
                                                                                     <span className="">
                                                                                         <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-calendar-check me-1"></i>Ngày</div>
-                                                                                        <div>{moment(itemExpense.createdDate).format("DD/MM/YYYY")}</div>
+                                                                                        <div>{moment(itemExpense.createTime).format("DD/MM/YYYY")}</div>
                                                                                     </span>
                                                                                     <span className="">
                                                                                         <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-magnify me-1"></i>Loại</div>
