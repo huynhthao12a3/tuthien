@@ -14,6 +14,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import projectApi from "../../../../../api/Project";
 import Dropdown from 'react-bootstrap/Dropdown'
 import {DocTienBangChu} from "../../../../../utils/utils"
+import moment from 'moment';
 
 
 function AddProcess(props) {
@@ -153,8 +154,9 @@ function AddProcess(props) {
     }
 
     // đẩy lên Api
-
+    
     const handleFinal=async()=>{
+        console.log("endDate",projectObj.address)
         try{
             const data={
                   
@@ -167,7 +169,7 @@ function AddProcess(props) {
                     "solution": projectObj.solution,
                     "location": projectObj.address,
                     "impact": projectObj.target,
-                    "endDate":projectObj.endDate,
+                    "endDate":moment(projectObj.endDate).utc().format(),
                     "addressContract": "string",
                     "amountNeed": listProcessValue.reduce(function(total,number)
                     {
@@ -214,46 +216,15 @@ function AddProcess(props) {
         <>
 
          <div className={clsx(Style.main)}>
-            <div id='nava' className="container-fluid p-5 ">
+            <div id='nava' className="container-fluid p-4 mx-auto p-md-5 ">
                 
                 <div className={clsx('row pt-3')}>
                     <div className="col-12 col-md-9">
                         <h3 className={clsx(Style.title_content,"pb-3")}>Thêm tiến trình</h3>
-                        {/* <div className={clsx(Style.img_wrap,'row')}>
-                            <h5 style={{fontSize:'1.2rem'}}>Hình Ảnh</h5>
-                            
-                            <div className="col-2">
-                                <img id="img-banner" src={imgValue.length>0?imgValue[0].review: default_img}  className={clsx(Style.img_item,"img-auto-size")}  />
-                            </div>
-                            
-                            <div className="col-2">
-                                <img id="img-banner"src={imgValue.length>1?imgValue[1].review: default_img}   className={clsx(Style.img_item,"img-auto-size")}  />
-                            </div>
-                            <div className="col-2">
-                                <img id="img-banner" src={imgValue.length>2?imgValue[2].review: default_img}   className={clsx(Style.img_item,"img-auto-size")}   />
-                            </div>
-                            <div className="col-2">
-                                <img id="img-banner" src={imgValue.length>3?imgValue[3].review: default_img}   className={clsx(Style.img_item,"img-auto-size")}  />
-                            </div>
-                            <div className="col-2">
-                                <img id="img-banner" src={imgValue.length>4?imgValue[4].review: default_img}   className={clsx(Style.img_item,"img-auto-size")}  />
-                            </div>
-                           
-                            <div className="col-2 position-relative">
-                                <div className='w-100 h-100 d-flex justify-content-end flex-column align-items-center '>
-                                    <button onClick={handleDeleteImg} className={clsx(Style.btnLessImg ,'btndeleteImg btn')}>
-                                        xóa
-                                    </button>
-                                    <button   className={clsx(Style.btnMoreImg , 'btntMoreImg btn')}>
-                                        <span style={{cursor:"pointer", position: "absolute",textAlign:"center",fontSize:"1rem",lineHeight:"1.7rem", width: "100%", left: "0", right: "0" }}>Thêm ảnh</span>
-                                        <input onChange={handleMoreImg} className="imputImg" type="file" style={{ display:"inline-block",  cursor:"pointer",opacity: "0", width: '100%', height: "100%", cursor: "pointer" }} />
-                                    </button>
-                                </div>
-                            </div>
-                        </div> */}
-                        <div className={clsx(Style.information_wrap,'row p-4')}>
+                       
+                        <div className={clsx(Style.information_wrap,'row p-2 p-md-4 mb-3')}>
                             <h5>Thông tin</h5>
-                            <div className={clsx('col-12 pt-3 ')}>
+                            <div className={clsx('col-12 pt-1 pt-md-3 ')}>
                                 
                                 <label htmlFor="nameProject">Tiêu đề</label>
                                 <input value={title} onChange={(e)=>setTitle(e.target.value)} className={clsx(Style.title,'w-100 ps-2 pe-2 ')} id='nameProject' type="text" />
@@ -298,9 +269,9 @@ function AddProcess(props) {
 
                        
                     </div> 
-                    <div className="col-md-3 col-12 ">
+                    <div className="col-md-3 col-12">
                         <h3 className={clsx(Style.title_content,"pb-3")} >Danh sách tiến trình</h3>
-                        <div className={clsx(Style.process_list,'row ')}>
+                        <div className={clsx(Style.process_list,'row ms-md-2')}>
                             <h5 className="pt-2 ps-3" style={{color:"#666", fontSize:"1.1rem"}}>Tên dự án : {projectObj.projectname}</h5>
                             <div className="col-12 ps-2 pe-2">
                                 <table className="table">

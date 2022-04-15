@@ -1,11 +1,10 @@
 .main{
     background-color: var(--background-main-color);
     .title_content{
+        margin: 0 !important;
         color: var(--main-color);
     }
     .img_wrap , .information_wrap,.expense_wrap {
-        margin-right: 5px;
-        padding: 20px;
         margin-top: 10px;
         background-color: #fff;
         border-radius: var(--boder-radius);
@@ -14,26 +13,23 @@
        
         .img_item{
            max-width: 100px;
-           
+           width: 100%;
         }
         .btnLessImg{
             height: 100%;
-            padding: 6px 0px;
             position: relative;
             width: 100%;
             margin-right: 0px;
-            margin-top: 20px;
             color: var(--text-nav-color);
             background-color: var(--love-color-4) ;
             border-radius: var(--boder-radius);
             line-height: 1rem;
         }
         .btnMoreImg{
-            padding: 0px;
+            height: 100%;
             position: relative;
-            max-width: 160px;
+            width: 100%;
             margin-right: 0px;
-            margin-top: 20px;
             color: var(--text-nav-color);
             background-color: var( --admin-btn-color) ;
             border-radius: var(--boder-radius);
@@ -83,7 +79,7 @@
         }
     }
     .process_list{
-        margin-left: 5px;
+    
         margin-top: 10px;
         background-color: #fff;
         border-radius: var(--boder-radius);

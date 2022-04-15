@@ -10,9 +10,11 @@ import alertify from 'alertifyjs';
 import projectApi from "../../../../api/Project";
 import { DatePicker } from 'rsuite';
 import { addDays } from 'date-fns';
-import moment from 'moment';
+import moment from "moment";
+
 import { Link } from "react-router-dom";
 import * as $ from "jquery"
+
 import {
     BrowserRouter,
     Route, Switch
@@ -150,6 +152,7 @@ function AddProject(){
         />
     );
     const handlecheckValues=()=>{
+      
         if(
         projectValue.urlImg!=='' &&  
         projectValue.projectname!=='' &&                            
@@ -179,19 +182,21 @@ function AddProject(){
         <>
         <div className={clsx(Style.main,'addprojectmain')}>
             <div className={clsx(Style.titleWrap,'container')}>
-                <div className='row'>
+                <div className='row w-100'>
                     <div className='col-12'>
-                        <h3 className={clsx(Style.title)}>Tạo dự án</h3>
+                        <h3 className={clsx(Style.title,"px-2 px-md-1")}>Tạo dự án</h3>
                     </div>
                 </div>
             </div>
             {/* chọn hình ảnh */}
             <div className={clsx(Style.imgavatar,'container w-100')}>
-                <div className='row p-4'>
+                <div className='row p-md-4 p-1'>
                     <span className={clsx(Style.imgTaitle)}>Chọn hình đại diện</span>
                     <div className="col-12 ">
                         {/* src={imgAvatar.review ? imgAvatar.review : default_img} */}
-                        <img id="img-banner" src={imgAvatar.review ?imgAvatar.review: default_img}  className={clsx(Style.imgavatar_item,"img-auto-size")}  />
+                        <div className="w-100">
+                            <img id="img-banner" src={imgAvatar.review ?imgAvatar.review: default_img}  className={clsx(Style.imgavatar_item,"mx-auto d-block img-fluid")}  />
+                        </div>
                         <div className='w-100 d-flex justify-content-end'>
                             <button  className={clsx(Style.btnMoreImg,'btn')}>
                                 <span style={{cursor:"pointer", position: "absolute",textAlign:"center",fontSize:"1rem",lineHeight:"1.7rem", width: "100%", left: "0", right: "0" }}>Chọn hình đại điện</span>
@@ -202,7 +207,7 @@ function AddProject(){
                 </div>
             </div>
             <div className={clsx(Style.information,'container')}>
-                <div className='row p-4'>
+                <div className='row  p-md-4 p-1'>
                     <h3>Thông tin</h3>
                     <div className='col-12 '>
                         <label htmlFor="nameProject">Tên dự án</label>
@@ -220,7 +225,7 @@ function AddProject(){
                 </div>
             </div>
             <div className={clsx(Style.detailWrap,"container")}>
-                <div className="row p-4">
+                <div className="row  p-md-4 p-1">
                     <div className="col-12 ">
                         <h3>Chi tiết dự án</h3>
                         <label>Tóm lược</label>

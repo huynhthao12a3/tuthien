@@ -647,7 +647,7 @@ function ProjectDetail(props) {
     //     }
     //     fetchApi()
     // }, [])
-    // console.log("URL: ", process.env.REACT_APP_API_URL)
+    console.log("URL: ", process.env.REACT_APP_API_URL)
     // console.log(trxPrice)
     return (
         <>
