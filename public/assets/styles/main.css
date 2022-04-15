@@ -175,7 +175,12 @@ body{
     display: none !important;
 }
 /* // alert */
+
 .ajs-button.ajs-ok{
     color: var( --text-nav-color);
+    border-radius: var(--boder-radius);
+    background-color: var( --love-color-1);
+}
+.ajs-button.ajs-cancel{
     border-radius: var(--boder-radius);
 }

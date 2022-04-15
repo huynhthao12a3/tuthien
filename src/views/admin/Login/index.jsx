@@ -22,7 +22,8 @@ function AdminLogin() {
             const response = await adminUser.login({ email, password });
             console.log(response);
             if (response.isSuccess) {
-                localStorage.setItem('admin-info', JSON.stringify(response.data))
+                const saveToken = { ...response.data, expiredTime: Date.now() };
+                localStorage.setItem('admin-info', JSON.stringify(saveToken))
                 history.push('/admin/dashboard')
             }
             else {

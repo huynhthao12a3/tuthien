@@ -19,14 +19,14 @@ try {
 
     /** Alertify config confirm */
     alertify.confirm().setting({
-        'title': 'Thông báo',
-        'labels': { ok: '<i class="mdi mdi-check mr-1"></i>Đồng ý', cancel: '<i class="mdi mdi-block-helper mr-1"></i>Bỏ qua' }
+      'title': '<i class="mdi mdi-information-outline pe-1"></i>Thông báo',
+        'labels': { ok: '<i class="mdi mdi-check me-1"></i>Đồng ý', cancel: '<i class="mdi mdi-block-helper me-1"></i>Bỏ qua' }
     });
 
     /** Alertify alert confirm */
     alertify.alert().setting({
-        'title': 'Thông báo',
-        'label': '<i class="mdi mdi-check mr-1"></i>Xác nhận'
+      'title': '<i class="mdi mdi-information-outline pe-1"></i>Thông báo',
+        'label': '<i class="mdi mdi-check me-1"></i>Xác nhận'
     });
 } catch (e) {
 

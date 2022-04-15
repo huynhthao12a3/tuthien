@@ -35,7 +35,14 @@
         opacity: 1;
     }
 }
-
+// Edit Btn 
+.editBtn {
+    border: 1px solid var(--love-color-2);
+    // color:  var(--love-color-2) !important;
+    &:hover {
+        background-color: rgba(221, 221, 221,0.2);
+    }
+}
 // Dùng chung
 .baseColor {
     color: var(--love-color-1) !important;
@@ -53,24 +60,17 @@
 // Tab content
 #tabContent  {
     & .navItem {
-
-        & > button[aria-selected="true"] {
+        
+        &  button[aria-selected="true"] {
             background-color: var(--love-color-1) !important;
         }
         & .tabLine {
             border-top: 1px solid #68737db4;
-            width: 30px;
+            width: 80px;
         }
     }
     & .title {
         letter-spacing: 1px;
-    }
-    & .editProcess {
-        border: 1px solid var(--love-color-2);
-        // color:  var(--love-color-2) !important;
-        &:hover {
-            background-color: rgba(221, 221, 221,0.2);
-        }
     }
 }
 
