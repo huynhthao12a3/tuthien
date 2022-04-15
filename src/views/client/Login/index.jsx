@@ -21,7 +21,9 @@ function ClientLogin() {
             const response = await clientUser.login({ email, password });
             console.log(response);
             if (response.isSuccess) {
-                localStorage.setItem('client-info', JSON.stringify(response.data))
+                const saveToken = { ...response.data, expiredTime: Date.now() };
+                console.log(response.data);
+                localStorage.setItem('client-info', JSON.stringify(saveToken))
                 history.push('/dashboard')
             }
             else {

@@ -676,25 +676,35 @@ function ProjectDetail(props) {
                                 <i className="mdi mdi-account-multiple-outline fs-1 me-3 pe-2 border-end"></i>
                                 <div className="">
                                     <p className=" mb-0 py-1">{dataProject.userType === 0 ? 'Cá nhân' : 'Tổ chức'}</p>
-                                    <Link to={`/profile/${dataProject.userCreateId}`} className={clsx(Style.baseColor, 'text-uppercase text-decoration-none')}>{dataProject.userCreate}</Link>
+                                    <Link to={`/profile/${dataProject.userCreateId}`} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, 'text-uppercase text-decoration-none')}>{dataProject.userCreate}</Link>
                                 </div>
                             </div>
 
                             <h1 className="py-3">{dataProject.title}</h1>
                             <SetInnerHTML text={dataProject.shortDescription} />
 
-                            <div className="ProgressBarContent my-3 my-lg-0">
+                            <div className="ProgressBarContent my-3">
                                 <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
                                 <ProgressBar striped now={Math.floor((Number(dataProject.amountNow + '1') / Number(dataProject.amountNow + '10')) * 100)} label={`${Math.floor((Number(dataProject.amountNow + '1') / Number(dataProject.amountNow + '10')) * 100)} %`} />
                                 <span>{formatNumber(dataProject.amountNow)} / {formatNumber(dataProject.amountNeed)} VNĐ</span>
                             </div>
-                            <div className="my-4 d-flex justify-content-between">
+                            <Button className={clsx(Style.backgroundForeignColor, 'px-5 my-2 w-100 text-light border-0')}><i className='mdi mdi-heart-outline me-1'></i>Theo dõi</Button>
 
-                                <div className="border-start px-3 d-flex flex-column">
-                                    <span ><i className="mdi mdi-history pe-2"></i>Trạng thái</span>
+
+                            <div className={clsx(Style.baseColor, 'd-flex flex-column flex-md-row justify-content-between align-items-center my-3')}>
+                                <div className="border-start px-3 d-flex flex-column align-self-start">
+                                    <span className="text-white"><i className="mdi mdi-history pe-2"></i>Trạng thái</span>
                                     <span className={clsx(Style.baseColor, 'text-uppercase')}>{dataProject.status === 1 ? "Đang chờ duyệt" : (dataProject.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</span>
                                 </div>
-                                <Button className={clsx(Style.backgroundForeignColor, 'px-5 text-light border-0')}><i className='mdi mdi-heart-outline me-1'></i>Theo dõi</Button>
+                                {
+                                    dataProject.isEdit === true ? (
+                                        <Link to={{
+                                            pathname: "/update-project/" + id,
+                                            state: "item" // chuyền dữ liệu qua Update-process
+                                        }} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, Style.editBtn, "align-self-end  my-2 py-2 px-4 px-lg-5 fw-light rounded-3 text-center   text-uppercase text-decoration-none")} ><i className="mdi mdi-tooltip-edit me-2"></i>Chỉnh sửa dự án</Link>
+                                    ) : null
+                                }
+
                             </div>
                             {/* <Button className={clsx(Style.backgroundForeignColor, 'px-5 text-light border-0 w-100 fw-bold')}><i className='mdi mdi-currency-btc me-1'></i>Quyên góp</Button> */}
 
@@ -827,11 +837,16 @@ function ProjectDetail(props) {
                     {/* Tab content  */}
                     <div id={clsx(Style.tabContent)} className="row ">
                         <div className="col-12">
-                            <ul className="nav nav-pills my-5" id="pills-tab" role="tablist">
+                            <ul className="nav nav-pills my-5 flex-nowrap overflow-auto" id="pills-tab" role="tablist">
                                 {
                                     dataProject.processes.map((item, index) => (
-                                        <li key={"nav-item" + index} className={clsx(Style.navItem, "d-flex align-items-center")} role="presentation">
-                                            <button className={clsx("bg-transparent px-3 text-white border border-1 rounded-pill ", index === 0 ? "active" : "")} id={"pills-" + index + '-tab'} data-bs-toggle="pill" data-bs-target={"#pills-" + index} type="button" role="tab" aria-controls={"pills-" + index} aria-selected={index == 0 ? "true" : "false"}>T {index + 1}</button>
+                                        <li key={"nav-item" + index} className={clsx(Style.navItem, 'd-flex align-items-center ')} role="presentation">
+                                            <button className={clsx("bg-transparent px-3 px-lg-4  border  rounded-pill ", index === 0 ? "active" : "")} id={"pills-" + index + '-tab'} data-bs-toggle="pill" data-bs-target={"#pills-" + index} type="button" role="tab" aria-controls={"pills-" + index} aria-selected={index == 0 ? "true" : "false"}>
+                                                <div style={{ borderBottom: "1px dashed #ccc" }} className="fw-bold text-white">
+                                                    T{index + 1}
+                                                </div>
+                                                <div style={{ fontSize: '12px' }} className=" text-muted ">{formatNumber(Number(item.amountNeed))}</div>
+                                            </button>
                                             {index < dataProject.processes.length - 1 ? <div className={clsx(Style.tabLine)}></div> : ""}
                                         </li>
                                     ))
@@ -842,18 +857,23 @@ function ProjectDetail(props) {
                                     dataProject.processes.map((item, index) => (
                                         <div key={"tab-content" + index} className={clsx("tab-pane fade", index === 0 ? "show active" : "")} id={"pills-" + index} role="tabpanel" aria-labelledby={"pills-" + index + "-tab"}>
 
-                                            <div className={clsx(Style.baseColor, 'd-flex justify-content-between align-items-center my-5')}>
-                                                <div className="d-flex align-items-center">
+                                            <div className={clsx(Style.baseColor, 'd-flex flex-column flex-md-row justify-content-between align-items-center my-5')}>
+                                                <div className="d-flex  align-items-center align-self-start">
                                                     <i className="mdi mdi-chart-donut fs-1 me-3 pe-3 border-end"></i>
                                                     <div className="">
                                                         <p className="mb-0  text-uppercase">Trạng thái</p>
                                                         <p className={clsx(Style.foreignColor, 'm-0 fs-5 text-uppercase')}>{item.status === 1 ? "Chưa bắt đầu" : (item.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</p>
                                                     </div>
                                                 </div>
-                                                <Link to={{
-                                                    pathname: "/update-process/" + item.processId,
-                                                    state: item // chuyền dữ liệu qua Update-process
-                                                }} className={clsx(Style.baseColor, Style.editProcess, "py-2 px-4 px-lg-5 fw-light rounded-3  text-uppercase text-decoration-none")} >Chỉnh sửa</Link>
+                                                {
+                                                    dataProject.isEdit === true ? (
+                                                        <Link to={{
+                                                            pathname: "/update-process/" + item.processId,
+                                                            state: item // chuyền dữ liệu qua Update-process
+                                                        }} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, Style.editBtn, "align-self-end  my-2 py-2 px-4 px-lg-5 fw-light rounded-3 text-center   text-uppercase text-decoration-none")} ><i className="mdi mdi-tooltip-edit me-2"></i>Chỉnh sửa tiến trình</Link>
+                                                    ) : null
+                                                }
+
                                             </div>
 
                                             <div className='my-5'>
@@ -985,7 +1005,7 @@ function ProjectDetail(props) {
                                                     </div>
                                                 </div>
                                                 <div className={clsx(Style.footer)}>
-                                                    <Link to={{ pathname: '/bai-viet/' + item.id + '/' + item.title }} className='text-decoration-none '>Xem chi tiết<i className="mdi mdi-arrow-right-bold-circle-outline ms-2"></i></Link>
+                                                    <Link to={{ pathname: '/bai-viet/' + item.id + '/' + item.title }} onClick={() => window.scrollTo(0, 0)} className='text-decoration-none '>Xem chi tiết<i className="mdi mdi-arrow-right-bold-circle-outline ms-2"></i></Link>
                                                 </div>
                                             </div>
                                         </div>

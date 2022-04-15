@@ -1,12 +1,33 @@
 import axios from "axios";
 import queryString from "query-string";
+import { useHistory } from "react-router-dom";
+import  alertify from 'alertifyjs';
+import * as $ from 'jquery';
+import 'alertifyjs/build/css/alertify.css';
+
+
+
 
 // Authorization token 
-const adminToken = localStorage.getItem('admin-info') ? JSON.parse(localStorage.getItem('admin-info')).token : null
-const clientToken = localStorage.getItem('client-info') ? JSON.parse(localStorage.getItem('client-info')).token : null
+const adminInfo = localStorage.getItem('admin-info') ? JSON.parse(localStorage.getItem('admin-info')) : null
+const clientInfo = localStorage.getItem('client-info') ? JSON.parse(localStorage.getItem('client-info')) : null
 
-const token = adminToken ? adminToken : clientToken
-const authorizationToken = token ? token : ""
+const userInfo = adminInfo != null ? adminInfo : clientInfo
+const tokenExpiredTime = userInfo != null ? userInfo.expiredTime : 0
+let authorizationToken = "";
+
+// Check expired time token
+if((Date.now() - tokenExpiredTime) > 86400000 && tokenExpiredTime == 0 ) {
+  localStorage.clear();
+  console.log('phiên đăng nhập hết hạn')
+} else if((Date.now() - tokenExpiredTime) > 86400000 && tokenExpiredTime != 0) {
+  alertify.alert('THÔNG BÁO', 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.', function(){ 
+    localStorage.clear()
+    window.location.href = adminInfo ? '/admin/login' : '/login'
+   });
+} else {
+  authorizationToken = userInfo.token
+}
 console.log('authorizationToken : ',authorizationToken);
 
 const axiosClient = axios.create({
