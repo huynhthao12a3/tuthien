@@ -22,6 +22,8 @@ function AddProcess(props) {
     //---------------------------------------------------------------------------giá trị khởi tạo
     const location = useLocation().pathname;
     const projectObj = props.location.state
+    console.log("projectObj",projectObj)
+    console.log(moment(projectObj.enddate).utc().format())
     const history = useHistory()
 
     //------------------------------------------------------------------------------------- useState
@@ -156,7 +158,7 @@ function AddProcess(props) {
     // đẩy lên Api
     
     const handleFinal=async()=>{
-        console.log("endDate",projectObj.address)
+       
         try{
             const data={
                   
@@ -169,7 +171,7 @@ function AddProcess(props) {
                     "solution": projectObj.solution,
                     "location": projectObj.address,
                     "impact": projectObj.target,
-                    "endDate":moment(projectObj.endDate).utc().format(),
+                    "endDate":moment(projectObj.enddate).utc().format(),
                     "addressContract": "string",
                     "amountNeed": listProcessValue.reduce(function(total,number)
                     {
