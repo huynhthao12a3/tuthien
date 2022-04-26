@@ -8,6 +8,8 @@ import Button from 'react-bootstrap/Button'
 import Nav from "react-bootstrap/Nav";
 import { NavLink } from "react-router-dom";
 import trxCoin from "../../../../assets/images/trx-coin.svg"
+import * as alertify from 'alertifyjs';
+import 'alertifyjs/build/css/alertify.css';
 // Dùng chung
 import SetInnerHTML from "../../../../shares/setInnerHTML"
 //  Google map 
@@ -24,6 +26,9 @@ import moment from 'moment'
 
 // Slider trong React Slick
 import Slider from "react-slick";
+
+// Sweet Alert  
+import swal from 'sweetalert'
 
 import AddProject from "../Add/index";
 import projectApi from '../../../../api/Project';
@@ -649,6 +654,139 @@ function ProjectDetail(props) {
     // }, [])
     console.log("URL: ", process.env.REACT_APP_API_URL)
     // console.log(trxPrice)
+
+
+    // const [statusTronWeb, setStatusTronWeb] = useState({
+    //     installed: !!window.tronWeb,
+    //     loggedIn: window.tronWeb && window.tronWeb.ready
+    // })
+    // console.log(statusTronWeb)
+    const tronweb = window.tronWeb;
+    const HttpProvider = tronweb.providers.HttpProvider;
+    tronweb.eventServer = new HttpProvider("https://nile.trongrid.io")
+
+    // Đóng góp cho dự án
+    const handleDonate = () => {
+        // let res = ""
+        if (!!window.tronWeb == false) {
+            // alertify.alert("Vui lòng cài đặt TronLink để tham gia đóng góp.")
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng cài đặt TronLink để tham gia đóng góp.",
+                icon: "info",
+                button: {
+                    className: "bg-base-color"
+                }
+            });
+        } else if ((window.tronWeb.ready && window.tronWeb.ready) == false) {
+            // alertify.alert("Vui lòng đăng nhập TronLink để tham gia đóng góp.")
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng đăng nhập TronLink để tham gia đóng góp.",
+                icon: "info",
+                button: {
+                    className: "bg-base-color"
+                }
+            });
+        } else {
+            donate()
+        }
+
+    }
+    // Gọi hàm Donate từ Smart Contract
+    async function donate() {
+        try {
+            const sm = await tronweb.contract().at(process.env.REACT_APP_SMART_CONTRACT_ADDRESS)
+            sm["PayEvent"]().watch((err, eventResult) => {
+                if (err) {
+                    return console.error('Error with "method" event:', err);
+                }
+                if (eventResult) {
+                    console.log('eventResult:', eventResult);
+                }
+            });
+            const result = await sm.DonateProject(valueTrx * 1000000, id).send({
+                feeLimit: 100_000_000,
+                callValue: valueTrx * 1000000,
+                // shouldPollResponse:true
+            })
+                .then((res) => {
+                    console.log('Donate: ', res)
+                    console.log('Type of res: ', typeof res)
+
+                    if (typeof res === 'string') {
+                        // alertify.alert("Đóng góp thành công. Chúng tôi chân thành cảm ơn bạn.")
+                        swal({
+                            title: "Đóng góp thành công.",
+                            text: "Chúng tôi chân thành cảm ơn bạn vì sự đóng góp này. \n Chúc bạn luôn mạnh khỏe, thành công trong cuộc sống.",
+                            icon: "success",
+                            button: {
+                                className: "bg-base-color"
+                            }
+                        });
+                        // alert("Đóng góp thành công. \n Cảm ơn các bạn.")
+                    }
+                })
+        }
+        catch (err) {
+            console.error(err)
+        }
+    }
+
+
+    // Hàm xử lí rút tiền 
+    const handleWithdraw = () => {
+        if (!!window.tronWeb === false) {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng cài đặt TronLink để rút tiền.",
+                icon: "info",
+                button: {
+                    className: "bg-base-color"
+                }
+            });
+        } else if ((window.tronWeb.ready && window.tronWeb.ready) === false) {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng đăng nhập TronLink để rút tiền.",
+                icon: "info",
+                button: {
+                    className: "bg-base-color"
+                }
+            });
+        } else {
+            withdraw()
+        }
+    }
+
+    // Hàm rút tiền từ Smart contract
+    async function withdraw() {
+
+        const sm = await tronweb.contract().at(process.env.REACT_APP_SMART_CONTRACT_ADDRESS)
+        sm["PayEvent"]().watch((err, eventResult) => {
+            if (err) {
+                return console.error('Error with "method" event:', err);
+            }
+            if (eventResult) {
+                console.log('eventResult:', eventResult);
+            }
+        });
+        const result = await sm.WithDraw(tronweb.defaultAddress.base58, valueTrx * 1000000, id).send()
+            .then((res) => {
+
+                console.log('Withdraw: ', res)
+                if (typeof res === 'string') {
+                    swal({
+                        title: "Rút tiền thành công.",
+                        icon: "success",
+                        button: {
+                            className: "bg-base-color"
+                        }
+                    });
+                }
+            })
+
+    }
     return (
         <>
             {/* Header dự án  */}
@@ -666,8 +804,11 @@ function ProjectDetail(props) {
                                     {
                                         dataProject.category.map((item, index) =>
                                             <span key={"project" + index} className="d-inline-block me-1 me-md-4 ">
-                                                <i className={clsx(Style.baseColor, 'mdi mdi-label-outline pe-1 pe-md-2')}>
-                                                    </i>{item.categoryName}</span>
+
+                                                <i className={clsx(Style.baseColor, 'mdi mdi-label-outline pe-1 pe-md-2')}></i>
+                                                {item.categoryName}
+                                            </span>
+
                                         )
                                     }
                                 </div>
@@ -702,9 +843,10 @@ function ProjectDetail(props) {
                                     dataProject.isEdit === true ? (
                                         <Link to={{
                                             pathname: `/update-project/${id}/${dataProject.title}`,
-                                            state: "item" // chuyền dữ liệu qua Update-process
+                                            state: dataProject // chuyền dữ liệu qua Update-process
                                         }} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, Style.editBtn, "align-self-end  my-2 py-2 px-4 px-lg-5 fw-light rounded-3 text-center   text-uppercase text-decoration-none")} >
                                             <i className="mdi mdi-tooltip-edit me-2"></i>Chỉnh sửa dự án</Link>
+
                                     ) : null
                                 }
 
@@ -816,7 +958,10 @@ function ProjectDetail(props) {
                                         <div className="fw-bold">VNĐ</div>
                                     </div>
                                 </div>
-                                <button className={clsx(Style.backgroundForeignColor, "fs-5 w-100 mt-5 p-2 text-white text-center text-uppercase")}>Tiếp tục<i className="mdi mdi-arrow-right-drop-circle-outline ms-1"></i></button>
+                                <button className={clsx(Style.backgroundForeignColor, "fs-5 w-100 mt-5 p-2 text-white text-center text-uppercase")} onClick={handleDonate}>Tiếp tục<i className="mdi mdi-arrow-right-drop-circle-outline ms-1"></i></button>
+                                {
+                                    dataProject.isEdit === true ? <button className={clsx(Style.backgroundBaseColor, "fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleWithdraw}>Rút tiền<i className="mdi mdi-cash-multiple ms-1"></i></button> : ""
+                                }
                             </div>
                         </div>
                     </div>

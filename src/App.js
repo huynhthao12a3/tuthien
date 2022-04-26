@@ -20,15 +20,17 @@ import {
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProjectDetail from "./views/client/Project/ProjectDetail";
-import ArticalDetail from "./views/client/Project/ArticalDetail";
+import ArticalDetail from "./views/client/Project/Artical/ArticalDetail";
 import ClientLayout from './layouts/ClientLayout';
 import AdminLayout from './layouts/AdminLayout';
+import NotFound from './shares/NotFound';
 function App() {
   return (
     <BrowserRouter>
      <Switch>
          <Route  path="/admin" component={AdminLayout}/>
          <Route  path="/" component={ClientLayout}/>
+         
      </Switch>
 
     {/* <Switch>

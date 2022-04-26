@@ -11,6 +11,9 @@ ClientLogin.propTypes = {
 function ClientLogin() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+
+    localStorage.clear();
+
     const history = useHistory();
     const handleSubmit = async (e) => {
         // setToken("1")
