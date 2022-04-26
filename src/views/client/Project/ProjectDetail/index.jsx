@@ -87,7 +87,7 @@ function ProjectDetail(props) {
         const fetchDataProject = async () => {
             const response = await projectApi.get(id)
             setDataProject(response.data)
-            console.log('project :', response.data)
+            console.log('project :', dataProject)
         }
         fetchDataProject()
     }, [id])
@@ -665,7 +665,9 @@ function ProjectDetail(props) {
                                 <div className=" col-12">
                                     {
                                         dataProject.category.map((item, index) =>
-                                            <span key={"project" + index} className="d-inline-block me-1 me-md-4 "><i className={clsx(Style.baseColor, 'mdi mdi-label-outline pe-1 pe-md-2')}></i>{item}</span>
+                                            <span key={"project" + index} className="d-inline-block me-1 me-md-4 ">
+                                                <i className={clsx(Style.baseColor, 'mdi mdi-label-outline pe-1 pe-md-2')}>
+                                                    </i>{item.categoryName}</span>
                                         )
                                     }
                                 </div>
@@ -699,9 +701,10 @@ function ProjectDetail(props) {
                                 {
                                     dataProject.isEdit === true ? (
                                         <Link to={{
-                                            pathname: "/update-project/" + id,
+                                            pathname: `/update-project/${id}/${dataProject.title}`,
                                             state: "item" // chuyền dữ liệu qua Update-process
-                                        }} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, Style.editBtn, "align-self-end  my-2 py-2 px-4 px-lg-5 fw-light rounded-3 text-center   text-uppercase text-decoration-none")} ><i className="mdi mdi-tooltip-edit me-2"></i>Chỉnh sửa dự án</Link>
+                                        }} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, Style.editBtn, "align-self-end  my-2 py-2 px-4 px-lg-5 fw-light rounded-3 text-center   text-uppercase text-decoration-none")} >
+                                            <i className="mdi mdi-tooltip-edit me-2"></i>Chỉnh sửa dự án</Link>
                                     ) : null
                                 }
 
@@ -765,7 +768,7 @@ function ProjectDetail(props) {
                                             <p className='m-0 fw-light text-uppercase'>{dataProject.userCreate}</p>
                                             <p className='m-0 mt-3 fs-5'>Loại dự án</p>
                                             <ul className='m-0 fw-light '>{dataProject.category.map((item, index) => (
-                                                <li key={"caterogy" + index}>{item}</li>
+                                                <li key={"caterogy" + index}>{item.categoryName}</li>
                                             ))}</ul>
                                             <p className='m-0 mt-3 fs-5'>Đối tượng cần hỗ trợ</p>
                                             <p className='m-0 fw-light '>{dataProject.impact}</p>
@@ -868,7 +871,7 @@ function ProjectDetail(props) {
                                                 {
                                                     dataProject.isEdit === true ? (
                                                         <Link to={{
-                                                            pathname: "/update-process/" + item.processId,
+                                                            pathname: `/update-process/${item.processId}/${dataProject.title}`,
                                                             state: item // chuyền dữ liệu qua Update-process
                                                         }} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, Style.editBtn, "align-self-end  my-2 py-2 px-4 px-lg-5 fw-light rounded-3 text-center   text-uppercase text-decoration-none")} ><i className="mdi mdi-tooltip-edit me-2"></i>Chỉnh sửa tiến trình</Link>
                                                     ) : null

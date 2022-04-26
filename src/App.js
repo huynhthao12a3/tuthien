@@ -26,7 +26,6 @@ import AdminLayout from './layouts/AdminLayout';
 function App() {
   return (
     <BrowserRouter>
-    
      <Switch>
          <Route  path="/admin" component={AdminLayout}/>
          <Route  path="/" component={ClientLayout}/>

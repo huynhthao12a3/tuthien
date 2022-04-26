@@ -17,7 +17,13 @@ import processApi from "../../../../../api/Process";
 function UpdateProcess(props){
    
     //-------------------------------------------------------- giá trị khởi tạo
-    const location = useLocation().pathname.slice(useLocation().pathname.lastIndexOf("/")+1);
+    const locations = useLocation().pathname
+    let location= locations.slice(locations.indexOf("project/")+1,locations.lastIndexOf("/"))
+    location=location.slice(location.lastIndexOf("/")+1)
+
+    // const location = useLocation().pathname.slice(useLocation().pathname.lastIndexOf("/")+1);
+
+    console.log("location",location)
     const imgFormat=['jpeg','gif','png','tiff','raw','psd','jpg']
     const processProp =props.location.state
 

@@ -37,9 +37,6 @@ function AddProcess(props) {
     const [indexProcess, setIndexProcess] = useState(-1)
     const [amountWord,setAmountWord]=useState('')
 
-    // const [inputStatus,setInputStatus]= useState(1)// lưu trạng thái tạm
-    // const [listFile,setListFile]=useState([])
-
     //--------------------------------------------------------------------------------- useEffect
 
     useEffect(()=>{

@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import ClientNavbar from '../shares/ClientNavbar';
 import ClientFooter from '../shares/ClientFooter';
+import UpdateProcess from "../views/client/Project/Process/Update"
 import {
     BrowserRouter,
     Route, Switch
@@ -12,10 +13,9 @@ import ProjectDetail from '../views/client/Project/ProjectDetail';
 import ClientProject from "./../views/client/Project/index";
 import ClientLogin from "./../views/client/Login/index";
 import ProtectedRoute from '../shares/ProtectedRoute'
-import UpdateProcess from '../views/client/Project/Process/Update'; 
+import EditProjectUser from '../views/client/Project/edit';
 import * as $ from 'jquery'
 import ArticalDetail from "./../views/client/Project/ArticalDetail/index";
-
 
 ClientLayout.propTypes = {
     
@@ -47,8 +47,9 @@ function ClientLayout(props) {
                 {/* Route bắt buộc phải Login mới xemm được */}
                 <ProtectedRoute exact path="/add-project" component={AddProject} role='client'/>
                 <ProtectedRoute exact path="/add-process" component={AddProcess} role='client'/>
-
-                <ProtectedRoute exact path="/update-process/:id" component={UpdateProcess} role='client'/>
+              
+                <ProtectedRoute exact path="/update-project/:id/:friendlyurl" component={EditProjectUser} role='client'/>
+                <ProtectedRoute exact path="/update-process/:id/:friendlyurl" component={UpdateProcess} role='client'/>
 
             </Switch>
         <ClientFooter/>

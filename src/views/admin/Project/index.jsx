@@ -11,11 +11,14 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import * as $ from "jquery"
 import Select from 'react-select'
 import { Link } from "react-router-dom";
+import categoryApi from "../../../api/Category";
 
 function Project(){
 
-    // select ------------------------------------------
-        // select danh muc
+    //--------------------------------------------------------- useState 
+    // selector
+    const [categoryOptions,setCategoryOptions]= useState([])
+    
     const filtercategory = [
         { value: '1', label: 'Thiên tai' },
         { value: '2', label: 'Trẻ em' },
@@ -80,6 +83,24 @@ function Project(){
             value: [startOfDay(subDays(new Date(), 364)), endOfDay(new Date())]
         },
     ];
+    //--------------------------------------------------- useEffect
+    useEffect(async()=>{
+        const getAllUsers = async () => {
+            try {
+                const response = await categoryApi.getProject();
+                setCategoryOptions(response.data.map((item)=>{
+                    return({
+                        value:item.id,
+                        label:item.categoryName
+                    })
+                }))
+            }
+            catch (e) {
+                console.error(e)
+            }
+        }
+        getAllUsers()
+    },[])
 
     // api fake
     const arr=[
@@ -186,7 +207,7 @@ function Project(){
                             <div className={'mt-4'}>
                                 <h5 className={clsx(Style.searchContent,'')}>Danh mục</h5>
                                 <div className="form-group">
-                                    <Select defaultValue={inputCategoty} onChange={setInputCategoty}  className={clsx( Style.Inputfocus)} placeholder='danh mục' options={filtercategory} />
+                                    <Select defaultValue={inputCategoty} onChange={setInputCategoty}  className={clsx( Style.Inputfocus)} placeholder='danh mục' options={categoryOptions} />
                                 </div>
                             </div>
                             <div className={'mt-4'}>
