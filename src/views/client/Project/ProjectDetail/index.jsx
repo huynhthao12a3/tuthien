@@ -32,6 +32,7 @@ import swal from 'sweetalert'
 
 import AddProject from "../Add/index";
 import projectApi from '../../../../api/Project';
+import clientUser from '../../../../api/User/Client';
 
 ProjectDetail.propTypes = {
 
@@ -83,16 +84,16 @@ function ProjectDetail(props) {
             }
         ],
         files: null,
-        articals: null
-
+        articals: null,
+        transaction: []
     })
-    const { id } = useParams()
+    const { id, friendlyUrl } = useParams()
     console.log(id)
     useEffect(() => {
         const fetchDataProject = async () => {
             const response = await projectApi.get(id)
             setDataProject(response.data)
-            console.log('project :', dataProject)
+            console.log('project :', response.data)
         }
         fetchDataProject()
     }, [id])
@@ -667,9 +668,7 @@ function ProjectDetail(props) {
 
     // Đóng góp cho dự án
     const handleDonate = () => {
-        // let res = ""
         if (!!window.tronWeb == false) {
-            // alertify.alert("Vui lòng cài đặt TronLink để tham gia đóng góp.")
             swal({
                 title: "Thông báo",
                 text: "Vui lòng cài đặt TronLink để tham gia đóng góp.",
@@ -679,7 +678,6 @@ function ProjectDetail(props) {
                 }
             });
         } else if ((window.tronWeb.ready && window.tronWeb.ready) == false) {
-            // alertify.alert("Vui lòng đăng nhập TronLink để tham gia đóng góp.")
             swal({
                 title: "Thông báo",
                 text: "Vui lòng đăng nhập TronLink để tham gia đóng góp.",
@@ -715,7 +713,6 @@ function ProjectDetail(props) {
                     console.log('Type of res: ', typeof res)
 
                     if (typeof res === 'string') {
-                        // alertify.alert("Đóng góp thành công. Chúng tôi chân thành cảm ơn bạn.")
                         swal({
                             title: "Đóng góp thành công.",
                             text: "Chúng tôi chân thành cảm ơn bạn vì sự đóng góp này. \n Chúc bạn luôn mạnh khỏe, thành công trong cuộc sống.",
@@ -724,12 +721,29 @@ function ProjectDetail(props) {
                                 className: "bg-base-color"
                             }
                         });
-                        // alert("Đóng góp thành công. \n Cảm ơn các bạn.")
+                        // Lưu giao dịch vào database
+                        const saveTransaction = async () => {
+                            const data = {
+                                id: id,
+                                amount: valueTrx,
+                                hash: res,
+                            }
+                            const response = await clientUser.donateProject(data)
+                            console.log('save transaction :', response.data)
+                        }
+                        saveTransaction()
                     }
                 })
         }
         catch (err) {
-            console.error(err)
+            console.error(err);
+            swal({
+                title: "Đóng góp không thành công",
+                icon: "error",
+                button: {
+                    className: "bg-base-color"
+                }
+            });
         }
     }
 
@@ -1016,7 +1030,7 @@ function ProjectDetail(props) {
                                                 {
                                                     dataProject.isEdit === true ? (
                                                         <Link to={{
-                                                            pathname: `/update-process/${item.processId}/${dataProject.title}`,
+                                                            pathname: `/update-process/${item.processId}`,
                                                             state: item // chuyền dữ liệu qua Update-process
                                                         }} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, Style.editBtn, "align-self-end  my-2 py-2 px-4 px-lg-5 fw-light rounded-3 text-center   text-uppercase text-decoration-none")} ><i className="mdi mdi-tooltip-edit me-2"></i>Chỉnh sửa tiến trình</Link>
                                                     ) : null
@@ -1179,18 +1193,18 @@ function ProjectDetail(props) {
 
                             <Slider {...settingSliderDonors}>
                                 {
-                                    fakeDateDonors.map((item, index) => (
+                                    dataProject.transaction.map((item, index) => (
                                         <div key={index} className={clsx(Style.articalDetail, "d-flex flex-column  p-3 ")}>
                                             <div className="rounded-circle d-inline-block mx-auto p-2 border">
-                                                <img src={item.avatar} alt="hình đại diện" width="100px" height="100px" className=" rounded-circle" />
+                                                <img src={process.env.REACT_APP_URL + item.userAvatar} alt="hình đại diện" width="100px" height="100px" className=" rounded-circle" />
                                             </div>
                                             <div className="my-3">
-                                                <p className="m-0 text-center">{item.userCreate}</p>
+                                                <p className="m-0 text-center">{item.userName}</p>
                                                 <div className="m-0 d-flex justify-content-center">
                                                     <img src={trxCoin} alt="coin" className="" width="16px" />
                                                     <span className="ms-1 fw-bold">{item.amount}</span>
                                                 </div>
-                                                <a href={"https://tronscan.org/#/transaction/" + item.transactionId} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết</a>
+                                                <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết</a>
 
                                             </div>
                                         </div>

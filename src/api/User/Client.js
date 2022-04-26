@@ -26,7 +26,11 @@ const clientUser = {
         const url = `/user/update-user/${data.userId}`
         return axiosClient.put(url, data)
     }, 
-    
+    donateProject: (data) => {
+        const url = `/user/donate-project?projectid=${data.id}`
+        delete data.id
+        return axiosClient.post(url, data)
+    }
 }
 
 export default clientUser;
