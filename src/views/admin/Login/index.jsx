@@ -12,7 +12,7 @@ function AdminLogin() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const history = useHistory();
-
+    localStorage.clear();
     const handleSubmit = async (e) => {
         // setToken("1")
         // console.log('login success')

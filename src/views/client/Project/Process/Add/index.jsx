@@ -13,16 +13,21 @@ import 'alertifyjs/build/css/alertify.css';
 import { useHistory, useLocation } from "react-router-dom";
 import projectApi from "../../../../../api/Project";
 import Dropdown from 'react-bootstrap/Dropdown'
-import {DocTienBangChu} from "../../../../../utils/utils"
+import { DocTienBangChu } from "../../../../../utils/utils"
 import moment from 'moment';
+import swal from "sweetalert";
 
 
 function AddProcess(props) {
+    // ----- tronweb
+    const tronweb = window.tronWeb;
+    const HttpProvider = tronweb.providers.HttpProvider;
+    tronweb.eventServer = new HttpProvider("https://nile.trongrid.io")
 
     //---------------------------------------------------------------------------giá trị khởi tạo
     const location = useLocation().pathname;
     const projectObj = props.location.state
-    console.log("projectObj",projectObj)
+    console.log("projectObj", projectObj)
     console.log(moment(projectObj.enddate).utc().format())
     const history = useHistory()
 
@@ -35,16 +40,16 @@ function AddProcess(props) {
     const [amountNeed, setAmountNeed] = useState(0)
     const [imgValue, setImgValue] = useState([])
     const [indexProcess, setIndexProcess] = useState(-1)
-    const [amountWord,setAmountWord]=useState('')
+    const [amountWord, setAmountWord] = useState('')
 
     // const [inputStatus,setInputStatus]= useState(1)// lưu trạng thái tạm
     // const [listFile,setListFile]=useState([])
 
     //--------------------------------------------------------------------------------- useEffect
 
-    useEffect(()=>{
+    useEffect(() => {
         setAmountWord(DocTienBangChu(amountNeed))
-    },[amountNeed])
+    }, [amountNeed])
 
     useEffect(() => {
         console.log("listProcessValue", listProcessValue)
@@ -61,6 +66,13 @@ function AddProcess(props) {
         }
         console.log("indexProcess", indexProcess)
     }, [indexProcess])
+
+    const [trxPrice, setTrxPrice] = useState();
+    useEffect(() => {
+        fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=vnd")
+            .then(res => res.json())
+            .then(res => { setTrxPrice(res.tron.vnd) })
+    }, [])
     //------------------------------------------------------------------------ function
 
     // xử lý hiện ảnh lên màn hình
@@ -92,7 +104,7 @@ function AddProcess(props) {
             setshortDescription('')
             setAmountNeed(0)
             setIndexProcess(-1)
-             $('.ajs-button.ajs-ok').css({"background-color": "var(--admin-btn-color)"});
+            $('.ajs-button.ajs-ok').css({ "background-color": "var(--admin-btn-color)" });
 
 
             alertify.alert('Thông báo', `Thêm tiến trình vào dự án  ${projectObj.projectname}  thành công!`);
@@ -114,11 +126,10 @@ function AddProcess(props) {
 
     // cập nhật process
 
-    const handleUpdateProcess =()=>{
-        if( title !== "" && shortDescription !=="" && amountNeed>0 )
-        {
-            const arrProcess=[...listProcessValue]
-            arrProcess[indexProcess]={
+    const handleUpdateProcess = () => {
+        if (title !== "" && shortDescription !== "" && amountNeed > 0) {
+            const arrProcess = [...listProcessValue]
+            arrProcess[indexProcess] = {
 
                 title,
                 shortDescription,
@@ -141,72 +152,102 @@ function AddProcess(props) {
     }
 
     // xóa process
-    const HandleDeleteProcess =(index)=>{
-        alertify.confirm('Thông báo','bạn có chắc muốn xóa tiến trình này', 
-            function(){
-                const arr1 =[...listProcessValue.slice(0,index),...listProcessValue.slice(index+1)]
+    const HandleDeleteProcess = (index) => {
+        alertify.confirm('Thông báo', 'bạn có chắc muốn xóa tiến trình này',
+            function () {
+                const arr1 = [...listProcessValue.slice(0, index), ...listProcessValue.slice(index + 1)]
                 setListProcessValue(arr1)
-                alertify.success('xóa thành công') 
+                alertify.success('xóa thành công')
             },
-            function()
-            { 
+            function () {
                 alertify.error('đã hủy xóa')
 
             });
     }
 
     // đẩy lên Api
-    
-    const handleFinal=async()=>{
-       
-        try{
-            const data={
-                  
-                    "title": projectObj.projectname,
-                    "shortDescription": projectObj.description,
-                    "projectStatus": 1,
-                    "friendlyUrl": projectObj.projecturl,
-                    "summary": projectObj.summary,
-                    "problemToAddress": projectObj.problem,
-                    "solution": projectObj.solution,
-                    "location": projectObj.address,
-                    "impact": projectObj.target,
-                    "endDate":moment(projectObj.enddate).utc().format(),
-                    "addressContract": "string",
-                    "amountNeed": listProcessValue.reduce(function(total,number)
-                    {
-                        return total +number.amountNeed
-                    },0),
-                    "process":listProcessValue.map( function(item){
-                        return({
-                            "title": item.title,
-                            "shortDescription": item.shortDescription,
-                            "content": '',
-                            "amountNeed": item.amountNeed,
-                        })
-                    }),  
-                    "category": (projectObj.category).map(function(item){
-                        return({
-                            "categoryId": Number(item)
-                        })
-                    }),
-                    "banner": {
-                        "fileName":projectObj.urlImg.fileName ,
-                        "filePath": projectObj.urlImg.filePath,
-                        "friendlyUrl": projectObj.urlImg.friendlyUrl,
-                        "note": projectObj.urlImg.note
-                    }
-              
+
+    const handleCreateProject = () => {
+        if (!!window.tronWeb === false) {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng cài đặt TronLink để tạo dự án.",
+                icon: "info",
+                button: {
+                    className: "bg-base-color"
+                }
+            });
+        } else if ((window.tronWeb.ready && window.tronWeb.ready) === false) {
+            // alertify.alert("Vui lòng đăng nhập TronLink để tạo dự án.")
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng đăng nhập TronLink để tạo dự án.",
+                icon: "info",
+                button: {
+                    className: "bg-base-color"
+                }
+            });
+        } else {
+            handleFinal();
+        }
+    }
+    const handleFinal = async () => {
+
+        try {
+            const data = {
+
+                "title": projectObj.projectname,
+                "shortDescription": projectObj.description,
+                "projectStatus": 1,
+                "friendlyUrl": projectObj.projecturl,
+                "summary": projectObj.summary,
+                "problemToAddress": projectObj.problem,
+                "solution": projectObj.solution,
+                "location": projectObj.address,
+                "impact": projectObj.target,
+                "endDate": moment(projectObj.enddate).utc().format(),
+                "addressContract": "string",
+                "amountNeed": listProcessValue.reduce(function (total, number) {
+                    return total + number.amountNeed
+                }, 0),
+                "process": listProcessValue.map(function (item) {
+                    return ({
+                        "title": item.title,
+                        "shortDescription": item.shortDescription,
+                        "content": '',
+                        "amountNeed": item.amountNeed,
+                    })
+                }),
+                "category": (projectObj.category).map(function (item) {
+                    return ({
+                        "categoryId": Number(item)
+                    })
+                }),
+                "banner": {
+                    "fileName": projectObj.urlImg.fileName,
+                    "filePath": projectObj.urlImg.filePath,
+                    "friendlyUrl": projectObj.urlImg.friendlyUrl,
+                    "note": projectObj.urlImg.note
+                }
+
             }
-                const response = await projectApi.createProject(data);
-                console.log(response.data)
-                if (response.isSuccess) {
-                    alertify.alert('Tạo dự án thành công')
-                    history.push("/dashboard")
-                }
-                else {
-                    alertify.alert('Tạo dự án thất bại')
-                }
+            const response = await projectApi.createProject(data);
+            console.log(response.data)
+            if (response.isSuccess) {
+
+                // alertify.alert('Tạo dự án thành công')
+                createProjectSM(response.data)
+            }
+            else {
+                // alertify.alert('Tạo dự án thất bại')
+                swal({
+                    title: "Tạo dự án thất bại",
+                    icon: "error",
+                    button: {
+                        className: "bg-base-color"
+                    }
+                });
+            }
 
         }
         catch (error) {
@@ -214,25 +255,54 @@ function AddProcess(props) {
         }
     }
 
+    // Tạo dự án trên Smart Contract 
+    async function createProjectSM(id) {
+
+        // Quy đổi VND -> SUN (1 TRX = 1.000.000 SUN)
+        const amountNeedVnd = listProcessValue.reduce(function (total, number) {
+            return total + number.amountNeed
+        }, 0);
+        const amountNeedSun = Math.round((amountNeedVnd / trxPrice) * 1000000)
+        console.log('SUN: ', amountNeedSun);
+
+        const sm = await tronweb.contract().at(process.env.REACT_APP_SMART_CONTRACT_ADDRESS)
+        let result = await sm.CreateProject(id, 'huynhthao@gmail.com', amountNeedSun).send()
+            .then((res) => {
+                console.log('CreateProject: ', res)
+                if (typeof res === 'string') {
+                    swal({
+                        title: "Tạo dự án thành công",
+                        icon: "success",
+                        button: {
+                            className: "bg-base-color"
+                        }
+                    });
+                    history.push(`/project-detail/${id}/${projectObj.projecturl}`)
+
+                }
+
+            })
+
+    }
     return (
         <>
 
-         <div className={clsx(Style.main)}>
-            <div id='nava' className="container-fluid p-4 mx-auto p-md-5 ">
-                
-                <div className={clsx('row pt-3')}>
-                    <div className="col-12 col-md-9">
-                        <h3 className={clsx(Style.title_content,"pb-3")}>Thêm tiến trình</h3>
-                       
-                        <div className={clsx(Style.information_wrap,'row p-2 p-md-4 mb-3')}>
-                            <h5>Thông tin</h5>
-                            <div className={clsx('col-12 pt-1 pt-md-3 ')}>
-                                
-                                <label htmlFor="nameProject">Tiêu đề</label>
-                                <input value={title} onChange={(e)=>setTitle(e.target.value)} className={clsx(Style.title,'w-100 ps-2 pe-2 ')} id='nameProject' type="text" />
-                            </div>
-                            <div className={clsx(Style.editor,' add-project_editor col-12 pt-3 removeImg')}>
-                                
+            <div className={clsx(Style.main)}>
+                <div id='nava' className="container-fluid p-4 mx-auto p-md-5 ">
+
+                    <div className={clsx('row pt-3')}>
+                        <div className="col-12 col-md-9">
+                            <h3 className={clsx(Style.title_content, "pb-3")}>Thêm tiến trình</h3>
+
+                            <div className={clsx(Style.information_wrap, 'row p-2 p-md-4 mb-3')}>
+                                <h5>Thông tin</h5>
+                                <div className={clsx('col-12 pt-1 pt-md-3 ')}>
+
+                                    <label htmlFor="nameProject">Tiêu đề</label>
+                                    <input value={title} onChange={(e) => setTitle(e.target.value)} className={clsx(Style.title, 'w-100 ps-2 pe-2 ')} id='nameProject' type="text" />
+                                </div>
+                                <div className={clsx(Style.editor, ' add-project_editor col-12 pt-3 removeImg')}>
+
 
                                     <label htmlFor="nameProject">Mô tả ngắn (shortDescriptiona)</label>
                                     <CKEditor
@@ -248,50 +318,52 @@ function AddProcess(props) {
                                             removePlugins: ['MediaEmbed', 'Table'],
                                         }}
                                     />
-                    
-                            </div>
-                            <div className={clsx('col-12 pt-3 ')}>
-                                
-                                <label htmlFor="nameProject">Số tiền cần thiết (VND)</label>
-                                <input value={amountNeed} onChange={(e)=>{if(Number.isFinite(Number(e.target.value))){
-                                    setAmountNeed(Number(e.target.value))
-                                  
-                                } }} className={clsx(Style.title,'w-100 ps-2 pe-2 ')} id='nameProject' type="text" />
-                                <span className={clsx(Style.wrap_amountWord,'mt-2 d-inline-block font-weight-bold')}>Thành tiền : 
-                                    <span className={clsx(Style.amountWord,'text-danger')}> {amountWord} </span>
-                                </span>
-                            </div>
-                            <div className='d-flex justify-content-end container'>
-                                <button href="nava" onClick={handleAddProcess} className={clsx(Style.createbtn,'btn me-2')}>Thêm</button>
-                                <button href="nava" onClick={handleUpdateProcess} className={clsx(Style.createbtn,'btn updateProcess')}>Cập Nhật</button>
+
+                                </div>
+                                <div className={clsx('col-12 pt-3 ')}>
+
+                                    <label htmlFor="nameProject">Số tiền cần thiết (VND)</label>
+                                    <input value={amountNeed} onChange={(e) => {
+                                        if (Number.isFinite(Number(e.target.value))) {
+                                            setAmountNeed(Number(e.target.value))
+
+                                        }
+                                    }} className={clsx(Style.title, 'w-100 ps-2 pe-2 ')} id='nameProject' type="text" />
+                                    <span className={clsx(Style.wrap_amountWord, 'mt-2 d-inline-block font-weight-bold')}>Thành tiền :
+                                        <span className={clsx(Style.amountWord, 'text-danger')}> {amountWord} </span>
+                                    </span>
+                                </div>
+                                <div className='d-flex justify-content-end container'>
+                                    <button href="nava" onClick={handleAddProcess} className={clsx(Style.createbtn, 'btn me-2')}>Thêm</button>
+                                    <button href="nava" onClick={handleUpdateProcess} className={clsx(Style.createbtn, 'btn updateProcess')}>Cập Nhật</button>
+
+                                </div>
 
                             </div>
+
 
                         </div>
-
-                       
-                    </div> 
-                    <div className="col-md-3 col-12">
-                        <h3 className={clsx(Style.title_content,"pb-3")} >Danh sách tiến trình</h3>
-                        <div className={clsx(Style.process_list,'row ms-md-2')}>
-                            <h5 className="pt-2 ps-3" style={{color:"#666", fontSize:"1.1rem"}}>Tên dự án : {projectObj.projectname}</h5>
-                            <div className="col-12 ps-2 pe-2">
-                                <table className="table">
-                                    <thead>
-                                        <tr style={{color:"#666", fontSize:"0.857rem"}}>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Tiêu đề</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            listProcessValue.map(function(item,index){
-                                                return(
-                                                    <>
-                                                        <tr className={clsx(Style.itemProcess,"cursor-pointer")} >
-                                                            <th onClick={()=>{calbackGetProcess(index)}}>{index}</th>
-                                                            <th onClick={()=>{calbackGetProcess(index)}}>{item.title}</th>
-                                                            <td className=" text-center align-middle ">
+                        <div className="col-md-3 col-12">
+                            <h3 className={clsx(Style.title_content, "pb-3")} >Danh sách tiến trình</h3>
+                            <div className={clsx(Style.process_list, 'row ms-md-2')}>
+                                <h5 className="pt-2 ps-3" style={{ color: "#666", fontSize: "1.1rem" }}>Tên dự án : {projectObj.projectname}</h5>
+                                <div className="col-12 ps-2 pe-2">
+                                    <table className="table">
+                                        <thead>
+                                            <tr style={{ color: "#666", fontSize: "0.857rem" }}>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Tiêu đề</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                listProcessValue.map(function (item, index) {
+                                                    return (
+                                                        <>
+                                                            <tr className={clsx(Style.itemProcess, "cursor-pointer")} >
+                                                                <th onClick={() => { calbackGetProcess(index) }}>{index}</th>
+                                                                <th onClick={() => { calbackGetProcess(index) }}>{item.title}</th>
+                                                                <td className=" text-center align-middle ">
 
 
                                                                     <Dropdown className="d-inline mx-2" >
@@ -317,7 +389,7 @@ function AddProcess(props) {
 
                             </div>
                             <div className='d-flex justify-content-end container'>
-                                <button href="nava" onClick={handleFinal} className={clsx(Style.Btnfinal, 'btn')}>Hoàn thành</button>
+                                <button href="nava" onClick={handleCreateProject} className={clsx(Style.Btnfinal, 'btn')}>Hoàn thành</button>
                             </div>
                         </div>
 

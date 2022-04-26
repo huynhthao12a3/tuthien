@@ -4,7 +4,7 @@ import ClientNavbar from '../shares/ClientNavbar';
 import ClientFooter from '../shares/ClientFooter';
 import {
     BrowserRouter,
-    Route, Switch
+    Route, Switch,Redirect
   } from 'react-router-dom';
 import AddProject from '../views/client/Project/Add';
 import AddProcess from '../views/client/Project/Process/Add';
@@ -14,7 +14,9 @@ import ClientLogin from "./../views/client/Login/index";
 import ProtectedRoute from '../shares/ProtectedRoute'
 import UpdateProcess from '../views/client/Project/Process/Update'; 
 import * as $ from 'jquery'
-import ArticalDetail from "./../views/client/Project/ArticalDetail/index";
+import ArticalDetail from "./../views/client/Project/Artical/ArticalDetail";
+import UpdateProject from '../views/client/Project/Update';
+import NotFound from "./../shares/NotFound/index";
 
 
 ClientLayout.propTypes = {
@@ -39,6 +41,7 @@ function ClientLayout(props) {
         <ClientNavbar/>
             <Switch>
                 {/* Route không cần Login vẫn xem được */}
+                <Route exact path="/" component={ClientProject}/>
                 <Route exact path="/project" component={ClientProject}/>
                 <Route exact path="/project-detail/:id/:friendlyurl" component={ProjectDetail}/>
                 <Route exact path="/login" component={ClientLogin}/>
@@ -48,8 +51,10 @@ function ClientLayout(props) {
                 <ProtectedRoute exact path="/add-project" component={AddProject} role='client'/>
                 <ProtectedRoute exact path="/add-process" component={AddProcess} role='client'/>
 
+                <ProtectedRoute exact path="/update-project/:id" component={UpdateProject} role='client'/>
                 <ProtectedRoute exact path="/update-process/:id" component={UpdateProcess} role='client'/>
-
+                <Route path="/not-found" component={NotFound}/>
+<Redirect to="/not-found"/>
             </Switch>
         <ClientFooter/>
         </>
