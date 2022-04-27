@@ -42,14 +42,14 @@
     }
     .detailWrap{
     }
-    .createbtn{
+    .Btnfinal{
         max-width: 160px;
         color: var(--text-nav-color);
         margin-top: 10px;
         background-color: var( --admin-btn-color) ;
         border-radius: var(--boder-radius);
     }
-    .createbtn:hover{
+    .Btnfinal:hover{
         color: var(--text-nav-color);
         opacity: 0.9;
     }
@@ -66,3 +66,4 @@ input:focus{
     outline: none;
     border-color:rgba(204, 204, 204,0.5) ;
 }
+

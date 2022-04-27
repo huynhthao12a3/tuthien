@@ -16,8 +16,9 @@ const projectApi = {
         return axiosClient.post(url, data)
     },
     editProject: (data) => {
-        const url =`/project/edit-eproject/${data.id}`
-        return axiosClient.post(url, data)
+        const url =`/project/update-project/${data.id}`
+        delete data.ProjectId
+        return axiosClient.put(url, data)
     },
     getAll(params) {
         const url = '/Project/get-project'

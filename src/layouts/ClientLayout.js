@@ -16,7 +16,6 @@ import ProtectedRoute from '../shares/ProtectedRoute'
 import EditProjectUser from '../views/client/Project/edit';
 import * as $ from 'jquery'
 import ArticalDetail from "./../views/client/Project/Artical/ArticalDetail";
-import UpdateProject from '../views/client/Project/Update';
 import NotFound from "./../shares/NotFound/index";
 
 ClientLayout.propTypes = {
