@@ -598,7 +598,7 @@ function ProjectDetail(props) {
 
     const settingSliderDonors = {
         dots: true,
-        slidesToShow: 8,
+        slidesToShow: 7,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,

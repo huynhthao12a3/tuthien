@@ -262,23 +262,39 @@ function AddProcess(props) {
         const amountNeedSun = Math.round((amountNeedVnd / trxPrice) * 1000000)
         console.log('SUN: ', amountNeedSun);
 
-        const sm = await tronweb.contract().at(process.env.REACT_APP_SMART_CONTRACT_ADDRESS)
-        let result = await sm.CreateProject(id, 'huynhthao@gmail.com', amountNeedSun).send()
-            .then((res) => {
-                console.log('CreateProject: ', res)
-                if (typeof res === 'string') {
-                    swal({
-                        title: "Tạo dự án thành công",
-                        icon: "success",
-                        button: {
-                            className: "bg-base-color"
-                        }
-                    });
-                    history.push(`/project-detail/${id}/${projectObj.projecturl}`)
+        const transaction = await tronweb.transactionBuilder.createSmartContract({
+            abi: process.env.REACT_APP_ABI,
+            bytecode: process.env.REACT_APP_BYTECODE,
+            feeLimit: 400000000,
+            callValue: 0,
+            userFeePercentage: 100,
+            originEnergyLimit: 1000000,
+            parameters: [1, 123]
+        }, tronweb.defaultAddress.hex);
 
-                }
+        const signedTransaction = await tronweb.trx.sign(transaction)
 
-            })
+        const contractInstance = await tronweb.trx.sendRawTransaction(signedTransaction)
+
+
+
+        // const sm = await tronweb.contract().at(process.env.REACT_APP_SMART_CONTRACT_ADDRESS)
+        // let result = await sm.CreateProject(id, 'huynhthao@gmail.com', amountNeedSun).send()
+        //     .then((res) => {
+        //         console.log('CreateProject: ', res)
+        //         if (typeof res === 'string') {
+        //             swal({
+        //                 title: "Tạo dự án thành công",
+        //                 icon: "success",
+        //                 button: {
+        //                     className: "bg-base-color"
+        //                 }
+        //             });
+        //             history.push(`/project-detail/${id}/${projectObj.projecturl}`)
+
+        //         }
+
+        //     })
 
     }
     return (

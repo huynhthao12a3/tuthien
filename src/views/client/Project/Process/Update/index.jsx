@@ -21,15 +21,10 @@ function UpdateProcess(props) {
     // const locations = useLocation().pathname
     // let location= locations.slice(locations.indexOf("project/")+1,locations.lastIndexOf("/"))
     // location=location.slice(location.lastIndexOf("/")+1)
-<<<<<<< HEAD
 
-    const location = useLocation().pathname.slice(useLocation().pathname.lastIndexOf("/")+1);
 
-    console.log("location",location)
-    const imgFormat=['jpeg','gif','png','tiff','raw','psd','jpg']
-    const processProp =props.location.state
-=======
->>>>>>> b740c57c7bc7472a9379d2668711796964c84222
+
+
 
     // const location = useLocation().pathname.slice(useLocation().pathname.lastIndexOf("/") + 1);
     const { id } = useParams()
