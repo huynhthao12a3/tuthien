@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import adminUser from '../../../api/User/Admin';
-import alertify from 'alertifyjs';
 import { useHistory } from "react-router-dom";
+import * as alertify from 'alertifyjs';
 
 AdminLogin.propTypes = {
 
@@ -24,10 +24,10 @@ function AdminLogin() {
             if (response.isSuccess) {
                 const saveToken = { ...response.data, expiredTime: Date.now() };
                 localStorage.setItem('admin-info', JSON.stringify(saveToken))
-                history.push('/admin/dashboard')
+                history.push('/admin/project')
             }
             else {
-                console.log(response.message);
+                alertify.alert('Thông báo', response.message);
             }
 
         } catch (error) {
