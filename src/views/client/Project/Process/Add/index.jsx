@@ -420,29 +420,30 @@ function AddProcess(props) {
             console.log(error);
         }
 
-        const sm = await tronweb.contract().at(process.env.REACT_APP_SMART_CONTRACT_ADDRESS)
-        let result = await sm.CreateProject(id, 'huynhthao@gmail.com', amountNeedSun).send()
-            .then((res) => 
-            {
-                console.log('CreateProject: ', res)
-                if (typeof res === 'string') {
-                    swal({
-                        title: "Tạo dự án thành công",
-                        icon: "success",
-                        button: {
-                            className: "bg-base-color"
-                        }
-                    });
-                    if(locationsq="admin")
-                    {
-                        history.push(`/admin/project-detail/${id}/${projectObj.projecturl}`)
-                    }
-                    else{
-                        history.push(`/project-detail/${id}/${projectObj.projecturl}`)
-                    }
-                }
-            }
-        )}
+        // const sm = await tronweb.contract().at(process.env.REACT_APP_SMART_CONTRACT_ADDRESS)
+        // let result = await sm.CreateProject(id, 'huynhthao@gmail.com', amountNeedSun).send()
+        //     .then((res) => 
+        //     {
+        //         console.log('CreateProject: ', res)
+        //         if (typeof res === 'string') {
+        //             swal({
+        //                 title: "Tạo dự án thành công",
+        //                 icon: "success",
+        //                 button: {
+        //                     className: "bg-base-color"
+        //                 }
+        //             });
+        //             if(locationsq="admin")
+        //             {
+        //                 history.push(`/admin/project-detail/${id}/${projectObj.projecturl}`)
+        //             }
+        //             else{
+        //                 history.push(`/project-detail/${id}/${projectObj.projecturl}`)
+        //             }
+        //         }
+        //     }
+        // )
+    }
         
 
 
