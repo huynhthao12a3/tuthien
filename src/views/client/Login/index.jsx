@@ -28,6 +28,7 @@ function ClientLogin() {
                 console.log(response.data);
                 localStorage.setItem('client-info', JSON.stringify(saveToken))
                 history.push('/dashboard')
+                window.location.reload()
             }
             else {
                 console.log(response.message);

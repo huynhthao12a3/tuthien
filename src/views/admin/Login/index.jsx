@@ -25,6 +25,7 @@ function AdminLogin() {
                 const saveToken = { ...response.data, expiredTime: Date.now() };
                 localStorage.setItem('admin-info', JSON.stringify(saveToken))
                 history.push('/admin/project')
+                window.location.reload()
             }
             else {
                 alertify.alert('Thông báo', response.message);

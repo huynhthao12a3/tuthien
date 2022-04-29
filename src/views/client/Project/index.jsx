@@ -178,14 +178,14 @@ function ClientProject() {
                 {/* Danh sách dự án  */}
                 {
                   projectList.map((item, index) => (
-                    <div key={index} className={clsx(Style.projectItem, 'col-12  col-md-6 p-2 p-lg-4')}>
+                    <div key={index} className={clsx(Style.projectItem, 'col-12  col-md-6 col-xxl-4 p-3 p-md-4')}>
                       <div className={clsx(Style.projectWrapItem, " shadow d-flex flex-column")}>
                         <div className="w-100 ">
                           <img src={process.env.REACT_APP_URL + item.bannerPath}
                             onError={(e) => (e.target.onerror = null, e.target.src = charityBanner)}
                             className={clsx(Style.imgCard)} alt="hình ảnh dự án" />
                         </div>
-                        <div className="p-3 " >
+                        <div className="p-3 d-flex flex-column flex-grow-1 justify-content-evenly " >
                           <Link to={"/project-detail/" + item.id + "/" + item.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.titleProject, " d-block my-4 text-decoration-none text-uppercase fs-5 fw-bold text-dark")}>{item.title}</Link>
                           <div className={clsx(Style.shortDescription)}>
                             <SetInnerHTML text={item.shortDescription} />

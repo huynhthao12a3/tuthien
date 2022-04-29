@@ -33,7 +33,7 @@ import { useHistory,useLocation } from 'react-router-dom'
 import AddProject from "../Add/index";
 import projectApi from '../../../../api/Project';
 import clientUser from '../../../../api/User/Client';
-
+import logoCharity from '../../../../assets/images/default-avatar.jpg'
 ProjectDetail.propTypes = {
 
 };
@@ -599,7 +599,7 @@ function ProjectDetail(props) {
 
     const settingSliderDonors = {
         dots: true,
-        slidesToShow: 8,
+        slidesToShow: 7,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
@@ -664,8 +664,8 @@ function ProjectDetail(props) {
     // })
     // console.log(statusTronWeb)
     const tronweb = window.tronWeb;
-    const HttpProvider = tronweb.providers.HttpProvider;
-    tronweb.eventServer = new HttpProvider("https://nile.trongrid.io")
+    // const HttpProvider = tronweb.providers.HttpProvider;
+    // tronweb.eventServer = new HttpProvider("https://nile.trongrid.io")
 
     // Đóng góp cho dự án
     const handleDonate = () => {
@@ -692,19 +692,17 @@ function ProjectDetail(props) {
         }
 
     }
+
     // Gọi hàm Donate từ Smart Contract
     async function donate() {
         try {
-            const sm = await tronweb.contract().at(process.env.REACT_APP_SMART_CONTRACT_ADDRESS)
-            sm["PayEvent"]().watch((err, eventResult) => {
-                if (err) {
-                    return console.error('Error with "method" event:', err);
-                }
-                if (eventResult) {
-                    console.log('eventResult:', eventResult);
-                }
-            });
-            const result = await sm.DonateProject(valueTrx * 1000000, id).send({
+            const sm = await tronweb.contract().at(dataProject.addressContract)
+
+            const adminInfo = localStorage.getItem('admin-info') ? JSON.parse(localStorage.getItem('admin-info')) : null
+            const clientInfo = localStorage.getItem('client-info') ? JSON.parse(localStorage.getItem('client-info')) : null
+            const userInfo = adminInfo != null ? adminInfo : clientInfo
+            // console.log('email : ', email)
+            const result = await sm.DonateProject(valueTrx * 1000000, userInfo.email).send({
                 feeLimit: 100_000_000,
                 callValue: valueTrx * 1000000,
                 // shouldPollResponse:true
@@ -715,37 +713,91 @@ function ProjectDetail(props) {
 
                     if (typeof res === 'string') {
                         swal({
-                            title: "Đóng góp thành công.",
-                            text: "Chúng tôi chân thành cảm ơn bạn vì sự đóng góp này. \n Chúc bạn luôn mạnh khỏe, thành công trong cuộc sống.",
+                            title: "Xác nhận đóng góp.",
+                            text: "Đóng góp của bạn sẽ được cập nhật trong giây lát.",
                             icon: "success",
                             button: {
                                 className: "bg-base-color"
                             }
                         });
-                        // Lưu giao dịch vào database
-                        const saveTransaction = async () => {
-                            const data = {
-                                id: id,
-                                amount: valueTrx,
-                                hash: res,
-                            }
-                            const response = await clientUser.donateProject(data)
-                            console.log('save transaction :', response.data)
-                        }
-                        saveTransaction()
+
+                        // const transactioninfo = async () => {
+                        //     await tronweb.trx.getConfirmedTransaction(res);
+                        // }
+
+                        // const checkConfirmTransaction = async () => {
+                        //     setInterval(() => {
+                        //         console.log("lan 1");
+                        //         console.log(transactioninfo());
+                        //     }, 60000);
+                        // }
+
+                        // checkConfirmTransaction();
+
+                        const checkConfirmTransaction = setInterval(async () => {
+                            console.log("chạy 1 lần")
+                            console.log("data: ", res)
+                            await tronweb.trx.getUnconfirmedTransactionInfo(res)
+                                .then((response) => {
+                                    if (response.receipt) {
+                                        if (response.receipt.result === "SUCCESS") {
+                                            clearInterval(checkConfirmTransaction)
+                                            console.log("Giao dịch thành công. Lưu vào database.")
+                                            saveTransaction(res)
+                                            swal({
+                                                title: "Đóng góp thành công.",
+                                                text: "Đóng góp của bạn đã được xác nhận thành công. \n Chúng tôi chân thành cảm ơn bạn. \n Chúc bạn luôn mạnh khỏe và thành công trong cuộc sống.",
+                                                icon: "success",
+                                                button: {
+                                                    className: "bg-base-color"
+                                                }
+                                            });
+                                        }
+                                        if (response.receipt.result !== "SUCCESS") {
+                                            clearInterval(checkConfirmTransaction)
+                                            console.log("FAIL - clearInterval")
+                                            swal({
+                                                title: "Đóng góp không thành công.",
+                                                text: "Số dư ví không đủ. \n Vui lòng kiếm tra ví.",
+                                                icon: "error",
+                                                button: {
+                                                    className: "bg-base-color"
+                                                }
+                                            });
+                                        }
+                                    }
+                                })
+                        }, 1000)
+                        // clearInterval(checkConfirmTransaction)
+
                     }
                 })
+
+
         }
         catch (err) {
             console.error(err);
             swal({
                 title: "Đóng góp không thành công",
+                text: "Vui lòng kiểm tra số dư ví.",
                 icon: "error",
                 button: {
                     className: "bg-base-color"
                 }
             });
         }
+    }
+
+
+    // Lưu giao dịch thành công vào database
+    const saveTransaction = async (hash) => {
+        const data = {
+            id: id,
+            amount: valueTrx,
+            hash: hash,
+        }
+        const response = await clientUser.donateProject(data)
+        console.log('Đã lưu vào database: ', response.data)
     }
 
 
@@ -859,6 +911,7 @@ function ProjectDetail(props) {
                                         <Link to={{
                                             pathname: `/update-project/${id}/${dataProject.title}`,
                                             state: locations // chuyền dữ liệu qua Update-process
+
                                         }} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, Style.editBtn, "align-self-end  my-2 py-2 px-4 px-lg-5 fw-light rounded-3 text-center   text-uppercase text-decoration-none")} >
                                             <i className="mdi mdi-tooltip-edit me-2"></i>Chỉnh sửa dự án</Link>
 
@@ -881,7 +934,7 @@ function ProjectDetail(props) {
                         <a className={clsx(Style.projectDetailItem, 'd-block py-3  px-3 text-muted text-decoration-none')} href="#overview">Giới thiệu</a>
                         <a className={clsx(Style.projectDetailItem, 'd-block py-3  px-3 text-muted text-decoration-none')} href="#process">Tiến trình dự án</a>
                         <a className={clsx(Style.projectDetailItem, 'd-block py-3  px-3 text-muted text-decoration-none')} href="#artical">Cập nhật mới nhất</a>
-                        <a className={clsx(Style.projectDetailItem, 'd-block py-3  px-3 text-muted text-decoration-none')} href="#donors">Người quyên góp</a>
+                        <a className={clsx(Style.projectDetailItem, 'd-block py-3  px-3 text-muted text-decoration-none')} href="#donors">Người đóng góp</a>
                     </div>
                 </div>
             </div >
@@ -1185,7 +1238,7 @@ function ProjectDetail(props) {
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-                            <h2>Người quyên góp</h2>
+                            <h2>Người đóng góp</h2>
                             <div className={clsx(Style.line)}><hr /></div>
                         </div>
                     </div>
@@ -1197,7 +1250,9 @@ function ProjectDetail(props) {
                                     dataProject.transaction.map((item, index) => (
                                         <div key={index} className={clsx(Style.articalDetail, "d-flex flex-column  p-3 ")}>
                                             <div className="rounded-circle d-inline-block mx-auto p-2 border">
-                                                <img src={process.env.REACT_APP_URL + item.userAvatar} alt="hình đại diện" width="100px" height="100px" className=" rounded-circle" />
+                                                <img src={process.env.REACT_APP_URL + item.userAvatar}
+                                                    onError={(e) => (e.target.onerror = null, e.target.src = logoCharity)}
+                                                    alt="hình đại diện" width="100px" height="100px" className=" rounded-circle" />
                                             </div>
                                             <div className="my-3">
                                                 <p className="m-0 text-center">{item.userName}</p>

@@ -30,6 +30,16 @@ const clientUser = {
         const url = `/user/donate-project?projectid=${data.id}`
         delete data.id
         return axiosClient.post(url, data)
+    },
+    widthdrawProject: (data) => {
+        const url = `/user/withdraw-donate?projectid=${data.id}`
+        delete data.id
+        return axiosClient.post(url, data)
+    },
+    refundProject: (data) => {
+        const url = `/user/refund-donate?projectid=${data.id}`
+        delete data.id
+        return axiosClient.post(url, data)
     }
 }
 
