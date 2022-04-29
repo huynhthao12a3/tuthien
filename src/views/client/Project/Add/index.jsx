@@ -12,7 +12,8 @@ import { DatePicker } from 'rsuite';
 import { addDays } from 'date-fns';
 import moment from "moment";
 
-import { Link } from "react-router-dom";
+
+import { Link, useLocation} from "react-router-dom";
 import * as $ from "jquery"
 
 import {
@@ -26,9 +27,8 @@ const UPLOAD_ENDPOINT = "upload_files";
 
 
 function AddProject() {
-
-
-
+    let locations = useLocation().pathname.slice(1)
+    locations=locations.slice(0,locations.indexOf("/"))
     const projectObj = {
         urlImg: '',
         projectname: '',
@@ -165,8 +165,14 @@ function AddProject() {
             projectValue.enddate !== "") {
             // $('.ajs-button.ajs-ok').css({"background-color": "var(--admin-btn-color)"});
             // alertify.alert('Thông báo', `Thành công`);
+            if(locations==="admin")
+            {
+                return { pathname: "/admin/add-process", state: projectValue }
+            }
+            else{
 
-            return { pathname: "/add-process", state: projectValue }
+                return { pathname: "/add-process", state: projectValue }
+            }
         }
         else {
 

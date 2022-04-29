@@ -123,9 +123,12 @@ function AdminReclaim(){
                                                           
                                                             <td key={index+'endate'}>{item.createUser}</td>
                                                             <td key={index+'status'}>
-                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatus' : 'doneStatus') )}>{ HandleGetLable(filterStatus,item.status).label}
+                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatusUse' : 'doingStatusUse') )}>{ HandleGetLable(filterStatus,item.status).label}
                                                                     <div onClick={handleAcceptProject(item.id)} className={clsx(Style.changeStatus,'changeStatus')}>
-                                                                        <span>duyệt bảng tin</span>
+                                                                        <span>duyệt </span>
+                                                                    </div>
+                                                                    <div onClick={handleAcceptProject(item.id)} className={clsx(Style.changeStatus,'changeStatusUse')}>
+                                                                        <span>bỏ duyệt</span>
                                                                     </div>
                                                                 </span> 
                                                             </td>
@@ -139,11 +142,7 @@ function AdminReclaim(){
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
                                                                         <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Chi tiết</Dropdown.Item>
-                                                                        {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa bảng tin</Dropdown.Item>
-                                                                        {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><span class="mdi mdi-plus-circle pe-2"></span>Thêm Tiến trình</Dropdown.Item>
-                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Tiến trình</Dropdown.Item>
+                                                                     
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>
                                                             </td>

@@ -17,11 +17,12 @@ function AdminDonation(){
      //-------------------------------------------------------
     const arr=[
         {
-        "id": 1,
-        "title": "cứu trợ miền trung",
-        "content": "đây là nội dung đây là nội dung đây là nội dung đây là nội dung đây là nội dung ",
-        "createUser":'trần văn thuận',
-        "status": 1,
+        "id": 10,
+        "senter": "Trần văn thuận",
+        "projectName":'ủng hộ miền trung',
+        "time": "23/09/2022",
+        "mount":"300",
+        "mountType":"TRX"
         },
     ]
     const filtercategory = [
@@ -37,13 +38,44 @@ function AdminDonation(){
         { value: '2', label: 'đã duyệt' },
     ]
 
+     // datePicker
+     const {
+        allowedMaxDays,
+        allowedDays,
+        allowedRange,
+        beforeToday,
+        afterToday,
+        combine
+    } = DateRangePicker;
+    const Ranges = [
+        {
+            label: 'Hôm nay',
+            value: [startOfDay(new Date()), endOfDay(new Date())]
+        },
+        {
+            label: 'Hôm qua',
+            value: [startOfDay(addDays(new Date(), -1)), endOfDay(addDays(new Date(), -1))]
+        },
+        {
+            label: '7 ngày trước',
+            value: [startOfDay(subDays(new Date(), 6)), endOfDay(new Date())]
+        },
+        {
+            label: '30 ngày trước',
+            value: [startOfDay(subDays(new Date(), 29)), endOfDay(new Date())]
+        },
+        {
+            label: '1 năm trước',
+            value: [startOfDay(subDays(new Date(), 364)), endOfDay(new Date())]
+        },
+    ];
 
     //-------------------------------useState
     const [categoryOptions,setCategoryOptions]= useState([])
 
     const [arrayProject, setArrayProject] = useState(arr)
     const [inputSearch,setInputSearch]= useState('')
-    const [inputStatus,setInputStatus]= useState(filterStatus[1])
+    const [inputDate,setInputDate]=useState('')
     //------------------------------------------funtion
     // xử lý hiện labe của 
     function HandleGetLable(filterlist,index){
@@ -87,10 +119,18 @@ function AdminDonation(){
                                 </div>
                             </div>
                           
-                            <div className={'mt-4'}>
-                                <h5 className={clsx(Style.searchContent,'')}>Trạng thái</h5>
-                                <div className="form-group">
-                                    <Select defaultValue={inputStatus} onChange={setInputStatus} className={clsx( Style.Inputfocus)}  placeholder='trạng thái' options={filterStatus} />
+                            <div className="mt-4">
+                                <h5 className={clsx(Style.searchContent,'')}>Ngày đăng</h5>
+                                <div class="form-group" style={{ position: 'relative' }}>
+                                <DateRangePicker className={clsx(Style.rangeDate,Style.Inputfocus,'projectDaterang')}
+                                    disabledDate={afterToday()}
+                                    format='dd/MM/yyyy'
+                                    defaultValue={[new Date(), new Date()]}
+                                    character=' - '
+                                    ranges={Ranges}
+                                >
+                                </DateRangePicker>
+                              
                                 </div>
                             </div>
                            
@@ -104,10 +144,12 @@ function AdminDonation(){
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
-                                                <th scope="col">Tiêu đề</th>
-                                                <th scope="col">Nội dung</th>
+                                                <th scope="col">Mã giao dịch</th>
                                                 <th scope="col">Người gửi</th>
-                                                <th scope="col">Trạng thái</th>
+                                                <th scope="col">Tên dự án</th>
+                                                <th scope="col">thời gian</th>
+                                                <th scope="col">Số tiền</th>
+                                                <th scope="col">Loại tiền</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -117,16 +159,14 @@ function AdminDonation(){
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
                                                             
                                                             <th key={index+'index'} scope="row">{index}</th>
-                                                            <td key={index+"title"} className={clsx(Style.titleshow)}>{item.title}</td>
-                                                            <td key={index+'content'}  >{item.content.length>50?(item.content.slice(0,50)+'...'):item.content}
-                                                            </td>
-                                                          
-                                                            <td key={index+'endate'}>{item.createUser}</td>
+                                                            <td key={index+"title"} className={clsx(Style.titleshow)}>{item.id}</td>
+                                                            <td key={index+"title"} >{item.senter}</td>
+                                                            <td key={index+"title"} >{item.projectName}</td>
+                                                            <td key={index+"title"} >{item.time}</td>
+                                                            <td key={index+"title"} >{item.mount}</td>
                                                             <td key={index+'status'}>
-                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatus' : 'doneStatus') )}>{ HandleGetLable(filterStatus,item.status).label}
-                                                                    <div onClick={handleAcceptProject(item.id)} className={clsx(Style.changeStatus,'changeStatus')}>
-                                                                        <span>duyệt bảng tin</span>
-                                                                    </div>
+                                                                <span className={clsx(Style.StatusItem, 'position-relative', 'doneStatus' )}>
+                                                                    {item.mountType}
                                                                 </span> 
                                                             </td>
                                                           
@@ -139,11 +179,7 @@ function AdminDonation(){
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
                                                                         <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Chi tiết</Dropdown.Item>
-                                                                        {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa bảng tin</Dropdown.Item>
-                                                                        {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><span class="mdi mdi-plus-circle pe-2"></span>Thêm Tiến trình</Dropdown.Item>
-                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Tiến trình</Dropdown.Item>
+                                                                       
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>
                                                             </td>

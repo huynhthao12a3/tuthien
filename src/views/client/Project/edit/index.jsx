@@ -15,7 +15,7 @@ import swal from "sweetalert";
 import moment from "moment";
 import * as $ from "jquery"
 function EditProjectUser(prop){
-    
+    console.log("prop",prop)
     //----------------------------------- 
     const history= useHistory()
     const locations = useLocation().pathname
@@ -208,7 +208,9 @@ function EditProjectUser(prop){
                             className: "bg-base-color"
                         }
                     });
-                    history.push(`/project-detail/${idUrl}/${friendlyUrl}`)
+                    console.log(prop.location.state)
+                    history.push(prop.location.state)
+                    // history.push(`/project-detail/${idUrl}/${friendlyUrl}`)
                     window.scrollTo(0, 0)
                 }
                 else{

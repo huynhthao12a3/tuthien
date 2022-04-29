@@ -6,62 +6,58 @@ import DateRangePicker from 'rsuite/DateRangePicker';
 import { startOfDay, endOfDay, addDays, subDays } from 'date-fns';
 import 'rsuite/dist/rsuite-rtl.min.css'
 import Dropdown from 'react-bootstrap/Dropdown'
+import { removeUnicode } from "../../../utils/utils";
 import * as $ from "jquery"
 import Select from 'react-select'
 import { Link } from "react-router-dom";
-import categoryApi from "../../../api/Category";
-import projectApi from "../../../api/Project";
 import moment from "moment";
 import { ar } from "date-fns/locale";
+import adminUser from "../../../api/User/Admin"
+import Swal from 'sweetalert2'
 function AdminAccount()
 {
+    const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
+    const avatarDefalt="\\uploads\\Images\\User_Avatars\\28042022_030444_anymous_icon.png"
     const arr=[
         {
         "id": 1,
-        "name": "trần văn thuận",
+        "fullName": "trần văn thuận",
         "email": 'tranthuan@gmail.com',
         "phoneNumber":'0987654321',
         "type": 1,
-        'status':1,
-        "img":'\\uploads\\Images\\project\\27042022_072721_Khai-Bai-Tiem nang.jpg'
+        'status':2,
+        "avatar":'\\uploads\\Images\\project\\27042022_072721_Khai-Bai-Tiem nang.jpg'
         },
-        {
-        "id": 2,
-        "name": "trần văn thuận",
-        "email": 'tranthuan@gmail.com',
-        "phoneNumber":'0987654321',
-        "type": 1,
-        'status':1,
-        "img":'\\uploads\\Images\\project\\27042022_072721_Khai-Bai-Tiem nang.jpg'
-        },
-        {
-        "id": 3,
-        "name": "trần văn thuận",
-        "email": 'tranthuan@gmail.com',
-        "phoneNumber":'0987654321',
-        "type": 1,
-        'status':1,
-        "img":'\\uploads\\Images\\project\\27042022_072721_Khai-Bai-Tiem nang.jpg'
-        },
+  
     ]
     const type = [
-        { value: '1', label: 'cá nhân' },
-        { value: '2', label: 'tổ chức' },
+        { value: '1', label: 'tổ chức' },
+        { value: '2', label: 'cá nhân' },
     ]
     // select trạng thái
     const filterStatus = [
-        { value: '1', label: 'đang hoạt động' },
-        { value: '2', label: 'khóa' },
+        { value: '1', label: 'khóa' },
+        { value: '2', label: 'đang hoạt động' },
     ]
 
     //-------------------------------useState
 
     const [arrayProject, setArrayProject] = useState(arr)
     const [inputSearch,setInputSearch]= useState('')
-    const [inputType,setInputType]= useState(type[0])
+    const [inputType,setInputType]= useState([...type][1])
     const [inputStatus,setInputStatus]= useState(filterStatus[0])
+    const [sta,setSta]=useState(true)
 
-    console.log("arrayProject",arrayProject)
+    //---------------------------------------------------------useEffect
+    useEffect(async()=>{
+        const data={
+            "keyword":inputSearch,
+            "type":inputType.value,
+        }
+        const respons= await adminUser.getAll(data)
+        console.log("respon",respons.data)
+        setArrayProject(respons.data)
+    },[inputSearch,inputType,setSta])
     //------------------------------------------funtion
     // xử lý hiện labe của 
     function HandleGetLable(filterlist,index){
@@ -74,24 +70,99 @@ function AdminAccount()
             })
         )
     }
-  
-
-    const handleAcceptProject=(item)=>
-    {
+    
+    const getUsers=async()=>{
+       
     }
 
-    const Label = props => {
-        return <label style={{ display: 'block', marginTop: 10 }} {...props} />;
-    };
+
+    const handleblockAcount=(content,item)=>{
+        const func = async() => {
+            const respon= await adminUser.lock(item)   
+                console.log("respon",respon)  
+                if(respon.isSuccess)
+                {
+                    
+                    Swal.fire(
+                        'Đã khóa!',
+                        `${content} tài khoản thành công` ,
+                        'success'
+                      )
+                    setSta(!sta)
+                }    
+                else{
+                    Swal.fire(
+                        'khóa thất bại!',
+                        `${content} tài khoản thất bại`,
+                        'error'
+                      )
+                }       
+        }
+        Swal.fire({
+            title: 'Bạn có chắc?',
+            text: `Bạn muốn ${content} tài khoản người dùng này!`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+
+                func()
+             
+            }
+          })
+    }
+    const handleDelete=(id)=>{
+        const DeleteApiFunc=async()=>{
+            const respon= await adminUser.delete(id)   
+            console.log("respon",respon)  
+            if(respon.isSuccess)
+            {
+                setSta(!sta)
+                Swal.fire(
+                    'Đã xóa!',
+                    'Xóa tài khoản thành công',
+                    'success'
+                  )
+            }    
+            else{
+                Swal.fire(
+                    'xóa thất bại!',
+                    'Xóa tài khoản thất bại',
+                    'error'
+                  )
+            }       
+         
+        }
+        Swal.fire({
+            title: 'Bạn có Chắc?',
+            text: "Bạn muốn xóa tài khoản người dùng này!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+
+                DeleteApiFunc()
+            }
+          })
+    }
+    // const Label = props => {
+    //     return <label style={{ display: 'block', marginTop: 10 }} {...props} />;
+    // };
     return(
         <>
             <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
                 <div className="container-fluid w-100 pe-5">
                     <div className={clsx('row')}>
                         <div className={clsx(Style.titleBlock, ' w-100 main-top col-12 pt-4 pb-4')}>
-                            <h3 className={clsx(Style.titleProject)}>Quản lý bảng tin</h3>
+                            <h3 className={clsx(Style.titleProject)}>Quản lý tài khoản người dùng</h3>
                             <Link to='' className={clsx(Style.btnCreateProject,"btn")}>
-                            <span class="mdi mdi-plus-circle pe-2"></span> Tạo bảng tin </Link>
+                            <span class="mdi mdi-plus-circle pe-2"></span> Tạo tài khoản người dùng </Link>
                         </div>
                     </div>
                 </div>
@@ -143,19 +214,18 @@ function AdminAccount()
                                                             <th key={index+'index'} scope="row">{index}</th>
                                                             <td key={index+'ing'}>
                                                                 <div className={clsx(Style.imgAccount,"col-4 col-md-2")}>
-                                                                    <img id="img-banner1" src={process.env.REACT_APP_URL + item.img } className={clsx(Style.img_item, "rounded-circle border border-1 img-fluid img-auto-size ")} />
+                                                                    <img id="img-banner1" src={
+                                                                        ( imgFormat.includes(item.avatar.slice(item.avatar.indexOf('.')+1)))?(process.env.REACT_APP_URL + item.avatar):(process.env.REACT_APP_URL + avatarDefalt)} className={clsx(Style.img_item, "rounded-circle border border-1 img-fluid img-auto-size ")} />
                                                                 </div>
                                                             </td>
-                                                            <td key={index+"name"} className={clsx(Style.lh)} >{item.name}</td>
+                                                            <td key={index+"name"} className={clsx(Style.lh)} >{item.fullName}</td>
                                                             <td key={index+'email'} className={clsx(Style.lh)} >{item.email}</td>
                                                           
                                                             <td key={index+'phonNumber'} className={clsx(Style.lh)} >{item.phoneNumber}</td>
-                                                            <td key={index+'type'} className={clsx(Style.lh)} >{item.type}</td>
+                                                            <td key={index+'type'} className={clsx(Style.lh)} >{ HandleGetLable(type,item.type).label}</td>
                                                             <td key={index+'status'} className={clsx(Style.lh)} >
-                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatus' : 'doneStatus') )}>{ HandleGetLable(filterStatus,item.status).label}
-                                                                    <div onClick={handleAcceptProject(item.id)} className={clsx(Style.changeStatus,'changeStatus')}>
-                                                                        <span>duyệt bảng tin</span>
-                                                                    </div>
+                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? ' doingStatusUse' : 'doingStatusUse') )}>{ HandleGetLable(filterStatus,item.status).label}
+                                                                  
                                                                 </span> 
                                                             </td>
                                                           
@@ -169,10 +239,20 @@ function AdminAccount()
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
                                                                         <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Chi tiết</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa bảng tin</Dropdown.Item>
+                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa thông tin</Dropdown.Item>
+                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)} onClick={()=>{handleDelete(item.id)}}><i className="mdi mdi-lock-reset "></i>
+                                                                            Xóa tài khoản
+                                                                        </Dropdown.Item>
+                                                                        <Dropdown.Item onClick={()=>handleblockAcount('mở khóa',item.id)} className={clsx(Style.itemDrop,item.status===1?"show":"hide")} ><i className={clsx("mdi mdi-lock-reset")}></i>
+                                                                            Mở khóa tài khoản
+                                                                        </Dropdown.Item>
+                                                                        <Dropdown.Item  onClick={()=>handleblockAcount('khóa',item.id)} className={clsx(Style.itemDrop ,item.status===1?"hide":"show")} ><i  className="mdi mdi-lock-reset "></i>
+                                                                            
+                                                                            Khóa tài khoản
+                                                                        </Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><span class="mdi mdi-plus-circle pe-2"></span>Thêm Tiến trình</Dropdown.Item>
-                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Tiến trình</Dropdown.Item>
+                                                                        {/* <Dropdown.Item className={clsx(Style.itemDrop)}><span class="mdi mdi-plus-circle pe-2"></span>Thêm Tiến trình</Dropdown.Item>
+                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Tiến trình</Dropdown.Item> */}
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>
                                                             </td>

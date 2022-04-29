@@ -10,11 +10,13 @@ import 'rsuite/dist/rsuite-rtl.min.css'
 import Dropdown from 'react-bootstrap/Dropdown'
 import * as $ from "jquery"
 import Select from 'react-select'
+import { useHistory,useLocation } from 'react-router-dom'
 import { Link } from "react-router-dom";
 import categoryApi from "../../../api/Category";
 import projectApi from "../../../api/Project";
 import moment from "moment";
 function Project(){
+    const locations = useLocation().pathname
     //-------------------------------------------------------
     const arr=[
         {
@@ -36,9 +38,9 @@ function Project(){
     ]
     // select trạng thái
     const filterStatus = [
-        { value: '1', label: 'đang chờ duyệt' },
-        { value: '2', label: 'đang thực thi' },
-        { value: '3', label: 'hoàng thành' },
+        { value: '0', label: 'đang chờ duyệt' },
+        { value: '1', label: 'đang thực thi' },
+        { value: '2', label: 'hoàng thành' },
     ]
     // select chủ đề
     const filterTopic = [
@@ -88,7 +90,9 @@ function Project(){
     const [inputTopic,setInputTopic]= useState('')
     const [inputDate,setInputDate]=useState('')
     //----------------------------------------------------useEffect
-
+    useEffect(()=>{
+console.log("arrayProject",arrayProject)
+    },[arrayProject])
     // get projectlist from api
     useEffect(async()=>{
         const data={
@@ -151,7 +155,7 @@ function Project(){
                     <div className={clsx('row')}>
                         <div className={clsx(Style.titleBlock, ' w-100 main-top col-12 pt-4 pb-4')}>
                             <h3 className={clsx(Style.titleProject)}>Quản lý dự án</h3>
-                            <Link to='' className={clsx(Style.btnCreateProject,"btn")}>
+                            <Link to={"/admin/add-project"} className={clsx(Style.btnCreateProject,"btn")}>
                             <span class="mdi mdi-plus-circle pe-2"></span> Tạo Dự Án </Link>
                         </div>
                     </div>
@@ -223,7 +227,7 @@ function Project(){
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
                                                             <th key={index+'index'} scope="row">{index}</th>
                                                             <td key={index+"id"}>{item.id}</td>
-                                                            <td key={index+"title"} className={clsx(Style.titleshow)}>{item.title}</td>
+                                                            <td key={index+"title"} className={clsx(Style.titleshow)}>{item.title.length>30?(item.title.slice(0,30)+'...'):item.title}</td>
                                                             <td key={index+"address"}>{item.address}</td>
                                                             {/* filterStatus[item.category] */}
                                                             <td key={index+'category'}>{
@@ -234,7 +238,7 @@ function Project(){
                                                             <td key={index+'endate'}>{moment(item.endDate).format("DD/MM/YYYY") }</td>
                                                             {/* filterStatus[item.status] */}
                                                             <td key={index+'status'}>
-                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatus' : 'doneStatus') )}>{ HandleGetLable(filterStatus,item.status).label}
+                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status===0 ? 'waitingStatus': ( item.status=== 1 ? 'doingStatus' : 'doneStatus') )}>{ HandleGetLable(filterStatus,item.status).label}
                                                                     <div onClick={handleAcceptProject(item.id)} className={clsx(Style.changeStatus,'changeStatus')}>
                                                                         <span>duyệt dự án</span>
                                                                     </div>
@@ -249,11 +253,25 @@ function Project(){
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Chi tiết</Dropdown.Item>
+                                                                        <Dropdown.Item  
+
+                                                                        className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>
+                                                                        <Link to={"/admin/project-detail/" + item.id + "/" + item.title} 
+                                                                         className={clsx( "align-self-end  rounded-3 text-center text-dark text-decoration-none")}
+                                                                         onClick={()=>{ window.scrollTo(0, 0)}}>
+                                                                            Chi tiết
+                                                                        </Link>
+
+                                                                       </Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Dự Án</Dropdown.Item>
+                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>
+                                                                        <Link to={{ pathname: `/admin/update-project/${item.id}/${item.title}`, state:locations}}
+                                                                        className={clsx( "align-self-end  rounded-3 text-center text-dark text-decoration-none")} >
+                                                                            Sửa Dự Án
+                                                                        </Link>
+                                                                        </Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><span class="mdi mdi-plus-circle pe-2"></span>Thêm Tiến trình</Dropdown.Item>
+                                                    
                                                                         <Dropdown.Item className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Tiến trình</Dropdown.Item>
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>

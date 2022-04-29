@@ -32,7 +32,7 @@
     background-color: var( --love-color-1)
 }
 /* đang chờ */
-.waitingStatus ,.doingStatus ,.doneStatus{
+.waitingStatus ,.doingStatus ,.doneStatus,.doingStatusUse{
     border-radius: var(--boder-radius);
     text-align: center;
     display: inline-block;
@@ -44,6 +44,13 @@
     color: var(--status-waiting-color);
 }
 .waitingStatus:hover .changeStatus{
+    display: block !important;
+}
+.doingStatusUse{
+    background-color: var(--status-done-background) !important;
+    color: var(--status-done-color);
+}
+.doingStatusUse:hover .changeStatusUse{
     display: block !important;
 }
 .doingStatus{
@@ -93,6 +100,9 @@ body{
     text-decoration:none !important;
 }
 
+.dropdown-item.hide{
+    display: none !important;
+}
 /* // DateRangePicker */
 /* .projectDaterang{
     position: relative;

@@ -21,7 +21,7 @@ function AdminNews(){
         "title": "cứu trợ miền trung",
         "category": 1,
         "endDate":'23/09/2021',
-        "status": 1,
+        "status": 2,
         },
     ]
     const filtercategory = [
@@ -173,12 +173,12 @@ function AdminNews(){
                                                             <td key={index+'category'}>{
                                                                 HandleGetLable(filtercategory,1).label
                                                             }</td>
-                                                            <td key={index+"title"} className={clsx(Style.titleshow)}>{item.title}</td>
+                                                            <td key={index+"title"} className={clsx(Style.titleshow)}>{item.title.length>30?(item.title.slice(0,30)+'...'):item.title}</td>
                                                             <td key={index+'endate'}>{moment(item.endDate).format("DD/MM/YYYY") }</td>
                                                           
                                                             <td key={index+'endate'}>{moment(item.endDate).format("DD/MM/YYYY") }</td>
                                                             <td key={index+'status'}>
-                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatus' : 'doneStatus') )}>{ HandleGetLable(filterStatus,item.status).label}
+                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doneStatus' : 'doingStatus') )}>{ HandleGetLable(filterStatus,item.status).label}
                                                                     <div onClick={handleAcceptProject(item.id)} className={clsx(Style.changeStatus,'changeStatus')}>
                                                                         <span>duyệt bảng tin</span>
                                                                     </div>
@@ -197,8 +197,7 @@ function AdminNews(){
                                                                         {/* <Dropdown.Divider /> */}
                                                                         <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa bảng tin</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><span class="mdi mdi-plus-circle pe-2"></span>Thêm Tiến trình</Dropdown.Item>
-                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Tiến trình</Dropdown.Item>
+                                                                       
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>
                                                             </td>

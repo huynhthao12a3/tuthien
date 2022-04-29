@@ -39,8 +39,12 @@ const adminUser = {
         const url = `/user/unlock-user/${id}`
         return axiosClient.patch(url)
     },
+    delete:(id)=>{
+        const url =`/user/delete-user/${id}`
+        return axiosClient.delete(url)
+    },
     updateUser: (data) => {
-        const url = `/user/update-user/${data.userId}`
+        const url = `/user/update-user/${data.id}`
         return axiosClient.put(url, data)
     }, 
     

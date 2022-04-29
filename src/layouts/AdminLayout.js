@@ -7,9 +7,8 @@ import {
   } from 'react-router-dom';
 import AdminNavbar from '../shares/AdminNavbar';
 import AdminFooter from '../shares/AdminFooter';
-import ProjectDetail from '../views/client/Project/ProjectDetail';
 import AddProject from "./../views/client/Project/Add/index";
-import AddProcess from "./../views/client/Project/Process/Add";
+import AddProcess from '../views/client/Project/Process/Add';
 import AdminLogin from '../views/admin/Login';
 import AdminDashboard from '../views/admin/Dashboard';
 import Project from "./../views/admin/Project/index";
@@ -20,6 +19,9 @@ import AdminArtical from '../views/admin/Project/Artical';
 import AdminReclaim from '../views/admin/Reclaim';
 import AdminCategory from '../views/admin/Category';
 import AdminDonation from '../views/admin/Donation';
+import EditProjectUser from '../views/client/Project/edit';
+import ProjectDetail from '../views/client/Project/ProjectDetail';
+
 import * as $ from 'jquery'
 import NotFound from "./../shares/NotFound/index";
 AdminLayout.propTypes = {
@@ -51,8 +53,13 @@ function AdminLayout(props) {
                     {/* <Route exact path="/admin" component={AdminLogin}/> */}
                     
                     <Route exact path="/admin/login" component={AdminLogin}/>
+                    <Route exact path="/admin" component={AdminDashboard}/>
                     <ProtectedRoute exact path="/admin/dashboard" component={AdminDashboard}/>
                     <ProtectedRoute exact path="/admin/project" component={Project}/>
+                    <ProtectedRoute exact path="/admin/add-project" component={AddProject} />
+                    <Route exact path="/admin/project-detail/:id/:friendlyurl" component={ProjectDetail}/>
+                    <ProtectedRoute exact path="/admin/update-project/:id/:friendlyurl" component={EditProjectUser} />
+                    <ProtectedRoute exact path="/admin/add-process" component={AddProcess} />
                     <ProtectedRoute exact path="/admin/news" component={AdminNews}/>
                     <ProtectedRoute exact path="/admin/user" component={AdminAccount}/>
                     <ProtectedRoute exact path="/admin/donation" component={AdminDonation}/>
@@ -62,6 +69,7 @@ function AdminLayout(props) {
                     <ProtectedRoute exact path="/admin/add-process" component={AddProcess}/>
                     <ProtectedRoute exact path="/admin/add-project" component={AddProject}/>
                     <ProtectedRoute exact path="/admin/project-detail/:id" component={ProjectDetail}/>
+                    
                     <Route path="/not-found" component={NotFound}/>
 <Redirect to="/not-found"/>
                 

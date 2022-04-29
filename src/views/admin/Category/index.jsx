@@ -18,17 +18,21 @@ function AdminCategory(){
     const arr=[
         {
         "id": 1,
-        "title": "cứu trợ miền trung",
-        "content": "đây là nội dung đây là nội dung đây là nội dung đây là nội dung đây là nội dung ",
-        "createUser":'trần văn thuận',
-        "status": 1,
+        "categoryName": "thiên tai",
+        "createDate":'23/09/2021',
+        "type": 1,
+        },
+        {
+        "id": 1,
+        "categoryName": "thiên tai",
+        "createDate":'23/09/2021',
+        "type": 1,
         },
     ]
-    const filtercategory = [
-        { value: '1', label: 'Thiên tai' },
-        { value: '2', label: 'Trẻ em' },
-        { value: '3', label: 'Sức khỏe' },
-        { value: '4', label: 'Con người' },
+    const filterType = [
+        { value: '1', label: 'Thiên nhiên' },
+        { value: '2', label: 'Con người' },
+        { value: '3', label: 'Động vật' },
         { value: '5', label: 'Xã hội' },
     ]
     // select trạng thái
@@ -56,7 +60,7 @@ function AdminCategory(){
             })
         )
     }
-    console.log("sdasdsa",HandleGetLable(filtercategory,1))
+
   
 
     const handleAcceptProject=(item)=>
@@ -69,10 +73,13 @@ function AdminCategory(){
     return(
         <>
             <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
+           
                 <div className="container-fluid w-100 pe-5">
                     <div className={clsx('row')}>
                         <div className={clsx(Style.titleBlock, ' w-100 main-top col-12 pt-4 pb-4')}>
                             <h3 className={clsx(Style.titleProject)}>Quản lý danh mục</h3>
+                            <Link to='' className={clsx(Style.btnCreateProject,"btn")}>
+                            <span class="mdi mdi-plus-circle pe-2"></span> Tạo Danh Mục </Link>
                         </div>
                     </div>
                 </div>
@@ -103,10 +110,10 @@ function AdminCategory(){
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
-                                                <th scope="col">Tiêu đề</th>
-                                                <th scope="col">Nội dung</th>
-                                                <th scope="col">Người gửi</th>
-                                                <th scope="col">Trạng thái</th>
+                                                <th scope="col">id</th>
+                                                <th scope="col">Tên danh mục</th>
+                                                <th scope="col">ngày tạo</th>
+                                                <th scope="col">Loại</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -116,18 +123,13 @@ function AdminCategory(){
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
                                                             
                                                             <th key={index+'index'} scope="row">{index}</th>
-                                                            <td key={index+"title"} className={clsx(Style.titleshow)}>{item.title}</td>
-                                                            <td key={index+'content'}  >{item.content.length>50?(item.content.slice(0,50)+'...'):item.content}
+                                                            <td key={index+"title"} className={clsx(Style.titleshow)}>{item.id}</td>
+                                                            <td key={index+'content'}  >{item.categoryName.length>50?(item.categoryName.slice(0,50)+'...'):item.categoryName}
                                                             </td>
                                                           
-                                                            <td key={index+'endate'}>{item.createUser}</td>
-                                                            <td key={index+'status'}>
-                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatus' : 'doneStatus') )}>{ HandleGetLable(filterStatus,item.status).label}
-                                                                    <div onClick={handleAcceptProject(item.id)} className={clsx(Style.changeStatus,'changeStatus')}>
-                                                                        <span>duyệt bảng tin</span>
-                                                                    </div>
-                                                                </span> 
-                                                            </td>
+                                                            <td key={index+'endate'}>{item.createDate}</td>
+                                                            <td key={index+'endate'}>{HandleGetLable(filterType,item.type).label}</td>
+                                                            
                                                           
                                                             <td key={index+'dropdow'} className=" text-center align-middle ">
                                                                 <Dropdown className="d-inline mx-2" >
@@ -137,12 +139,11 @@ function AdminCategory(){
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Chi tiết</Dropdown.Item>
+                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Sửa danh mục</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa bảng tin</Dropdown.Item>
+                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Xóa danh mục</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><span class="mdi mdi-plus-circle pe-2"></span>Thêm Tiến trình</Dropdown.Item>
-                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Tiến trình</Dropdown.Item>
+                                                                      
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>
                                                             </td>

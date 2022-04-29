@@ -29,7 +29,7 @@ import Slider from "react-slick";
 
 // Sweet Alert  
 import swal from 'sweetalert'
-
+import { useHistory,useLocation } from 'react-router-dom'
 import AddProject from "../Add/index";
 import projectApi from '../../../../api/Project';
 import clientUser from '../../../../api/User/Client';
@@ -39,6 +39,7 @@ ProjectDetail.propTypes = {
 };
 
 function ProjectDetail(props) {
+    const locations = useLocation().pathname
     const [dataProject, setDataProject] = useState({
         userCreateId: 1,
         title: "Hỗ trợ lũ lụt đồng bào miền trung",
@@ -857,7 +858,7 @@ function ProjectDetail(props) {
                                     dataProject.isEdit === true ? (
                                         <Link to={{
                                             pathname: `/update-project/${id}/${dataProject.title}`,
-                                            state: dataProject // chuyền dữ liệu qua Update-process
+                                            state: locations // chuyền dữ liệu qua Update-process
                                         }} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, Style.editBtn, "align-self-end  my-2 py-2 px-4 px-lg-5 fw-light rounded-3 text-center   text-uppercase text-decoration-none")} >
                                             <i className="mdi mdi-tooltip-edit me-2"></i>Chỉnh sửa dự án</Link>
 

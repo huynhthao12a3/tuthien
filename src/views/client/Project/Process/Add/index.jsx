@@ -20,6 +20,9 @@ import swal from "sweetalert";
 
 function AddProcess(props) {
     // ----- tronweb
+    let locationsq = useLocation().pathname.slice(1)
+    locationsq=locationsq.slice(0,locationsq.indexOf("/"))
+    console.log("locationsq",locationsq)
     const tronweb = window.tronWeb;
     const HttpProvider = tronweb.providers.HttpProvider;
     tronweb.eventServer = new HttpProvider("https://nile.trongrid.io")
@@ -103,12 +106,28 @@ function AddProcess(props) {
             setIndexProcess(-1)
             $('.ajs-button.ajs-ok').css({ "background-color": "var(--admin-btn-color)" });
 
-
-            alertify.alert('Thông báo', `Thêm tiến trình vào dự án  ${projectObj.projectname}  thành công!`);
+            swal({
+                title: "Thông báo",
+                text: `Thêm tiến trình vào dự án  ${projectObj.projectname} thành công`,
+                icon: "info",
+                button: {
+                    className: "bg-base-color"
+                }
+            });
+           
         }
         else {
+
             $('.ajs-button.ajs-ok').css({ "background-color": "var(--status-waiting-color)" });
-            alertify.alert('Thông báo', `Thêm tiến trình vào dự án  ${projectObj.projectname}  thất bại !`);
+            swal({
+                title: "Thông báo",
+                text: `Thêm tiến trình vào dự án ${projectObj.projectname}  thất bại !`,
+                icon: "error",
+                button: {
+                    className: "bg-base-color"
+                }
+            });
+            
         }
 
     }
@@ -229,16 +248,24 @@ function AddProcess(props) {
 
             }
             const response = await projectApi.createProject(data);
-            console.log(response.data)
             if (response.isSuccess) {
 
                 // alertify.alert('Tạo dự án thành công')
+                // swal({
+                //     title: "Thông báo",
+                //     text: "tạo dự án thành công",
+                //     icon: "error",
+                //     button: {
+                //         className: "bg-base-color"
+                //     }
+                // });
                 createProjectSM(response.data)
             }
             else {
                 // alertify.alert('Tạo dự án thất bại')
                 swal({
-                    title: "Tạo dự án thất bại",
+                    title: "thông báo",
+                    text:"tạo dự án thất bại",
                     icon: "error",
                     button: {
                         className: "bg-base-color"
@@ -274,7 +301,14 @@ function AddProcess(props) {
                             className: "bg-base-color"
                         }
                     });
-                    history.push(`/project-detail/${id}/${projectObj.projecturl}`)
+                    if(locationsq="admin")
+                    {
+                        history.push(`/admin/project-detail/${id}/${projectObj.projecturl}`)
+                    }
+                    else{
+                        history.push(`/project-detail/${id}/${projectObj.projecturl}`)
+                    }
+                   
 
                 }
 
@@ -386,7 +420,7 @@ function AddProcess(props) {
 
                             </div>
                             <div className='d-flex justify-content-end container'>
-                                <button href="nava" onClick={handleCreateProject} className={clsx(Style.Btnfinal, 'btn')}>Hoàn thành</button>
+                                <button href="nava" onClick={handleCreateProject} className={clsx(Style.Btnfinal, 'btn')}>Hoàng thành</button>
                             </div>
                         </div>
 
