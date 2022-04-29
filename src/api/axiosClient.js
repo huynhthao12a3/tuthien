@@ -17,10 +17,11 @@ const tokenExpiredTime = userInfo != null ? userInfo.expiredTime : 0
 let authorizationToken = "";
 
 // Check expired time token
-if((Date.now() - tokenExpiredTime) > 86400000 && tokenExpiredTime == 0 ) {
+const miliSecondPerDay = 86400000
+if((Date.now() - tokenExpiredTime) > miliSecondPerDay && tokenExpiredTime == 0 ) {
   localStorage.clear();
   console.log('phiên đăng nhập hết hạn')
-} else if((Date.now() - tokenExpiredTime) > 86400000 && tokenExpiredTime != 0) {
+} else if((Date.now() - tokenExpiredTime) > miliSecondPerDay && tokenExpiredTime != 0) {
   alertify.alert('THÔNG BÁO', 'Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.', function(){ 
     localStorage.clear()
     window.location.href = adminInfo ? '/admin/login' : '/login'

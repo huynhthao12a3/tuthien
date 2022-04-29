@@ -10,6 +10,7 @@ import { useHistory,useLocation } from 'react-router-dom'
 import { MakeUrl,removeUnicode } from '../../../../utils/utils';
 import alertify from 'alertifyjs'
 import { Link, useParams } from 'react-router-dom';
+import swal from "sweetalert";
 
 import moment from "moment";
 import * as $ from "jquery"
@@ -199,7 +200,14 @@ function EditProjectUser(prop){
                 const repons= await projectApi.editProject(data)
                 if(repons.isSuccess)
                 {
-                    alertify.alert('cập nhật dự án thành công')
+                    swal({
+                        title: "Thông báo",
+                        text: "cập nhật dự án thành công.",
+                        icon: "info",
+                        button: {
+                            className: "bg-base-color"
+                        }
+                    });
                     history.push(`/project-detail/${idUrl}/${friendlyUrl}`)
                     window.scrollTo(0, 0)
                 }

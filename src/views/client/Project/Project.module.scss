@@ -1,7 +1,7 @@
 
 .imgCard {
     width: 100%;
-    height: 300px;
+    height: 200px;
     object-fit: cover;
 }
 .baseColor {
@@ -35,6 +35,7 @@
 }
 .projectWrapItem {
     border-radius: 16px;
+    min-height: 640px;
 }
 .bannerRow{
     // --bs-gutter-x: 0rem !important;

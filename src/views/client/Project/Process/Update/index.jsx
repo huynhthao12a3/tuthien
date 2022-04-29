@@ -23,9 +23,6 @@ function UpdateProcess(props) {
     // location=location.slice(location.lastIndexOf("/")+1)
 
 
-
-
-
     // const location = useLocation().pathname.slice(useLocation().pathname.lastIndexOf("/") + 1);
     const { id } = useParams()
     console.log('id: ', id)

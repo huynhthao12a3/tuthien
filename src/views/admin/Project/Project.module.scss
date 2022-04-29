@@ -45,6 +45,12 @@
         .table_responsive{
             overflow: visible;
             cursor: pointer;
+            .titleshow{
+                display: block;
+                max-width: 250px;
+                height: 49.38px;
+                overflow: hidden;
+            }
             .StatusItem{
                 .changeStatus{
                     display: none;
