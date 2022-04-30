@@ -381,14 +381,14 @@ function AdminAccount()
                                     <table className="table">
                                         <thead>
                                             <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Hình ảnh</th>
-                                                <th scope="col">Họ tên</th>
-                                                <th scope="col">Email</th>
-                                                <th scope="col">Điện thoại</th>
-                                                <th scope="col">Loại</th>
-                                                <th scope="col">Chức vụ</th>
-                                                <th scope="col">Trạng thái</th>
+                                                <th className="text-center" scope="col">#</th>
+                                                <th className="text-center"  scope="col">Hình ảnh</th>
+                                                <th className="text-center"  scope="col">Họ tên</th>
+                                                <th className="text-center"  scope="col">Email</th>
+                                                <th className="text-center"  scope="col">Điện thoại</th>
+                                                <th className="text-center"  scope="col">Loại</th>
+                                                <th className="text-center"  scope="col">Chức vụ</th>
+                                                <th className="text-center"  scope="col">Trạng thái</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -404,13 +404,13 @@ function AdminAccount()
                                                                         ( imgFormat.includes(item.avatar.slice(item.avatar.indexOf('.')+1)))?(process.env.REACT_APP_URL + item.avatar):(process.env.REACT_APP_URL + avatarDefalt)} className={clsx(Style.img_item, "rounded-circle border border-1 img-fluid img-auto-size ")} />
                                                                 </div>
                                                             </td>
-                                                            <td key={index+"name"} className={clsx(Style.lh)} >{item.fullName}</td>
-                                                            <td key={index+'email'} className={clsx(Style.lh)} >{item.email}</td>
+                                                            <td key={index+"name"} className={clsx(Style.lh,"text-center")} >{item.fullName}</td>
+                                                            <td key={index+'email'} className={clsx(Style.lh,"text-center")} >{item.email}</td>
                                                           
-                                                            <td key={index+'phonNumber'} className={clsx(Style.lh)} >{item.phoneNumber}</td>
-                                                            <td key={index+'type'} className={clsx(Style.lh)} >{ HandleGetLable(type,item.type).label}</td>
-                                                            <td key={index+'type'} className={clsx(Style.lh,item.isAdmin?'text-warning':'text-primary')} >{item.isAdmin?'Admin':'Client'}</td>
-                                                            <td key={index+'status'} className={clsx(Style.lh)} >
+                                                            <td key={index+'phonNumber'} className={clsx(Style.lh,"text-center")} >{item.phoneNumber}</td>
+                                                            <td key={index+'type'} className={clsx(Style.lh,"text-center")} >{ HandleGetLable(type,item.type).label}</td>
+                                                            <td key={index+'type'} className={clsx(Style.lh,"text-center",item.isAdmin?'text-warning':'text-primary')} >{item.isAdmin?'Admin':'Client'}</td>
+                                                            <td key={index+'status'} className={clsx(Style.lh,"text-center")} >
                                                                 <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? ' doingStatusUse' : 'doingStatusUse') )}>{ HandleGetLable(filterStatus,item.status).label}
                                                                   
                                                                 </span> 
