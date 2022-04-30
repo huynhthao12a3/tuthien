@@ -289,18 +289,13 @@ function ProjectDetail(props) {
         try {
             const sm = await tronweb.contract().at(dataProject.addressContract)
 
-            const adminInfo = localStorage.getItem('admin-info') ? JSON.parse(localStorage.getItem('admin-info')) : null
-            const clientInfo = localStorage.getItem('client-info') ? JSON.parse(localStorage.getItem('client-info')) : null
-            const userInfo = adminInfo != null ? adminInfo : clientInfo
-            // console.log('email : ', email)
-            const result = await sm.DonateProject(valueTrx * 1000000, userInfo.email).send({
+            const result = await sm.Donate(valueTrx * 1000000).send({
                 feeLimit: 100_000_000,
                 callValue: valueTrx * 1000000,
                 // shouldPollResponse:true
             })
                 .then((res) => {
                     console.log('Donate: ', res)
-                    console.log('Type of res: ', typeof res)
 
                     if (typeof res === 'string') {
                         swal2.fire({
@@ -312,8 +307,7 @@ function ProjectDetail(props) {
                         });
 
                         const checkConfirmTransaction = setInterval(async () => {
-                            console.log("chạy 1 lần")
-                            console.log("data: ", res)
+                            console.log("chạy 1 lần: ", res)
                             await tronweb.trx.getUnconfirmedTransactionInfo(res)
                                 .then((response) => {
                                     if (response.receipt) {
@@ -344,7 +338,7 @@ function ProjectDetail(props) {
                                         }
                                     }
                                 })
-                        }, 1000)
+                        }, 2000)
                     }
                 })
 
@@ -366,7 +360,7 @@ function ProjectDetail(props) {
     const saveTransactionDonate = async (hash) => {
         const data = {
             id: id,
-            amount: valueTrx * trxPrice,
+            amount: valueTrx,
             hash: hash,
         }
         const response = await clientUser.donateProject(data)
@@ -376,25 +370,38 @@ function ProjectDetail(props) {
     // ---------------------------------------------------------------- WITHDRAW
     // Hàm xử lý rút tiền 
     const handleWithdraw = () => {
-        if (!!window.tronWeb === false) {
-            swal2.fire({
-                title: "Thông báo",
-                text: "Vui lòng cài đặt TronLink để rút tiền.",
-                icon: "info",
-                confirmButtonColor: 'var(--love-color-1)'
+        console.log(new Date().getTime())
+        console.log(new Date(dataProject.endDate).getTime())
+        if ((new Date().getTime()) >= (new Date(dataProject.endDate).getTime())) {
+            if (!!window.tronWeb === false) {
+                swal2.fire({
+                    title: "Thông báo",
+                    text: "Vui lòng cài đặt TronLink để rút tiền.",
+                    icon: "info",
+                    confirmButtonColor: 'var(--love-color-1)'
 
-            });
-        } else if ((window.tronWeb.ready && window.tronWeb.ready) === false) {
-            swal2.fire({
-                title: "Thông báo",
-                text: "Vui lòng đăng nhập TronLink để rút tiền.",
-                icon: "info",
-                confirmButtonColor: 'var(--love-color-1)'
+                });
+            } else if ((window.tronWeb.ready && window.tronWeb.ready) === false) {
+                swal2.fire({
+                    title: "Thông báo",
+                    text: "Vui lòng đăng nhập TronLink để rút tiền.",
+                    icon: "info",
+                    confirmButtonColor: 'var(--love-color-1)'
 
-            });
+                });
+            } else {
+                withdraw()
+            }
         } else {
-            withdraw()
+            swal2.fire({
+                title: "Thông báo",
+                html: "Chưa đến ngày kết thúc của dự án. </br> Vui lòng thử lại sau khi kết thúc dự án.",
+                icon: "warning",
+                confirmButtonColor: 'var(--love-color-1)'
+
+            });
         }
+
     }
 
     // Hàm rút tiền từ Smart contract
@@ -402,7 +409,7 @@ function ProjectDetail(props) {
 
         try {
             const sm = await tronweb.contract().at(dataProject.addressContract)
-            const result = await sm.WithDraw(tronweb.defaultAddress.base58, valueTrx * 1000000).send({
+            const result = await sm.Withdraw(valueTrx * 1000000).send({
                 feeLimit: 100_000_000,
                 callValue: valueTrx * 1000000,
                 // shouldPollResponse:true
@@ -451,7 +458,7 @@ function ProjectDetail(props) {
                                         }
                                     }
                                 })
-                        }, 1000)
+                        }, 2000)
                     }
                 })
         }
@@ -470,20 +477,136 @@ function ProjectDetail(props) {
     const saveTransactionWithdraw = async (hash) => {
         const data = {
             id: id,
-            amount: valueTrx * trxPrice,
+            amount: valueTrx,
             hash: hash,
         }
         const response = await clientUser.widthdrawProject(data)
         console.log('Đã lưu withdraw vào database: ', response.data)
     }
+
+    // ---------------------------------------------------------------- REFUND
+    // Hàm xử lý hoàn tiền 
+    const handleRefund = () => {
+        console.log(new Date().getTime())
+        console.log(new Date(dataProject.endDate).getTime())
+        if ((new Date().getTime()) >= (new Date(dataProject.endDate).getTime())) {
+            if (!!window.tronWeb === false) {
+                swal2.fire({
+                    title: "Thông báo",
+                    text: "Vui lòng cài đặt TronLink và sử dụng đúng ví đóng góp để được hoàn tiền.",
+                    icon: "info",
+                    confirmButtonColor: 'var(--love-color-1)'
+
+                });
+            } else if ((window.tronWeb.ready && window.tronWeb.ready) === false) {
+                swal2.fire({
+                    title: "Thông báo",
+                    text: "Vui lòng đăng nhập TronLink và sử dụng đúng ví đóng góp để được hoàn tiền.",
+                    icon: "info",
+                    confirmButtonColor: 'var(--love-color-1)'
+
+                });
+            } else {
+                refund()
+            }
+        } else {
+            swal2.fire({
+                title: "Thông báo",
+                html: "Chưa đến ngày kết thúc của dự án. </br> Vui lòng thử lại sau khi kết thúc dự án.",
+                icon: "warning",
+                confirmButtonColor: 'var(--love-color-1)'
+
+            });
+        }
+
+    }
+
+    // Hàm hoàn tiền từ Smart contract
+    async function refund() {
+
+        try {
+            const sm = await tronweb.contract().at(dataProject.addressContract)
+            const result = await sm.Refund().send({
+                feeLimit: 100_000_000,
+                // shouldPollResponse:true
+            })
+                .then((res) => {
+                    console.log('Refund: ', res)
+
+                    if (typeof res === 'string') {
+                        swal2.fire({
+                            title: "Xác nhận hoàn tiền.",
+                            text: "Yêu cầu hoàn tiền của bạn sẽ được cập nhật trong giây lát.",
+                            icon: "success",
+                            confirmButtonColor: 'var(--love-color-1)'
+
+                        });
+
+                        const checkConfirmTransaction = setInterval(async () => {
+                            console.log("chạy 1 lần")
+                            console.log("data: ", res)
+                            await tronweb.trx.getUnconfirmedTransactionInfo(res)
+                                .then((response) => {
+                                    if (response.receipt) {
+                                        if (response.receipt.result === "SUCCESS") {
+                                            clearInterval(checkConfirmTransaction)
+                                            console.log("Hoàn tiền thành công. Lưu vào database.")
+                                            saveTransactionRefund(res)
+                                            swal2.fire({
+                                                title: "Hoàn tiền thành công.",
+                                                html: "Yêu cầu hoàn tiền của bạn đã được xác nhận thành công.</br>"
+                                                    + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Chi tiết giao dịch</a>`,
+                                                icon: "success",
+                                                confirmButtonColor: 'var(--love-color-1)'
+
+                                            });
+                                        }
+                                        if (response.receipt.result !== "SUCCESS") {
+                                            clearInterval(checkConfirmTransaction)
+                                            console.log("FAIL - clearInterval")
+                                            swal2.fire({
+                                                title: "Hoàn tiền không thành công.",
+                                                html: `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Chi tiết giao dịch</a>`,
+                                                icon: "error",
+                                                confirmButtonColor: 'var(--love-color-1)'
+
+                                            });
+                                        }
+                                    }
+                                })
+                        }, 2000)
+                    }
+                })
+        }
+        catch (err) {
+            console.error(err);
+            swal2.fire({
+                title: "Hoàn tiền không thành công",
+                icon: "error",
+                confirmButtonColor: 'var(--love-color-1)'
+
+            });
+        }
+    }
+
+    // Lưu giao dịch refund thành công vào database
+    const saveTransactionRefund = async (hash) => {
+        const data = {
+            id: id,
+            amount: valueTrx,
+            hash: hash,
+        }
+        const response = await clientUser.refundProject(data)
+        console.log('Đã lưu refund vào database: ', response.data)
+    }
     return (
         <>
             {/* Header dự án  */}
             <div className={clsx(Style.headerProject, 'py-5 ')} >
-                <div className="container d-flex justify-content-between">
+                <div className="container d-flex justify-content-evenly">
                     <div className="row">
 
-                        <div className="col-12 col-lg-4 d-flex align-items-center">
+                        <div className="col-12 col-lg-4 d-flex align-items-center justify-content-center">
                             <div className="row text-center ">
 
                                 <div className="col-12">
@@ -517,10 +640,22 @@ function ProjectDetail(props) {
 
                             <div className="ProgressBarContent my-3">
                                 <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
-                                <ProgressBar striped now={Math.floor((Number(dataProject.amountNow) / Number(dataProject.amountNeed)) * 100)} label={`${Math.floor((Number(dataProject.amountNow) / Number(dataProject.amountNeed)) * 100)} %`} />
-                                <span>{formatNumber(dataProject.amountNow)} / {formatNumber(dataProject.amountNeed)} VNĐ</span>
+                                <ProgressBar striped now={Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100)} label={`${Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100)} %`} />
+                                <span>{formatNumber((Number(dataProject.amountNow) * trxPrice).toFixed(2))} / {formatNumber(dataProject.amountNeed)} VNĐ</span>
                             </div>
-                            <Button className={clsx(Style.backgroundForeignColor, 'px-5 my-2 w-100 text-light border-0')}><i className='mdi mdi-heart-outline me-1'></i>Theo dõi</Button>
+                            <div className="row">
+                                <div className="col-12 col-md-6">
+                                    <Button className={clsx(Style.backgroundForeignColor, 'my-2 w-100 text-light border-0')}>
+                                        <a href={"https://nile.tronscan.org/#/contract/" + dataProject.addressContract + "/transactions"} target="_blank" rel="noreferrer" className={clsx('d-inline-block w-100 text-white text-decoration-none')}><i className='mdi mdi-dropbox me-1'></i>Xem trên Blockchain</a>
+                                    </Button>
+
+
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <Button className={clsx(Style.backgroundForeignColor, 'px-5 my-2 w-100 text-light border-0')}><i className='mdi mdi-heart-outline me-1'></i>Theo dõi</Button>
+
+                                </div>
+                            </div>
 
 
                             <div className={clsx(Style.baseColor, 'd-flex flex-column flex-md-row justify-content-between align-items-center my-3')}>
@@ -648,10 +783,12 @@ function ProjectDetail(props) {
                                         <div className="fw-bold">VNĐ</div>
                                     </div>
                                 </div>
-                                <button className={clsx(Style.backgroundForeignColor, "fs-5 w-100 mt-5 p-2 text-white text-center text-uppercase")} onClick={handleDonate}>Tiếp tục<i className="mdi mdi-arrow-right-drop-circle-outline ms-1"></i></button>
+                                <button className={clsx(Style.backgroundForeignColor, "fs-5 w-100 mt-5 p-2 text-white text-center text-uppercase")} onClick={handleDonate}>Đóng góp<i className="mdi mdi-arrow-right-drop-circle-outline ms-1"></i></button>
                                 {
                                     dataProject.isEdit === true ? <button className={clsx(Style.backgroundBaseColor, "fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleWithdraw}>Rút tiền<i className="mdi mdi-cash-multiple ms-1"></i></button> : ""
                                 }
+                                <button className={clsx("doingStatus fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleRefund}>Hoàn tiền<i className="mdi mdi-backup-restore ms-1"></i></button>
+
                             </div>
                         </div>
                     </div>
@@ -784,7 +921,7 @@ function ProjectDetail(props) {
                                                                                 </div>
                                                                                 <div className="expense-body-transaction">
                                                                                     <p className={clsx(Style.foreignColor, 'm-0')}><i className="mdi mdi-repeat me-1"></i>Lịch sử giao dịch</p>
-                                                                                    <a href={"https://tronscan.org/#/contract/" + dataProject.addressContract} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, 'text-decoration-none')}>Xem trên Blockchain</a>
+                                                                                    <a href={"https://nile.tronscan.org/#/contract/" + dataProject.addressContract} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, 'text-decoration-none')}>Xem trên Blockchain</a>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
