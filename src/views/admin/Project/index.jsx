@@ -20,7 +20,7 @@ function Project(){
     //-------------------------------------------------------
     const arr=[
         {
-        "id": 1,
+        "id": 10,
         "title": "cứu trợ miền trung",
         "address": "miền trung",
         "category": 1,
@@ -103,7 +103,7 @@ console.log("arrayProject",arrayProject)
         }
         const repons= await projectApi.getAll()
         console.log("repons",repons)
-        setArrayProject(repons.data)
+        // setArrayProject(repons.data)
     },[])
 
     useEffect(async()=>{
@@ -156,7 +156,7 @@ console.log("arrayProject",arrayProject)
                         <div className={clsx(Style.titleBlock, ' w-100 main-top col-12 pt-4 pb-4')}>
                             <h3 className={clsx(Style.titleProject)}>Quản lý dự án</h3>
                             <Link to={"/admin/add-project"} className={clsx(Style.btnCreateProject,"btn")}>
-                            <span class="mdi mdi-plus-circle pe-2"></span> Tạo Dự Án </Link>
+                            Tạo Dự Án </Link>
                         </div>
                     </div>
                 </div>
@@ -253,22 +253,16 @@ console.log("arrayProject",arrayProject)
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item  
-
-                                                                        className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>
-                                                                        <Link to={"/admin/project-detail/" + item.id + "/" + item.title} 
-                                                                         className={clsx( "align-self-end  rounded-3 text-center text-dark text-decoration-none")}
-                                                                         onClick={()=>{ window.scrollTo(0, 0)}}>
+                                                                        <Dropdown.Item  as={Link} to={"/admin/project-detail/" + item.id + "/" + item.title} target="_blank"
+                                                                         className={clsx( Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}
+                                                                         onClick={()=>{ window.scrollTo(0, 0)}}><i className="mdi mdi-window-restore "></i>
                                                                             Chi tiết
-                                                                        </Link>
-
                                                                        </Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>
-                                                                        <Link to={{ pathname: `/admin/update-project/${item.id}/${item.title}`, state:locations}}
-                                                                        className={clsx( "align-self-end  rounded-3 text-center text-dark text-decoration-none")} >
+                                                                        <Dropdown.Item as={Link} to={{ pathname: `/admin/update-project/${item.id}/${item.title}`, state:locations}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}><i className="mdi mdi-lock-reset "></i>
+                                                                      
                                                                             Sửa Dự Án
-                                                                        </Link>
+                                                                    
                                                                         </Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
                                                     

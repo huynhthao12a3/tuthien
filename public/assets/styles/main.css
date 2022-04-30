@@ -73,6 +73,7 @@ html{
     box-sizing: border-box;
 }  
 body{
+    padding-right: 0px !important;
     font-family: Roboto, sans-serif !important;
 } 
 /* navbar client */
@@ -205,4 +206,10 @@ body{
     display: block;
     text-align: center;
     line-height: 1.6rem;
+  }
+  .swal2-cancel .btn .btn-danger{
+      margin-right: 10px !important;
+  }
+  .d-flex.justify-content-between.hide ,.bg-danger.btn-secondary.hide{
+      display: none !important;
   }

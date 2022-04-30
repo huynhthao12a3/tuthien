@@ -20,7 +20,11 @@ const adminUser = {
         return axiosClient.post(url, data)
     },
     register: (data) => {
-        const url = '/user/user-register'
+        const url = '/user/register-user'
+        return axiosClient.post(url, data)
+    },
+    registerAdmin:(data)=>{
+        const url = '/User/admin-register'
         return axiosClient.post(url, data)
     },
     getAll(params) {
