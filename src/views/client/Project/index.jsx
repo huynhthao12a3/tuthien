@@ -179,7 +179,7 @@ function ClientProject() {
                 {
                   projectList.map((item, index) => (
                     <div key={index} className={clsx(Style.projectItem, 'col-12  col-md-6 col-xxl-4 p-3 p-md-4')}>
-                      <div className={clsx(Style.projectWrapItem, " shadow d-flex flex-column")}>
+                      <div className={clsx(Style.projectWrapItem, "overflow-hidden shadow d-flex flex-column")}>
                         <div className="w-100 ">
                           <img src={process.env.REACT_APP_URL + item.bannerPath}
                             onError={(e) => (e.target.onerror = null, e.target.src = charityBanner)}
