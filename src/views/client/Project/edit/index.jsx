@@ -157,7 +157,7 @@ function EditProjectUser(prop){
     //---------------------------------- function
 
     //lưu hình ảnh vào biến
-    const handlePreviewAvatar= async(e)=>{
+    const handlePreviewAvatar= (e)=>{
         setImgValue(e.target.files[0])
     }
 

@@ -13,22 +13,26 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { ar } from "date-fns/locale";
 import adminUser from "../../../api/User/Admin"
+import { Button,Modal,Form } from "react-bootstrap";
 import Swal from 'sweetalert2'
 function AdminAccount()
 {
     const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
     const avatarDefalt="\\uploads\\Images\\User_Avatars\\28042022_030444_anymous_icon.png"
+    // danh sách tạm
     const arr=[
         {
-        "id": 1,
-        "fullName": "trần văn thuận",
-        "email": 'tranthuan@gmail.com',
-        "phoneNumber":'0987654321',
+        "id": 0,
+        "fullName": "",
+        "email": '',
+        "phoneNumber":'',
         "type": 1,
         'status':2,
-        "avatar":'\\uploads\\Images\\project\\27042022_072721_Khai-Bai-Tiem nang.jpg'
+        "avatar":'',
+        "address":'',
+        'password':'',
+        'isAdmin':true
         },
-  
     ]
     const type = [
         { value: '1', label: 'tổ chức' },
@@ -39,29 +43,75 @@ function AdminAccount()
         { value: '1', label: 'khóa' },
         { value: '2', label: 'đang hoạt động' },
     ]
+    //---------------------------------------------------------useState
 
-    //-------------------------------useState
+    const [arrayUsers, setArrayUsers] = useState(arr)// danh sách user
+    const [userDetail,setUserDetail]=useState(arr[0])// 1 user
 
-    const [arrayProject, setArrayProject] = useState(arr)
+    // bộ lọc
     const [inputSearch,setInputSearch]= useState('')
     const [inputType,setInputType]= useState([...type][1])
-    const [inputStatus,setInputStatus]= useState(filterStatus[0])
-    const [sta,setSta]=useState(true)
+    const [inputStatus,setInputStatus]= useState(filterStatus[1])
+    const [pageindex,setPageindex]= useState(0)// trang 
 
-    //---------------------------------------------------------useEffect
+    const [sta,setSta]=useState(1)// load lại danh sách
+
+    const [isCreate,setIsCreate]= useState(true)// phân biết modal 'tạo tk người dùng' và modal ' xem chi tiết'
+    const [typeCreate,setTypeCreate]=useState([...type][1])// selector trạng thái
+    const [powerCreate,setPowerCreate]= useState(1)//1 2 3 {1 : tạo admin , 2: tạo client ,3 : update}
+
+    const [imgValue,setImgValue]=useState('')
+    const [show, setShow] = useState(false)
+
+    //------------------------------------------------------------useEffect
+
+    //load danh sách từ API
     useEffect(async()=>{
         const data={
             "keyword":inputSearch,
             "type":inputType.value,
+            "status":inputStatus.value,
+            'pageindex':pageindex,
         }
         const respons= await adminUser.getAll(data)
         console.log("respon",respons.data)
-        setArrayProject(respons.data)
-    },[inputSearch,inputType,setSta])
-    //------------------------------------------funtion
-    // xử lý hiện labe của 
+        setArrayUsers(respons.data)
+    },[inputSearch,inputType,inputStatus,pageindex,sta])
+
+    //đẩy ảnh lên API
+    useEffect(async()=>{
+        if(imgValue!=='')
+        {
+            let resultimg= imgFormat.find(function(item){
+                return removeUnicode((imgValue.name).slice((imgValue.name).lastIndexOf('.')+1))===removeUnicode(item)
+            })
+            if(resultimg)
+            {
+                let form = new FormData();
+                form.append('Image',imgValue);
+                form.append('TypeImage',"user");
+                const response = await adminUser.uploadFile(form);
+                setUserDetail({...userDetail,avatar:response.data.filePath})
+                if (!response.isSuccess) {
+                    Swal.fire('Tải ảnh lên thất bại')
+                }
+            }
+            else{
+                Swal.fire('Tải ảnh lên thất bại')
+                resultimg=''
+            }
+        }
+    },[imgValue])
+
+    useEffect(()=>{
+        setUserDetail({...userDetail,type:typeCreate.value})
+    },[typeCreate])
+
+   
+    //------------------------------------------------------funtion
+
+    // xử lý hiện labe của 'type' 
     function HandleGetLable(filterlist,index){
-       
         return(
             filterlist.find(function(itemCategoty){
                 if (itemCategoty.value===(index+'')){
@@ -70,33 +120,31 @@ function AdminAccount()
             })
         )
     }
-    
-    const getUsers=async()=>{
-       
+
+    const handleChangAvatar=(e)=>{
+        setImgValue(e.target.files[0])
     }
 
-
+    // xử lý khóa, mở khóa tài khoản
     const handleblockAcount=(content,item)=>{
         const func = async() => {
             const respon= await adminUser.lock(item)   
-                console.log("respon",respon)  
-                if(respon.isSuccess)
-                {
-                    
-                    Swal.fire(
-                        'Đã khóa!',
-                        `${content} tài khoản thành công` ,
-                        'success'
-                      )
-                    setSta(!sta)
-                }    
-                else{
-                    Swal.fire(
-                        'khóa thất bại!',
-                        `${content} tài khoản thất bại`,
-                        'error'
-                      )
-                }       
+            if(respon.isSuccess)
+            {
+                Swal.fire(
+                    'Đã khóa!',
+                    `${content} tài khoản thành công` ,
+                    'success'
+                )
+                setSta(sta*(-1))
+            }    
+            else{
+                Swal.fire(
+                    'khóa thất bại!',
+                    `${content} tài khoản thất bại`,
+                    'error'
+                )
+            }       
         }
         Swal.fire({
             title: 'Bạn có chắc?',
@@ -106,33 +154,32 @@ function AdminAccount()
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Ok!'
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-
                 func()
-             
             }
-          })
+        })
     }
+    // xử lý xóa tài khoản
     const handleDelete=(id)=>{
         const DeleteApiFunc=async()=>{
             const respon= await adminUser.delete(id)   
-            console.log("respon",respon)  
             if(respon.isSuccess)
             {
-                setSta(!sta)
+                setSta(sta*(-1))
+                handleClose()
                 Swal.fire(
                     'Đã xóa!',
                     'Xóa tài khoản thành công',
                     'success'
-                  )
+                )
             }    
             else{
                 Swal.fire(
                     'xóa thất bại!',
                     'Xóa tài khoản thất bại',
                     'error'
-                  )
+                )
             }       
          
         }
@@ -144,16 +191,151 @@ function AdminAccount()
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Ok!'
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
-
                 DeleteApiFunc()
             }
-          })
+        })
     }
-    // const Label = props => {
-    //     return <label style={{ display: 'block', marginTop: 10 }} {...props} />;
-    // };
+    
+    const handleClose = () => setShow(false);
+
+    // chọn loại tài khoản muốn tạo
+    const handleChosePosition=function(item){
+        Swal.fire({
+            title: 'Bạn muốn tạo tài khoản',
+            text: "Cho Admin hay cho Client?",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Admin',
+            cancelButtonText:'Client'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setPowerCreate(1)
+                handleShow(item,'Tạo tài Khoản Admin')
+            }
+            else if(
+                result.dismiss === Swal.DismissReason.cancel
+            ){
+                setPowerCreate(2)
+                handleShow(item,'Tạo tài Khoản Client')
+            }
+        })
+
+    }
+
+    // hiển thị modal 
+    const handleShow = function(item,content){
+        if(isCreate)
+        { 
+            setPowerCreate(3)
+            setUserDetail({...item,content:content})
+        }
+        else{
+            setImgValue('')
+            setUserDetail({
+                "fullName": "",
+                "email": '',
+                "phoneNumber":'',
+                "type": 2,
+                "avatar":'',
+                'content':content,
+                'address':'',
+                'password':''
+            })
+        }
+        setShow(true);
+    } 
+      
+    // Cập nhật tài khoản lên API
+    const handleUpdateUser=async()=>{
+        if(
+            userDetail.fullName!==''&&
+            userDetail.phoneNumber!==''&&
+            userDetail.email!=='')
+        {
+            if(powerCreate==3)
+            {
+                const data= {
+                    'id':userDetail.id,
+                    "fullName": userDetail.fullName,
+                    "phoneNumber": userDetail.phoneNumber,
+                    "avatarPath": userDetail.avatar,
+                    "email": userDetail.email,
+                }
+                const respon= await adminUser.updateUser(data)
+                if(respon.isSuccess)
+                {
+                    handleClose()
+                    setSta(sta*(-1))
+                    Swal.fire('Cập nhật thông tin thành công')
+                }
+                else{
+                    Swal.fire('Cập nhật thông tin thất bại')
+                }
+            }
+            else if(powerCreate===1)
+            {   
+                if(userDetail.address!==''&& userDetail.password!=='')
+                {
+                    // tạo tài khoản admin
+                    const dataAdmin={
+                        "fullName": userDetail.fullName,
+                        "phoneNumber": userDetail.phoneNumber,
+                        "avatarPath": userDetail.avatar,
+                        "password": userDetail.password,
+                        "email": userDetail.email,
+                        "address": userDetail.address
+                    }
+                    const responAdmin= await adminUser.registerAdmin(dataAdmin)
+                    if(responAdmin.isSuccess)
+                    {
+                        handleClose()
+                        setSta(sta*(-1))
+                        Swal.fire('Đăng ký tài khoản Admin thành công')
+                    }
+                    else{
+                        Swal.fire('Đăng ký tài khoản Admin thất bại')
+                    }
+                }
+                else{
+                    Swal.fire('Vui lòng điển đủ thông tin')
+                }
+            }
+            else if(powerCreate===2){
+                // tạo tài khaorn client
+                if(userDetail.address!==''&& userDetail.password!=='')
+                {
+                    const dataClient={
+                        "fullName": userDetail.fullName,
+                        "phoneNumber": userDetail.phoneNumber,
+                        "avatarPath": userDetail.avatar,
+                        "password": userDetail.password,
+                        "email": userDetail.email,
+                        "address": userDetail.address
+                    }
+                    const responAdmin= await adminUser.register(dataClient)
+                    if(responAdmin.isSuccess)
+                    {
+                        handleClose()
+                        setSta(sta*(-1))
+                        Swal.fire('Đăng ký tài khoản Client thành công')
+                    }
+                    else{
+                        Swal.fire('Đăng ký tài khoản Client thất bại')
+                    }
+                }
+                else{
+                    Swal.fire('Vui lòng điển đủ thông tin')
+                }
+            }
+        }
+        else{
+            Swal.fire('Vui lòng điển đủ thông tin')
+        }
+    }
     return(
         <>
             <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
@@ -161,8 +343,11 @@ function AdminAccount()
                     <div className={clsx('row')}>
                         <div className={clsx(Style.titleBlock, ' w-100 main-top col-12 pt-4 pb-4')}>
                             <h3 className={clsx(Style.titleProject)}>Quản lý tài khoản người dùng</h3>
-                            <Link to='' className={clsx(Style.btnCreateProject,"btn")}>
-                            <span class="mdi mdi-plus-circle pe-2"></span> Tạo tài khoản người dùng </Link>
+                            <span  onClick={()=>{
+                                setIsCreate(false)
+                                handleChosePosition(userDetail)
+                                }}className={clsx(Style.btnCreateProject,"btn")}>
+                            <span className="mdi mdi-plus-circle pe-2"></span> Tạo tài khoản người dùng </span>
                         </div>
                     </div>
                 </div>
@@ -193,21 +378,22 @@ function AdminAccount()
                         <div className={clsx(Style.listPoject)}>
                             <div className="page-aside-right">
                                 <div className={clsx(Style.table_responsive, 'table-responsive')}>
-                                    <table class="table">
+                                    <table className="table">
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Hình ảnh</th>
-                                                <th scope="col">họ tên</th>
+                                                <th scope="col">Họ tên</th>
                                                 <th scope="col">Email</th>
                                                 <th scope="col">Điện thoại</th>
                                                 <th scope="col">Loại</th>
-                                                <th scope="col">trạng thái</th>
+                                                <th scope="col">Chức vụ</th>
+                                                <th scope="col">Trạng thái</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {
-                                                arrayProject.map(function(item,index,arr){
+                                                arrayUsers.map(function(item,index,arr){
                                                     return(
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
                                                             
@@ -223,6 +409,7 @@ function AdminAccount()
                                                           
                                                             <td key={index+'phonNumber'} className={clsx(Style.lh)} >{item.phoneNumber}</td>
                                                             <td key={index+'type'} className={clsx(Style.lh)} >{ HandleGetLable(type,item.type).label}</td>
+                                                            <td key={index+'type'} className={clsx(Style.lh,item.isAdmin?'text-warning':'text-primary')} >{item.isAdmin?'Admin':'Client'}</td>
                                                             <td key={index+'status'} className={clsx(Style.lh)} >
                                                                 <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? ' doingStatusUse' : 'doingStatusUse') )}>{ HandleGetLable(filterStatus,item.status).label}
                                                                   
@@ -230,18 +417,17 @@ function AdminAccount()
                                                             </td>
                                                           
                                                             <td key={index+'dropdow'} className=" text-center align-middle ">
-                                                                <Dropdown className="d-inline mx-2" >
+                                                                <Dropdown className="d-inline mx-2 " >
                                                                     <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin" )}
                                                                     style={{position:'relative',height:'30px' ,backgroundColor:'transparent', border:'none' }}>
                                                                                 <i className={clsx(Style.iconDrop, "text-light mdi mdi-dots-vertical font-18 text-primary")}></i>
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Chi tiết</Dropdown.Item>
-                                                                        {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa thông tin</Dropdown.Item>
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)} onClick={()=>{handleDelete(item.id)}}><i className="mdi mdi-lock-reset "></i>
-                                                                            Xóa tài khoản
+                                                                        <Dropdown.Item onClick={()=>{
+                                                                            setIsCreate(true)
+                                                                            handleShow(item,'Chỉnh sửa thông tin người dùng')}} className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>
+                                                                            Chi tiết
                                                                         </Dropdown.Item>
                                                                         <Dropdown.Item onClick={()=>handleblockAcount('mở khóa',item.id)} className={clsx(Style.itemDrop,item.status===1?"show":"hide")} ><i className={clsx("mdi mdi-lock-reset")}></i>
                                                                             Mở khóa tài khoản
@@ -250,9 +436,7 @@ function AdminAccount()
                                                                             
                                                                             Khóa tài khoản
                                                                         </Dropdown.Item>
-                                                                        {/* <Dropdown.Divider /> */}
-                                                                        {/* <Dropdown.Item className={clsx(Style.itemDrop)}><span class="mdi mdi-plus-circle pe-2"></span>Thêm Tiến trình</Dropdown.Item>
-                                                                        <Dropdown.Item className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Tiến trình</Dropdown.Item> */}
+                                                                      
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>
                                                             </td>
@@ -267,11 +451,133 @@ function AdminAccount()
                                             
                                         </tbody>
                                     </table>
+                                    <div className="d-flex">
+                                            <div>
+                                                <button onClick={()=>setPageindex(pageindex!=0?pageindex-1:pageindex)} className={clsx( Style.prevBtn,'bg-info px-2')}>
+                                                <span className="mdi mdi-chevron-double-left"></span>
+                                                </button>
+                                                <span className="px-3 text-secondary">{pageindex}</span>
+                                                <button onClick={()=>setPageindex(pageindex+1)} className={clsx( Style.nextBtn,'bg-info px-2')}>
+                                                <span className="mdi mdi-chevron-double-right"></span>
+                                                </button>
+                                            </div>
+                                    </div>
                                 </div >
                             </div>  
                         </div>
                     </div>
                 </div>
+                <Modal size="lg" show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title className="text-black-50">{userDetail.content}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="container-fluid ">
+                        <div className="row p-3">
+                            <div className={clsx(Style.imgAccountUpdate,"col-3 position-relative")}>
+
+                            <img  className={clsx(Style.img_item,"rounded-circle position-relative border border-1 img-fluid img-auto-size"  )}
+                            src={( imgFormat.includes(userDetail.avatar.slice(userDetail.avatar.indexOf('.')+1)))?(process.env.REACT_APP_URL + userDetail.avatar):(process.env.REACT_APP_URL + avatarDefalt)}alt="" />
+                             <input  type="file" className={clsx(Style.changeimg,'position-absolute')} onChange={(e)=>{handleChangAvatar(e)}} style={{  cursor:"pointer",opacity: "0", cursor: "pointer" }} />
+                            </div>
+                          
+                            <Form className="col-9 py-2">
+                                <Form.Group controlId="exampleForm.ControlInput1">
+                                    <Form.Label>Họ tên</Form.Label>
+                                    <Form.Control className="border border-secondary"
+                                        value={userDetail.fullName}
+                                        onChange={(e)=>{setUserDetail({...userDetail,fullName:e.target.value})}}
+                                        type="text"
+                                        placeholder="name"
+                                        autoFocus
+                                    />
+                                </Form.Group>
+                                <Form.Group  controlId="">
+                                    <Form.Label>Số điện thoại</Form.Label>
+                                    <Form.Control className="border border-secondary"
+                                       
+                                        value={userDetail.phoneNumber}
+                                        onChange={(e)=>{setUserDetail({...userDetail,phoneNumber:e.target.value})}}
+                                        type="text"
+                                        placeholder="098765432"
+                                        autoFocus
+                                    />
+                                </Form.Group>
+                              
+                            </Form>
+                            <Form className="d-flex justify-content-between col-12">
+                                <Form.Group className="col-6 px-2 d-inline-block " controlId="">
+                                    <Form.Label>Email</Form.Label>
+                                    <Form.Control className="border border-secondary"
+                                        readOnly={isCreate}
+                                        value={userDetail.email}
+                                        onChange={(e)=>{setUserDetail({...userDetail,email:e.target.value})}}
+                                        type="email"
+                                        placeholder="email@gmail.com"
+                                        autoFocus
+                                    />
+                                </Form.Group>
+                                <Form.Group className="col-6 px-2 d-inline-block " controlId="">
+                                    <Form.Label>Loại</Form.Label>
+                                    <Select  
+                                        isDisabled={isCreate}  
+                                        value={HandleGetLable(type,userDetail.type)}
+                                        onChange={setTypeCreate}
+                                        options={type} 
+                                        defaultValue={type}
+                                        className={clsx(Style.category,'w-100')}
+                                        ></Select>
+                                  
+                                </Form.Group>
+                              
+                            </Form>
+                            <Form className={clsx("d-flex justify-content-between col-12 ",(isCreate)?'hide':"sleep")}>
+                                <Form.Group className="col-6 px-2 d-inline-block " controlId="">
+                                    <Form.Label>Địa chỉ</Form.Label>
+                                    <Form.Control className="border border-secondary"
+                                        readOnly={isCreate}
+                                        value={userDetail.address}
+                                        onChange={(e)=>{setUserDetail({...userDetail,address:e.target.value})}}
+                                        type="text"
+                                        placeholder="đồng nai/ vĩnh cửu/ thiện tân"
+                                        autoFocus
+                                    />
+                                </Form.Group>
+                                <Form.Group className="col-6 px-2 d-inline-block " controlId="">
+                                    <Form.Label>Mật Khẩu</Form.Label>
+                                    <Form.Control className="border border-secondary"
+                                        readOnly={isCreate}
+                                        value={userDetail.password}
+                                        onChange={(e)=>{setUserDetail({...userDetail,password:e.target.value})}}
+                                        type="password"
+                                        placeholder="12345"
+                                        autoFocus
+                                    />
+                                  
+                                </Form.Group>
+                               
+                              
+                            </Form>
+                        </div>
+
+                    </Modal.Body>
+
+                    <Modal.Footer className="d-flex justify-content-between">
+                        <div>
+                            <Button  className={clsx("bg-danger",(!isCreate)?'hide':"sleep")} variant="secondary" onClick={()=>{handleDelete(userDetail.id)}}>
+                                Xóa
+                            </Button>
+                        </div>
+                        <div>
+                            <Button className="me-2" variant="secondary" onClick={handleClose}>
+                                Đóng
+                            </Button>
+                            <Button variant="primary" onClick={()=>{handleUpdateUser()}}>
+                                Cập Nhật
+                            </Button>
+                        </div>
+                        
+                    </Modal.Footer>
+                </Modal>
             </div>
         </>
     )
