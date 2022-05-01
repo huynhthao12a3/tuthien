@@ -12,6 +12,7 @@ import projectApi from '../../../api/Project'
 import SetInnerHTML from "./../../../shares/setInnerHTML/index";
 import * as $ from 'jquery'
 import charityBanner from '../../../assets/images/charity_banner.jpg'
+import Loading from "../../../shares/Loading"
 function ClientProject() {
 
 
@@ -46,6 +47,7 @@ function ClientProject() {
   // console.log('category :', fillerCategoryCheckbox)
   const [projectList, setProjectList] = useState([])
   const [categoryArray, setCategoryArray] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
   // console.log('currentpage:', currentPage)
 
   // Lấy danh sách project
@@ -60,6 +62,7 @@ function ClientProject() {
       const response = await projectApi.getAll(params)
       if (response.isSuccess) {
         setProjectList(response.data)
+        setIsLoading(false)
         console.log('danh sách project: ', response.data)
       }
     }
@@ -94,7 +97,13 @@ function ClientProject() {
     }
     fetchDataCategory()
   }, [])
-  // const fakeData
+  // Lấy giá TRX
+  const [trxPrice, setTrxPrice] = useState();
+  useEffect(() => {
+    fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=vnd")
+      .then(res => res.json())
+      .then(res => { setTrxPrice(res.tron.vnd) })
+  }, [])
   function formatNumber(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
   }
@@ -107,6 +116,9 @@ function ClientProject() {
 
   return (
     <>
+      {
+        isLoading ? <Loading /> : ""
+      }
       <div className="container-fluid w-100">
         <div className={clsx(Style.bannerRow, "row")}>
           <div className={clsx(Style.bannerProject)} >
@@ -192,8 +204,8 @@ function ClientProject() {
                           </div>
                           <div className="ProgressBarContent px-3 my-4  bg-light rounded-3">
                             <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
-                            <ProgressBar striped now={Math.floor((Number(item.amountNow + '1') / Number(item.amountNow + '10')) * 100)} label={`${Math.floor((Number(item.amountNow + '1') / Number(item.amountNow + '10')) * 100)} %`} />
-                            <span className="fw-bold text-muted">{formatNumber(item.amountNow)} / {formatNumber(item.amountNeed)} VNĐ</span>
+                            <ProgressBar striped now={Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100) + 10} label={`${Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100)} %`} />
+                            <span>{formatNumber((Number(item.amountNow) * trxPrice).toFixed(2))} / {formatNumber(item.amountNeed)} VNĐ</span>
                           </div>
                           <div className="border-start px-3 py-1 my-3 d-flex flex-column ">
                             <span ><i className="mdi mdi-history fs-5 pe-2"></i>Trạng thái</span>
