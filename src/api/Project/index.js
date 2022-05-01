@@ -31,7 +31,12 @@ const projectApi = {
     getCategoryProject: ()=>{
         const url = `/Category/get-project-categories`
         return axiosClient.get(url)
+    },
+    upStatusProject:(id)=>{
+        const url=`/Project/update-status-project/${id}`
+        return axiosClient.patch(url)
     }
+    
 }
 
 export default projectApi;

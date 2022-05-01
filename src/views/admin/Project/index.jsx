@@ -17,6 +17,7 @@ import moment from "moment";
 import { Button,Modal,Form } from "react-bootstrap";
 import SetInnerHTML from "../../../shares/setInnerHTML"
 import Zoom from 'react-medium-image-zoom'
+import Swal from 'sweetalert2'
 function Project(){
     const locations = useLocation().pathname
     //-------------------------------------------------------
@@ -47,6 +48,7 @@ function Project(){
     const [inputCategoty,setInputCategoty]= useState(categoryOptions[0])
     const [inputStatus,setInputStatus]= useState(filterStatus[0])
     const [currentpage,setCurrentpage]= useState(0)
+    const [isAccept,setIsAccept] = useState(true)
 
     // đừng có mở thg này ra :<
     const [projectDetail,setProjectDetail]= useState(
@@ -223,7 +225,7 @@ function Project(){
         const repons= await projectApi.getAll(data)
         console.log("repons",repons.data)
         setArrayProject(repons.data)
-    },[inputSearch,inputCategoty,inputStatus,currentpage])
+    },[inputSearch,inputCategoty,inputStatus,currentpage,isAccept])
 
     useEffect(async()=>{
         const getAllUsers = async () => {
@@ -261,8 +263,41 @@ function Project(){
         )
     }
 
-    const handleAcceptProject=(item)=>
+    const handleAcceptProject=async(id)=>
     {
+        const accept = async()=>{
+            
+            const respon= await projectApi.upStatusProject(id)
+            if(respon.isSuccess)
+            {
+                Swal.fire(respon.message)
+                setIsAccept(!isAccept)
+            }
+            else{
+                Swal.fire(respon.message)
+            }
+            
+        }
+        try{
+            Swal.fire({
+                title: 'Bạn có Chắc?',
+                text: "Bạn muốn duyệt dự án này!",
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                accept()
+                }
+            })
+           
+        }
+        catch(e)
+        {
+            console.error(e)
+        }
     }
 
     const Label = props => {

@@ -15,6 +15,7 @@ import processApi from "../../../../../api/Process";
 import swal from "sweetalert";
 
 
+
 function UpdateProcess(props) {
 
     //-------------------------------------------------------- giá trị khởi tạo
@@ -24,6 +25,10 @@ function UpdateProcess(props) {
 
 
     // const location = useLocation().pathname.slice(useLocation().pathname.lastIndexOf("/") + 1);
+    let locationsq = useLocation().pathname.slice(1)
+    locationsq = locationsq.slice(0, locationsq.indexOf("/"))
+    console.log("locationsq",locationsq)
+    
     const { id } = useParams()
     console.log('id: ', id)
     const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
@@ -219,15 +224,12 @@ function UpdateProcess(props) {
                 "shortDescription": processValue.shortDescription,
                 "content": processValue.content,
                 "expenses": listExpense.map(function (item) {
-
                     return ({
                         "id": item.id,
                         "description": item.description,
                         "type": item.typepen.label,
                         "amount": item.amount
                     })
-
-
                 })
                 ,
                 "files": listImgUgl.map(function (item, index) {
@@ -252,7 +254,14 @@ function UpdateProcess(props) {
                         className: "bg-base-color"
                     }
                 });
-                history.push('/dashboard')
+                if(locationsq.includes("admin"))
+                {
+                    console.log(1)
+                    history.push('/admin/project')
+                }
+                else{
+                    history.push('/dashboard')
+                } 
             }
             else {
                 // alertify.alert('Tạo dự án thất bại')
