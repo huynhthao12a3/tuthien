@@ -34,12 +34,14 @@ import AddProject from "../Add/index";
 import projectApi from '../../../../api/Project';
 import clientUser from '../../../../api/User/Client';
 import logoCharity from '../../../../assets/images/default-avatar.jpg'
+import Loading from "./../../../../shares/Loading/index";
 ProjectDetail.propTypes = {
 
 };
 
 function ProjectDetail(props) {
     const locations = useLocation().pathname
+    const [isLoading, setIsLoading] = useState(true)
 
     const [dataProject, setDataProject] = useState({
         userCreateId: 1,
@@ -94,8 +96,11 @@ function ProjectDetail(props) {
     useEffect(() => {
         const fetchDataProject = async () => {
             const response = await projectApi.get(id)
-            setDataProject(response.data)
-            console.log('project :', response.data)
+            if (response.isSuccess) {
+                setDataProject(response.data)
+                setIsLoading(false)
+                console.log('project :', response.data)
+            }
         }
         fetchDataProject()
     }, [id])
@@ -262,25 +267,36 @@ function ProjectDetail(props) {
     // ------------------------------------------------------------------- DONATE 
     // Hàm xử lý đóng góp cho dự án
     const handleDonate = () => {
-        if (!!window.tronWeb == false) {
-            swal2.fire({
-                title: "Thông báo",
-                text: "Vui lòng cài đặt TronLink để tham gia đóng góp.",
-                icon: "info",
-                confirmButtonColor: 'var(--love-color-1)'
+        if ((new Date().getTime()) < (new Date(dataProject.endDate).getTime())) {
+            if (!!window.tronWeb === false) {
+                swal2.fire({
+                    title: "Thông báo",
+                    text: "Vui lòng cài đặt TronLink để tham gia đóng góp.",
+                    icon: "info",
+                    confirmButtonColor: 'var(--love-color-1)'
 
-            });
-        } else if ((window.tronWeb.ready && window.tronWeb.ready) == false) {
-            swal2.fire({
-                title: "Thông báo",
-                text: "Vui lòng đăng nhập TronLink để tham gia đóng góp.",
-                icon: "info",
-                confirmButtonColor: 'var(--love-color-1)'
+                });
+            } else if ((window.tronWeb.ready && window.tronWeb.ready) === false) {
+                swal2.fire({
+                    title: "Thông báo",
+                    text: "Vui lòng đăng nhập TronLink để tham gia đóng góp.",
+                    icon: "info",
+                    confirmButtonColor: 'var(--love-color-1)'
 
-            });
+                });
+            } else {
+                donate()
+            }
         } else {
-            donate()
+            swal2.fire({
+                title: "Thông báo",
+                html: "Dự án đã kết thúc.",
+                icon: "info",
+                confirmButtonColor: 'var(--love-color-1)'
+
+            });
         }
+
 
     }
 
@@ -396,7 +412,7 @@ function ProjectDetail(props) {
             swal2.fire({
                 title: "Thông báo",
                 html: "Chưa đến ngày kết thúc của dự án. </br> Vui lòng thử lại sau khi kết thúc dự án.",
-                icon: "warning",
+                icon: "info",
                 confirmButtonColor: 'var(--love-color-1)'
 
             });
@@ -513,7 +529,7 @@ function ProjectDetail(props) {
             swal2.fire({
                 title: "Thông báo",
                 html: "Chưa đến ngày kết thúc của dự án. </br> Vui lòng thử lại sau khi kết thúc dự án.",
-                icon: "warning",
+                icon: "info",
                 confirmButtonColor: 'var(--love-color-1)'
 
             });
@@ -601,6 +617,9 @@ function ProjectDetail(props) {
     }
     return (
         <>
+            {
+                isLoading ? <Loading /> : ""
+            }
             {/* Header dự án  */}
             <div className={clsx(Style.headerProject, 'py-5 ')} >
                 <div className="container d-flex justify-content-evenly">
@@ -640,7 +659,7 @@ function ProjectDetail(props) {
 
                             <div className="ProgressBarContent my-3">
                                 <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
-                                <ProgressBar striped now={Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100)} label={`${Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100)} %`} />
+                                <ProgressBar striped now={Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100) + 5} label={`${Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100)} %`} />
                                 <span>{formatNumber((Number(dataProject.amountNow) * trxPrice).toFixed(2))} / {formatNumber(dataProject.amountNeed)} VNĐ</span>
                             </div>
                             <div className="row">
