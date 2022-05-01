@@ -28,8 +28,8 @@ import moment from 'moment'
 import Slider from "react-slick";
 
 // Sweet Alert  
-import swal from 'sweetalert'
-import { useHistory,useLocation } from 'react-router-dom'
+import swal2 from 'sweetalert2'
+import { useHistory, useLocation } from 'react-router-dom'
 import AddProject from "../Add/index";
 import projectApi from '../../../../api/Project';
 import clientUser from '../../../../api/User/Client';
@@ -40,6 +40,7 @@ ProjectDetail.propTypes = {
 
 function ProjectDetail(props) {
     const locations = useLocation().pathname
+
     const [dataProject, setDataProject] = useState({
         userCreateId: 1,
         title: "Hỗ trợ lũ lụt đồng bào miền trung",
@@ -98,323 +99,15 @@ function ProjectDetail(props) {
         }
         fetchDataProject()
     }, [id])
-    // Data Project từ API 
-    const fakeDataProject = {
-        projectId: 91,
-        projectName: 'Cứu trợ nạn đói khẩn cấp ở Châu Phi',
-        image: 'https://www.unicef.org/southafrica/sites/unicef.org.southafrica/files/styles/hero_mobile/public/ZAF-BEC9590.jpg?itok=PiumpUnx',
-        shortDescription: '<p>Đảm bảo các gia đình dễ bị tổn thương ở nông thôn Nam Phi giữ thức ăn trên bàn trong cuộc khủng hoảng COVID 19...</p>',
-        summary: '<p>Cuộc khủng hoảng COVID19 đã ảnh hưởng sâu sắc đến miền nam châu Phi và đặc biệt là các cộng đồng nông thôn phụ thuộc vào du lịch động vật hoang dã để kiếm sống. Các cộng đồng vốn đã dễ bị tổn thương hiện đang rơi vào tình trạng đói và nghèo hơn. Bạn có thể giúp cung cấp các gói thực phẩm để đảm bảo rằng 100 gia đình trong cộng đồng bên cạnh khu bảo tồn động vật hoang dã của chúng tôi có thể ăn trong tháng 10 như một phần của Chiến dịch Cứu trợ Đói đang diễn ra của chúng tôi. Chỉ cần 35 đô la là đủ để mua một gói thực phẩm lớn cho một gia đình trong một tháng. Sự hỗ trợ của bạn cũng giữ cho động vật hoang dã được an toàn, bằng cách đảm bảo những người đói không phải dùng đến săn trộm thịt rừng để giữ cho gia đình của họ có thức ăn.</p>',
-        problemToAddress: '<p>Cuộc khủng hoảng COVID19 đã tác động sâu sắc đến các cộng đồng dễ bị tổn thương mà chúng tôi làm việc cùng, những người sống cạnh hai khu bảo tồn động vật hoang dã của chúng tôi ở KwaZulu-Natal Nam Phi. Các tác động kinh tế của việc đóng cửa nghiêm ngặt của Nam Phi đang được cảm nhận rõ nét trong cộng đồng nông thôn của chúng tôi, gây ra mối đe dọa cho cả con người và việc bảo vệ động vật hoang dã. Nhiều người bị mất việc làm và thu nhập, khiến các gia đình vốn đã nghèo lại càng thêm đói và nghèo. Các thành viên cộng đồng đang làm việc xa nhà trong thành phố đã trở lại để đóng cửa, gây thêm áp lực cho các gia đình và nguồn lực của họ. Trẻ em nói riêng có nguy cơ phụ thuộc vào bữa ăn hàng ngày từ trường học, nơi đã đóng cửa.</p>',
-        solution: `<p>Là một phần của chương trình Hỗ trợ cộng đồng của Quỹ Ngày mai hoang dã, chúng tôi nhanh chóng bắt tay vào hành động để tổ chức một chương trình cứu trợ nạn đói khẩn cấp. Chúng tôi đã gây quỹ đủ cho đợt giao hàng đầu tiên vào tháng 5 cho 63 gia đình có nhu cầu.
 
-        Mục tiêu của chúng tôi là gây quỹ bổ sung để cung cấp cho ít nhất 100 gia đình những gói thực phẩm khẩn cấp mỗi tháng. Những bưu kiện này sẽ chứa các nhu yếu phẩm như gạo, rau, dầu, và cá hộp và sẽ giữ cho các gia đình được ăn trong một tháng. Chúng tôi đang làm việc trực tiếp với ban lãnh đạo truyền thống của cộng đồng (Nduna) để giúp xác định những gia đình cần nhất. Bất kỳ khoản tiền nào được huy động cao hơn mục tiêu của chúng tôi sẽ cho phép chúng tôi mở rộng phạm vi hoạt động của chương trình.
-        
-        Mỗi bưu kiện đều có ghi chú từ quỹ Ngày mai hoang dã với dòng chữ Zulu nói "Umuntu ngumuntu ngabuntu" có nghĩa là "Người là vì người", một thông điệp về tình đoàn kết và sự sẻ chia nhân văn của chúng ta trong thời điểm khó khăn này.</p>`,
-        category: ['Lũ lụt', 'Thiên tai', 'Con người'],
-        location: 'Quận gò vấp, thành phố hồ chí minh, tỉnh Đồng Nai',
-        impact: '500 người dân Châu Phi',
-        dateStart: '02/01/2022',
-        dateEnd: '10/11/2022',
-        addressContract: "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t", // địa chỉ smart contract
-        amountNeed: '3005000000',
-        status: 'Đang thực thi',
-        userCreateId: '981',
-        userCreateName: 'Huỳnh Thảo',
-        userType: 'Cá nhân'
-    }
-    const amountNow = '2100000000' // từ smart contract
-
+    // Hàm format string thành number
     function formatNumber(num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
-    // Amount
-    const amountNowFormat = Number(amountNow)
-    const amountNeedFormat = Number(fakeDataProject.amountNeed)
-    const progress = Math.floor((amountNowFormat / amountNeedFormat) * 100)
+
 
     // URL map location
     const urlLocation = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDEhyx111_aA4TIk0BPHGyLTOZnIFChjGc&q=" + dataProject.location.replaceAll(' ', '+');
-
-    // Data tiến trình project từ API
-    const fakeDataProcess = [
-        {
-            id: 184,
-            projectId: 91,
-            title: "Sự tin cậy cho các gia đình của MDUKU",
-            status: "Đã hoàn thành",
-            shortDescription: "<p>Mỗi gói thực phẩm có giá 35 đô la và chúng tôi sẽ phân phát một gói (cho một gia đình bốn người) cho 72 gia đình, những người được chính quyền bộ lạc và đội y tế cộng đồng xác định là cần nhất</p>",
-            content: '<p>Nhờ chiến dịch quyên góp bằng bitcoin, chúng tôi đã có thể gửi những khoản tiền này trực tiếp đến Nam Phi, nơi chúng tôi đổi thành fiat Rand. Chúng tôi đã sử dụng R92,908 (US $ 6551) trong tổng số tiền quỹ để mua tổng cộng 120 gói thực phẩm, mỗi gói cho một gia đình bốn người ăn trong một tháng. Chúng tôi đã chuyển những bưu kiện thực phẩm này trong suốt tháng Giêng, tháng Hai, tháng Ba cho những gia đình mất an ninh lương thực nhất ở Mduku, Nam Phi.</p>',
-            file: [
-                {
-                    id: 11,
-                    fileName: "Name",
-                    filePath: "https://baocantho.com.vn/image/fckeditor/upload/2018/20180616/images/khambenhmienphigiaixuan.jpg"
-
-                },
-                {
-                    id: 12,
-                    fileName: "Name",
-                    filePath: "https://cdn.thoibaotaichinhvietnam.vn/stores/news_dataimages/thoibaotaichinhvietnamvn/122013/02/01/viettel-to-chuc-kham-benh-mien-phi-cho-600-ho-ngheo-o-dien-bien-04-.2251.jpg"
-
-                },
-                {
-                    id: 13,
-                    fileName: "Name",
-                    filePath: "https://www.angelcharity.org/wp-content/uploads/hero-background.jpg"
-                },
-                {
-                    id: 15,
-                    fileName: "Name",
-                    filePath: "https://www.victoriavn.com/images/HOATDONGXAHOI/43075330_540345303071029_8671747087559294976_n.jpg"
-                },
-                {
-                    id: 16,
-                    fileName: "Name",
-                    filePath: "https://www.smsupermalls.com/data/uploads/2019/12/13.jpg"
-                }
-
-            ],
-            expenses: [
-                {
-                    id: 92,
-                    createdDate: "2021-04-21T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "31700000",
-                    description: "<p>Vào ngày 16 tháng 1 năm 2021, chúng tôi đã giao 60 gói thực phẩm (R $ 44.727,60)</p>",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-                {
-                    id: 93,
-                    createdDate: "2021-04-22T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "220100000",
-                    description: "<p>Vào ngày 22 tháng 1 năm 2021, chúng tôi đã giao 1000 gói thực phẩm (R $ 111.727,60)</p>",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-                {
-                    id: 94,
-                    createdDate: "2021-04-21T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "31700000",
-                    description: "<p>Thức ăn đóng hộp cho trẻ mồ côi và gia đình của họ: 60 lon Hành tây cà chua trộn 30 lon Đậu sốt cà chua 40 lon Rau trộn cà ri (Một nửa hóa đơn này dành cho Mốc 1)</p>",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-                {
-                    id: 95,
-                    createdDate: "2021-04-22T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "220100000",
-                    description: "<p>Trả cho tổ chức từ thiện Hambanathi Community thêm một tháng thực phẩm cho tất cả 30 trẻ mồ côi (và các gia đình khác) trong một tháng nữa. Người quản lý cũng có toàn quyền sử dụng một số quỹ này cho các nhu cầu cấp thiết của trường học, bao gồm cả giày đi học cho trẻ em.",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-            ],
-        },
-        {
-            id: 185,
-            projectId: 91,
-            title: "Sự tin cậy cho các gia đình của GREEN MAMBAS",
-            status: "Đã hoàn thành",
-            shortDescription: "<p>Green Mambas là một nhóm gồm 14 phụ nữ, hầu hết là mẹ đơn thân, làm việc theo mùa cho Quỹ Ngày mai hoang dã, giúp đỡ khu bảo tồn của chúng tôi với các công việc xanh bao gồm loại bỏ thực vật ngoại lai. Chúng tôi muốn đảm bảo những người phụ nữ mạnh mẽ này và con cái của họ không bị đói mỗi tháng.</p> <p>Chúng tôi sẽ giao 14 gói thực phẩm có giá 35 đô la cho mỗi Green Mamba cho gia đình cô ấy.</p>",
-            content: '<p>Nhờ nguồn tài trợ không hoàn lại, chúng tôi đã có thể tuyển dụng 14 phụ nữ Green Mambas trong 5 tháng làm việc tại Khu bảo tồn của chúng tôi ở Nam Phi (từ tháng 11 năm 2020 đến tháng 5 năm 2021). Như vậy, với nguồn thu nhập ổn định này, họ đã có thể mua thực phẩm cho gia đình và không còn là những người thiếu thốn nhất trong cộng đồng của chúng tôi.</p><br><p>Thay vào đó, chúng tôi sử dụng quỹ cho sự kiện quan trọng này để cung cấp bữa trưa ở trường hàng ngày cho hai nhà trẻ mà chúng tôi hỗ trợ.</p><br><p>Sự kiện quan trọng này đã tài trợ 3 tháng ăn trưa hàng ngày cho 70 trẻ em!</p>',
-            file: [
-                {
-                    id: 20,
-                    fileName: "Name",
-                    filePath: "https://www.angelcharity.org/wp-content/uploads/hero-background.jpg"
-                },
-                {
-                    id: 21,
-                    fileName: "Name",
-                    filePath: "https://www.victoriavn.com/images/HOATDONGXAHOI/43075330_540345303071029_8671747087559294976_n.jpg"
-                },
-                {
-                    id: 22,
-                    fileName: "Name",
-                    filePath: "https://static.republika.co.id/uploads/images/inpicture_slide/suasana-market-day-charity-program-yang-digelar-oleh-_171101060617-578.jpg"
-
-                },
-                {
-                    id: 23,
-                    fileName: "Name",
-                    filePath: "https://static.republika.co.id/uploads/images/inpicture_slide/suasana-market-day-charity-program-yang-digelar-oleh-_171101060617-578.jpg"
-
-                },
-
-                {
-                    id: 30,
-                    fileName: "Name",
-                    filePath: "https://www.smsupermalls.com/data/uploads/2019/12/13.jpg"
-                }
-            ],
-            expenses: [
-                {
-                    id: 101,
-                    createdDate: "2021-04-21T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "5700000",
-                    description: "<p>Vào ngày 16 tháng 1 năm 2021, chúng tôi đã giao 60 gói thực phẩm (R $ 44.727,60)</p>",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-                {
-                    id: 103,
-                    createdDate: "2021-04-22T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "120100000",
-                    description: "<p>Vào ngày 30 tháng 4 năm 2021, chúng tôi mua các gói thực phẩm Creche trong Slimbooks. Chúng tôi đã chi RAND $ 1,341,55.</p>",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-                {
-                    id: 104,
-                    createdDate: "2021-04-22T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "120100000",
-                    description: "<p>Vào ngày 22/02/2021, chúng tôi mua các gói thực phẩm Creche tháng Hai. Đã chi RAND $ 3,621,2.</p>",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-            ],
-        },
-        {
-            id: 185,
-            projectId: 91,
-            title: "Sự tin cậy cho các gia đình của HABANATHI ORPHANS",
-            status: "Đã hoàn thành",
-            shortDescription: "<p>Đây là những trẻ em dễ bị tổn thương nhất trong cộng đồng lân cận khu bảo tồn động vật hoang dã của chúng tôi. Hầu hết sống với đại gia đình sau khi mồ côi, thường là do nhiễm HIV.</p><br><p>Chúng tôi sẽ làm việc cùng với Mục sư Bonga của Tổ chức từ thiện Habanathi EC (người hỗ trợ trẻ mồ côi và người chăm sóc chúng) để mua thực phẩm cho 15 gia đình. Mỗi gói thực phẩm có giá 35 đô la.</p>",
-            content: '<p>Cảm ơn bạn đã hỗ trợ những thành viên dễ bị tổn thương nhất trong cộng đồng của chúng tôi ở Nam Phi, những đứa trẻ mồ côi. Hầu hết các em đều mồ côi vì HIV. Một số sống với các gia đình khác (ví dụ như Dì và Chú) trong khi những người khác sống một mình trong các hộ gia đình có trẻ em làm chủ hộ. Các khoản quyên góp bitcoin cho sự kiện quan trọng này đã tài trợ 2 tháng hỗ trợ thực phẩm cho 30 trẻ em được hỗ trợ bởi trung tâm cộng đồng Hambanathi dành cho trẻ mồ côi! Mục tiêu ban đầu là hỗ trợ lương thực trong 1 tháng, nhưng nhờ sự thành công của chiến dịch và sự tăng trưởng về giá trị của Bitcoin, chúng tôi đã có thể tăng gấp đôi số tiền ủng hộ của mình. Cảm ơn bạn đã cung cấp thực phẩm này cho cộng đồng tuyệt vời của chúng tôi.</p>',
-            file: [
-                {
-                    id: 31,
-                    fileName: "Name",
-                    filePath: "https://www.angelcharity.org/wp-content/uploads/hero-background.jpg"
-                },
-                {
-                    id: 33,
-                    fileName: "Name",
-                    filePath: "https://www.victoriavn.com/images/HOATDONGXAHOI/43075330_540345303071029_8671747087559294976_n.jpg"
-                },
-                {
-                    id: 35,
-                    fileName: "Name",
-                    filePath: "https://www.victoriavn.com/images/HOATDONGXAHOI/42851986_540345116404381_7244991666593988608_n.jpg"
-                },
-                {
-                    id: 39,
-                    fileName: "Name",
-                    filePath: "https://daklak24h.com.vn/images/news/2018/4/23/anh-nam(1).jpg"
-                },
-
-                {
-                    id: 41,
-                    fileName: "Name",
-                    filePath: "https://static.republika.co.id/uploads/images/inpicture_slide/suasana-market-day-charity-program-yang-digelar-oleh-_171101060617-578.jpg"
-                }
-
-            ],
-            expenses: [
-                {
-                    id: 105,
-                    createdDate: "2021-04-21T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "31700000",
-                    description: "<p>Thức ăn đóng hộp cho trẻ mồ côi và gia đình của họ: 60 lon Hành tây cà chua trộn 30 lon Đậu sốt cà chua 40 lon Rau trộn cà ri (Một nửa hóa đơn này dành cho Mốc 1)</p>",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-                {
-                    id: 109,
-                    createdDate: "2021-04-22T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "220100000",
-                    description: "<p>Trả cho tổ chức từ thiện Hambanathi Community thêm một tháng thực phẩm cho tất cả 30 trẻ mồ côi (và các gia đình khác) trong một tháng nữa. Người quản lý cũng có toàn quyền sử dụng một số quỹ này cho các nhu cầu cấp thiết của trường học, bao gồm cả giày đi học cho trẻ em.",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-            ],
-        },
-        {
-            id: 186,
-            projectId: 91,
-            title: "Sự tin cậy cho các gia đình của HABANATHI ORPHANS",
-            status: "Đang thực hiện",
-            shortDescription: "<p>Chúng tôi sẽ làm việc cùng với Mục sư Bonga của Tổ chức từ thiện Habanathi EC (người hỗ trợ trẻ mồ côi và người chăm sóc chúng) để mua thực phẩm cho 15 gia đình. Mỗi gói thực phẩm có giá 35 đô la.</p>",
-            content: '<p>Cảm ơn bạn đã hỗ trợ những thành viên dễ bị tổn thương nhất trong cộng đồng của chúng tôi ở Nam Phi, những đứa trẻ mồ côi. Hầu hết các em đều mồ côi vì HIV. Một số sống với các gia đình khác (ví dụ như Dì và Chú) trong khi những người khác sống một mình trong các hộ gia đình có trẻ em làm chủ hộ. Các khoản quyên góp bitcoin cho sự kiện quan trọng này đã tài trợ 2 tháng hỗ trợ thực phẩm cho 30 trẻ em được hỗ trợ bởi trung tâm cộng đồng Hambanathi dành cho trẻ mồ côi! Mục tiêu ban đầu là hỗ trợ lương thực trong 1 tháng, nhưng nhờ sự thành công của chiến dịch và sự tăng trưởng về giá trị của Bitcoin, chúng tôi đã có thể tăng gấp đôi số tiền ủng hộ của mình. Cảm ơn bạn đã cung cấp thực phẩm này cho cộng đồng tuyệt vời của chúng tôi.</p>',
-            file: [
-                {
-                    id: 41,
-                    fileName: "Name",
-                    filePath: "https://www.angelcharity.org/wp-content/uploads/hero-background.jpg"
-                },
-                {
-                    id: 43,
-                    fileName: "Name",
-                    filePath: "https://www.victoriavn.com/images/HOATDONGXAHOI/43075330_540345303071029_8671747087559294976_n.jpg"
-                },
-                {
-                    id: 45,
-                    fileName: "Name",
-                    filePath: "https://www.victoriavn.com/images/HOATDONGXAHOI/42851986_540345116404381_7244991666593988608_n.jpg"
-                },
-                {
-                    id: 49,
-                    fileName: "Name",
-                    filePath: "https://daklak24h.com.vn/images/news/2018/4/23/anh-nam(1).jpg"
-                },
-
-                {
-                    id: 51,
-                    fileName: "Name",
-                    filePath: "https://static.republika.co.id/uploads/images/inpicture_slide/suasana-market-day-charity-program-yang-digelar-oleh-_171101060617-578.jpg"
-                }
-
-            ],
-            expenses: [
-                {
-                    id: 115,
-                    createdDate: "2021-04-21T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "31700000",
-                    description: "<p>Thức ăn đóng hộp cho trẻ mồ côi và gia đình của họ: 60 lon Hành tây cà chua trộn 30 lon Đậu sốt cà chua 40 lon Rau trộn cà ri (Một nửa hóa đơn này dành cho Mốc 1)</p>",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-                {
-                    id: 119,
-                    createdDate: "2021-04-22T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "220100000",
-                    description: "<p>Trả cho tổ chức từ thiện Hambanathi Community thêm một tháng thực phẩm cho tất cả 30 trẻ mồ côi (và các gia đình khác) trong một tháng nữa. Người quản lý cũng có toàn quyền sử dụng một số quỹ này cho các nhu cầu cấp thiết của trường học, bao gồm cả giày đi học cho trẻ em.",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-                {
-                    id: 221,
-                    createdDate: "2021-04-22T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "123400000",
-                    description: "<p>Trả cho tổ chức từ thiện Hambanathi Community thêm một tháng thực phẩm cho tất cả 30 trẻ mồ côi (và các gia đình khác) trong một tháng nữa. Người quản lý cũng có toàn quyền sử dụng một số quỹ này cho các nhu cầu cấp thiết của trường học, bao gồm cả giày đi học cho trẻ em.",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-                {
-                    id: 222,
-                    createdDate: "2021-04-22T00:00:00.000Z",
-                    type: "Thanh toán",
-                    amount: "300500000",
-                    description: "<p>Trả cho tổ chức từ thiện Hambanathi Community thêm một tháng thực phẩm cho tất cả 30 trẻ mồ côi (và các gia đình khác) trong một tháng nữa. Người quản lý cũng có toàn quyền sử dụng một số quỹ này cho các nhu cầu cấp thiết của trường học, bao gồm cả giày đi học cho trẻ em.",
-                    fileName: "Bidvest Food Invoice-WILD TOMORROW FUND HAMPERS 14.1.2021.pdf",
-                    filePath: "https://daotao.dntu.edu.vn/Resource/Upload/file/a/29-BM-PDT.pdf",
-                },
-            ],
-        },
-
-    ]
 
     // Data bài viết từ API 
     const fakeDateArtical = [
@@ -465,108 +158,7 @@ function ProjectDetail(props) {
         },
     ]
 
-    // Data những người quyên góp từ API
-    const fakeDateDonors = [
-        {
-            id: 1,
-            userCreate: "Nguyễn An",
-            avatar: "https://i.pinimg.com/736x/fa/02/02/fa0202572e8aa734cedb154c413a4846.jpg",
-            projectId: 91,
-            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
-            amount: "132.05",
-            currency: "TRX",
-            createTime: "10/11/2022",
-            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
-        },
-        {
-            id: 2,
-            userCreate: "Nguyễn Bảo",
-            avatar: "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg",
-            projectId: 91,
-            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
-            amount: "222.05",
-            currency: "TRX",
-            createTime: "10/11/2022",
-            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
-        },
-        {
-            id: 3,
-            userCreate: "Lê Thị Bảo",
-            avatar: "https://9mobi.vn/cf/images/2015/04/nkk/hinh-avatar-dep-1.jpg",
-            projectId: 91,
-            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
-            amount: "1322.9",
-            currency: "TRX",
-            createTime: "10/11/2022",
-            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
-        },
-        {
-            id: 4,
-            userCreate: "Huỳnh Tùng Anh",
-            avatar: "https://i.pinimg.com/736x/fa/02/02/fa0202572e8aa734cedb154c413a4846.jpg",
-            projectId: 91,
-            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
-            amount: "505",
-            currency: "TRX",
-            createTime: "10/12/2022",
-            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
-        },
-        {
-            id: 5,
-            userCreate: "Lê Văn Bào",
-            avatar: "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg",
-            projectId: 91,
-            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
-            amount: "132.05",
-            currency: "TRX",
-            createTime: "01/12/2022",
-            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
-        },
-        {
-            id: 6,
-            userCreate: "Nguyễn Bảo",
-            avatar: "https://9mobi.vn/cf/images/2015/04/nkk/hinh-avatar-dep-1.jpg",
-            projectId: 91,
-            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
-            amount: "222.55",
-            currency: "TRX",
-            createTime: "10/11/2022",
-            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
-        },
-        {
-            id: 7,
-            userCreate: "Lê Thị Bảo",
-            avatar: "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg",
-            projectId: 91,
-            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
-            amount: "1322.2",
-            currency: "TRX",
-            createTime: "10/11/2022",
-            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
-        },
-        {
-            id: 8,
-            userCreate: "Huỳnh Tùng Anh",
-            avatar: "https://9mobi.vn/cf/images/2015/04/nkk/hinh-avatar-dep-1.jpg",
-            projectId: 91,
-            projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
-            amount: "505.1",
-            currency: "TRX",
-            createTime: "10/12/2022",
-            transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
-        },
-        // {
-        //     id: 9,
-        //     userCreate: "Lê Văn Bào",
-        //     avatar: "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg",
-        //     projectId: 91,
-        //     projectName: "Cứu trợ nạn đói khẩn cấp ở Châu Phi",
-        //     amount: "132.05",
-        //     currency: "TRX",
-        //     createTime: "01/12/2022",
-        //     transactionId: "9db02fc7da4a16503adb59a8f7de1845436927f84adfcf89df698976b47f2046"
-        // },
-    ]
+
 
     // Setting slider 
     const settingSliderArtical = {
@@ -667,25 +259,24 @@ function ProjectDetail(props) {
     // const HttpProvider = tronweb.providers.HttpProvider;
     // tronweb.eventServer = new HttpProvider("https://nile.trongrid.io")
 
-    // Đóng góp cho dự án
+    // ------------------------------------------------------------------- DONATE 
+    // Hàm xử lý đóng góp cho dự án
     const handleDonate = () => {
         if (!!window.tronWeb == false) {
-            swal({
+            swal2.fire({
                 title: "Thông báo",
                 text: "Vui lòng cài đặt TronLink để tham gia đóng góp.",
                 icon: "info",
-                button: {
-                    className: "bg-base-color"
-                }
+                confirmButtonColor: 'var(--love-color-1)'
+
             });
         } else if ((window.tronWeb.ready && window.tronWeb.ready) == false) {
-            swal({
+            swal2.fire({
                 title: "Thông báo",
                 text: "Vui lòng đăng nhập TronLink để tham gia đóng góp.",
                 icon: "info",
-                button: {
-                    className: "bg-base-color"
-                }
+                confirmButtonColor: 'var(--love-color-1)'
+
             });
         } else {
             donate()
@@ -698,41 +289,142 @@ function ProjectDetail(props) {
         try {
             const sm = await tronweb.contract().at(dataProject.addressContract)
 
-            const adminInfo = localStorage.getItem('admin-info') ? JSON.parse(localStorage.getItem('admin-info')) : null
-            const clientInfo = localStorage.getItem('client-info') ? JSON.parse(localStorage.getItem('client-info')) : null
-            const userInfo = adminInfo != null ? adminInfo : clientInfo
-            // console.log('email : ', email)
-            const result = await sm.DonateProject(valueTrx * 1000000, userInfo.email).send({
+            const result = await sm.Donate(valueTrx * 1000000).send({
                 feeLimit: 100_000_000,
                 callValue: valueTrx * 1000000,
                 // shouldPollResponse:true
             })
                 .then((res) => {
                     console.log('Donate: ', res)
-                    console.log('Type of res: ', typeof res)
 
                     if (typeof res === 'string') {
-                        swal({
+                        swal2.fire({
                             title: "Xác nhận đóng góp.",
                             text: "Đóng góp của bạn sẽ được cập nhật trong giây lát.",
                             icon: "success",
-                            button: {
-                                className: "bg-base-color"
-                            }
+                            confirmButtonColor: 'var(--love-color-1)'
+
                         });
 
-                        // const transactioninfo = async () => {
-                        //     await tronweb.trx.getConfirmedTransaction(res);
-                        // }
+                        const checkConfirmTransaction = setInterval(async () => {
+                            console.log("chạy 1 lần: ", res)
+                            await tronweb.trx.getUnconfirmedTransactionInfo(res)
+                                .then((response) => {
+                                    if (response.receipt) {
+                                        if (response.receipt.result === "SUCCESS") {
+                                            clearInterval(checkConfirmTransaction)
+                                            console.log("Giao dịch thành công. Lưu vào database.")
+                                            saveTransactionDonate(res)
+                                            swal2.fire({
+                                                title: "Đóng góp thành công.",
+                                                html: "Đóng góp của bạn đã được xác nhận thành công. </br> Chúng tôi chân thành cảm ơn bạn. </br> Chúc bạn luôn mạnh khỏe và thành công trong cuộc sống.</br> "
+                                                    + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Chi tiết giao dịch</a>`,
+                                                icon: "success",
+                                                confirmButtonColor: 'var(--love-color-1)'
 
-                        // const checkConfirmTransaction = async () => {
-                        //     setInterval(() => {
-                        //         console.log("lan 1");
-                        //         console.log(transactioninfo());
-                        //     }, 60000);
-                        // }
+                                            });
+                                        }
+                                        if (response.receipt.result !== "SUCCESS") {
+                                            clearInterval(checkConfirmTransaction)
+                                            console.log("FAIL - clearInterval")
+                                            swal2.fire({
+                                                title: "Đóng góp không thành công.",
+                                                html: "Giao dịch thất bại. Vui lòng kiểm tra số dư ví.</br>"
+                                                    + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Chi tiết giao dịch</a>`,
+                                                icon: "error",
+                                                confirmButtonColor: 'var(--love-color-1)'
 
-                        // checkConfirmTransaction();
+                                            });
+                                        }
+                                    }
+                                })
+                        }, 2000)
+                    }
+                })
+
+
+        }
+        catch (err) {
+            console.error(err);
+            swal2.fire({
+                title: "Đóng góp không thành công",
+                icon: "error",
+                confirmButtonColor: 'var(--love-color-1)'
+
+            });
+        }
+    }
+
+
+    // Lưu giao dịch donate thành công vào database
+    const saveTransactionDonate = async (hash) => {
+        const data = {
+            id: id,
+            amount: valueTrx,
+            hash: hash,
+        }
+        const response = await clientUser.donateProject(data)
+        console.log('Đã lưu donate vào database: ', response.data)
+    }
+
+    // ---------------------------------------------------------------- WITHDRAW
+    // Hàm xử lý rút tiền 
+    const handleWithdraw = () => {
+        console.log(new Date().getTime())
+        console.log(new Date(dataProject.endDate).getTime())
+        if ((new Date().getTime()) >= (new Date(dataProject.endDate).getTime())) {
+            if (!!window.tronWeb === false) {
+                swal2.fire({
+                    title: "Thông báo",
+                    text: "Vui lòng cài đặt TronLink để rút tiền.",
+                    icon: "info",
+                    confirmButtonColor: 'var(--love-color-1)'
+
+                });
+            } else if ((window.tronWeb.ready && window.tronWeb.ready) === false) {
+                swal2.fire({
+                    title: "Thông báo",
+                    text: "Vui lòng đăng nhập TronLink để rút tiền.",
+                    icon: "info",
+                    confirmButtonColor: 'var(--love-color-1)'
+
+                });
+            } else {
+                withdraw()
+            }
+        } else {
+            swal2.fire({
+                title: "Thông báo",
+                html: "Chưa đến ngày kết thúc của dự án. </br> Vui lòng thử lại sau khi kết thúc dự án.",
+                icon: "warning",
+                confirmButtonColor: 'var(--love-color-1)'
+
+            });
+        }
+
+    }
+
+    // Hàm rút tiền từ Smart contract
+    async function withdraw() {
+
+        try {
+            const sm = await tronweb.contract().at(dataProject.addressContract)
+            const result = await sm.Withdraw(valueTrx * 1000000).send({
+                feeLimit: 100_000_000,
+                callValue: valueTrx * 1000000,
+                // shouldPollResponse:true
+            })
+                .then((res) => {
+                    console.log('Withdraw: ', res)
+
+                    if (typeof res === 'string') {
+                        swal2.fire({
+                            title: "Xác nhận rút tiền.",
+                            text: "Yêu cầu rút tiền của bạn sẽ được cập nhật trong giây lát.",
+                            icon: "success",
+                            confirmButtonColor: 'var(--love-color-1)'
+
+                        });
 
                         const checkConfirmTransaction = setInterval(async () => {
                             console.log("chạy 1 lần")
@@ -742,126 +434,179 @@ function ProjectDetail(props) {
                                     if (response.receipt) {
                                         if (response.receipt.result === "SUCCESS") {
                                             clearInterval(checkConfirmTransaction)
-                                            console.log("Giao dịch thành công. Lưu vào database.")
-                                            saveTransaction(res)
-                                            swal({
-                                                title: "Đóng góp thành công.",
-                                                text: "Đóng góp của bạn đã được xác nhận thành công. \n Chúng tôi chân thành cảm ơn bạn. \n Chúc bạn luôn mạnh khỏe và thành công trong cuộc sống.",
+                                            console.log("Rút tiền thành công. Lưu vào database.")
+                                            saveTransactionWithdraw(res)
+                                            swal2.fire({
+                                                title: "Rút tiền thành công.",
+                                                html: "Yêu cầu rút tiền của bạn đã được xác nhận thành công.</br>"
+                                                    + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Chi tiết giao dịch</a>`,
                                                 icon: "success",
-                                                button: {
-                                                    className: "bg-base-color"
-                                                }
+                                                confirmButtonColor: 'var(--love-color-1)'
+
                                             });
                                         }
                                         if (response.receipt.result !== "SUCCESS") {
                                             clearInterval(checkConfirmTransaction)
                                             console.log("FAIL - clearInterval")
-                                            swal({
-                                                title: "Đóng góp không thành công.",
-                                                text: "Số dư ví không đủ. \n Vui lòng kiếm tra ví.",
+                                            swal2.fire({
+                                                title: "Rút tiền không thành công.",
+                                                html: `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Chi tiết giao dịch</a>`,
                                                 icon: "error",
-                                                button: {
-                                                    className: "bg-base-color"
-                                                }
+                                                confirmButtonColor: 'var(--love-color-1)'
+
                                             });
                                         }
                                     }
                                 })
-                        }, 1000)
-                        // clearInterval(checkConfirmTransaction)
-
+                        }, 2000)
                     }
                 })
-
-
         }
         catch (err) {
             console.error(err);
-            swal({
-                title: "Đóng góp không thành công",
-                text: "Vui lòng kiểm tra số dư ví.",
+            swal2.fire({
+                title: "Rút tiền không thành công",
                 icon: "error",
-                button: {
-                    className: "bg-base-color"
-                }
+                confirmButtonColor: 'var(--love-color-1)'
+
             });
         }
     }
 
-
-    // Lưu giao dịch thành công vào database
-    const saveTransaction = async (hash) => {
+    // Lưu giao dịch withdraw thành công vào database
+    const saveTransactionWithdraw = async (hash) => {
         const data = {
             id: id,
             amount: valueTrx,
             hash: hash,
         }
-        const response = await clientUser.donateProject(data)
-        console.log('Đã lưu vào database: ', response.data)
+        const response = await clientUser.widthdrawProject(data)
+        console.log('Đã lưu withdraw vào database: ', response.data)
     }
 
+    // ---------------------------------------------------------------- REFUND
+    // Hàm xử lý hoàn tiền 
+    const handleRefund = () => {
+        console.log(new Date().getTime())
+        console.log(new Date(dataProject.endDate).getTime())
+        if ((new Date().getTime()) >= (new Date(dataProject.endDate).getTime())) {
+            if (!!window.tronWeb === false) {
+                swal2.fire({
+                    title: "Thông báo",
+                    text: "Vui lòng cài đặt TronLink và sử dụng đúng ví đóng góp để được hoàn tiền.",
+                    icon: "info",
+                    confirmButtonColor: 'var(--love-color-1)'
 
-    // Hàm xử lí rút tiền 
-    const handleWithdraw = () => {
-        if (!!window.tronWeb === false) {
-            swal({
-                title: "Thông báo",
-                text: "Vui lòng cài đặt TronLink để rút tiền.",
-                icon: "info",
-                button: {
-                    className: "bg-base-color"
-                }
-            });
-        } else if ((window.tronWeb.ready && window.tronWeb.ready) === false) {
-            swal({
-                title: "Thông báo",
-                text: "Vui lòng đăng nhập TronLink để rút tiền.",
-                icon: "info",
-                button: {
-                    className: "bg-base-color"
-                }
-            });
+                });
+            } else if ((window.tronWeb.ready && window.tronWeb.ready) === false) {
+                swal2.fire({
+                    title: "Thông báo",
+                    text: "Vui lòng đăng nhập TronLink và sử dụng đúng ví đóng góp để được hoàn tiền.",
+                    icon: "info",
+                    confirmButtonColor: 'var(--love-color-1)'
+
+                });
+            } else {
+                refund()
+            }
         } else {
-            withdraw()
+            swal2.fire({
+                title: "Thông báo",
+                html: "Chưa đến ngày kết thúc của dự án. </br> Vui lòng thử lại sau khi kết thúc dự án.",
+                icon: "warning",
+                confirmButtonColor: 'var(--love-color-1)'
+
+            });
+        }
+
+    }
+
+    // Hàm hoàn tiền từ Smart contract
+    async function refund() {
+
+        try {
+            const sm = await tronweb.contract().at(dataProject.addressContract)
+            const result = await sm.Refund().send({
+                feeLimit: 100_000_000,
+                // shouldPollResponse:true
+            })
+                .then((res) => {
+                    console.log('Refund: ', res)
+
+                    if (typeof res === 'string') {
+                        swal2.fire({
+                            title: "Xác nhận hoàn tiền.",
+                            text: "Yêu cầu hoàn tiền của bạn sẽ được cập nhật trong giây lát.",
+                            icon: "success",
+                            confirmButtonColor: 'var(--love-color-1)'
+
+                        });
+
+                        const checkConfirmTransaction = setInterval(async () => {
+                            console.log("chạy 1 lần")
+                            console.log("data: ", res)
+                            await tronweb.trx.getUnconfirmedTransactionInfo(res)
+                                .then((response) => {
+                                    if (response.receipt) {
+                                        if (response.receipt.result === "SUCCESS") {
+                                            clearInterval(checkConfirmTransaction)
+                                            console.log("Hoàn tiền thành công. Lưu vào database.")
+                                            saveTransactionRefund(res)
+                                            swal2.fire({
+                                                title: "Hoàn tiền thành công.",
+                                                html: "Yêu cầu hoàn tiền của bạn đã được xác nhận thành công.</br>"
+                                                    + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Chi tiết giao dịch</a>`,
+                                                icon: "success",
+                                                confirmButtonColor: 'var(--love-color-1)'
+
+                                            });
+                                        }
+                                        if (response.receipt.result !== "SUCCESS") {
+                                            clearInterval(checkConfirmTransaction)
+                                            console.log("FAIL - clearInterval")
+                                            swal2.fire({
+                                                title: "Hoàn tiền không thành công.",
+                                                html: `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Chi tiết giao dịch</a>`,
+                                                icon: "error",
+                                                confirmButtonColor: 'var(--love-color-1)'
+
+                                            });
+                                        }
+                                    }
+                                })
+                        }, 2000)
+                    }
+                })
+        }
+        catch (err) {
+            console.error(err);
+            swal2.fire({
+                title: "Hoàn tiền không thành công",
+                icon: "error",
+                confirmButtonColor: 'var(--love-color-1)'
+
+            });
         }
     }
 
-    // Hàm rút tiền từ Smart contract
-    async function withdraw() {
-
-        const sm = await tronweb.contract().at(process.env.REACT_APP_SMART_CONTRACT_ADDRESS)
-        sm["PayEvent"]().watch((err, eventResult) => {
-            if (err) {
-                return console.error('Error with "method" event:', err);
-            }
-            if (eventResult) {
-                console.log('eventResult:', eventResult);
-            }
-        });
-        const result = await sm.WithDraw(tronweb.defaultAddress.base58, valueTrx * 1000000, id).send()
-            .then((res) => {
-
-                console.log('Withdraw: ', res)
-                if (typeof res === 'string') {
-                    swal({
-                        title: "Rút tiền thành công.",
-                        icon: "success",
-                        button: {
-                            className: "bg-base-color"
-                        }
-                    });
-                }
-            })
-
+    // Lưu giao dịch refund thành công vào database
+    const saveTransactionRefund = async (hash) => {
+        const data = {
+            id: id,
+            amount: valueTrx,
+            hash: hash,
+        }
+        const response = await clientUser.refundProject(data)
+        console.log('Đã lưu refund vào database: ', response.data)
     }
     return (
         <>
             {/* Header dự án  */}
             <div className={clsx(Style.headerProject, 'py-5 ')} >
-                <div className="container d-flex justify-content-between">
+                <div className="container d-flex justify-content-evenly">
                     <div className="row">
 
-                        <div className="col-12 col-lg-4 d-flex align-items-center">
+                        <div className="col-12 col-lg-4 d-flex align-items-center justify-content-center">
                             <div className="row text-center ">
 
                                 <div className="col-12">
@@ -895,10 +640,22 @@ function ProjectDetail(props) {
 
                             <div className="ProgressBarContent my-3">
                                 <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
-                                <ProgressBar striped now={Math.floor((Number(dataProject.amountNow + '1') / Number(dataProject.amountNow + '10')) * 100)} label={`${Math.floor((Number(dataProject.amountNow + '1') / Number(dataProject.amountNow + '10')) * 100)} %`} />
-                                <span>{formatNumber(dataProject.amountNow)} / {formatNumber(dataProject.amountNeed)} VNĐ</span>
+                                <ProgressBar striped now={Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100)} label={`${Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100)} %`} />
+                                <span>{formatNumber((Number(dataProject.amountNow) * trxPrice).toFixed(2))} / {formatNumber(dataProject.amountNeed)} VNĐ</span>
                             </div>
-                            <Button className={clsx(Style.backgroundForeignColor, 'px-5 my-2 w-100 text-light border-0')}><i className='mdi mdi-heart-outline me-1'></i>Theo dõi</Button>
+                            <div className="row">
+                                <div className="col-12 col-md-6">
+                                    <Button className={clsx(Style.backgroundForeignColor, 'my-2 w-100 text-light border-0')}>
+                                        <a href={"https://nile.tronscan.org/#/contract/" + dataProject.addressContract + "/transactions"} target="_blank" rel="noreferrer" className={clsx('d-inline-block w-100 text-white text-decoration-none')}><i className='mdi mdi-dropbox me-1'></i>Xem trên Blockchain</a>
+                                    </Button>
+
+
+                                </div>
+                                <div className="col-12 col-md-6">
+                                    <Button className={clsx(Style.backgroundForeignColor, 'px-5 my-2 w-100 text-light border-0')}><i className='mdi mdi-heart-outline me-1'></i>Theo dõi</Button>
+
+                                </div>
+                            </div>
 
 
                             <div className={clsx(Style.baseColor, 'd-flex flex-column flex-md-row justify-content-between align-items-center my-3')}>
@@ -1026,10 +783,12 @@ function ProjectDetail(props) {
                                         <div className="fw-bold">VNĐ</div>
                                     </div>
                                 </div>
-                                <button className={clsx(Style.backgroundForeignColor, "fs-5 w-100 mt-5 p-2 text-white text-center text-uppercase")} onClick={handleDonate}>Tiếp tục<i className="mdi mdi-arrow-right-drop-circle-outline ms-1"></i></button>
+                                <button className={clsx(Style.backgroundForeignColor, "fs-5 w-100 mt-5 p-2 text-white text-center text-uppercase")} onClick={handleDonate}>Đóng góp<i className="mdi mdi-arrow-right-drop-circle-outline ms-1"></i></button>
                                 {
                                     dataProject.isEdit === true ? <button className={clsx(Style.backgroundBaseColor, "fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleWithdraw}>Rút tiền<i className="mdi mdi-cash-multiple ms-1"></i></button> : ""
                                 }
+                                <button className={clsx("doingStatus fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleRefund}>Hoàn tiền<i className="mdi mdi-backup-restore ms-1"></i></button>
+
                             </div>
                         </div>
                     </div>
@@ -1037,8 +796,155 @@ function ProjectDetail(props) {
             </div >
 
             {/* Tiến trình dự án  */}
-          
-          
+
+            <div id="process" className={clsx(Style.process, 'py-5')} >
+                <div className="container">
+                    <div className="row">
+                        <div className="col-12 col-lg-6">
+                            <h2>Tiến trình dự án</h2>
+                            <div className={clsx(Style.line)}><hr /></div>
+                        </div>
+                        <div className="col-12 col-lg-6 text-end border-end">
+                            <p className={clsx(Style.baseColor, 'm-0 fs-5')}>Mục tiêu của chúng tôi</p>
+                            <p className={clsx(Style.foreignColor, 'm-0')}>{formatNumber(dataProject.amountNeed)} VNĐ</p>
+                        </div>
+                    </div>
+
+                    {/* Tab content  */}
+                    <div id={clsx(Style.tabContent)} className="row ">
+                        <div className="col-12">
+                            <ul className="nav nav-pills my-5 flex-nowrap overflow-auto" id="pills-tab" role="tablist">
+                                {
+                                    dataProject.processes.map((item, index) => (
+                                        <li key={"nav-item" + index} className={clsx(Style.navItem, 'd-flex align-items-center ')} role="presentation">
+                                            <button className={clsx("bg-transparent px-3 px-lg-4  border  rounded-pill ", index === 0 ? "active" : "")} id={"pills-" + index + '-tab'} data-bs-toggle="pill" data-bs-target={"#pills-" + index} type="button" role="tab" aria-controls={"pills-" + index} aria-selected={index == 0 ? "true" : "false"}>
+                                                <div style={{ borderBottom: "1px dashed #ccc" }} className="fw-bold text-white">
+                                                    T{index + 1}
+                                                </div>
+                                                <div style={{ fontSize: '12px' }} className=" text-muted ">{formatNumber(Number(item.amountNeed))}</div>
+                                            </button>
+                                            {index < dataProject.processes.length - 1 ? <div className={clsx(Style.tabLine)}></div> : ""}
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                            <div className="tab-content" id="pills-tabContent">
+                                {
+                                    dataProject.processes.map((item, index) => (
+                                        <div key={"tab-content" + index} className={clsx("tab-pane fade", index === 0 ? "show active" : "")} id={"pills-" + index} role="tabpanel" aria-labelledby={"pills-" + index + "-tab"}>
+
+                                            <div className={clsx(Style.baseColor, 'd-flex flex-column flex-md-row justify-content-between align-items-center my-5')}>
+                                                <div className="d-flex  align-items-center align-self-start">
+                                                    <i className="mdi mdi-chart-donut fs-1 me-3 pe-3 border-end"></i>
+                                                    <div className="">
+                                                        <p className="mb-0  text-uppercase">Trạng thái</p>
+                                                        <p className={clsx(Style.foreignColor, 'm-0 fs-5 text-uppercase')}>{item.status === 1 ? "Chưa bắt đầu" : (item.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</p>
+                                                    </div>
+                                                </div>
+                                                {
+                                                    dataProject.isEdit === true ? (
+                                                        <Link to={{
+                                                            pathname: `/update-process/${item.processId}`,
+                                                            state: item // chuyền dữ liệu qua Update-process
+                                                        }} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, Style.editBtn, "align-self-end  my-2 py-2 px-4 px-lg-5 fw-light rounded-3 text-center   text-uppercase text-decoration-none")} ><i className="mdi mdi-tooltip-edit me-2"></i>Chỉnh sửa tiến trình</Link>
+                                                    ) : null
+                                                }
+
+                                            </div>
+
+                                            <div className='my-5'>
+                                                <h2 className={clsx(Style.baseColor, Style.title, 'fs-4 text-uppercase')}>{item.title}</h2>
+                                                <SetInnerHTML text={item.shortDescription} />
+                                            </div>
+
+                                            <div className="row mt-5">
+                                                {
+                                                    item.content ?
+                                                        <div className="col-12 col-lg-6">
+                                                            <div className="mb-5">
+                                                                <h3 className="fs-5 mb-4 text-uppercase">Nội dung</h3>
+                                                                <SetInnerHTML text={item.content} />
+                                                            </div>
+                                                            <div className="mb-5">
+                                                                <h3 className="fs-5 mb-4 text-uppercase">Hình ảnh</h3>
+                                                                {
+                                                                    item.listImages.length > 0 ?
+                                                                        item.listImages.map((itemImage, index) => (
+                                                                            <span key={"image" + index} className="p-3">
+                                                                                <Zoom>
+                                                                                    <img src={process.env.REACT_APP_URL + '/' + itemImage.filePath} width="100px" height="100px" alt="" />
+                                                                                </Zoom>
+                                                                            </span>
+                                                                        )) : ""
+                                                                }
+                                                            </div>
+
+                                                        </div> : ""
+                                                }
+                                                {
+                                                    item.expenses.length > 0 ?
+                                                        <div className="col-12 col-lg-6">
+                                                            <div className="">
+                                                                <h3 className="fs-5 mb-4 text-uppercase">Chi phí</h3>
+                                                                {/* Danh sách chi phí  */}
+                                                                {
+                                                                    item.expenses.map((itemExpense, index) => (
+                                                                        <div key={index} className={clsx(Style.expenseCard, 'p-2')}>
+                                                                            <div className={clsx(Style.expenseHeader, Style.foreignColor, 'd-flex justify-content-between fs-5')}>
+                                                                                <span className='text-uppercase m-0'>Tổng chi</span>
+                                                                                <span className='text-uppercase m-0'>{formatNumber(Number(itemExpense.amount))} VNĐ</span>
+                                                                            </div>
+                                                                            <div className={clsx(Style.expenseBody, 'p-4 bg-white text-dark')}>
+                                                                                <div className="expense-body-header d-flex justify-content-around flex-column flex-md-row">
+                                                                                    <span className="">
+                                                                                        <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-calendar-check me-1"></i>Ngày</div>
+                                                                                        <div>{moment(itemExpense.createTime).format("DD/MM/YYYY")}</div>
+                                                                                    </span>
+                                                                                    <span className="">
+                                                                                        <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-magnify me-1"></i>Loại</div>
+                                                                                        <div>Thanh Toán</div>
+                                                                                    </span>
+                                                                                    <span className="">
+                                                                                        <div className={clsx(Style.foreignColor, 'mb-2')}><i className="mdi mdi-coin me-1"></i>Số tiền</div>
+                                                                                        <div>{itemExpense.amount} vnd</div>
+                                                                                    </span>
+                                                                                    <span className="">
+                                                                                        <div className={clsx(Style.foreignColor)}><i className="mdi mdi-file-check me-1"></i>Hóa đơn</div>
+                                                                                        <div className="text-md-center">
+                                                                                            <a href={itemExpense.list} download className={clsx(Style.foreignColor)}><i className="mdi mdi-briefcase-download fs-4"></i></a>
+                                                                                        </div>
+                                                                                    </span>
+                                                                                </div>
+
+                                                                                <div className="expense-body-desc my-5">
+                                                                                    <p className={clsx(Style.foreignColor, 'm-0 mb-2')}><i className="mdi mdi-eye-outline me-1"></i>Mô tả</p>
+                                                                                    <SetInnerHTML text={itemExpense.description} />
+                                                                                </div>
+                                                                                <div className="expense-body-transaction">
+                                                                                    <p className={clsx(Style.foreignColor, 'm-0')}><i className="mdi mdi-repeat me-1"></i>Lịch sử giao dịch</p>
+                                                                                    <a href={"https://nile.tronscan.org/#/contract/" + dataProject.addressContract} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, 'text-decoration-none')}>Xem trên Blockchain</a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    ))
+                                                                }
+
+                                                            </div>
+                                                        </div> : ""
+                                                }
+
+
+                                            </div>
+
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div >
+
 
             {/* Các bài viết của dự án  */}
             <div id="artical" className={clsx(Style.artical, 'py-5')}>

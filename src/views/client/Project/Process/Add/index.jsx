@@ -15,23 +15,25 @@ import projectApi from "../../../../../api/Project";
 import Dropdown from 'react-bootstrap/Dropdown'
 import { DocTienBangChu } from "../../../../../utils/utils"
 import moment from 'moment';
-import swal from "sweetalert";
+import swal2 from "sweetalert2";
 
 
 function AddProcess(props) {
     // ----- tronweb
     let locationsq = useLocation().pathname.slice(1)
-    locationsq=locationsq.slice(0,locationsq.indexOf("/"))
-    console.log("locationsq",locationsq)
+    locationsq = locationsq.slice(0, locationsq.indexOf("/"))
+    console.log("locationsq", locationsq)
     const tronweb = window.tronWeb;
-    const HttpProvider = tronweb.providers.HttpProvider;
-    tronweb.eventServer = new HttpProvider("https://nile.trongrid.io")
+    // const HttpProvider = tronweb.providers.HttpProvider;
+    // tronweb.eventServer = new HttpProvider("https://nile.trongrid.io")
 
     //---------------------------------------------------------------------------giá trị khởi tạo
     const location = useLocation().pathname;
     const projectObj = props.location.state
     console.log("projectObj", projectObj)
     console.log(moment(projectObj.enddate).utc().format())
+    console.log("EndDate: ", projectObj.enddate)
+    console.log("Second endDate: ", Math.round(projectObj.enddate.getTime() / 1000))
     const history = useHistory()
 
     //------------------------------------------------------------------------------------- useState
@@ -106,28 +108,26 @@ function AddProcess(props) {
             setIndexProcess(-1)
             $('.ajs-button.ajs-ok').css({ "background-color": "var(--admin-btn-color)" });
 
-            swal({
+            swal2.fire({
                 title: "Thông báo",
                 text: `Thêm tiến trình vào dự án  ${projectObj.projectname} thành công`,
-                icon: "info",
-                button: {
-                    className: "bg-base-color"
-                }
+                icon: "success",
+                confirmButtonColor: 'var(--love-color-1)'
+
             });
-           
+
         }
         else {
 
             $('.ajs-button.ajs-ok').css({ "background-color": "var(--status-waiting-color)" });
-            swal({
+            swal2.fire({
                 title: "Thông báo",
                 text: `Thêm tiến trình vào dự án ${projectObj.projectname}  thất bại !`,
                 icon: "error",
-                button: {
-                    className: "bg-base-color"
-                }
+                confirmButtonColor: 'var(--love-color-1)'
+
             });
-            
+
         }
 
     }
@@ -182,26 +182,23 @@ function AddProcess(props) {
     }
 
     // đẩy lên Api
-
     const handleCreateProject = () => {
         if (!!window.tronWeb === false) {
-            swal({
+            swal2.fire({
                 title: "Thông báo",
                 text: "Vui lòng cài đặt TronLink để tạo dự án.",
                 icon: "info",
-                button: {
-                    className: "bg-base-color"
-                }
+                confirmButtonColor: 'var(--love-color-1)'
+
             });
         } else if ((window.tronWeb.ready && window.tronWeb.ready) === false) {
             // alertify.alert("Vui lòng đăng nhập TronLink để tạo dự án.")
-            swal({
+            swal2.fire({
                 title: "Thông báo",
                 text: "Vui lòng đăng nhập TronLink để tạo dự án.",
                 icon: "info",
-                button: {
-                    className: "bg-base-color"
-                }
+                confirmButtonColor: 'var(--love-color-1)'
+
             });
         } else {
             createProjectSM();
@@ -221,12 +218,99 @@ function AddProcess(props) {
             console.log('SUN: ', amountNeedSun);
 
             const transaction = await tronweb.transactionBuilder.createSmartContract({
+                // abi: {
+                //     "entrys": [
+                //         {
+                //             "inputs": [
+                //                 {
+                //                     "name": "_amountneed",
+                //                     "type": "uint256"
+                //                 },
+                //                 {
+                //                     "name": "_endDate",
+                //                     "type": "uint256"
+                //                 }
+                //             ],
+                //             "stateMutability": "Nonpayable",
+                //             "type": "Constructor"
+                //         },
+                //         {
+                //             "inputs": [
+                //                 {
+                //                     "name": "sendFrom",
+                //                     "type": "address"
+                //                 },
+                //                 {
+                //                     "name": "to",
+                //                     "type": "address"
+                //                 },
+                //                 {
+                //                     "name": "messages",
+                //                     "type": "string"
+                //                 }
+                //             ],
+                //             "name": "PayEnvent",
+                //             "type": "Event"
+                //         },
+                //         {
+                //             "inputs": [
+                //                 {
+                //                     "name": "_amount",
+                //                     "type": "uint256"
+                //                 }
+                //             ],
+                //             "name": "Donate",
+                //             "stateMutability": "Payable",
+                //             "type": "Function"
+                //         },
+                //         {
+                //             "name": "Refund",
+                //             "stateMutability": "Nonpayable",
+                //             "type": "Function"
+                //         },
+                //         {
+                //             "inputs": [
+                //                 {
+                //                     "name": "_amount",
+                //                     "type": "uint256"
+                //                 }
+                //             ],
+                //             "name": "Withdraw",
+                //             "stateMutability": "Nonpayable",
+                //             "type": "Function"
+                //         },
+                //         {
+                //             "outputs": [
+                //                 {
+                //                     "name": "addressDonate",
+                //                     "type": "address"
+                //                 },
+                //                 {
+                //                     "name": "amount",
+                //                     "type": "uint256"
+                //                 }
+                //             ],
+                //             "inputs": [
+                //                 {
+                //                     "type": "address"
+                //                 }
+                //             ],
+                //             "name": "listMembers",
+                //             "stateMutability": "View",
+                //             "type": "Function"
+                //         }
+                //     ]
+                // },
                 abi: {
                     "entrys": [
                         {
                             "inputs": [
                                 {
                                     "name": "_amountneed",
+                                    "type": "uint256"
+                                },
+                                {
+                                    "name": "_endDate",
                                     "type": "uint256"
                                 }
                             ],
@@ -256,39 +340,45 @@ function AddProcess(props) {
                                 {
                                     "name": "_amount",
                                     "type": "uint256"
-                                },
-                                {
-                                    "name": "_gmail",
-                                    "type": "string"
                                 }
                             ],
-                            "name": "DonateProject",
+                            "name": "Donate",
                             "stateMutability": "Payable",
                             "type": "Function"
                         },
                         {
-                            "inputs": [
+                            "outputs": [
                                 {
-                                    "name": "_useraddress",
-                                    "type": "address"
+                                    "type": "uint256"
                                 }
                             ],
-                            "name": "RefundDonate",
+                            "name": "EndDate",
+                            "stateMutability": "View",
+                            "type": "Function"
+                        },
+                        {
+                            "name": "Refund",
                             "stateMutability": "Nonpayable",
                             "type": "Function"
                         },
                         {
-                            "inputs": [
+                            "outputs": [
                                 {
-                                    "name": "_useraddress",
-                                    "type": "address"
-                                },
+                                    "type": "uint256"
+                                }
+                            ],
+                            "name": "Timestap",
+                            "stateMutability": "View",
+                            "type": "Function"
+                        },
+                        {
+                            "inputs": [
                                 {
                                     "name": "_amount",
                                     "type": "uint256"
                                 }
                             ],
-                            "name": "WithDraw",
+                            "name": "Withdraw",
                             "stateMutability": "Nonpayable",
                             "type": "Function"
                         },
@@ -301,10 +391,6 @@ function AddProcess(props) {
                                 {
                                     "name": "amount",
                                     "type": "uint256"
-                                },
-                                {
-                                    "name": "gmail",
-                                    "type": "string"
                                 }
                             ],
                             "inputs": [
@@ -318,12 +404,14 @@ function AddProcess(props) {
                         }
                     ]
                 },
-                bytecode: "608060405234801561001057600080fd5b50d3801561001d57600080fd5b50d2801561002a57600080fd5b50604051610f7f380380610f7f833981810160405281019061004c9190610110565b60405180606001604052803373ffffffffffffffffffffffffffffffffffffffff168152602001828152602001600015158152506000808201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506020820151816001015560408201518160020160006101000a81548160ff02191690831515021790555090505050610163565b60008151905061010a8161014c565b92915050565b60006020828403121561012657610125610147565b5b6000610134848285016100fb565b91505092915050565b6000819050919050565b600080fd5b6101558161013d565b811461016057600080fd5b50565b610e0d806101726000396000f3fe60806040526004361061003f5760003560e01c806314b43ca4146100445780632a9ac5c814610087578063658459b2146100e0578063d22dbcf814610123575b600080fd5b34801561005057600080fd5b50d3801561005d57600080fd5b50d2801561006a57600080fd5b5061008560048036038101906100809190610857565b61013f565b005b34801561009357600080fd5b50d380156100a057600080fd5b50d280156100ad57600080fd5b506100c860048036038101906100c391906107fd565b610277565b6040516100d793929190610a2b565b60405180910390f35b3480156100ec57600080fd5b50d380156100f957600080fd5b50d2801561010657600080fd5b50610121600480360381019061011c919061082a565b610349565b005b61013d60048036038101906101389190610897565b610456565b005b3373ffffffffffffffffffffffffffffffffffffffff166000800160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff161480156101b4575060011515600060020160009054906101000a900460ff161515145b6101f3576040517f08c379a00000000000000000000000000000000000000000000000000000000081526004016101ea90610a69565b60405180910390fd5b8173ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051600060405180830381858888f19350505050158015610239573d6000803e3d6000fd5b507f2335156a506d67c95b1da1ee5c172bc7a41bcaac9d6d892184d9976d37f2b40d303360405161026b9291906109b3565b60405180910390a15050565b60036020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010154908060020180546102c690610c02565b80601f01602080910402602001604051908101604052809291908181526020018280546102f290610c02565b801561033f5780601f106103145761010080835404028352916020019161033f565b820191906000526020600020905b81548152906001019060200180831161032257829003601f168201915b5050505050905083565b8073ffffffffffffffffffffffffffffffffffffffff166108fc600360008473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600101549081150290604051600060405180830381858888f193505050501580156103d1573d6000803e3d6000fd5b506000600360008373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600101819055507f2335156a506d67c95b1da1ee5c172bc7a41bcaac9d6d892184d9976d37f2b40d303360405161044b9291906109ef565b60405180910390a150565b600073ffffffffffffffffffffffffffffffffffffffff16600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1614156105d35760405180606001604052803373ffffffffffffffffffffffffffffffffffffffff16815260200183815260200182815250600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055506020820151816001015560408201518160020190805190602001906105ca929190610695565b5090505061062d565b81600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060010160008282546106259190610afb565b925050819055505b6000600101544710610658576001600060020160006101000a81548160ff0219169083151502179055505b7f2335156a506d67c95b1da1ee5c172bc7a41bcaac9d6d892184d9976d37f2b40d33306040516106899291906109b3565b60405180910390a15050565b8280546106a190610c02565b90600052602060002090601f0160209004810192826106c3576000855561070a565b82601f106106dc57805160ff191683800117855561070a565b8280016001018555821561070a579182015b828111156107095782518255916020019190600101906106ee565b5b509050610717919061071b565b5090565b5b8082111561073457600081600090555060010161071c565b5090565b600061074b61074684610aae565b610a89565b90508281526020810184848401111561076757610766610cf7565b5b610772848285610bc0565b509392505050565b60008135905061078981610d92565b61079281610b51565b905092915050565b6000813590506107a981610da9565b6107b281610b63565b905092915050565b600082601f8301126107cf576107ce610cf2565b5b81356107df848260208601610738565b91505092915050565b6000813590506107f781610dc0565b92915050565b60006020828403121561081357610812610d01565b5b60006108218482850161077a565b91505092915050565b6000602082840312156108405761083f610d01565b5b600061084e8482850161079a565b91505092915050565b6000806040838503121561086e5761086d610d01565b5b600061087c8582860161079a565b925050602061088d858286016107e8565b9150509250929050565b600080604083850312156108ae576108ad610d01565b5b60006108bc858286016107e8565b925050602083013567ffffffffffffffff8111156108dd576108dc610cfc565b5b6108e9858286016107ba565b9150509250929050565b6108fc81610b51565b82525050565b600061090d82610adf565b6109178185610aea565b9350610927818560208601610bcf565b61093081610d06565b840191505092915050565b6000610948600583610aea565b915061095382610d17565b602082019050919050565b600061096b600783610aea565b915061097682610d40565b602082019050919050565b600061098e600f83610aea565b915061099982610d69565b602082019050919050565b6109ad81610bb6565b82525050565b60006060820190506109c860008301856108f3565b6109d560208301846108f3565b81810360408301526109e68161095e565b90509392505050565b6000606082019050610a0460008301856108f3565b610a1160208301846108f3565b8181036040830152610a2281610981565b90509392505050565b6000606082019050610a4060008301866108f3565b610a4d60208301856109a4565b8181036040830152610a5f8184610902565b9050949350505050565b60006020820190508181036000830152610a828161093b565b9050919050565b6000610a93610aa4565b9050610a9f8282610c34565b919050565b6000604051905090565b600067ffffffffffffffff821115610ac957610ac8610cc3565b5b610ad282610d06565b9050602081019050919050565b600081519050919050565b600082825260208201905092915050565b6000610b0682610bb6565b9150610b1183610bb6565b9250827fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff03821115610b4657610b45610c65565b5b828201905092915050565b6000610b5c82610b75565b9050919050565b6000610b6e82610b75565b9050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b600074ffffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b82818337600083830152505050565b60005b83811015610bed578082015181840152602081019050610bd2565b83811115610bfc576000848401525b50505050565b60006002820490506001821680610c1a57607f821691505b60208210811415610c2e57610c2d610c94565b5b50919050565b610c3d82610d06565b810181811067ffffffffffffffff82111715610c5c57610c5b610cc3565b5b80604052505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600080fd5b600080fd5b600080fd5b600080fd5b6000601f19601f8301169050919050565b7f6572726f72000000000000000000000000000000000000000000000000000000600082015250565b7f7375636365737300000000000000000000000000000000000000000000000000600082015250565b7f726566756e642073756363657373210000000000000000000000000000000000600082015250565b610d9b81610b95565b8114610da657600080fd5b50565b610db281610b95565b8114610dbd57600080fd5b50565b610dc981610bb6565b8114610dd457600080fd5b5056fea26474726f6e58221220506f47f21e8a0a4fda14c902c2000fa8b8bacdb5bf925278a22108748f73a1f664736f6c6343000806003300000000000000000000000000000000000000000000000000000000001e8480",
+
+                bytecode: "608060405234801561001057600080fd5b50d3801561001d57600080fd5b50d2801561002a57600080fd5b50604051610a6c380380610a6c8339818101604052604081101561004d57600080fd5b81019080805190602001909291908051906020019092919050505060405180606001604052803373ffffffffffffffffffffffffffffffffffffffff168152602001838152602001828152506000808201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060208201518160010155604082015181600201559050505050610963806101096000396000f3fe6080604052600436106100555760003560e01c80631954f39e1461005a578063195dd2c61461009f5780632a9ac5c8146100e457806333ac2627146101805780635b6b431d146101ae5780635d26862914610203575b600080fd5b34801561006657600080fd5b50d3801561007357600080fd5b50d2801561008057600080fd5b50610089610234565b6040518082815260200191505060405180910390f35b3480156100ab57600080fd5b50d380156100b857600080fd5b50d280156100c557600080fd5b506100ce610240565b6040518082815260200191505060405180910390f35b3480156100f057600080fd5b50d380156100fd57600080fd5b50d2801561010a57600080fd5b5061014d6004803603602081101561012157600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610248565b604051808373ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390f35b6101ac6004803603602081101561019657600080fd5b810190808035906020019092919050505061028c565b005b3480156101ba57600080fd5b50d380156101c757600080fd5b50d280156101d457600080fd5b50610201600480360360208110156101eb57600080fd5b8101908080359060200190929190505050610558565b005b34801561020f57600080fd5b50d3801561021c57600080fd5b50d2801561022957600080fd5b5061023261072c565b005b60008060020154905090565b600042905090565b60036020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010154905082565b6000600201544210610306576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252600b8152602001807f50726f6a65637420456e6400000000000000000000000000000000000000000081525060200191505060405180910390fd5b600073ffffffffffffffffffffffffffffffffffffffff16600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1614156104605760405180604001604052803373ffffffffffffffffffffffffffffffffffffffff16815260200182815250600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550602082015181600101559050506104b1565b80600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600101600082825401925050819055505b7f2335156a506d67c95b1da1ee5c172bc7a41bcaac9d6d892184d9976d37f2b40d3330604051808373ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff16815260200180602001828103825260078152602001807f7375636365737300000000000000000000000000000000000000000000000000815250602001935050505060405180910390a150565b3373ffffffffffffffffffffffffffffffffffffffff166000800160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff161480156105bc57506000600101544710155b80156105cc575060006002015442115b61063e576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252600d8152602001807f5769746864726177204661696c0000000000000000000000000000000000000081525060200191505060405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051600060405180830381858888f19350505050158015610684573d6000803e3d6000fd5b507f2335156a506d67c95b1da1ee5c172bc7a41bcaac9d6d892184d9976d37f2b40d3033604051808373ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff16815260200180602001828103825260078152602001807f7375636365737300000000000000000000000000000000000000000000000000815250602001935050505060405180910390a150565b60006002015442118015610744575060006001015447105b6107b6576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252600b8152602001807f526566756e64204661696c00000000000000000000000000000000000000000081525060200191505060405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600101549081150290604051600060405180830381858888f1935050505015801561083e573d6000803e3d6000fd5b506000600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600101819055507f2335156a506d67c95b1da1ee5c172bc7a41bcaac9d6d892184d9976d37f2b40d3033604051808373ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff16815260200180602001828103825260078152602001807f7375636365737300000000000000000000000000000000000000000000000000815250602001935050505060405180910390a156fea2646970667358221220a3a93ceb2d59666ab39658aaac456126ae3dbe940abe8248422adcba619ad52364736f6c634300070000330000000000000000000000000000000000000000000000000000000005f5e10000000000000000000000000000000000000000000000000000000000626e1a15",
+                // bytecode: "608060405234801561001057600080fd5b50d3801561001d57600080fd5b50d2801561002a57600080fd5b506040516109b83803806109b88339818101604052604081101561004d57600080fd5b81019080805190602001909291908051906020019092919050505060405180606001604052803373ffffffffffffffffffffffffffffffffffffffff168152602001838152602001828152506000808201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550602082015181600101556040820151816002015590505050506108af806101096000396000f3fe60806040526004361061003f5760003560e01c80632a9ac5c81461004457806333ac2627146100e05780635b6b431d1461010e5780635d26862914610163575b600080fd5b34801561005057600080fd5b50d3801561005d57600080fd5b50d2801561006a57600080fd5b506100ad6004803603602081101561008157600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190505050610194565b604051808373ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390f35b61010c600480360360208110156100f657600080fd5b81019080803590602001909291905050506101d8565b005b34801561011a57600080fd5b50d3801561012757600080fd5b50d2801561013457600080fd5b506101616004803603602081101561014b57600080fd5b81019080803590602001909291905050506104a4565b005b34801561016f57600080fd5b50d3801561017c57600080fd5b50d2801561018957600080fd5b50610192610678565b005b60036020528060005260406000206000915090508060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16908060010154905082565b6000600201544210610252576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252600b8152602001807f50726f6a65637420456e6400000000000000000000000000000000000000000081525060200191505060405180910390fd5b600073ffffffffffffffffffffffffffffffffffffffff16600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060000160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1614156103ac5760405180604001604052803373ffffffffffffffffffffffffffffffffffffffff16815260200182815250600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200190815260200160002060008201518160000160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550602082015181600101559050506103fd565b80600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600101600082825401925050819055505b7f2335156a506d67c95b1da1ee5c172bc7a41bcaac9d6d892184d9976d37f2b40d3330604051808373ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff16815260200180602001828103825260078152602001807f7375636365737300000000000000000000000000000000000000000000000000815250602001935050505060405180910390a150565b3373ffffffffffffffffffffffffffffffffffffffff166000800160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1614801561050857506000600101544710155b8015610518575060006002015442115b61058a576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252600d8152602001807f5769746864726177204661696c0000000000000000000000000000000000000081525060200191505060405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051600060405180830381858888f193505050501580156105d0573d6000803e3d6000fd5b507f2335156a506d67c95b1da1ee5c172bc7a41bcaac9d6d892184d9976d37f2b40d3033604051808373ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff16815260200180602001828103825260078152602001807f7375636365737300000000000000000000000000000000000000000000000000815250602001935050505060405180910390a150565b60006002015442118015610690575060006001015447105b610702576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252600b8152602001807f526566756e64204661696c00000000000000000000000000000000000000000081525060200191505060405180910390fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600101549081150290604051600060405180830381858888f1935050505015801561078a573d6000803e3d6000fd5b506000600360003373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168152602001908152602001600020600101819055507f2335156a506d67c95b1da1ee5c172bc7a41bcaac9d6d892184d9976d37f2b40d3033604051808373ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff16815260200180602001828103825260078152602001807f7375636365737300000000000000000000000000000000000000000000000000815250602001935050505060405180910390a156fea264697066735822122019ba29b456a9de455061acd934eef315b73cc730528e5b066a50e427e5137c8264736f6c63430007000033000000000000000000000000000000000000000000000000000000000000007b00000000000000000000000000000000000000000000000000000000626c7c00",
                 feeLimit: 400000000,
                 callValue: 0,
                 userFeePercentage: 100,
                 originEnergyLimit: 1000000,
-                parameters: [amountNeedSun]
+                parameters: [amountNeedSun, Math.round(projectObj.enddate.getTime() / 1000)]
             }, tronweb.defaultAddress.hex);
 
             const signedTransaction = await tronweb.trx.sign(transaction)
@@ -331,18 +419,19 @@ function AddProcess(props) {
             const contractInstance = await tronweb.trx.sendRawTransaction(signedTransaction)
 
             console.log("address sc: ", tronweb.address.fromHex(contractInstance.transaction.contract_address))
+            console.log("amountNeedSun: ", amountNeedSun)
+            console.log("Second timestap: ", Math.round(projectObj.enddate.getTime() / 1000))
             // if (typeof contractInstance.transaction.contract_address === "string") {
             handleFinal(tronweb.address.fromHex(contractInstance.transaction.contract_address))
             // }
         } catch (err) {
             console.error(err)
-            swal({
+            swal2.fire({
                 title: "Tạo dự án thất bại",
                 text: "Vui lòng kiểm tra số dư ví.",
                 icon: "error",
-                button: {
-                    className: "bg-base-color"
-                }
+                confirmButtonColor: 'var(--love-color-1)'
+
             });
         }
     }
@@ -392,59 +481,38 @@ function AddProcess(props) {
             console.log('data dự án: ', response.data)
             if (response.isSuccess) {
 
-                // alertify.alert('Tạo dự án thành công')
-                swal({
-                    title: "Tạo dự án thành công",
+                swal2.fire({
+                    title: "Tạo dự án thành công.",
+                    html: `</br><a href="https://nile.tronscan.io/#/contract/${addressSC}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Xem trên Blockchain</a>`,
                     icon: "success",
-                    button: {
-                        className: "bg-base-color"
-                    }
+                    confirmButtonColor: 'var(--love-color-1)'
+
                 });
                 history.push(`/project-detail/${response.data}/${projectObj.projecturl}`)
 
             }
             else {
                 // alertify.alert('Tạo dự án thất bại')
-                swal({
-                    title: "thông báo",
-                    text:"tạo dự án thất bại",
+                swal2.fire({
+                    title: "Tạo dự án thất bại.",
                     icon: "error",
-                    button: {
-                        className: "bg-base-color"
-                    }
+                    confirmButtonColor: 'var(--love-color-1)'
+
                 });
             }
 
         }
         catch (error) {
-            console.log(error);
+            swal2.fire({
+                title: "Tạo dự án thất bại.",
+                icon: "error",
+                confirmButtonColor: 'var(--love-color-1)'
+
+            });
         }
 
-        // const sm = await tronweb.contract().at(process.env.REACT_APP_SMART_CONTRACT_ADDRESS)
-        // let result = await sm.CreateProject(id, 'huynhthao@gmail.com', amountNeedSun).send()
-        //     .then((res) => 
-        //     {
-        //         console.log('CreateProject: ', res)
-        //         if (typeof res === 'string') {
-        //             swal({
-        //                 title: "Tạo dự án thành công",
-        //                 icon: "success",
-        //                 button: {
-        //                     className: "bg-base-color"
-        //                 }
-        //             });
-        //             if(locationsq="admin")
-        //             {
-        //                 history.push(`/admin/project-detail/${id}/${projectObj.projecturl}`)
-        //             }
-        //             else{
-        //                 history.push(`/project-detail/${id}/${projectObj.projecturl}`)
-        //             }
-        //         }
-        //     }
-        // )
     }
-        
+
 
 
     return (
@@ -552,7 +620,7 @@ function AddProcess(props) {
 
                             </div>
                             <div className='d-flex justify-content-end container'>
-                                <button href="nava" onClick={handleCreateProject} className={clsx(Style.Btnfinal, 'btn')}>Hoàng thành</button>
+                                <button href="nava" onClick={handleCreateProject} className={clsx(Style.Btnfinal, 'btn')}>Hoàn thành</button>
                             </div>
                         </div>
 

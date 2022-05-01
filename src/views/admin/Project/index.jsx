@@ -9,6 +9,7 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import * as $ from "jquery"
 import Select from 'react-select'
 import { useHistory,useLocation } from 'react-router-dom'
+import { MakeUrl } from '../../../utils/utils';
 import { Link } from "react-router-dom";
 import categoryApi from "../../../api/Category";
 import projectApi from "../../../api/Project";
@@ -377,7 +378,7 @@ function Project(){
                                                                          onClick={()=>{ handleAcceptProject(item.id)}}><i className="mdi mdi-window-restore "></i>
                                                                             Duyệt dự án
                                                                        </Dropdown.Item>
-                                                                        <Dropdown.Item  as={Link} to={"/admin/project-detail/" + item.id + "/" + item.title} target="_blank"
+                                                                        <Dropdown.Item  as={Link} to={"/admin/project-detail/" + item.id + "/" + MakeUrl(item.title)} target="_blank"
                                                                          className={clsx( Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}
                                                                          onClick={()=>{ window.scrollTo(0, 0)}}><i className="mdi mdi-window-restore "></i>
                                                                             Chi tiết
@@ -421,8 +422,6 @@ function Project(){
                         </div>
                     </div>
                 </div>
-              
-
                 <Modal size='xl' show={show} onHide={handleClose} animation={false}>
                     <Modal.Header closeButton>
                     <Modal.Title>Chọn tiếng trình để sửa</Modal.Title>

@@ -28,6 +28,9 @@
 
 
 /* các nút cho các trạng thái  */
+.base-color:hover{
+    color: var(--love-color-1) !important;
+}
 .bg-base-color{
     background-color: var( --love-color-1)
 }

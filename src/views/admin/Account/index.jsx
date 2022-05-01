@@ -13,26 +13,28 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import { ar } from "date-fns/locale";
 import adminUser from "../../../api/User/Admin"
-import { Button,Modal,Form } from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap";
 import Swal from 'sweetalert2'
+
 let powerCreate=1
 function AdminAccount()
 {
+
     const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
-    const avatarDefalt="\\uploads\\Images\\User_Avatars\\28042022_030444_anymous_icon.png"
+    const avatarDefalt = "\\uploads\\Images\\User_Avatars\\28042022_030444_anymous_icon.png"
     // danh sách tạm
-    const arr=[
+    const arr = [
         {
-        "id": 0,
-        "fullName": "",
-        "email": '',
-        "phoneNumber":'',
-        "type": 1,
-        'status':2,
-        "avatar":'',
-        "address":'',
-        'password':'',
-        'isAdmin':true
+            "id": 0,
+            "fullName": "",
+            "email": '',
+            "phoneNumber": '',
+            "type": 1,
+            'status': 2,
+            "avatar": '',
+            "address": '',
+            'password': '',
+            'isAdmin': true
         },
     ]
     const type = [
@@ -47,105 +49,103 @@ function AdminAccount()
     //---------------------------------------------------------useState
 
     const [arrayUsers, setArrayUsers] = useState(arr)// danh sách user
-    const [userDetail,setUserDetail]=useState(arr[0])// 1 user
+    const [userDetail, setUserDetail] = useState(arr[0])// 1 user
 
     // bộ lọc
-    const [inputSearch,setInputSearch]= useState('')
-    const [inputType,setInputType]= useState([...type][1])
-    const [inputStatus,setInputStatus]= useState(filterStatus[1])
-    const [pageindex,setPageindex]= useState(0)// trang 
+    const [inputSearch, setInputSearch] = useState('')
+    const [inputType, setInputType] = useState([...type][1])
+    const [inputStatus, setInputStatus] = useState(filterStatus[1])
+    const [pageindex, setPageindex] = useState(0)// trang 
 
-    const [sta,setSta]=useState(1)// load lại danh sách
+    const [sta, setSta] = useState(1)// load lại danh sách
 
 
     const [typeCreate,setTypeCreate]=useState([...type][1])// selector trạng thái
 
     
     const [imgValue,setImgValue]=useState('')
+
     const [show, setShow] = useState(false)
 
     //------------------------------------------------------------useEffect
 
     //load danh sách từ API
-    useEffect(async()=>{
-        const data={
-            "keyword":inputSearch,
-            "type":inputType.value,
-            "status":inputStatus.value,
-            'pageindex':pageindex,
+    useEffect(async () => {
+        const data = {
+            "keyword": inputSearch,
+            "type": inputType.value,
+            "status": inputStatus.value,
+            'pageindex': pageindex,
         }
-        const respons= await adminUser.getAll(data)
-        console.log("respon",respons.data)
+        const respons = await adminUser.getAll(data)
+        console.log("respon", respons.data)
         setArrayUsers(respons.data)
-    },[inputSearch,inputType,inputStatus,pageindex,sta])
+    }, [inputSearch, inputType, inputStatus, pageindex, sta])
 
     //đẩy ảnh lên API
-    useEffect(async()=>{
-        if(imgValue!=='')
-        {
-            let resultimg= imgFormat.find(function(item){
-                return removeUnicode((imgValue.name).slice((imgValue.name).lastIndexOf('.')+1))===removeUnicode(item)
+    useEffect(async () => {
+        if (imgValue !== '') {
+            let resultimg = imgFormat.find(function (item) {
+                return removeUnicode((imgValue.name).slice((imgValue.name).lastIndexOf('.') + 1)) === removeUnicode(item)
             })
-            if(resultimg)
-            {
+            if (resultimg) {
                 let form = new FormData();
-                form.append('Image',imgValue);
-                form.append('TypeImage',"user");
+                form.append('Image', imgValue);
+                form.append('TypeImage', "user");
                 const response = await adminUser.uploadFile(form);
-                setUserDetail({...userDetail,avatar:response.data.filePath})
+                setUserDetail({ ...userDetail, avatar: response.data.filePath })
                 if (!response.isSuccess) {
                     Swal.fire('Tải ảnh lên thất bại')
                 }
             }
-            else{
+            else {
                 Swal.fire('Tải ảnh lên thất bại')
-                resultimg=''
+                resultimg = ''
             }
         }
-    },[imgValue])
+    }, [imgValue])
 
-    useEffect(()=>{
-        setUserDetail({...userDetail,type:typeCreate.value})
-    },[typeCreate])
+    useEffect(() => {
+        setUserDetail({ ...userDetail, type: typeCreate.value })
+    }, [typeCreate])
 
-   
+
     //------------------------------------------------------funtion
 
     // xử lý hiện labe của 'type' 
-    function HandleGetLable(filterlist,index){
-        return(
-            filterlist.find(function(itemCategoty){
-                if (itemCategoty.value===(index+'')){
+    function HandleGetLable(filterlist, index) {
+        return (
+            filterlist.find(function (itemCategoty) {
+                if (itemCategoty.value === (index + '')) {
                     return itemCategoty
                 }
             })
         )
     }
 
-    const handleChangAvatar=(e)=>{
+    const handleChangAvatar = (e) => {
         setImgValue(e.target.files[0])
     }
 
     // xử lý khóa, mở khóa tài khoản
-    const handleblockAcount=(content,item)=>{
-        const func = async() => {
-            const respon= await adminUser.lock(item)   
-            if(respon.isSuccess)
-            {
+    const handleblockAcount = (content, item) => {
+        const func = async () => {
+            const respon = await adminUser.lock(item)
+            if (respon.isSuccess) {
                 Swal.fire(
                     'Đã khóa!',
-                    `${content} tài khoản thành công` ,
+                    `${content} tài khoản thành công`,
                     'success'
                 )
-                setSta(sta*(-1))
-            }    
-            else{
+                setSta(sta * (-1))
+            }
+            else {
                 Swal.fire(
                     'khóa thất bại!',
                     `${content} tài khoản thất bại`,
                     'error'
                 )
-            }       
+            }
         }
         Swal.fire({
             title: 'Bạn có chắc?',
@@ -162,27 +162,26 @@ function AdminAccount()
         })
     }
     // xử lý xóa tài khoản
-    const handleDelete=(id)=>{
-        const DeleteApiFunc=async()=>{
-            const respon= await adminUser.delete(id)   
-            if(respon.isSuccess)
-            {
-                setSta(sta*(-1))
+    const handleDelete = (id) => {
+        const DeleteApiFunc = async () => {
+            const respon = await adminUser.delete(id)
+            if (respon.isSuccess) {
+                setSta(sta * (-1))
                 handleClose()
                 Swal.fire(
                     'Đã xóa!',
                     'Xóa tài khoản thành công',
                     'success'
                 )
-            }    
-            else{
+            }
+            else {
                 Swal.fire(
                     'xóa thất bại!',
                     'Xóa tài khoản thất bại',
                     'error'
                 )
-            }       
-         
+            }
+
         }
         Swal.fire({
             title: 'Bạn có Chắc?',
@@ -198,20 +197,13 @@ function AdminAccount()
             }
         })
     }
-    // useEffect(()=>{
-    //     if(powerCreate===1)
-    //     {
-           
-    //     }
-    //     else if(powerCreate===2){
-            
-    //     }
-    // },[powerCreate])
+
+
     const handleClose = () => setShow(false);
 
     // chọn loại tài khoản muốn tạo
-    const handleChosePosition=function(item){
-        
+    const handleChosePosition = function (item) {
+
         Swal.fire({
             title: 'Bạn muốn tạo tài khoản',
             text: "Cho Admin hay cho Client?",
@@ -220,24 +212,26 @@ function AdminAccount()
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Admin',
-            cancelButtonText:'Client'
+            cancelButtonText: 'Client'
         }).then((result) => {
             if (result.isConfirmed) {
-             
                 powerCreate=1
                 handleShow(item,'Tạo tài Khoản Admin')
+
             }
-            else if(
+            else if (
                 result.dismiss === Swal.DismissReason.cancel
             ){
                 powerCreate=2
                 handleShow(item,'Tạo tài Khoản Client')
+
             }
         })
         
     }
 
     // hiển thị modal 
+
     const handleShow = function(item,content){
         console.log(powerCreate)
         if(powerCreate===3)
@@ -245,56 +239,51 @@ function AdminAccount()
             console.log('sadsadsadsadas')
             setUserDetail({...item,content:content})
         }
-        else{
+        else {
             setImgValue('')
             setUserDetail({
                 "fullName": "",
                 "email": '',
-                "phoneNumber":'',
+                "phoneNumber": '',
                 "type": 2,
-                "avatar":'',
-                'content':content,
-                'address':'',
-                'password':''
+                "avatar": '',
+                'content': content,
+                'address': '',
+                'password': ''
             })
         }
         setShow(true);
-    } 
-      
+    }
+
     // Cập nhật tài khoản lên API
-    const handleUpdateUser=async()=>{
-        console.log("powerCreate",powerCreate)
-        if(
-            userDetail.fullName!==''&&
-            userDetail.phoneNumber!==''&&
-            userDetail.email!=='')
-        {
-            if(powerCreate==3)
-            {
-                const data= {
-                    'id':userDetail.id,
+
+    const handleUpdateUser = async () => {
+        if (
+            userDetail.fullName !== '' &&
+            userDetail.phoneNumber !== '' &&
+            userDetail.email !== '') {
+            if (powerCreate == 3) {
+                const data = {
+                    'id': userDetail.id,
                     "fullName": userDetail.fullName,
                     "phoneNumber": userDetail.phoneNumber,
                     "avatarPath": userDetail.avatar,
                     "email": userDetail.email,
                 }
-                const respon= await adminUser.updateUser(data)
-                if(respon.isSuccess)
-                {
+                const respon = await adminUser.updateUser(data)
+                if (respon.isSuccess) {
                     handleClose()
-                    setSta(sta*(-1))
+                    setSta(sta * (-1))
                     Swal.fire('Cập nhật thông tin thành công')
                 }
-                else{
+                else {
                     Swal.fire('Cập nhật thông tin thất bại')
                 }
             }
-            else if(powerCreate===1)
-            {   
-                if(userDetail.address!==''&& userDetail.password!=='')
-                {
+            else if (powerCreate === 1) {
+                if (userDetail.address !== '' && userDetail.password !== '') {
                     // tạo tài khoản admin
-                    const dataAdmin={
+                    const dataAdmin = {
                         "fullName": userDetail.fullName,
                         "phoneNumber": userDetail.phoneNumber,
                         "avatarPath": userDetail.avatar,
@@ -302,26 +291,24 @@ function AdminAccount()
                         "email": userDetail.email,
                         "address": userDetail.address
                     }
-                    const responAdmin= await adminUser.registerAdmin(dataAdmin)
-                    if(responAdmin.isSuccess)
-                    {
+                    const responAdmin = await adminUser.registerAdmin(dataAdmin)
+                    if (responAdmin.isSuccess) {
                         handleClose()
-                        setSta(sta*(-1))
+                        setSta(sta * (-1))
                         Swal.fire('Đăng ký tài khoản Admin thành công')
                     }
-                    else{
+                    else {
                         Swal.fire('Đăng ký tài khoản Admin thất bại')
                     }
                 }
-                else{
+                else {
                     Swal.fire('Vui lòng điển đủ thông tin')
                 }
             }
-            else if(powerCreate===2){
+            else if (powerCreate === 2) {
                 // tạo tài khaorn client
-                if(userDetail.address!==''&& userDetail.password!=='')
-                {
-                    const dataClient={
+                if (userDetail.address !== '' && userDetail.password !== '') {
+                    const dataClient = {
                         "fullName": userDetail.fullName,
                         "phoneNumber": userDetail.phoneNumber,
                         "avatarPath": userDetail.avatar,
@@ -329,38 +316,36 @@ function AdminAccount()
                         "email": userDetail.email,
                         "address": userDetail.address
                     }
-                    const responAdmin= await adminUser.register(dataClient)
-                    if(responAdmin.isSuccess)
-                    {
+                    const responAdmin = await adminUser.register(dataClient)
+                    if (responAdmin.isSuccess) {
                         handleClose()
-                        setSta(sta*(-1))
+                        setSta(sta * (-1))
                         Swal.fire('Đăng ký tài khoản Client thành công')
                     }
-                    else{
+                    else {
                         Swal.fire('Đăng ký tài khoản Client thất bại')
                     }
                 }
-                else{
+                else {
                     Swal.fire('Vui lòng điển đủ thông tin')
                 }
             }
         }
-        else{
+        else {
             Swal.fire('Vui lòng điển đủ thông tin')
         }
     }
-    return(
+    return (
         <>
-            <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
+            <div className={clsx(Style.project, "main-manage container-fluid w-100")}>
                 <div className="container-fluid w-100 pe-5">
                     <div className={clsx('row')}>
                         <div className={clsx(Style.titleBlock, ' w-100 main-top col-12 pt-4 pb-4')}>
                             <h3 className={clsx(Style.titleProject)}>Quản lý tài khoản người dùng</h3>
                             <span  onClick={()=>{
-                                
                                 handleChosePosition(userDetail)
-                                }}className={clsx(Style.btnCreateProject,"btn")}>
-                            <span className="mdi mdi-plus-circle pe-2"></span> Tạo tài khoản người dùng </span>
+                            }} className={clsx(Style.btnCreateProject, "btn")}>
+                                <span className="mdi mdi-plus-circle pe-2"></span> Tạo tài khoản người dùng </span>
                         </div>
                     </div>
                 </div>
@@ -368,21 +353,21 @@ function AdminAccount()
                     <div className={clsx(Style.filterBlock, 'filter col-3')}>
                         <div className={Style.filterBlockSpan}>
                             <div className={''}>
-                                <h5 className={clsx(Style.searchContent,'')}>Tìm kiếm</h5>
+                                <h5 className={clsx(Style.searchContent, '')}>Tìm kiếm</h5>
                                 <div className="form-group">
-                                    <input value={inputSearch} onChange={(e)=>{setInputSearch(e.target.value)}} id="ipt-text-search" type="text" className={clsx(Style.searchInput, Style.Inputfocus, 'form-control')}  placeholder="Tìm theo tên bảng tin" autoComplete="off" />
+                                    <input value={inputSearch} onChange={(e) => { setInputSearch(e.target.value) }} id="ipt-text-search" type="text" className={clsx(Style.searchInput, Style.Inputfocus, 'form-control')} placeholder="Tìm theo tên bảng tin" autoComplete="off" />
                                 </div>
                             </div>
                             <div className={'mt-4'}>
-                                <h5 className={clsx(Style.searchContent,'')}>Loại</h5>
+                                <h5 className={clsx(Style.searchContent, '')}>Loại</h5>
                                 <div className="form-group">
-                                    <Select defaultValue={inputType} onChange={setInputType}  className={clsx( Style.Inputfocus)} placeholder='danh mục' options={type} />
+                                    <Select defaultValue={inputType} onChange={setInputType} className={clsx(Style.Inputfocus)} placeholder='danh mục' options={type} />
                                 </div>
                             </div>
                             <div className={'mt-4'}>
-                                <h5 className={clsx(Style.searchContent,'')}>Trạng thái</h5>
+                                <h5 className={clsx(Style.searchContent, '')}>Trạng thái</h5>
                                 <div className="form-group">
-                                    <Select defaultValue={inputStatus} onChange={setInputStatus} className={clsx( Style.Inputfocus)}  placeholder='trạng thái' options={filterStatus} />
+                                    <Select defaultValue={inputStatus} onChange={setInputStatus} className={clsx(Style.Inputfocus)} placeholder='trạng thái' options={filterStatus} />
                                 </div>
                             </div>
                         </div>
@@ -395,45 +380,58 @@ function AdminAccount()
                                         <thead>
                                             <tr>
                                                 <th className="text-center" scope="col">#</th>
-                                                <th className="text-center"  scope="col">Hình ảnh</th>
-                                                <th className="text-center"  scope="col">Họ tên</th>
-                                                <th className="text-center"  scope="col">Email</th>
-                                                <th className="text-center"  scope="col">Điện thoại</th>
-                                                <th className="text-center"  scope="col">Loại</th>
-                                                <th className="text-center"  scope="col">Chức vụ</th>
-                                                <th className="text-center"  scope="col">Trạng thái</th>
+                                                <th className="text-center" scope="col">Hình ảnh</th>
+                                                <th className="text-center" scope="col">Họ tên</th>
+                                                <th className="text-center" scope="col">Email</th>
+                                                <th className="text-center" scope="col">Điện thoại</th>
+                                                <th className="text-center" scope="col">Loại</th>
+                                                <th className="text-center" scope="col">Chức vụ</th>
+                                                <th className="text-center" scope="col">Trạng thái</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {
-                                                arrayUsers.map(function(item,index,arr){
-                                                    return(
-                                                        <tr key={index} style={{lineHeight:'2rem'}}>
-                                                            
-                                                            <th key={index+'index'} scope="row">{index}</th>
-                                                            <td key={index+'ing'}>
-                                                                <div className={clsx(Style.imgAccount,"col-4 col-md-2")}>
+                                                arrayUsers.map(function (item, index, arr) {
+                                                    return (
+                                                        <tr key={index} style={{ lineHeight: '2rem' }}>
+
+                                                            <th key={index + 'index'} scope="row">{index}</th>
+                                                            <td key={index + 'ing'}>
+                                                                <div className={clsx(Style.imgAccount, "col-4 col-md-2")}>
                                                                     <img id="img-banner1" src={
-                                                                        ( imgFormat.includes(item.avatar.slice(item.avatar.indexOf('.')+1)))?(process.env.REACT_APP_URL + item.avatar):(process.env.REACT_APP_URL + avatarDefalt)} className={clsx(Style.img_item, "rounded-circle border border-1 img-fluid img-auto-size ")} />
+                                                                        (imgFormat.includes(item.avatar.slice(item.avatar.indexOf('.') + 1))) ? (process.env.REACT_APP_URL + item.avatar) : (process.env.REACT_APP_URL + avatarDefalt)} className={clsx(Style.img_item, "rounded-circle border border-1 img-fluid img-auto-size ")} />
                                                                 </div>
                                                             </td>
-                                                            <td key={index+"name"} className={clsx(Style.lh,"text-center")} >{item.fullName}</td>
-                                                            <td key={index+'email'} className={clsx(Style.lh,"text-center")} >{item.email}</td>
+
+                                                            {/* // <td key={index+"name"} className={clsx(Style.lh,"text-center")} >{item.fullName}</td>
+                                                            // <td key={index+'email'} className={clsx(Style.lh,"text-center")} >{item.email}</td>
                                                           
-                                                            <td key={index+'phonNumber'} className={clsx(Style.lh,"text-center")} >{item.phoneNumber}</td>
-                                                            <td key={index+'type'} className={clsx(Style.lh,"text-center")} >{ HandleGetLable(type,item.type).label}</td>
-                                                            <td key={index+'isAdmin'} className={clsx(Style.lh,"text-center",item.isAdmin?'text-warning':'text-primary')} >{item.isAdmin?'Admin':'Client'}</td>
-                                                            <td key={index+'status'} className={clsx(Style.lh,"text-center")} >
-                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? ' doingStatusUse' : 'doingStatusUse') )}>{ HandleGetLable(filterStatus,item.status).label}
+                                                            // <td key={index+'phonNumber'} className={clsx(Style.lh,"text-center")} >{item.phoneNumber}</td>
+                                                            // <td key={index+'type'} className={clsx(Style.lh,"text-center")} >{ HandleGetLable(type,item.type).label}</td>
+                                                            // <td key={index+'isAdmin'} className={clsx(Style.lh,"text-center",item.isAdmin?'text-warning':'text-primary')} >{item.isAdmin?'Admin':'Client'}</td>
+                                                            // <td key={index+'status'} className={clsx(Style.lh,"text-center")} >
+                                                            //     <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? ' doingStatusUse' : 'doingStatusUse') )}>{ HandleGetLable(filterStatus,item.status).label}
                                                                   
-                                                                </span> 
+                                                            //     </span>  */}
+
+                                                            <td key={index + "name"} className={clsx(Style.lh, "text-center")} >{item.fullName}</td>
+                                                            <td key={index + 'email'} className={clsx(Style.lh, "text-center")} >{item.email}</td>
+
+                                                            <td key={index + 'phonNumber'} className={clsx(Style.lh, "text-center")} >{item.phoneNumber}</td>
+                                                            <td key={index + 'type'} className={clsx(Style.lh, "text-center")} >{HandleGetLable(type, item.type).label}</td>
+                                                            <td key={index + 'type'} className={clsx(Style.lh, "text-center", item.isAdmin ? 'text-warning' : 'text-primary')} >{item.isAdmin ? 'Admin' : 'Client'}</td>
+                                                            <td key={index + 'status'} className={clsx(Style.lh, "text-center")} >
+                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status === 1 ? 'waitingStatus' : (item.status === 2 ? ' doingStatusUse' : 'doingStatusUse'))}>{HandleGetLable(filterStatus, item.status).label}
+
+                                                                </span>
+
                                                             </td>
-                                                          
-                                                            <td key={index+'dropdow'} className=" text-center align-middle ">
+
+                                                            <td key={index + 'dropdow'} className=" text-center align-middle ">
                                                                 <Dropdown className="d-inline mx-2 " >
-                                                                    <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin" )}
-                                                                    style={{position:'relative',height:'30px' ,backgroundColor:'transparent', border:'none' }}>
-                                                                                <i className={clsx(Style.iconDrop, "text-light mdi mdi-dots-vertical font-18 text-primary")}></i>
+                                                                    <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin")}
+                                                                        style={{ position: 'relative', height: '30px', backgroundColor: 'transparent', border: 'none' }}>
+                                                                        <i className={clsx(Style.iconDrop, "text-light mdi mdi-dots-vertical font-18 text-primary")}></i>
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
@@ -441,43 +439,44 @@ function AdminAccount()
                                                                       
                                                                             powerCreate=3
                                                                             handleShow(item,'Chỉnh sửa thông tin người dùng')}} className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>
+
                                                                             Chi tiết
                                                                         </Dropdown.Item>
-                                                                        <Dropdown.Item onClick={()=>handleblockAcount('mở khóa',item.id)} className={clsx(Style.itemDrop,item.status===1?"show":"hide")} ><i className={clsx("mdi mdi-lock-reset")}></i>
+                                                                        <Dropdown.Item onClick={() => handleblockAcount('mở khóa', item.id)} className={clsx(Style.itemDrop, item.status === 1 ? "show" : "hide")} ><i className={clsx("mdi mdi-lock-reset")}></i>
                                                                             Mở khóa tài khoản
                                                                         </Dropdown.Item>
-                                                                        <Dropdown.Item  onClick={()=>handleblockAcount('khóa',item.id)} className={clsx(Style.itemDrop ,item.status===1?"hide":"show")} ><i  className="mdi mdi-lock-reset "></i>
-                                                                            
+                                                                        <Dropdown.Item onClick={() => handleblockAcount('khóa', item.id)} className={clsx(Style.itemDrop, item.status === 1 ? "hide" : "show")} ><i className="mdi mdi-lock-reset "></i>
+
                                                                             Khóa tài khoản
                                                                         </Dropdown.Item>
-                                                                      
+
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>
                                                             </td>
-                                                                
-                                                            
+
+
                                                         </tr>
 
-                                                        )
+                                                    )
                                                 })
                                             }
-                                            
-                                            
+
+
                                         </tbody>
                                     </table>
                                     <div className="d-flex">
-                                            <div>
-                                                <button onClick={()=>setPageindex(pageindex!=0?pageindex-1:pageindex)} className={clsx( Style.prevBtn,'bg-info px-2')}>
+                                        <div>
+                                            <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, 'bg-info px-2')}>
                                                 <span className="mdi mdi-chevron-double-left"></span>
-                                                </button>
-                                                <span className="px-3 text-secondary">{pageindex}</span>
-                                                <button onClick={()=>setPageindex(pageindex+1)} className={clsx( Style.nextBtn,'bg-info px-2')}>
+                                            </button>
+                                            <span className="px-3 text-secondary">{pageindex}</span>
+                                            <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, 'bg-info px-2')}>
                                                 <span className="mdi mdi-chevron-double-right"></span>
-                                                </button>
-                                            </div>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div >
-                            </div>  
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -487,36 +486,36 @@ function AdminAccount()
                     </Modal.Header>
                     <Modal.Body className="container-fluid ">
                         <div className="row p-3">
-                            <div className={clsx(Style.imgAccountUpdate,"col-3 position-relative")}>
+                            <div className={clsx(Style.imgAccountUpdate, "col-3 position-relative")}>
 
-                            <img  className={clsx(Style.img_item,"rounded-circle position-relative border border-1 img-fluid img-auto-size"  )}
-                            src={( imgFormat.includes(userDetail.avatar.slice(userDetail.avatar.indexOf('.')+1)))?(process.env.REACT_APP_URL + userDetail.avatar):(process.env.REACT_APP_URL + avatarDefalt)}alt="" />
-                             <input  type="file" className={clsx(Style.changeimg,'position-absolute')} onChange={(e)=>{handleChangAvatar(e)}} style={{  cursor:"pointer",opacity: "0", cursor: "pointer" }} />
+                                <img className={clsx(Style.img_item, "rounded-circle position-relative border border-1 img-fluid img-auto-size")}
+                                    src={(imgFormat.includes(userDetail.avatar.slice(userDetail.avatar.indexOf('.') + 1))) ? (process.env.REACT_APP_URL + userDetail.avatar) : (process.env.REACT_APP_URL + avatarDefalt)} alt="" />
+                                <input type="file" className={clsx(Style.changeimg, 'position-absolute')} onChange={(e) => { handleChangAvatar(e) }} style={{ cursor: "pointer", opacity: "0", cursor: "pointer" }} />
                             </div>
-                          
+
                             <Form className="col-9 py-2">
                                 <Form.Group controlId="exampleForm.ControlInput1">
                                     <Form.Label>Họ tên</Form.Label>
                                     <Form.Control className="border border-secondary"
                                         value={userDetail.fullName}
-                                        onChange={(e)=>{setUserDetail({...userDetail,fullName:e.target.value})}}
+                                        onChange={(e) => { setUserDetail({ ...userDetail, fullName: e.target.value }) }}
                                         type="text"
                                         placeholder="name"
                                         autoFocus
                                     />
                                 </Form.Group>
-                                <Form.Group  controlId="">
+                                <Form.Group controlId="">
                                     <Form.Label>Số điện thoại</Form.Label>
                                     <Form.Control className="border border-secondary"
-                                       
+
                                         value={userDetail.phoneNumber}
-                                        onChange={(e)=>{setUserDetail({...userDetail,phoneNumber:e.target.value})}}
+                                        onChange={(e) => { setUserDetail({ ...userDetail, phoneNumber: e.target.value }) }}
                                         type="text"
                                         placeholder="098765432"
                                         autoFocus
                                     />
                                 </Form.Group>
-                              
+
                             </Form>
                             <Form className="d-flex justify-content-between col-12">
                                 <Form.Group className="col-6 px-2 d-inline-block " controlId="">
@@ -524,7 +523,7 @@ function AdminAccount()
                                     <Form.Control className="border border-secondary"
                                         readOnly={powerCreate===3?true:false}
                                         value={userDetail.email}
-                                        onChange={(e)=>{setUserDetail({...userDetail,email:e.target.value})}}
+                                        onChange={(e) => { setUserDetail({ ...userDetail, email: e.target.value }) }}
                                         type="email"
                                         placeholder="email@gmail.com"
                                         autoFocus
@@ -532,25 +531,29 @@ function AdminAccount()
                                 </Form.Group>
                                 <Form.Group className="col-6 px-2 d-inline-block " controlId="">
                                     <Form.Label>Loại</Form.Label>
+
                                     <Select  
                                         isDisabled={powerCreate===3?true:false}  
                                         value={HandleGetLable(type,userDetail.type)}
+
                                         onChange={setTypeCreate}
-                                        options={type} 
+                                        options={type}
                                         defaultValue={type}
-                                        className={clsx(Style.category,'w-100')}
-                                        ></Select>
-                                  
+                                        className={clsx(Style.category, 'w-100')}
+                                    ></Select>
+
                                 </Form.Group>
-                              
+
                             </Form>
+
                             <Form className={clsx("d-flex justify-content-between col-12 ",(powerCreate===3)?'hide':"sleep")}>
+
                                 <Form.Group className="col-6 px-2 d-inline-block " controlId="">
                                     <Form.Label>Địa chỉ</Form.Label>
                                     <Form.Control className="border border-secondary"
                                         readOnly={powerCreate===3?true:false}
                                         value={userDetail.address}
-                                        onChange={(e)=>{setUserDetail({...userDetail,address:e.target.value})}}
+                                        onChange={(e) => { setUserDetail({ ...userDetail, address: e.target.value }) }}
                                         type="text"
                                         placeholder="đồng nai/ vĩnh cửu/ thiện tân"
                                         autoFocus
@@ -561,15 +564,15 @@ function AdminAccount()
                                     <Form.Control className="border border-secondary"
                                         readOnly={powerCreate===3?true:false}
                                         value={userDetail.password}
-                                        onChange={(e)=>{setUserDetail({...userDetail,password:e.target.value})}}
+                                        onChange={(e) => { setUserDetail({ ...userDetail, password: e.target.value }) }}
                                         type="password"
                                         placeholder="tối thiểu 6 ký tự"
                                         autoFocus
                                     />
-                                  
+
                                 </Form.Group>
-                               
-                              
+
+
                             </Form>
                         </div>
 
@@ -577,7 +580,9 @@ function AdminAccount()
 
                     <Modal.Footer className="d-flex justify-content-between">
                         <div>
+
                             <Button  className={clsx("bg-danger",(powerCreate!==3)?'hide':"sleep")} variant="secondary" onClick={()=>{handleDelete(userDetail.id)}}>
+
                                 Xóa
                             </Button>
                         </div>
@@ -585,11 +590,11 @@ function AdminAccount()
                             <Button className="me-2" variant="secondary" onClick={handleClose}>
                                 Đóng
                             </Button>
-                            <Button variant="primary" onClick={()=>{handleUpdateUser()}}>
+                            <Button variant="primary" onClick={() => { handleUpdateUser() }}>
                                 Cập Nhật
                             </Button>
                         </div>
-                        
+
                     </Modal.Footer>
                 </Modal>
             </div>
