@@ -91,7 +91,7 @@ function EditProjectUser(prop){
     },[])
 
     useEffect(()=>{
-        setFriendlyUrl(title)
+        setFriendlyUrl(MakeUrl(title))
     },[title])
 
     useEffect(async()=>{

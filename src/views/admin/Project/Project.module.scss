@@ -70,6 +70,18 @@
                     opacity: 1;
                 }
             }
+            .prevBtn{
+                // border-top-right-radius:30% ;
+                border-top-left-radius: 40%;
+                border-bottom-left-radius: 40%;
+                color: #fff;
+            }
+            .nextBtn{
+                // border-top-right-radius:30% ;
+                border-top-right-radius: 40%;
+                border-bottom-right-radius: 40%;
+                color: #fff;
+            }
             
            
         }
@@ -130,4 +142,55 @@
     box-shadow: none !important
 }
 
+.process{
+    background-color: #333;
+    color: #fff;
+    .line {
+        width: 5%;
+        & > hr {
+            border: 2px solid var(--love-color-1);
+            margin: 0;
+            width: 100%;
+            height: 0 !important;
+            border-radius: 10px;
+            opacity: 1;
+        }
+    }
+    .foreignColor{
 
+    }
+    #tabContent  {
+        & .navItem {
+            
+            &  button[aria-selected="true"] {
+                background-color: var(--love-color-1) !important;
+            }
+            & .tabLine {
+                border-top: 1px solid #68737db4;
+                width: 80px;
+            }
+        }
+        & .title {
+            letter-spacing: 1px;
+        }
+    }
+    .baseColor{
+        color: var(--love-color-1) !important;
+        .foreignColor{
+            color: var(--love-color-5) !important;
+        }
+    }
+    .baseColor{
+        color: var(--love-color-1) !important;
+    }
+    .editBtn{
+        border: 1px solid var(--love-color-2);
+        // color:  var(--love-color-2) !important;
+        &:hover {
+            background-color: rgba(221, 221, 221,0.2);
+        }
+    }
+    .title{
+        letter-spacing: 1px;
+    }
+}

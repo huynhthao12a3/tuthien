@@ -9,18 +9,11 @@ import Select from 'react-select'
 import alertify from 'alertifyjs';
 import projectApi from "../../../../api/Project";
 import { DatePicker } from 'rsuite';
-import { addDays } from 'date-fns';
 import moment from "moment";
-
+import swal from "sweetalert";
 
 import { Link, useLocation, useHistory } from "react-router-dom";
 import * as $ from "jquery"
-
-import {
-    BrowserRouter,
-    Route, Switch
-} from 'react-router-dom';
-import AddProcess from "../Process/Add";
 import categoryApi from "../../../../api/Category";
 import swal2 from "sweetalert2";
 import { Button } from "react-bootstrap/Button";
@@ -153,7 +146,7 @@ function AddProject() {
         />
     );
     const handlecheckValues = () => {
-
+        console.log('projectValue',projectValue)
         if (
             projectValue.urlImg !== '' &&
             projectValue.projectname !== '' &&
@@ -168,25 +161,39 @@ function AddProject() {
             projectValue.enddate !== "") {
             // $('.ajs-button.ajs-ok').css({"background-color": "var(--admin-btn-color)"});
             // alertify.alert('Thông báo', `Thành công`);
-            if (locations === "admin") {
-                history.push({ pathname: "/admin/add-process", state: projectValue })
+
+            
+            if(locations.includes("admin"))
+            {
+                console.log('đủ',locations)
+                return { pathname:"/admin/add-process", state: projectValue }
             }
-            else {
-                history.push({ pathname: "/add-process", state: projectValue })
+            else{
+                console.log(0)
+                return { pathname:"/add-process", state: projectValue }
+
+            // if (locations === "admin") {
+            //     history.push({ pathname: "/admin/add-process", state: projectValue })
+            // }
+            // else {
+            //     history.push({ pathname: "/add-process", state: projectValue })
+
             }
         }
         else {
-
-            // $('.ajs-button.ajs-ok').css({"background-color": "var(--status-waiting-color)"});
-            // alertify.alert('Thông báo', `vui lòng không bỏ trống các trường `);
-            swal2.fire({
-                title: "Thông báo",
-                text: "Vui lòng điền đầy đủ thông tin.",
-                icon: "info",
-                confirmButtonColor: 'var(--love-color-1)'
-
-            });
+            console.log('lỗi')
         }
+         
+        //     // $('.ajs-button.ajs-ok').css({"background-color": "var(--status-waiting-color)"});
+        //     // alertify.alert('Thông báo', `vui lòng không bỏ trống các trường `);
+        //     // swal2.fire({
+        //     //     title: "Thông báo",
+        //     //     text: "Vui lòng điền đầy đủ thông tin.",
+        //     //     icon: "info",
+        //     //     confirmButtonColor: 'var(--love-color-1)'
+
+        //     // });
+        // }
     }
     return (
         <>
@@ -318,7 +325,8 @@ function AddProject() {
                     </div>
                 </div>
                 <div className='d-flex justify-content-end container'>
-                    <button onClick={handlecheckValues} className={clsx(Style.createbtn, 'btn')}>Tiếp tục</button>
+                    <Link to={handlecheckValues} className={clsx(Style.createbtn, 'btn')}>Tiếp tục</Link>
+
                 </div>
             </div>
 

@@ -28,7 +28,7 @@ function UpdateProcess(props) {
     console.log('id: ', id)
     const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
     const processProp = props.location.state
-    console.log('processProp', props.location)
+    console.log('processProp', props)
     const history = useHistory()
     const listTypeExpen = [
         { value: '1', label: 'Thanh toán' },

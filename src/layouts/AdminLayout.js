@@ -20,6 +20,8 @@ import AdminReclaim from '../views/admin/Reclaim';
 import AdminCategory from '../views/admin/Category';
 import AdminDonation from '../views/admin/Donation';
 import EditProjectUser from '../views/client/Project/edit';
+import UpdateProcess from "../views/client/Project/Process/Update"
+
 import ProjectDetail from '../views/client/Project/ProjectDetail';
 
 import * as $ from 'jquery'
@@ -59,6 +61,7 @@ function AdminLayout(props) {
                     <ProtectedRoute exact path="/admin/add-project" component={AddProject} />
                     <Route exact path="/admin/project-detail/:id/:friendlyurl" component={ProjectDetail}/>
                     <ProtectedRoute exact path="/admin/update-project/:id/:friendlyurl" component={EditProjectUser} />
+                    <ProtectedRoute exact path="/admin/update-process/:id" component={UpdateProcess} />
                     <ProtectedRoute exact path="/admin/add-process" component={AddProcess} />
                     <ProtectedRoute exact path="/admin/news" component={AdminNews}/>
                     <ProtectedRoute exact path="/admin/user" component={AdminAccount}/>

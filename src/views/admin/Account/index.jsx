@@ -15,7 +15,11 @@ import { ar } from "date-fns/locale";
 import adminUser from "../../../api/User/Admin"
 import { Button, Modal, Form } from "react-bootstrap";
 import Swal from 'sweetalert2'
-function AdminAccount() {
+
+let powerCreate=1
+function AdminAccount()
+{
+
     const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
     const avatarDefalt = "\\uploads\\Images\\User_Avatars\\28042022_030444_anymous_icon.png"
     // danh sách tạm
@@ -55,11 +59,12 @@ function AdminAccount() {
 
     const [sta, setSta] = useState(1)// load lại danh sách
 
-    const [isCreate, setIsCreate] = useState(true)// phân biết modal 'tạo tk người dùng' và modal ' xem chi tiết'
-    const [typeCreate, setTypeCreate] = useState([...type][1])// selector trạng thái
-    const [powerCreate, setPowerCreate] = useState(1)//1 2 3 {1 : tạo admin , 2: tạo client ,3 : update}
 
-    const [imgValue, setImgValue] = useState('')
+    const [typeCreate,setTypeCreate]=useState([...type][1])// selector trạng thái
+
+    
+    const [imgValue,setImgValue]=useState('')
+
     const [show, setShow] = useState(false)
 
     //------------------------------------------------------------useEffect
@@ -193,10 +198,12 @@ function AdminAccount() {
         })
     }
 
+
     const handleClose = () => setShow(false);
 
     // chọn loại tài khoản muốn tạo
     const handleChosePosition = function (item) {
+
         Swal.fire({
             title: 'Bạn muốn tạo tài khoản',
             text: "Cho Admin hay cho Client?",
@@ -208,24 +215,29 @@ function AdminAccount() {
             cancelButtonText: 'Client'
         }).then((result) => {
             if (result.isConfirmed) {
-                setPowerCreate(1)
-                handleShow(item, 'Tạo tài Khoản Admin')
+                powerCreate=1
+                handleShow(item,'Tạo tài Khoản Admin')
+
             }
             else if (
                 result.dismiss === Swal.DismissReason.cancel
-            ) {
-                setPowerCreate(2)
-                handleShow(item, 'Tạo tài Khoản Client')
+            ){
+                powerCreate=2
+                handleShow(item,'Tạo tài Khoản Client')
+
             }
         })
-
+        
     }
 
     // hiển thị modal 
-    const handleShow = function (item, content) {
-        if (isCreate) {
-            setPowerCreate(3)
-            setUserDetail({ ...item, content: content })
+
+    const handleShow = function(item,content){
+        console.log(powerCreate)
+        if(powerCreate===3)
+        { 
+            console.log('sadsadsadsadas')
+            setUserDetail({...item,content:content})
         }
         else {
             setImgValue('')
@@ -244,6 +256,7 @@ function AdminAccount() {
     }
 
     // Cập nhật tài khoản lên API
+
     const handleUpdateUser = async () => {
         if (
             userDetail.fullName !== '' &&
@@ -329,8 +342,7 @@ function AdminAccount() {
                     <div className={clsx('row')}>
                         <div className={clsx(Style.titleBlock, ' w-100 main-top col-12 pt-4 pb-4')}>
                             <h3 className={clsx(Style.titleProject)}>Quản lý tài khoản người dùng</h3>
-                            <span onClick={() => {
-                                setIsCreate(false)
+                            <span  onClick={()=>{
                                 handleChosePosition(userDetail)
                             }} className={clsx(Style.btnCreateProject, "btn")}>
                                 <span className="mdi mdi-plus-circle pe-2"></span> Tạo tài khoản người dùng </span>
@@ -390,6 +402,18 @@ function AdminAccount() {
                                                                         (imgFormat.includes(item.avatar.slice(item.avatar.indexOf('.') + 1))) ? (process.env.REACT_APP_URL + item.avatar) : (process.env.REACT_APP_URL + avatarDefalt)} className={clsx(Style.img_item, "rounded-circle border border-1 img-fluid img-auto-size ")} />
                                                                 </div>
                                                             </td>
+
+                                                            {/* // <td key={index+"name"} className={clsx(Style.lh,"text-center")} >{item.fullName}</td>
+                                                            // <td key={index+'email'} className={clsx(Style.lh,"text-center")} >{item.email}</td>
+                                                          
+                                                            // <td key={index+'phonNumber'} className={clsx(Style.lh,"text-center")} >{item.phoneNumber}</td>
+                                                            // <td key={index+'type'} className={clsx(Style.lh,"text-center")} >{ HandleGetLable(type,item.type).label}</td>
+                                                            // <td key={index+'isAdmin'} className={clsx(Style.lh,"text-center",item.isAdmin?'text-warning':'text-primary')} >{item.isAdmin?'Admin':'Client'}</td>
+                                                            // <td key={index+'status'} className={clsx(Style.lh,"text-center")} >
+                                                            //     <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? ' doingStatusUse' : 'doingStatusUse') )}>{ HandleGetLable(filterStatus,item.status).label}
+                                                                  
+                                                            //     </span>  */}
+
                                                             <td key={index + "name"} className={clsx(Style.lh, "text-center")} >{item.fullName}</td>
                                                             <td key={index + 'email'} className={clsx(Style.lh, "text-center")} >{item.email}</td>
 
@@ -400,6 +424,7 @@ function AdminAccount() {
                                                                 <span className={clsx(Style.StatusItem, 'position-relative', item.status === 1 ? 'waitingStatus' : (item.status === 2 ? ' doingStatusUse' : 'doingStatusUse'))}>{HandleGetLable(filterStatus, item.status).label}
 
                                                                 </span>
+
                                                             </td>
 
                                                             <td key={index + 'dropdow'} className=" text-center align-middle ">
@@ -410,10 +435,11 @@ function AdminAccount() {
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item onClick={() => {
-                                                                            setIsCreate(true)
-                                                                            handleShow(item, 'Chỉnh sửa thông tin người dùng')
-                                                                        }} className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>
+                                                                        <Dropdown.Item onClick={()=>{
+                                                                      
+                                                                            powerCreate=3
+                                                                            handleShow(item,'Chỉnh sửa thông tin người dùng')}} className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>
+
                                                                             Chi tiết
                                                                         </Dropdown.Item>
                                                                         <Dropdown.Item onClick={() => handleblockAcount('mở khóa', item.id)} className={clsx(Style.itemDrop, item.status === 1 ? "show" : "hide")} ><i className={clsx("mdi mdi-lock-reset")}></i>
@@ -495,7 +521,7 @@ function AdminAccount() {
                                 <Form.Group className="col-6 px-2 d-inline-block " controlId="">
                                     <Form.Label>Email</Form.Label>
                                     <Form.Control className="border border-secondary"
-                                        readOnly={isCreate}
+                                        readOnly={powerCreate===3?true:false}
                                         value={userDetail.email}
                                         onChange={(e) => { setUserDetail({ ...userDetail, email: e.target.value }) }}
                                         type="email"
@@ -505,9 +531,11 @@ function AdminAccount() {
                                 </Form.Group>
                                 <Form.Group className="col-6 px-2 d-inline-block " controlId="">
                                     <Form.Label>Loại</Form.Label>
-                                    <Select
-                                        isDisabled={isCreate}
-                                        value={HandleGetLable(type, userDetail.type)}
+
+                                    <Select  
+                                        isDisabled={powerCreate===3?true:false}  
+                                        value={HandleGetLable(type,userDetail.type)}
+
                                         onChange={setTypeCreate}
                                         options={type}
                                         defaultValue={type}
@@ -517,11 +545,13 @@ function AdminAccount() {
                                 </Form.Group>
 
                             </Form>
-                            <Form className={clsx("d-flex justify-content-between col-12 ", (isCreate) ? 'hide' : "sleep")}>
+
+                            <Form className={clsx("d-flex justify-content-between col-12 ",(powerCreate===3)?'hide':"sleep")}>
+
                                 <Form.Group className="col-6 px-2 d-inline-block " controlId="">
                                     <Form.Label>Địa chỉ</Form.Label>
                                     <Form.Control className="border border-secondary"
-                                        readOnly={isCreate}
+                                        readOnly={powerCreate===3?true:false}
                                         value={userDetail.address}
                                         onChange={(e) => { setUserDetail({ ...userDetail, address: e.target.value }) }}
                                         type="text"
@@ -532,11 +562,11 @@ function AdminAccount() {
                                 <Form.Group className="col-6 px-2 d-inline-block " controlId="">
                                     <Form.Label>Mật Khẩu</Form.Label>
                                     <Form.Control className="border border-secondary"
-                                        readOnly={isCreate}
+                                        readOnly={powerCreate===3?true:false}
                                         value={userDetail.password}
                                         onChange={(e) => { setUserDetail({ ...userDetail, password: e.target.value }) }}
                                         type="password"
-                                        placeholder="12345"
+                                        placeholder="tối thiểu 6 ký tự"
                                         autoFocus
                                     />
 
@@ -550,7 +580,9 @@ function AdminAccount() {
 
                     <Modal.Footer className="d-flex justify-content-between">
                         <div>
-                            <Button className={clsx("bg-danger", (!isCreate) ? 'hide' : "sleep")} variant="secondary" onClick={() => { handleDelete(userDetail.id) }}>
+
+                            <Button  className={clsx("bg-danger",(powerCreate!==3)?'hide':"sleep")} variant="secondary" onClick={()=>{handleDelete(userDetail.id)}}>
+
                                 Xóa
                             </Button>
                         </div>

@@ -815,6 +815,7 @@ function ProjectDetail(props) {
             </div >
 
             {/* Tiến trình dự án  */}
+
             <div id="process" className={clsx(Style.process, 'py-5')} >
                 <div className="container">
                     <div className="row">
@@ -962,6 +963,7 @@ function ProjectDetail(props) {
                     </div>
                 </div>
             </div >
+
 
             {/* Các bài viết của dự án  */}
             <div id="artical" className={clsx(Style.artical, 'py-5')}>
