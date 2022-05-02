@@ -41,7 +41,7 @@ function Project(){
 
     //--------------------------------------------------------- useState 
     // selector
-    const [categoryOptions,setCategoryOptions]= useState([{value:1,label:'thiên tai'}])
+    const [categoryOptions,setCategoryOptions]= useState([{value:0,label:'tất cả'}])
 
     const [arrayProject, setArrayProject] = useState(arr)
     const [inputSearch,setInputSearch]= useState('')
@@ -232,12 +232,12 @@ function Project(){
             try {
                 const response = await categoryApi.getProject();
 
-                setCategoryOptions(response.data.map((item)=>{
+                setCategoryOptions([{value:0,label:'tất cả'},...response.data.map((item)=>{
                     return({
                         value:item.id,
                         label:item.categoryName
                     })
-                }))
+                })])
             }
             catch (e) {
                 console.error(e)
