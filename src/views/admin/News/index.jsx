@@ -2,9 +2,9 @@ import Style from "./News.module.scss"
 import clsx from "clsx"
 import { margin, style } from "@mui/system"
 import React, { Component, useEffect, useState } from 'react'
-import DateRangePicker from 'rsuite/DateRangePicker';
-import { startOfDay, endOfDay, addDays, subDays } from 'date-fns';
+
 import 'rsuite/dist/rsuite-rtl.min.css'
+import { MakeUrl, removeUnicode } from '../../../utils/utils';
 import Dropdown from 'react-bootstrap/Dropdown'
 import * as $ from "jquery"
 import Select from 'react-select'
@@ -13,7 +13,14 @@ import categoryApi from "../../../api/Category";
 import projectApi from "../../../api/Project";
 import moment from "moment";
 import { ar } from "date-fns/locale";
+import newsApi from "../../../api/News"
+import { Button, Modal, Form } from "react-bootstrap";
+import { CKEditor } from "@ckeditor/ckeditor5-react"
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import Swal from "sweetalert2"
+let isCreate= false
 function AdminNews(){
+    const imgDefault="\\uploads\\Images\\project\\02052022_043453_default-image-620x600.jpg"
      //-------------------------------------------------------
     const arr=[
         {
@@ -24,6 +31,15 @@ function AdminNews(){
         "status": 2,
         },
     ]
+    const objNew={
+        "title": "",
+        "shortDescription": "",
+        "content": "",
+        "friendlyUrl": "",
+        "banner": {
+            "filePath": "",
+        }
+    }
     const filtercategory = [
         { value: '1', label: 'Thiên tai' },
         { value: '2', label: 'Trẻ em' },
@@ -36,51 +52,72 @@ function AdminNews(){
         { value: '1', label: 'chờ duyệt' },
         { value: '2', label: 'đã duyệt' },
     ]
-    // datePicker
-    const {
-        allowedMaxDays,
-        allowedDays,
-        allowedRange,
-        beforeToday,
-        afterToday,
-        combine
-    } = DateRangePicker;
-    
-    const Ranges = [
-        {
-            label: 'Hôm nay',
-            value: [startOfDay(new Date()), endOfDay(new Date())]
-        },
-        {
-            label: 'Hôm qua',
-            value: [startOfDay(addDays(new Date(), -1)), endOfDay(addDays(new Date(), -1))]
-        },
-        {
-            label: '7 ngày trước',
-            value: [startOfDay(subDays(new Date(), 6)), endOfDay(new Date())]
-        },
-        {
-            label: '30 ngày trước',
-            value: [startOfDay(subDays(new Date(), 29)), endOfDay(new Date())]
-        },
-        {
-            label: '1 năm trước',
-            value: [startOfDay(subDays(new Date(), 364)), endOfDay(new Date())]
-        },
-    ];
 
+    const imgFormat = [ 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
     //-------------------------------useState
     const [categoryOptions,setCategoryOptions]= useState([])
 
-    const [arrayProject, setArrayProject] = useState(arr)
+    const [arrayNews, setArrayNews] = useState(arr)
     const [inputSearch,setInputSearch]= useState('')
     const [inputCategoty,setInputCategoty]= useState("")
     const [inputStatus,setInputStatus]= useState(filterStatus[1])
-    const [inputDate,setInputDate]=useState('')
+    const [pageindex,setPageindex]= useState(0)
+    const [imgValue,setImgValue]=useState('')
+    const [show, setShow] = useState(false);
+    const [reLoad,setReload]=useState(true)
+
+    const [createNews,setCreateNews]=useState(objNew)
+
+    //-------------------------------- useEffect
+    // get api 
+    useEffect(async()=>{
+        const params= {
+            "keyword":inputSearch,
+            "pageindex":pageindex,
+            "status":inputStatus.value
+        }
+        const respon= await newsApi.getAll(params)
+        setArrayNews(respon.data)
+        console.log(respon.data)
+        // if(respon.)
+        // {
+        // }
+    },[inputSearch,inputCategoty,inputStatus,pageindex,reLoad])
+    useEffect(()=>{
+        setCreateNews({...createNews,friendlyUrl:MakeUrl(createNews.title)})
+    },[createNews.title])
+    useEffect(async()=>{
+        console.log("img",imgValue)
+        if (imgValue !== '') {
+            // kiểm tra định dạng ảnh
+            let resultimg = imgFormat.find(function (item) {
+                return removeUnicode((imgValue.name).slice((imgValue.name).lastIndexOf('.') + 1)) === removeUnicode(item)
+            })
+            // đẩy hình ảnh lên data và lưu lại đường dẩn ảnh tại database
+            if (resultimg) {
+                let form = new FormData();
+                // console.log(imgValue,'imgValue')
+                form.append('Image', imgValue);
+                form.append('TypeImage', "new");
+
+                const response = await projectApi.uploadFile(form);
+                setCreateNews({ ...createNews,banner:{filePath:response.data.filePath}})
+                console.log(createNews)
+                if (response.isSuccess) {
+                }
+                else {
+                    Swal.fire('upload ảnh thất bại')
+                }
+            }
+            else {
+                Swal.fire('chỉ nhận file ảnh có đuôi là jpeg,gif,png,tiff,raw,psd')
+                setImgValue('')
+            }
+        }
+    },[imgValue])
     //------------------------------------------funtion
     // xử lý hiện labe của 
     function HandleGetLable(filterlist,index){
-       
         return(
             filterlist.find(function(itemCategoty){
                 if (itemCategoty.value===(index+'')){
@@ -90,15 +127,135 @@ function AdminNews(){
         )
     }
     console.log("sdasdsa",HandleGetLable(filtercategory,1))
-  
-
+    const handleChangAvatar= (e)=>{
+        setImgValue(e.target.files[0])
+    }
     const handleAcceptProject=(item)=>
     {
-    }
 
+    }
     const Label = props => {
         return <label style={{ display: 'block', marginTop: 10 }} {...props} />;
     };
+    const handleClose = () => setShow(false);
+    const handleShow =async function(id){
+        if(isCreate)
+        {
+            const respon= await newsApi.get(id)
+            if(respon.isSuccess)
+            {
+                setCreateNews({
+                    "id":id,
+                    "title": respon.data.title,
+                    "shortDescription": respon.data.shortDescription,
+                    "content": respon.data.content,
+                    "friendlyUrl": respon.data.friendlyUrl,
+                    "banner": {
+                        "filePath": respon.data.bannerPath,
+                    }
+                })
+            }
+        }
+        else{
+            setCreateNews(objNew)
+            setImgValue('')
+        }
+        setShow(true);
+
+    }
+    const handleCreate=async()=>{
+        if(
+            createNews.title!=="",
+            createNews.shortDescription!=="",
+            createNews.content!=="",
+            createNews.friendlyUrl!=="",
+            createNews.banner.filePath!==""
+        ){
+            if(isCreate)
+            {
+                console.log("sadsadasdas")
+                const data={
+                    "id":createNews.id,
+                    "title": createNews.title,
+                    "shortDescription": createNews.shortDescription,
+                    "content": createNews.content,
+                    "friendlyUrl": createNews.friendlyUr,
+                    "banner": {
+                      "fileName": createNews.banner.filePath.slice(createNews.banner.filePath.lastIndexOf("\\")+1),
+                      "filePath": createNews.banner.filePath,
+                      "friendlyUrl": createNews.banner.filePath.slice(createNews.banner.filePath.lastIndexOf("\\")+1),
+                      "note":"new-path"
+                    }
+                  }
+                  const respon = await newsApi.update(data)
+                  if(respon.isSuccess)
+                  {
+                    Swal.fire("Chỉnh sửa bảng tin thành công")
+                    setReload(!reLoad)
+                  }
+                  else{
+                    Swal.fire("Chỉnh sửa bảng tin thất bại")
+                  }
+            }
+            else{
+                const data ={
+                    "title": createNews.title,
+                    "shortDescription": createNews.shortDescription,
+                    "content": createNews.content,
+                    "friendlyUrl":createNews.friendlyUrl,
+                    "banner": {
+                        "fileName": imgValue.name,
+                        "filePath": createNews.banner.filePath,
+                        "friendlyUrl": imgValue.name,
+                        "note": imgValue.name
+                    }
+                }
+                const respon = await newsApi.createNews(data)
+                if(respon.isSuccess)
+                {
+                    Swal.fire("Tạo bảng tin thành công")
+                    setReload(!reLoad)
+                    handleClose()
+                }
+                else{
+                    Swal.fire("tạo bảng tin thất bại")
+                }    
+            }
+        }
+        else{
+            Swal.fire("Vui lòng nhập đủ thông tin")
+        }
+      
+    
+    }
+    const handleDelete=(id)=>{
+        const accept= async()=>{
+            const respon = await newsApi.delete(id)
+            if(respon.isSuccess)
+            {
+                Swal.fire("Xoá bài viết thành công")
+                setReload(!reLoad)
+            }
+            else{
+                Swal.fire("Xoá bài viết thất bại")
+            }
+        }
+        Swal.fire({
+            title: 'Bạn có Chắc?',
+            text: "Bạn muốn xóa bải viết này!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ok!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                accept()
+            }
+        })
+        
+        
+    }
     return(
         <>
             <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
@@ -106,8 +263,10 @@ function AdminNews(){
                     <div className={clsx('row')}>
                         <div className={clsx(Style.titleBlock, ' w-100 main-top col-12 pt-4 pb-4')}>
                             <h3 className={clsx(Style.titleProject)}>Quản lý bảng tin</h3>
-                            <Link to='' className={clsx(Style.btnCreateProject,"btn")}>
-                            <span class="mdi mdi-plus-circle pe-2"></span> Tạo bảng tin </Link>
+                            <button onClick={()=>{
+                                isCreate=false
+                                handleShow(1)}} className={clsx(Style.btnCreateProject,"btn")}>
+                            <span className="mdi mdi-plus-circle pe-2"></span> Tạo bảng tin </button>
                         </div>
                     </div>
                 </div>
@@ -132,27 +291,14 @@ function AdminNews(){
                                     <Select defaultValue={inputStatus} onChange={setInputStatus} className={clsx( Style.Inputfocus)}  placeholder='trạng thái' options={filterStatus} />
                                 </div>
                             </div>
-                             <div className="mt-4">
-                                <h5 className={clsx(Style.searchContent,'')}>Ngày đăng</h5>
-                                <div class="form-group" style={{ position: 'relative' }}>
-                                <DateRangePicker className={clsx(Style.rangeDate,Style.Inputfocus,'projectDaterang')}
-                                    disabledDate={afterToday()}
-                                    format='dd/MM/yyyy'
-                                    defaultValue={[new Date(), new Date()]}
-                                    character=' - '
-                                    ranges={Ranges}
-                                >
-                                </DateRangePicker>
-                              
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                     <div className={clsx('list col-9')}>
                         <div className={clsx(Style.listPoject)}>
                             <div className="page-aside-right">
                                 <div className={clsx(Style.table_responsive, 'table-responsive')}>
-                                    <table class="table">
+                                    <table className="table">
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
@@ -165,7 +311,7 @@ function AdminNews(){
                                         </thead>
                                         <tbody>
                                             {
-                                                arrayProject.map(function(item,index,arr){
+                                                arrayNews.map(function(item,index,arr){
                                                     return(
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
                                                             
@@ -174,7 +320,7 @@ function AdminNews(){
                                                                 HandleGetLable(filtercategory,1).label
                                                             }</td>
                                                             <td key={index+"title"} className={clsx(Style.titleshow)}>{item.title.length>30?(item.title.slice(0,30)+'...'):item.title}</td>
-                                                            <td key={index+'endate'}>{moment(item.endDate).format("DD/MM/YYYY") }</td>
+                                                            <td key={index+'startDate'}>{moment(item.endDate).format("DD/MM/YYYY") }</td>
                                                           
                                                             <td key={index+'endate'}>{moment(item.endDate).format("DD/MM/YYYY") }</td>
                                                             <td key={index+'status'}>
@@ -193,9 +339,15 @@ function AdminNews(){
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Chi tiết</Dropdown.Item>
+                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>
+                                                                        Chi tiết</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa bảng tin</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={()=>handleDelete(item.id)} className={clsx(Style.itemDrop)}><i class="mdi mdi-delete"></i>
+                                                                        Xoá</Dropdown.Item>
+                                                                        {/* <Dropdown.Divider /> */}
+                                                                        <Dropdown.Item onClick={()=>{
+                                                                        isCreate=true 
+                                                                        handleShow(item.id)}} className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa bảng tin</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
                                                                        
                                                                     </Dropdown.Menu>
@@ -212,11 +364,121 @@ function AdminNews(){
                                             
                                         </tbody>
                                     </table>
-                                </div >
+                                    <div className="d-flex">
+                                        <div>
+                                            <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, 'prevBtn bg-info px-2')}>
+                                                <span className="mdi mdi-chevron-double-left"></span>
+                                            </button>
+                                            <span className="px-3 text-secondary">{pageindex}</span>
+                                            <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, 'nextBtn bg-info px-2')}>
+                                                <span className="mdi mdi-chevron-double-right"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>  
                         </div>
                     </div>
                 </div>
+                <Modal size="xl" show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title className="text-black-50">Tạo bảng tin</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className="container-fluid ">
+                        <div className="row p-3">
+                            <div className={clsx(Style.imgAccountUpdate, "col-12 me-end")}>
+
+                                <img className={clsx(Style.img_item1, "mx-auto d-block img-fluid")}
+                                    src={(createNews.banner.filePath)?process.env.REACT_APP_URL+createNews.banner.filePath:process.env.REACT_APP_URL+imgDefault} alt="" />
+                                 <div className="w-100 d-flex justify-content-end">
+                                    <button className={clsx(Style.btnMoreImg, 'btn')}>
+                                        <span style={{ cursor: "pointer", position: "absolute", textAlign: "center", fontSize: "1rem", lineHeight: "1.7rem", width: "100%", left: "0", right: "0" }}>Chọn hình đại điện</span>
+                                        <input type="file" onChange={handleChangAvatar} style={{ cursor: "pointer", opacity: "0", width: '100%', height: "100%", cursor: "pointer" }} />
+                                    </button>
+                                 </div>
+                                 
+                            </div>
+
+                            <Form className="col-12 py-2">
+                                <Form.Group controlId="exampleForm.ControlInput1">
+                                    <Form.Label>Tên bài viết</Form.Label>
+                                    <Form.Control className="border border-secondary"
+                                        value={createNews.title}
+                                        onChange={(e) => { setCreateNews({ ...createNews, title: e.target.value }) }}
+                                        type="text"
+                                        placeholder="tiêu đề bải viết"
+                                        autoFocus
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="exampleForm.ControlInput1">
+                                    <Form.Label>Đường dẫn</Form.Label>
+                                    <Form.Control className="border border-secondary"
+                                        value={createNews.friendlyUrl}
+                                        onChange={(e) => { setCreateNews({ ...createNews, friendlyUrl: e.target.value }) }}
+                                        type="text"
+                                        placeholder="đường dẫn"
+                                        autoFocus
+                                    />
+                                </Form.Group>
+                                <Form.Group controlId="">
+                                    <Form.Label>mô tả ngắn</Form.Label>
+                                    <Form.Control className="border border-secondary"
+
+                                        value={createNews.shortDescription}
+                                        onChange={(e) => { setCreateNews({ ...createNews, shortDescription: e.target.value }) }}
+                                        type="text"
+                                        placeholder="mô tả ngắn"
+                                        autoFocus
+                                    />
+                                </Form.Group>
+
+                            </Form>
+                            <Form className="d-flex justify-content-between col-12">
+                                <Form.Group className="col-12 px-2 d-inline-block " controlId="">
+                                    <Form.Label>Nội dung</Form.Label>
+                                    <div className="add-project_editor removeImg">
+                                        <CKEditor
+                                            editor={ClassicEditor}
+                                            data={createNews.content}
+
+                                            onChange={(event, editor) => {
+                                                const data = editor.getData();
+                                                setCreateNews({ ...createNews, content: data })
+                                            }}
+                                            config={{
+
+                                                removePlugins: ['image', 'MediaEmbed', 'Table'],
+                                            }}
+
+                                        />
+                                    </div>
+                                
+                                </Form.Group>
+                               
+
+                            </Form>
+
+                          
+                        </div>
+
+                    </Modal.Body>
+
+                    <Modal.Footer className="d-flex justify-content-end">
+                       
+                        <div>
+                            <Button className="me-2" variant="secondary" onClick={handleClose}>
+                                Đóng
+                            </Button>
+                            <Button className={clsx("",isCreate?'hide':'show')} variant="primary" onClick={() => { handleCreate() }}>
+                                Tạo
+                            </Button>
+                            <Button className={clsx("",!isCreate?'hide':'show')} variant="primary" onClick={() => { handleCreate() }} >
+                                Hoàn thành
+                            </Button>
+                        </div>
+
+                    </Modal.Footer>
+                </Modal>
             </div>
         </>
     )

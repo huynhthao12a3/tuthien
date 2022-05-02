@@ -213,3 +213,19 @@ body{
   .d-flex.justify-content-between.hide ,.bg-danger.btn-secondary.hide{
       display: none !important;
   }
+  .d-flex.modal-footer .hide{
+    display: none !important;
+  }
+
+  .prevBtn{
+   
+    border-top-left-radius: 40%;
+    border-bottom-left-radius: 40%;
+    color: #fff;
+}
+.nextBtn{
+   
+    border-top-right-radius: 40%;
+    border-bottom-right-radius: 40%;
+    color: #fff;
+}

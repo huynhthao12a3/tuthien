@@ -14,6 +14,7 @@ import swal from "sweetalert";
 
 import moment from "moment";
 import * as $ from "jquery"
+import parseISOWithOptions from 'date-fns/fp/parseISOWithOptions';
 function EditProjectUser(prop){
     console.log("prop",prop)
     //----------------------------------- 
@@ -208,9 +209,11 @@ function EditProjectUser(prop){
                             className: "bg-base-color"
                         }
                     });
-                    console.log(prop.location.state)
-                    history.push(prop.location.state)
-                    // history.push(`/project-detail/${idUrl}/${friendlyUrl}`)
+
+                    let path ="/admin/project-detail/"+prop.location.pathname.slice(prop.location.pathname.indexOf("/admin/update-project/")+"/admin/update-project/".length)
+                    console.log(path)
+                    // history.push(prop.location.state)
+                    history.push(path)
                     window.scrollTo(0, 0)
                 }
                 else{

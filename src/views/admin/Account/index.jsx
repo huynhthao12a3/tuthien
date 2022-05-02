@@ -445,7 +445,8 @@ function AdminAccount()
                                                                         <Dropdown.Item onClick={() => handleblockAcount('mở khóa', item.id)} className={clsx(Style.itemDrop, item.status === 1 ? "show" : "hide")} ><i className={clsx("mdi mdi-lock-reset")}></i>
                                                                             Mở khóa tài khoản
                                                                         </Dropdown.Item>
-                                                                        <Dropdown.Item onClick={() => handleblockAcount('khóa', item.id)} className={clsx(Style.itemDrop, item.status === 1 ? "hide" : "show")} ><i className="mdi mdi-lock-reset "></i>
+                                                                        <Dropdown.Item onClick={() => handleblockAcount('khóa', item.id)} className={clsx(Style.itemDrop, item.status === 1 ? "hide" : "show")} >
+                                                                        <i class="mdi mdi-block-helper"></i>
 
                                                                             Khóa tài khoản
                                                                         </Dropdown.Item>
@@ -475,7 +476,7 @@ function AdminAccount()
                                             </button>
                                         </div>
                                     </div>
-                                </div >
+                                </div>
                             </div>
                         </div>
                     </div>

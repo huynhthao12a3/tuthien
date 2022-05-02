@@ -38,7 +38,7 @@ function AddProject() {
         target: '',
         enddate: "",
     }
-    const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
+    // const imgFormat = [ 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
 
     //................................................ useState
     const [dateValue, setDateValue] = useState(new Date())
@@ -73,11 +73,11 @@ function AddProject() {
     useEffect(async () => {
         if (imgValue !== '') {
             // kiểm tra định dạng ảnh
-            let resultimg = imgFormat.find(function (item) {
-                return removeUnicode((imgValue.name).slice((imgValue.name).lastIndexOf('.') + 1)) === removeUnicode(item)
-            })
+            // let resultimg = imgFormat.find(function (item) {
+            //     return removeUnicode((imgValue.name).slice((imgValue.name).lastIndexOf('.') + 1)) === removeUnicode(item)
+            // })
             // đẩy hình ảnh lên data và lưu lại đường dẩn ảnh tại database
-            if (resultimg) {
+            // if (resultimg) {
                 let form = new FormData();
                 // console.log(imgValue,'imgValue')
                 form.append('Image', imgValue);
@@ -90,12 +90,12 @@ function AddProject() {
                 else {
                     alertify.alert('upload ảnh thất bại')
                 }
-            }
-            else {
-                alertify.alert('chỉ nhận file ảnh có đuôi là jpeg,gif,png,tiff,raw,psd')
-                setImgAvatar('')
-                setImgValue('')
-            }
+            // }
+            // else {
+            //     alertify.alert('chỉ nhận file ảnh có đuôi là jpeg,gif,png,tiff,raw,psd')
+            //     setImgAvatar('')
+            //     setImgValue('')
+            // }
         }
     }, [imgValue])
     // xử lý input

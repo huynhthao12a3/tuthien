@@ -10,7 +10,7 @@ const articalApi = {
         })
     },
     createArtical: (data) => {
-        const url ='/artical/create-artical'
+        const url =`/project/create-artical/${data.id}`
         return axiosClient.post(url, data)
     },
     editArtical: (data) => {

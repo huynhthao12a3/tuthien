@@ -1,5 +1,4 @@
 
-
 import Style from "./Project.module.scss"
 import clsx from "clsx"
 import { margin, style } from "@mui/system"
@@ -9,7 +8,7 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import * as $ from "jquery"
 import Select from 'react-select'
 import { useHistory,useLocation } from 'react-router-dom'
-import { MakeUrl } from '../../../utils/utils';
+import { MakeUrl,removeUnicode } from '../../../utils/utils';
 import { Link } from "react-router-dom";
 import categoryApi from "../../../api/Category";
 import projectApi from "../../../api/Project";
@@ -18,8 +17,14 @@ import { Button,Modal,Form } from "react-bootstrap";
 import SetInnerHTML from "../../../shares/setInnerHTML"
 import Zoom from 'react-medium-image-zoom'
 import Swal from 'sweetalert2'
+import Loading from "../../../shares/Loading"
+import articalApi from "../../../api/Artical"
+import { CKEditor } from "@ckeditor/ckeditor5-react"
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 function Project(){
     const locations = useLocation().pathname
+    const imgDefault="\\uploads\\Images\\project\\02052022_043453_default-image-620x600.jpg"
+    const imgFormat = [ 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
     //-------------------------------------------------------
     const arr=[
         {
@@ -35,13 +40,23 @@ function Project(){
     const filterStatus = [
         { value: '0', label: 'Tất cả' },
         { value: '1', label: 'đang chờ duyệt' },
-        { value: '2', label: 'đang thực thi' },
-        { value: '3', label: 'hoàng thành' },
+        { value: '2', label: 'đang thực thi' }, 
+        { value: '3', label: 'hoàn thành' },
     ]
+    const objArtical={
+        "title": "",
+        "content": "",
+        "banner": {
+          "fileName": "",
+          "filePath": "",
+          "friendlyUrl": "",
+          "note": ""
+        }
+    }
 
     //--------------------------------------------------------- useState 
     // selector
-    const [categoryOptions,setCategoryOptions]= useState([{value:0,label:'tất cả'}])
+    const [categoryOptions,setCategoryOptions]= useState([{value:0,label:'Tất cả'}])
 
     const [arrayProject, setArrayProject] = useState(arr)
     const [inputSearch,setInputSearch]= useState('')
@@ -49,7 +64,11 @@ function Project(){
     const [inputStatus,setInputStatus]= useState(filterStatus[0])
     const [currentpage,setCurrentpage]= useState(0)
     const [isAccept,setIsAccept] = useState(true)
-
+    const [isLoading, setIsLoading] = useState(true)
+    const [showAtical,setShowAtical]= useState(false)
+    const [show, setShow] = useState(false);
+    const [imgValueArtical,setImgValueArtical]= useState('')
+    const [createArtical,setCreateArtical]=useState(objArtical)
     // đừng có mở thg này ra :<
     const [projectDetail,setProjectDetail]= useState(
         {
@@ -135,20 +154,7 @@ function Project(){
                     "createTime": "2022-04-14T04:07:07.1437925",
                     "listFiles": null
                   },
-                  {
-                    "expenseId": 71,
-                    "description": "<p>2222</p>",
-                    "amount": 2222222,
-                    "createTime": "2022-04-14T04:07:45.8023649",
-                    "listFiles": null
-                  },
-                  {
-                    "expenseId": 72,
-                    "description": "<p>3333</p>",
-                    "amount": 333333,
-                    "createTime": "2022-04-14T04:07:45.8023711",
-                    "listFiles": null
-                  }
+                 
                 ]
               }
             ],
@@ -164,47 +170,9 @@ function Project(){
                 "currency": "TRX",
                 "hash": "6f47680ecd756193d4897bc83d23d92f8499523a944cdfe41fba048c41491354"
               },
-              {
-                "userName": "huỳnh văn thảo",
-                "userAvatar": "\\uploads\\Images\\user\\11042022_114751_4.png",
-                "projectId": 4,
-                "projectName": "444444  - Cứu trợ nạn đ1ói khẩn cấp ở Châu Phi",
-                "amount": 1,
-                "currency": "TRX",
-                "hash": "9457fced42433c8775f0e5c9ca113419f55fd5d5b868f27af6ef2380f7a7691f"
-              },
-              {
-                "userName": "huỳnh văn thảo",
-                "userAvatar": "\\uploads\\Images\\user\\11042022_114751_4.png",
-                "projectId": 4,
-                "projectName": "444444  - Cứu trợ nạn đ1ói khẩn cấp ở Châu Phi",
-                "amount": 1,
-                "currency": "TRX",
-                "hash": "6cd5c2200ea33501a852d635c5781764faee071f9ed86e0de6cc1532b42d589c"
-              },
-              {
-                "userName": "Ẩn danh",
-                "userAvatar": "\\uploads\\Images\\User_Avatars\\27042022_025216_anymous_icon.png",
-                "projectId": 4,
-                "projectName": "444444  - Cứu trợ nạn đ1ói khẩn cấp ở Châu Phi",
-                "amount": 5,
-                "currency": "TRX",
-                "hash": "e9e1f7f602f5d0be6ffd270ffb5a7f5c5a604dfb248f5c40b8eca183949734de"
-              },
-              {
-                "userName": "Huỳnh Khang",
-                "userAvatar": "\\uploads\\Images\\user\\29042022_090814_pexels-kaboompics-com-6368.jpg",
-                "projectId": 4,
-                "projectName": "444444  - Cứu trợ nạn đ1ói khẩn cấp ở Châu Phi",
-                "amount": 1,
-                "currency": "TRX",
-                "hash": "049d0b0e506afc346a2fd379909af5437e028432037f5fa3226d16fb7edbc4b4"
-              }
+            
             ]
           })
-
-    const [show, setShow] = useState(false);
-
     //----------------------------------------------------useEffect
     useEffect(()=>{
     console.log("categoryOptions",categoryOptions)
@@ -224,7 +192,11 @@ function Project(){
         }
         const repons= await projectApi.getAll(data)
         console.log("repons",repons.data)
-        setArrayProject(repons.data)
+        if(repons.isSuccess)
+        {
+            setIsLoading(false)
+            setArrayProject(repons.data)
+        }
     },[inputSearch,inputCategoty,inputStatus,currentpage,isAccept])
 
     useEffect(async()=>{
@@ -232,7 +204,7 @@ function Project(){
             try {
                 const response = await categoryApi.getProject();
 
-                setCategoryOptions([{value:0,label:'tất cả'},...response.data.map((item)=>{
+                setCategoryOptions([{value:0,label:'Tất cả'},...response.data.map((item)=>{
                     return({
                         value:item.id,
                         label:item.categoryName
@@ -245,7 +217,39 @@ function Project(){
         }
         getAllUsers()
     },[])
+    useEffect(async()=>{
+        console.log("img",imgValueArtical)
+        if (imgValueArtical !== '') {
+            // kiểm tra định dạng ảnh
+            let resultimg = imgFormat.find(function (item) {
+                return removeUnicode((imgValueArtical.name).slice((imgValueArtical.name).lastIndexOf('.') + 1)) === removeUnicode(item)
+            })
+            // đẩy hình ảnh lên data và lưu lại đường dẩn ảnh tại database
+            if (resultimg) {
+                let form = new FormData();
+                // console.log(imgValue,'imgValue')
+                form.append('Image', imgValueArtical);
+                form.append('TypeImage', "new");
 
+                const response = await projectApi.uploadFile(form);
+                setCreateArtical({ ...createArtical,banner:{filePath:response.data.filePath,
+                    fileName:response.data.fileName,
+                    friendlyUrl:response.data.friendlyUrl,
+                    note:response.data.note}
+                })
+                console.log(createArtical)
+                if (response.isSuccess) {
+                }
+                else {
+                    Swal.fire('upload ảnh thất bại')
+                }
+            }
+            else {
+                Swal.fire('chỉ nhận file ảnh có đuôi là jpeg,gif,png,tiff,raw,psd')
+                setImgValueArtical('')
+            }
+        }
+    },[imgValueArtical])
     // useEffect(()=>{
     //     setInputDate($(".rs-picker-toggle-value")[0].innerHTML)
     // },[inputSearch ,inputCategoty , inputStatus ,inputTopic ,inputDate])
@@ -263,41 +267,48 @@ function Project(){
         )
     }
 
-    const handleAcceptProject=async(id)=>
+    const handleAcceptProject=async(id,status)=>
     {
-        const accept = async()=>{
-            
-            const respon= await projectApi.upStatusProject(id)
-            if(respon.isSuccess)
-            {
-                Swal.fire(respon.message)
-                setIsAccept(!isAccept)
-            }
-            else{
-                Swal.fire(respon.message)
-            }
-            
-        }
-        try{
-            Swal.fire({
-                title: 'Bạn có Chắc?',
-                text: "Bạn muốn duyệt dự án này!",
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ok!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                accept()
-                }
-            })
-           
-        }
-        catch(e)
+        if(status===1)
         {
-            console.error(e)
+            const accept = async()=>{
+            
+                const respon= await projectApi.upStatusProject(id)
+                if(respon.isSuccess)
+                {
+                    Swal.fire(respon.message)
+                    setIsAccept(!isAccept)
+                }
+                else{
+                    Swal.fire(respon.message)
+                }
+                
+            }
+            try{
+                Swal.fire({
+                    title: 'Bạn có Chắc?',
+                    text: "Bạn muốn duyệt dự án này!",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ok!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                    accept()
+                    }
+                })
+               
+            }
+            catch(e)
+            {
+                console.error(e)
+            }
         }
+        else{
+            Swal.fire("Bạn đã duyệt dự án này trước đó")
+        }
+       
     }
 
     const Label = props => {
@@ -323,17 +334,73 @@ function Project(){
             console.error(e)
         }
     }
+
     function formatNumber(num) {
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
+
+    // ẩn hiện modal bài viết
+    const handleCloseArtical = () => setShowAtical(false);
+    const handleShowArtical =function(itemId){
+        setCreateArtical(objArtical)
+        setCreateArtical({...createArtical,id:itemId})
+        setImgValueArtical('')
+        setShowAtical(true);
+    }
+    const handleCreateArtical=async()=>{
+        console.log(createArtical)
+        if(
+            createArtical.title!=="",
+            createArtical.shortDescription!=="",
+            createArtical.content!=="",
+            createArtical.friendlyUrl!=="",
+            createArtical.banner.filePath!==""
+        ){
+                const data ={
+                    'id':createArtical.id,
+                    "tilte": createArtical.title,
+                    "content": createArtical.content,
+                    // "friendlyUrl":createArtical.friendlyUrl,
+                    "banner": {
+                        "fileName": imgValueArtical.banner.fileName,
+                        "filePath": createArtical.banner.filePath,
+                        "friendlyUrl": imgValueArtical.banner.friendlyUrl,
+                        "note": imgValueArtical.banner.note
+                    }
+                }
+                const respon = await articalApi.createArtical(data)
+                if(respon.isSuccess)
+                {
+                    Swal.fire("Tạo bài viết thành công")
+                    setIsAccept(!isAccept)
+                    handleCloseArtical()
+                }
+                else{
+                    Swal.fire("tạo bài viết thất bại")
+                }    
+            
+        }
+        else{
+            Swal.fire("Vui lòng nhập đủ thông tin")
+        }
+      
+    
+    }
+    const handleChangAvatar= (e)=>{
+        setImgValueArtical(e.target.files[0])
+    }
     return(
         <>
+           {
+                isLoading ? <Loading /> : ""
+            }
             <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
                 <div className="container-fluid w-100 pe-5">
                     <div className={clsx('row')}>
                         <div className={clsx(Style.titleBlock, ' w-100 main-top col-12 pt-4 pb-4')}>
                             <h3 className={clsx(Style.titleProject)}>Quản lý dự án</h3>
                             <Link to={"/admin/add-project"} target="_blank" className={clsx(Style.btnCreateProject,"btn")}>
+                            <i className="mdi mdi-plus-circle me-1"></i>
                             Tạo Dự Án </Link>
                         </div>
                     </div>
@@ -410,7 +477,7 @@ function Project(){
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
                                                                         <Dropdown.Item 
                                                                          className={clsx( Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}
-                                                                         onClick={()=>{ handleAcceptProject(item.id)}}><i className="mdi mdi-window-restore "></i>
+                                                                         onClick={()=>{ handleAcceptProject(item.id,item.status)}}><i className="mdi mdi-playlist-check"></i>
                                                                             Duyệt dự án
                                                                        </Dropdown.Item>
                                                                         <Dropdown.Item  as={Link} to={"/admin/project-detail/" + item.id + "/" + MakeUrl(item.title)} target="_blank"
@@ -420,13 +487,20 @@ function Project(){
                                                                        </Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
                                                                         <Dropdown.Item as={Link} target="_blank"  to={{ pathname: `/admin/update-project/${item.id}/${item.title}`, state:locations}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}><i className="mdi mdi-lock-reset "></i>
-                                                                      
                                                                             Sửa Dự Án
-                                                                    
                                                                         </Dropdown.Item>
+                                                                      
                                                                         {/* <Dropdown.Divider /> */}
                                                     
                                                                         <Dropdown.Item onClick={()=>{handleShow(item.id)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Tiến trình</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={()=>{handleShowArtical(item.id)}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}>
+                                                                        <i className="mdi mdi-plus-circle-outline"></i>
+                                                                            Tạo bài viết
+                                                                        </Dropdown.Item>
+                                                                        <Dropdown.Item as={Link} target="_blank"  to={{ pathname: `/admin/update-project/${item.id}/${item.title}`, state:locations}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}>
+                                                                        <i className="mdi mdi-swap-horizontal"></i>
+                                                                            Xem lịch sử giao dịch
+                                                                        </Dropdown.Item>
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>
                                                             </td>
@@ -452,11 +526,12 @@ function Project(){
                                                 </button>
                                             </div>
                                     </div>
-                                </div >
+                                </div>
                             </div>  
                         </div>
                     </div>
                 </div>
+
                 <Modal size='xl' show={show} onHide={handleClose} animation={false}>
                     <Modal.Header closeButton>
                     <Modal.Title>Chọn tiếng trình để sửa</Modal.Title>
@@ -609,7 +684,7 @@ function Project(){
                                     </div>
                                 </div>
                             </div>
-                        </div >
+                        </div>
                     </Modal.Body>
 
                     <Modal.Footer>
@@ -618,6 +693,89 @@ function Project(){
                 </Modal>
 
             </div>
+            {/* modal tạo bài viết */}
+            <Modal size="xl" show={showAtical} onHide={handleCloseArtical}>
+                <Modal.Header closeButton>
+                    <Modal.Title className="text-black-50">Tạo bảng tin</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="container-fluid ">
+                    <div className="row p-3">
+                        <div className={clsx(Style.imgAccountUpdate, "col-4 me-end")}>
+
+                            <img className={clsx(Style.img_item1, "mx-auto d-block img-fluid")}
+                                src={(createArtical.banner.filePath)?process.env.REACT_APP_URL+createArtical.banner.filePath:process.env.REACT_APP_URL+imgDefault} alt="" />
+                            <div className="w-100 d-flex justify-content-end">
+                                <button className={clsx(Style.btnMoreImg, 'btn')}>
+                                    <span style={{ cursor: "pointer", position: "absolute", textAlign: "center", fontSize: "1rem", lineHeight: "1.7rem", width: "100%", left: "0", right: "0" }}>Chọn hình ảnh</span>
+                                    <input type="file" onChange={handleChangAvatar} style={{ cursor: "pointer", opacity: "0", width: '100%', height: "100%", cursor: "pointer" }} />
+                                </button>
+                            </div>
+                            
+                        </div>
+
+                        <Form className="col-8 ">
+                            <Form.Group controlId="exampleForm.ControlInput1">
+                                <Form.Label>Tên bài viết</Form.Label>
+                                <Form.Control className="border border-secondary"
+                                    value={createArtical.title}
+                                    onChange={(e) => { setCreateArtical({ ...createArtical, title: e.target.value }) }}
+                                    type="text"
+                                    placeholder="tiêu đề bải viết"
+                                    autoFocus
+                                />
+                            </Form.Group>
+                            {/* <Form.Group controlId="exampleForm.ControlInput1">
+                                <Form.Label>Đường dẫn</Form.Label>
+                                <Form.Control className="border border-secondary"
+                                    value={createArtical.friendlyUrl}
+                                    onChange={(e) => { setCreateArtical({ ...createArtical, friendlyUrl: e.target.value }) }}
+                                    type="text"
+                                    placeholder="đường dẫn"
+                                    autoFocus
+                                />
+                            </Form.Group> */}
+                            <Form.Group className="col-12 px-2 d-inline-block " controlId="">
+                                <Form.Label>Nội dung</Form.Label>
+                                <div className="add-project_editor removeImg">
+                                    <CKEditor
+                                        editor={ClassicEditor}
+                                        data={createArtical.content}
+
+                                        onChange={(event, editor) => {
+                                            const data = editor.getData();
+                                            setCreateArtical({ ...createArtical, content: data })
+                                        }}
+                                        config={{
+
+                                            removePlugins: ['image', 'MediaEmbed', 'Table'],
+                                        }}
+
+                                    />
+                                </div>
+                            
+                            </Form.Group>
+
+                        </Form>
+                        
+
+                    
+                    </div>
+
+                </Modal.Body>
+
+                <Modal.Footer className="d-flex justify-content-end">
+                
+                    <div>
+                        <Button className="me-2" variant="secondary" onClick={handleClose}>
+                            Đóng
+                        </Button>
+                        <Button  variant="primary" onClick={() => { handleCreateArtical() }}>
+                            Tạo
+                        </Button>
+                    </div>
+
+                </Modal.Footer>
+            </Modal>
         </>
     )
 }
