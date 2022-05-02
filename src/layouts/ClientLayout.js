@@ -17,6 +17,7 @@ import EditProjectUser from '../views/client/Project/edit';
 import * as $ from 'jquery'
 import ArticalDetail from "./../views/client/Project/Artical/ArticalDetail";
 import NotFound from "./../shares/NotFound/index";
+import DashboardClient from '../views/client/Dashboard';
 
 ClientLayout.propTypes = {
     
@@ -40,7 +41,8 @@ function ClientLayout(props) {
         <ClientNavbar/>
             <Switch>
                 {/* Route không cần Login vẫn xem được */}
-                <Route exact path="/" component={ClientProject}/>
+                <Route exact path="/" component={DashboardClient}/>
+                <Route exact path="/dashboard" component={DashboardClient}/>
                 <Route exact path="/project" component={ClientProject}/>
                 <Route exact path="/project-detail/:id/:friendlyurl" component={ProjectDetail}/>
                 <Route exact path="/login" component={ClientLogin}/>

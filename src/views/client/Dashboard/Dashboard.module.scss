@@ -1,0 +1,151 @@
+.dashboardBanner {
+    background-image: url(../../../assets/images/dashboard_banner.jpg);
+    background-position:center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 500px;
+    width: 100%;
+   padding-top: 150px;
+}
+
+// Phần đầu của trang
+.headerDashboard {
+    padding-top: 80px;
+    padding-bottom: 50px;
+    background-color: #F9F9F9;
+    h1{
+        color: var(--nav-color);
+    }
+    .introItem{
+        border-radius: 16px;
+        min-height: 250px;
+        img {
+            width: 100%;
+            height: 250px;
+            object-fit: fill;
+        }
+    }
+    
+}
+
+// Tiêu đề
+.title {
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        bottom: 0px;
+        height: 4px;
+        border-radius:4px;
+        width: 60%;
+        background-color: var(--love-color-5);
+        left: 50%;
+        transform: translateX(-50%)
+    }
+}
+
+// Đóng góp và tạo dự án
+.startDashboard {
+    padding: 80px 0;
+
+}
+
+// Thành tựu của chúng tôi
+.activityDashboard {
+    background-color: #F9F9F9;
+    padding: 80px 0;
+
+}
+
+// Dự án
+.projectDashboard {
+    padding: 80px 0;
+    .projectWrapItem {
+        border-radius: 16px;
+        min-height: 640px;
+        .baseColor {
+            color: var(--nav-color);
+        }
+        .titleProject:hover {
+            color: var(--nav-color) !important;
+        }
+        .btnDetail {
+            border: 1px solid var(--love-color-1);
+            border-radius: 8px;
+            &:hover {
+                color: var(--nav-color) !important;
+        
+            }
+        }
+        .imgCard {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .shortDescription {
+            display: -webkit-box;
+            max-height: 3.2rem;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            -webkit-line-clamp: 2;
+            line-height: 1.6rem;
+        }
+    }
+
+}
+
+// Tin tức
+.newsDashboard{
+    background-color: #F9F9F9;
+    padding: 80px 0;
+
+    .articalDetailWrap {
+        background-color: #fff;
+        // border: 2px  solid #ccc;
+        min-height: 40rem;
+        & .header {
+            & img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            }
+        }
+        & .body {
+            & h4 {
+                color: #444;
+                letter-spacing: 1px;
+                &:hover {
+                    color: var(--love-color-1);
+                }
+            }
+            & .bodyDesc {
+                display: -webkit-box;
+                max-height:10rem;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: normal;
+                -webkit-line-clamp: 5;
+                line-height: 1.6rem;
+            }
+        }
+
+        & .footer {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            & a {
+                color: var(--love-color-1) !important;
+            }
+        }
+    }
+}
+
+
+// Gía trị của chúng tôi
+.valuesDashboard {
+    padding: 80px 0;
+
+}
