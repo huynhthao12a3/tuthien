@@ -119,47 +119,47 @@ function ProjectDetail(props) {
         {
             id: 114,
             proj_id: 91,
-            title: "Xe cứu thương này trông nhỏ nhưng bên trong có rất nhiều!",
-            content: "<p>Gửi các nhà tài trợ, cảm ơn bạn rất nhiều vì những món quà hào phóng của bạn đối với...</p><p>Số tiền huy động được thông qua chiến dịch GiveTrack này sẽ vẫn RẤT có giá trị đối với chi phí vận hành. Xe cấp cứu sẽ đến Mombasa, trên bờ biển Kenya, trong hai hoặc ba tuần tới, và sau đó chúng tôi sẽ sử dụng một số tiền từ chiến dịch này để chuyển xe từ Mombasa đến bệnh viện Whisper ở Jinja, Uganda.</p>",
+            title: "CÔNG TY GRANT THORNTON TẶNG QUÀ TẾT CHO TRẺ EM BỊ ẢNH HƯỞNG BỞI DỊCH COVID-19 TẠI QUẬN 4",
+            content: "<p>Ngày 23/1, Quỹ Bông Sen cùng với Công ty TNHH Grant Thornton (GT) đã có buổi trao quà Tết cho 150 em bị ảnh hưởng bởi dịch Covid-19 vừa qua tại Quận 4. Những gói quà nhỏ như là lời động viên, đồng hành từ GT đến các em đang chịu những mất mác to lớn, một cái Tết có lẽ sẽ quạnh hiu hơn khi thiếu vắng đi người đã từng chăm lo cho các bé từng bữa ăn giấc ngủ.</p><p>Mỗi em đã nhận được 1 phần quà Tết trị giá 500.000 đồng. Bên cạnh đó, có 12 em có hoàn cảnh đặc biệt hơn sẽ nhận thêm 1 suất hiện kim trị giá 1.000.000 đồng. Tổng giá trị đợt hỗ trợ: 87.000.000 đồng từ Công ty TNHH Grant Thornton.</p>",
             createTime: "2021-08-10T00:00:00.000Z",
-            createUser: "Huỳnh Thảo",
-            filePath: "https://hadoantv.com/wp-content/uploads/2021/06/download-POLICE-SIMULATOR-PATROL-OFFICERS-hadoan-tv.jpg"
+            createUser: "Nguyễn Minh Hiếu",
+            filePath: "https://quybongsen.org/wp-content/uploads/2022/01/z3134282572272_844ade5e44735238028d53067476d551-300x225.jpg"
         },
         {
             id: 115,
             proj_id: 91,
-            title: "Vẫn bị kẹt trong cổng!",
-            content: "<p>Các nhà tài trợ thân mến, chúng tôi hy vọng sẽ có thêm tin tức cho bạn vào lúc này, nhưng thật đáng tiếc là hiện tại xe cấp cứu vẫn đang mắc kẹt ở Mombasa, cảng nơi nó được dỡ hàng, cách bệnh viện 650 dặm. Đại lý nhập khẩu cho biết nó có vấn đề về máy móc, đây là một điều bất ngờ đối với chúng tôi. Chúng tôi có thể sẽ cần cử ai đó đến Mombasa để phân loại nó.</p><p>Số tiền huy động được thông qua chiến dịch GiveTrack này sẽ vẫn RẤT có giá trị đối với chi phí vận hành. Xe cấp cứu sẽ đến Mombasa, trên bờ biển Kenya, trong hai hoặc ba tuần tới, và sau đó chúng tôi sẽ sử dụng một số tiền từ chiến dịch này để chuyển xe từ Mombasa đến bệnh viện Whisper ở Jinja, Uganda.</p>",
+            title: "Chung tay ủng hộ quỹ xây trường cho học sinh miền núi: Vì những mái trường không dột nát",
+            content: "<p>Dịch COVID -19 dần được kiểm soát, học sinh đã dần trở lại mái trường thân yêu, với thầy cô và bạn bè. Nhưng, bên cạnh những ngôi trường khang trang với trang thiết bị hiện đại, vẫn còn đâu đó không ít mái trường liêu xiêu, mái bị gió biển thổi đi muôn nơi. Hay vào mùa mưa, trên những rẻo cao miền sơn cước, có hình ảnh cô trò lấy thau ra hứng nước trong lớp học, bụi phấn chẳng rơi được trên bục giảng vì bảng đen thấm nước. Và còn đâu đó, hình ảnh cả thầy lẫn trò ngồi co ro trong lớp học ghép bằng ván gỗ, gió mùa về khiến sống mũi “ Người lái đò” cay cay vì thương mái trường nghèo, chẳng đỡ nổi nắng, mưa. Thấu hiểu nỗi lòng của thầy, trò ở vùng khó khăn, BTC Ngày Thẻ Việt Nam lần thứ 2 năm 2022 do báo Tiền Phong tổ chức kêu gọi những tấm lòng hảo tâm vàng, chung tay quyên góp kinh phí để sửa chữa phòng học đã xuống cấp, trang bị máy tính phục vụ học sinh học tập cho các trường khu vực miền núi đặc biệt khó khăn, khu vực biên giới hải đảo và khu vực bị ảnh hưởng nặng nề bởi thiên tai lũ lụt. </p>",
             createTime: "2021-10-12T00:00:00.000Z",
-            createUser: "Huỳnh Thảo",
-            filePath: "https://wp-mktg.prod.getty1.net/istockcontentredesign/wp-content/uploads/sites/5/bfi_thumb/2021_Composite_2304x1274_hero.jpg-37i4184kuwatssx9bxo96d6at0qnxmhzifjt0wa2iz0qmzinw.jpeg"
+            createUser: "Huỳnh Văn Thảo",
+            filePath: "https://static.thiennguyen.app/public/news/photo/2022/4/17/536a4203-6857-4089-ab04-c350b090b704.jpg"
         },
         {
             id: 117,
             proj_id: 91,
-            title: "Những gì chúng tôi hiện đang làm, không có xe cứu thương!",
-            content: "<p>Một lần nữa, xin cảm ơn các bạn đã đóng góp cho buổi quyên góp xe cứu thương! </p> <p>Số tiền huy động được thông qua chiến dịch GiveTrack này sẽ vẫn RẤT có giá trị đối với chi phí vận hành. Xe cấp cứu sẽ đến Mombasa, trên bờ biển Kenya, trong hai hoặc ba tuần tới, và sau đó chúng tôi sẽ sử dụng một số tiền từ chiến dịch này để chuyển xe từ Mombasa đến bệnh viện Whisper ở Jinja, Uganda.</p>",
+            title: "Cá nhân kêu gọi làm từ thiện: có lòng tốt thôi là chưa đủ!",
+            content: "<p>Từ thiện là nghĩa cử cao đẹp cần được lan tỏa sâu rộng. Có thể thấy, trước những ảnh hưởng sâu sắc của COVID-19, nhiều cá nhân có lòng hảo tâm đã đứng ra kêu gọi, kết nối cộng đồng để có thể chung tay hỗ trợ những hoàn cảnh khó khăn, người sống trong vùng cách ly, phong tỏa và cả những lực lượng tuyến đầu. Song, chính bởi những hoạt động đôi khi mang tính tự phát nên phần nào vẫn còn nhiều thiếu sót dẫn đến làm mất đi lòng tin, mất đi bản chất tốt đẹp của từ thiện.</p> <p>Có thể thấy, trong thời gian gần đây nhiều hoạt động kêu gọi từ thiện của các cá nhân, trong đó bao gồm những nghệ sĩ có tên tuổi chỉ vì thiếu minh bạch và chưa chuyên nghiệp trong khâu tổ chức đã tạo nên những tranh luận, làm ảnh hưởng đi hình ảnh tốt đẹp vốn có của hoạt động xã hội này. Thậm chí, điều này càng vô hình tạo ra những áp lực cho những nhà hảo tâm nhưng ngại va vào những ngờ vực tương tự.</p>",
             createTime: "2021-11-10T00:00:00.000Z",
-            createUser: "Huỳnh Thảo",
-            filePath: "https://helpx.adobe.com/content/dam/help/en/photoshop/how-to/compositing/jcr%3Acontent/main-pars/image/compositing_1408x792.jpg"
+            createUser: "Trần Văn Thuận",
+            filePath: "https://cdn.tuoitre.vn/thumb_w/586/2021/11/26/photo-1-1637919462277776477331.jpg"
         },
         {
             id: 119,
             proj_id: 91,
-            title: "Xe cứu thương!",
-            content: "<p>Một lần nữa, xin cảm ơn các bạn đã đóng góp cho buổi quyên góp xe cứu thương!</p><p>Số tiền huy động được thông qua chiến dịch GiveTrack này sẽ vẫn RẤT có giá trị đối với chi phí vận hành. Xe cấp cứu sẽ đến Mombasa, trên bờ biển Kenya, trong hai hoặc ba tuần tới, và sau đó chúng tôi sẽ sử dụng một số tiền từ chiến dịch này để chuyển xe từ Mombasa đến bệnh viện Whisper ở Jinja, Uganda.</p>",
+            title: "CẬP NHẬT CHƯƠNG TRÌNH 5,000 PHẦN QUÀ CHO NGƯỜI LAO ĐỘNG KHU CÁCH LY (ĐỢT 1)",
+            content: "<p>Sài Gòn những ngày tháng 7 nắng gay gắt, lưng áo NHỮNG NGƯỜI TRUNG CHUYỂN thấm đẫm mồ hôi, đi vào khu vực dịch bệnh đang diễn biến phức tạp và phần lớn chúng tôi vẫn chưa được tiêm Vacxin, nhưng trên cả những mệt mỏi và lo lắng, chúng tôi thấy hạnh phúc vô cùng. Hành trình mang 5000 phần quà đến người lao động trong các khu cách ly sẽ tiếp tục…</p>",
             createTime: "2021-10-20T00:00:00.000Z",
-            createUser: "Huỳnh Thảo",
-            filePath: "https://hadoantv.com/wp-content/uploads/2021/06/download-POLICE-SIMULATOR-PATROL-OFFICERS-hadoan-tv.jpg"
+            createUser: "Lê Bảo Anh",
+            filePath: "https://quybongsen.org/wp-content/uploads/2021/06/211957658_4470326246334323_9094743780909748511_n.jpg"
         },
         {
             id: 121,
             proj_id: 91,
-            title: "Đọc bản cập nhật cuối cùng của chúng tôi!",
-            content: "<p>Xe cứu thương hiện đã kết thúc hành trình đường biển từ Dubai đến Mombasa, cảng chính của Kenya. Chúng tôi đang sắp xếp để ai đó thu thập nó và mang nó đến bệnh viện ở Uganda, vì vậy chúng tôi sẽ có thêm...</p><p>Số tiền huy động được thông qua chiến dịch GiveTrack này sẽ vẫn RẤT có giá trị đối với chi phí vận hành. Xe cấp cứu sẽ đến Mombasa, trên bờ biển Kenya, trong hai hoặc ba tuần tới, và sau đó chúng tôi sẽ sử dụng một số tiền từ chiến dịch này để chuyển xe từ Mombasa đến bệnh viện Whisper ở Jinja, Uganda.</p><p>Số tiền huy động được thông qua chiến dịch GiveTrack này sẽ vẫn RẤT có giá trị đối với chi phí vận hành. Xe cấp cứu sẽ đến Mombasa, trên bờ biển Kenya, trong hai hoặc ba tuần tới, và sau đó chúng tôi sẽ sử dụng một số tiền từ chiến dịch này để chuyển xe từ Mombasa đến bệnh viện Whisper ở Jinja, Uganda.</p>",
+            title: "NHỮNG SUẤT CƠM ẤM TÌNH MÙA DỊCH",
+            content: "<p>Những ngày qua khúc ca tình nguyện của Quỹ Bông Sen lại vang lên khi tất cả các Quán Nụ Cười tại HCM đều hoạt động trở lại. Các quán Nụ Cười 1,2,4,6,7,8 và 9 cùng Quán Yên Vui Nghệ An, Gia Lai, Quảng Trị, Đà Nẵng, Cần Thơ, An Giang đều bán lại. Các quán Yên Vui cũng cố gắng không ngừng hỗ trợ cho người dân đang mưu sinh. Rất nhiều quán tổ chức cho tình nguyện viên mang cơm đi phát cho người phải mưu sinh, người khó khăn trong dịch bệnh.</p>",
             createTime: "2022-01-20T00:00:00.000Z",
-            createUser: "Huỳnh Thảo",
-            filePath: "https://www.eye-image.nl/assets/files/eye-image-homepage.1920x0x0x100.jpg"
+            createUser: "Huỳnh Khang",
+            filePath: "https://quybongsen.org/wp-content/uploads/2021/06/191000223_4102555249824894_179774710688888086_n.jpg"
         },
     ]
 
@@ -685,7 +685,7 @@ function ProjectDetail(props) {
                                 {
                                     dataProject.isEdit === true ? (
                                         <Link to={{
-                                            pathname: `/update-project/${id}/${dataProject.title}`,
+                                            pathname: `/update-project/${id}/${dataProject.friendlyUrl}`,
                                             state: locations // chuyền dữ liệu qua Update-process
 
                                         }} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, Style.editBtn, "align-self-end  my-2 py-2 px-4 px-lg-5 fw-light rounded-3 text-center   text-uppercase text-decoration-none")} >

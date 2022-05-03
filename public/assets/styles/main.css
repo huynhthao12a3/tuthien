@@ -32,7 +32,7 @@
     color: var(--love-color-1) !important;
 }
 .bg-base-color{
-    background-color: var( --love-color-1)
+    background-color: var( --love-color-1);
 }
 /* đang chờ */
 .waitingStatus ,.doingStatus ,.doneStatus,.doingStatusUse{
@@ -222,10 +222,14 @@ body{
     border-top-left-radius: 40%;
     border-bottom-left-radius: 40%;
     color: #fff;
+    background-color: var(--love-color-5);
+
 }
 .nextBtn{
    
     border-top-right-radius: 40%;
     border-bottom-right-radius: 40%;
     color: #fff;
+    background-color: var(--love-color-5);
+
 }
