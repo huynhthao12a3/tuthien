@@ -847,7 +847,7 @@ function Project(){
 
                                                             <td key={index+"id"} className={clsx(Style.lh, "text-center")} >{item.userName}</td>
                                                             <td key={index+"title"} className={clsx(Style.titleshow,"text-center")}>{item.amount}</td>
-                                                            <td key={index+"useCreate"} className={clsx(Style.lh, "text-center")}>{item.currency}</td>
+                                                            <td key={index+"useCreate"} className={clsx(Style.lh, "text-center")}>TRX</td>
                                                             <td key={index+"hash"} className={clsx(Style.hash, "text-center")}>
                                                                 <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} 
                                                                 target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}> {item.hash.slice(0,30)+'...'}</a>
