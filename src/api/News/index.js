@@ -33,7 +33,11 @@ const newsApi = {
     delete:(id)=>{
         const url =`/news/delete-news/${id}`
         return axiosClient.delete(url)
-    }
+    },
+    getCategoryNews: ()=>{
+        const url = `/Category/get-news-categories`
+        return axiosClient.get(url)
+    },
 }
 
 export default newsApi;

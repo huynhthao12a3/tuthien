@@ -57,34 +57,35 @@ function ClientProject() {
         keyword: filterSearch,
         categoryid: fillerCategoryCheckbox,
         status: fillerStatusCheckbox,
-        currentpage: 0
+        currentpage: currentPage
       }
       const response = await projectApi.getAll(params)
       if (response.isSuccess) {
         setProjectList(response.data)
+        // setCurrentPage(0)
         setIsLoading(false)
         console.log('danh sách project: ', response.data)
       }
     }
     fetchDataProjectList()
-  }, [fillerStatusCheckbox, fillerCategoryCheckbox, filterSearch])
+  }, [fillerStatusCheckbox, fillerCategoryCheckbox, filterSearch, currentPage])
 
-  useEffect(() => {
-    const fetchDataProjectList = async () => {
-      const params = {
-        keyword: filterSearch,
-        categoryid: fillerCategoryCheckbox,
-        status: fillerStatusCheckbox,
-        currentpage: currentPage
-      }
-      const response = await projectApi.getAll(params)
-      if (response.isSuccess) {
-        setProjectList([...projectList, ...response.data])
-        console.log('danh sách project: ', projectList)
-      }
-    }
-    fetchDataProjectList()
-  }, [currentPage])
+  // useEffect(() => {
+  //   const fetchDataProjectList = async () => {
+  //     const params = {
+  //       keyword: filterSearch,
+  //       categoryid: fillerCategoryCheckbox,
+  //       status: fillerStatusCheckbox,
+  //       currentpage: currentPage
+  //     }
+  //     const response = await projectApi.getAll(params)
+  //     if (response.isSuccess) {
+  //       setProjectList([...projectList, ...response.data])
+  //       console.log('danh sách project: ', projectList)
+  //     }
+  //   }
+  //   fetchDataProjectList()
+  // }, [currentPage])
 
   // Lấy danh mục
   useEffect(() => {
@@ -233,8 +234,19 @@ function ClientProject() {
               </div>
 
               {/* Xem Thêm  */}
-              <div className="w-100 mt-5 d-flex justify-content-center">
+              {/* <div className="w-100 mt-5 d-flex justify-content-center">
                 <button className={clsx(Style.ButtonSecondary, "py-2 px-3 fw-bold text-light")} onClick={() => setCurrentPage(currentPage + 1)}>Xem Thêm</button>
+              </div> */}
+              <div className="w-100 mt-5 d-flex justify-content-center ">
+                <div>
+                  <button onClick={() => setCurrentPage(currentPage != 0 ? currentPage - 1 : currentPage)} className={clsx(Style.prevBtn, 'prevBtn px-2')}>
+                    <span className="mdi mdi-chevron-double-left"></span>
+                  </button>
+                  <span className="px-3 text-secondary">{currentPage}</span>
+                  <button onClick={() => setCurrentPage(currentPage + 1)} className={clsx(Style.nextBtn, 'nextBtn px-2')}>
+                    <span className="mdi mdi-chevron-double-right"></span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

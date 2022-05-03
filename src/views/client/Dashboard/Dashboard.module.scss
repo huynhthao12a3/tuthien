@@ -47,18 +47,19 @@
 // Đóng góp và tạo dự án
 .startDashboard {
     padding: 80px 0;
+    background-color: #F9F9F9;
 
 }
 
 // Thành tựu của chúng tôi
 .activityDashboard {
-    background-color: #F9F9F9;
     padding: 80px 0;
-
+background-color: #F1F6FF;
 }
 
 // Dự án
 .projectDashboard {
+    background-color: #F9F9F9;
     padding: 80px 0;
     .projectWrapItem {
         border-radius: 16px;
@@ -82,7 +83,7 @@
             height: 200px;
             object-fit: cover;
         }
-        .shortDescription {
+        .titleProject,.shortDescription {
             display: -webkit-box;
             max-height: 3.2rem;
             -webkit-box-orient: vertical;
@@ -98,7 +99,6 @@
 
 // Tin tức
 .newsDashboard{
-    background-color: #F9F9F9;
     padding: 80px 0;
 
     .articalDetailWrap {
@@ -116,6 +116,14 @@
             & h4 {
                 color: #444;
                 letter-spacing: 1px;
+                display: -webkit-box;
+                max-height:6.8rem;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: normal;
+                -webkit-line-clamp: 3;
+                // line-height: 1.6rem;
                 &:hover {
                     color: var(--love-color-1);
                 }
@@ -147,5 +155,5 @@
 // Gía trị của chúng tôi
 .valuesDashboard {
     padding: 80px 0;
-
+background-color: #F1F6FF;
 }

@@ -92,6 +92,13 @@
             & h4 {
                 color: #444;
                 letter-spacing: 1px;
+                display: -webkit-box;
+                max-height:6.8rem;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: normal;
+                -webkit-line-clamp: 3;
                 &:hover {
                     color: var(--love-color-1);
                 }

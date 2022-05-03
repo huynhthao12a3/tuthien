@@ -18,6 +18,8 @@ import * as $ from 'jquery'
 import ArticalDetail from "./../views/client/Project/Artical/ArticalDetail";
 import NotFound from "./../shares/NotFound/index";
 import DashboardClient from '../views/client/Dashboard';
+import News from '../views/client/News';
+import NewsDetail from '../views/client/News/NewsDetail';
 
 ClientLayout.propTypes = {
     
@@ -44,6 +46,8 @@ function ClientLayout(props) {
                 <Route exact path="/" component={DashboardClient}/>
                 <Route exact path="/dashboard" component={DashboardClient}/>
                 <Route exact path="/project" component={ClientProject}/>
+                <Route exact path="/news" component={News}/>
+                <Route exact path="/news/:id/:friendlyurl" component={NewsDetail}/>
                 <Route exact path="/project-detail/:id/:friendlyurl" component={ProjectDetail}/>
                 <Route exact path="/login" component={ClientLogin}/>
                 <Route exact path="/bai-viet/:id/:friendlyurl" component={ArticalDetail}/>
