@@ -66,9 +66,20 @@ function Project(){
     const [isAccept,setIsAccept] = useState(true)
     const [isLoading, setIsLoading] = useState(true)
     const [showAtical,setShowAtical]= useState(false)
+    const [showTransaction,setShowTransaction]= useState(false)
     const [show, setShow] = useState(false);
     const [imgValueArtical,setImgValueArtical]= useState('')
     const [createArtical,setCreateArtical]=useState(objArtical)
+    const [projectNameTransaction,setProjectNameTransaction]=useState('')
+    const [transactionValues,setTransactionValues]= useState([{
+        amount: '',
+        currency: "",
+        hash: "",
+        projectId: '',
+        projectName: "",
+        userAvatar: "\\uploads\\Images\\User_Avatars\\28042022_030444_anymous_icon.png",
+        userName: ""}]
+    )
     // đừng có mở thg này ra :<
     const [projectDetail,setProjectDetail]= useState(
         {
@@ -232,10 +243,11 @@ function Project(){
                 form.append('TypeImage', "new");
 
                 const response = await projectApi.uploadFile(form);
-                setCreateArtical({ ...createArtical,banner:{filePath:response.data.filePath,
-                    fileName:response.data.fileName,
-                    friendlyUrl:response.data.friendlyUrl,
-                    note:response.data.note}
+                setCreateArtical({ ...createArtical,banner:{
+                    "filePath":response.data.filePath,
+                    "fileName":response.data.fileName,
+                    "friendlyUrl":response.data.friendlyUrl,
+                    "note":response.data.note}
                 })
                 console.log(createArtical)
                 if (response.isSuccess) {
@@ -348,6 +360,7 @@ function Project(){
         setShowAtical(true);
     }
     const handleCreateArtical=async()=>{
+        console.log("data",createArtical.banner.fileName)
         console.log(createArtical)
         if(
             createArtical.title!=="",
@@ -362,12 +375,13 @@ function Project(){
                     "content": createArtical.content,
                     // "friendlyUrl":createArtical.friendlyUrl,
                     "banner": {
-                        "fileName": imgValueArtical.banner.fileName,
+                        "fileName": createArtical.banner.fileName,
                         "filePath": createArtical.banner.filePath,
-                        "friendlyUrl": imgValueArtical.banner.friendlyUrl,
-                        "note": imgValueArtical.banner.note
+                        "friendlyUrl": createArtical.banner.friendlyUrl,
+                        "note": createArtical.banner.note
                     }
                 }
+               
                 const respon = await articalApi.createArtical(data)
                 if(respon.isSuccess)
                 {
@@ -388,6 +402,30 @@ function Project(){
     }
     const handleChangAvatar= (e)=>{
         setImgValueArtical(e.target.files[0])
+    }
+    // transaction
+    const handleCloseTransaction = () => setShowTransaction(false);
+    const handleShowTransaction=async(ProjectTitle,projectId)=>{
+        setProjectNameTransaction(ProjectTitle)
+        try
+        {
+            const respons= await projectApi.getTransaction(projectId)
+            console.log("respons",respons)
+            if(respons.isSuccess)
+            {   
+                setTransactionValues(respons.data)
+                setShowTransaction(true)
+            }
+            else{
+                Swal.fire(`lấy dữ liệu lịch sử giao dịch của dự án ${ProjectTitle} thất bại`)
+            }
+        }
+        catch(e)
+        {
+            console.error(e)
+        }
+        
+        
     }
     return(
         <>
@@ -455,7 +493,7 @@ function Project(){
                                                             <td key={index+"id"}>{item.id}</td>
                                                             <td key={index+"title"} className={clsx(Style.titleshow)}>{item.title.length>30?(item.title.slice(0,30)+'...'):item.title}</td>
                                                             <td key={index+"useCreate"}>{item.userCreate}</td>
-                                                            <td key={index+'createDate'}>{moment(item.createDate).format("DD/MM/YYYY") }</td>
+                                                            <td key={index+'createDate'}>{moment(item.createTime).format("DD/MM/YYYY") }</td>
                                                             <td key={index+'endate'}>{moment(item.endDate).format("DD/MM/YYYY") }</td>
                                                             {/* filterStatus[item.status] */}
                                                             <td key={index+'status'}>
@@ -497,7 +535,7 @@ function Project(){
                                                                         <i className="mdi mdi-plus-circle-outline"></i>
                                                                             Tạo bài viết
                                                                         </Dropdown.Item>
-                                                                        <Dropdown.Item as={Link} target="_blank"  to={{ pathname: `/admin/update-project/${item.id}/${item.title}`, state:locations}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}>
+                                                                        <Dropdown.Item onClick={()=>{handleShowTransaction(item.title,item.id)}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}>
                                                                         <i className="mdi mdi-swap-horizontal"></i>
                                                                             Xem lịch sử giao dịch
                                                                         </Dropdown.Item>
@@ -531,7 +569,7 @@ function Project(){
                         </div>
                     </div>
                 </div>
-
+                {/* modal chọn tiến trình                        */}
                 <Modal size='xl' show={show} onHide={handleClose} animation={false}>
                     <Modal.Header closeButton>
                     <Modal.Title>Chọn tiếng trình để sửa</Modal.Title>
@@ -692,9 +730,8 @@ function Project(){
                     </Modal.Footer>
                 </Modal>
 
-            </div>
-            {/* modal tạo bài viết */}
-            <Modal size="xl" show={showAtical} onHide={handleCloseArtical}>
+                {/* modal tạo bài viết */}
+                <Modal size="xl" show={showAtical} onHide={handleCloseArtical}>
                 <Modal.Header closeButton>
                     <Modal.Title className="text-black-50">Tạo bảng tin</Modal.Title>
                 </Modal.Header>
@@ -724,16 +761,7 @@ function Project(){
                                     autoFocus
                                 />
                             </Form.Group>
-                            {/* <Form.Group controlId="exampleForm.ControlInput1">
-                                <Form.Label>Đường dẫn</Form.Label>
-                                <Form.Control className="border border-secondary"
-                                    value={createArtical.friendlyUrl}
-                                    onChange={(e) => { setCreateArtical({ ...createArtical, friendlyUrl: e.target.value }) }}
-                                    type="text"
-                                    placeholder="đường dẫn"
-                                    autoFocus
-                                />
-                            </Form.Group> */}
+                        
                             <Form.Group className="col-12 px-2 d-inline-block " controlId="">
                                 <Form.Label>Nội dung</Form.Label>
                                 <div className="add-project_editor removeImg">
@@ -775,7 +803,77 @@ function Project(){
                     </div>
 
                 </Modal.Footer>
-            </Modal>
+                </Modal>
+
+                {/* modal xem đóng góp */}
+                <Modal
+                    size='xl'
+                    show={showTransaction}
+                    onHide={handleCloseTransaction}
+                    backdrop="static"
+                    keyboard={false}
+                    centered
+                >
+                    <div className="py-2 px-3">
+
+                         <Modal.Title className="text-black-50">Lịch sử giao dịch của dự án: {projectNameTransaction}</Modal.Title>
+                    </div>
+                    {/* <Modal.Header closeButton>
+                    </Modal.Header> */}
+                    <Modal.Body>
+                    <table className="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col"className={clsx(Style.lh, "text-center")} >#</th>
+                                                <th scope="col"className={clsx(Style.lh, "text-center")} >Ảnh đại diện</th>
+                                                <th scope="col"className={clsx(Style.lh, "text-center")} >Người đóng góp</th>
+                                                <th scope="col"className={clsx(Style.lh, "text-center")} >số tiền đóng góp</th>
+                                                <th scope="col"className={clsx(Style.lh, "text-center")} >Đơn vị tiền tệ</th> 
+                                                <th scope="col"className={clsx(Style.lh, "text-center")} >Mã giao dịch</th> 
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                transactionValues.map(function(item,index,arr){
+                                                    return(
+                                                        <tr key={index} style={{lineHeight:'2rem'}}>
+                                                            <th key={index+'index'}  className={clsx(Style.lh, "text-center")} scope="row">{index}</th>
+                                                            <td key={index + 'ing'}>
+                                                                <div className={clsx(Style.imgAccount, " text-center col-4 col-md-2 mx-auto d-block")}>
+                                                                    <img id="img-banner1" src={ process.env.REACT_APP_URL +item.userAvatar }
+                                                                     className={clsx(Style.img_item, " rounded-circle border border-1 img-fluid img-auto-size ")} />
+                                                                </div>
+                                                            </td>
+
+                                                            <td key={index+"id"} className={clsx(Style.lh, "text-center")} >{item.userName}</td>
+                                                            <td key={index+"title"} className={clsx(Style.titleshow,"text-center")}>{item.amount}</td>
+                                                            <td key={index+"useCreate"} className={clsx(Style.lh, "text-center")}>{item.currency}</td>
+                                                            <td key={index+"hash"} className={clsx(Style.hash, "text-center")}>
+                                                                <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} 
+                                                                target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}> {item.hash.slice(0,30)+'...'}</a>
+                                                               
+                                                            </td>
+                                                        </tr>
+
+                                                        )
+                                                })
+                                            }
+                                            
+                                            
+                                        </tbody>
+                                    </table>        
+                    </Modal.Body>
+                    <div className="d-flex justify-content-end pb-2 px-2">
+                        <Button variant="secondary" className="" style={{width:'150px'}} onClick={handleCloseTransaction}>
+                            Đóng
+                        </Button>
+                    </div>
+                    {/* <Modal.Footer>
+                    <Button variant="primary">Understood</Button>
+                    </Modal.Footer> */}
+                </Modal>
+            </div>
+           
         </>
     )
 }

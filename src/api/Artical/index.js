@@ -9,8 +9,9 @@ const articalApi = {
             }
         })
     },
-    createArtical: (data) => {
-        const url =`/project/create-artical/${data.id}`
+    createArtical:(data) => {
+        const url =`/project/create-artical?projectid=${data.id}`
+        delete data.id
         return axiosClient.post(url, data)
     },
     editArtical: (data) => {

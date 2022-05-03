@@ -205,3 +205,23 @@
     }
     
 }
+
+// modal transaction
+.imgAccount{
+    width: 90px;
+    .img_item{
+        height: 60px;
+        width: 60px;
+        text-align: center;
+    }
+}
+.hash{
+    .baseColor{
+        color: rgb(207, 168, 25);
+        .baseColor:hover{
+            cursor: pointer;
+    color: rgba(207, 168, 25,0.7);
+    
+        }
+    }
+}
