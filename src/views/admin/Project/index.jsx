@@ -794,7 +794,7 @@ function Project(){
                 <Modal.Footer className="d-flex justify-content-end">
                 
                     <div>
-                        <Button className="me-2" variant="secondary" onClick={handleClose}>
+                        <Button className="me-2" variant="secondary" onClick={handleCloseArtical}>
                             Đóng
                         </Button>
                         <Button  variant="primary" onClick={() => { handleCreateArtical() }}>
@@ -827,7 +827,7 @@ function Project(){
                                                 <th scope="col"className={clsx(Style.lh, "text-center")} >#</th>
                                                 <th scope="col"className={clsx(Style.lh, "text-center")} >Ảnh đại diện</th>
                                                 <th scope="col"className={clsx(Style.lh, "text-center")} >Người đóng góp</th>
-                                                <th scope="col"className={clsx(Style.lh, "text-center")} >số tiền đóng góp</th>
+                                                <th scope="col"className={clsx(Style.lh, "text-center")} >Số tiền đóng góp</th>
                                                 <th scope="col"className={clsx(Style.lh, "text-center")} >Đơn vị tiền tệ</th> 
                                                 <th scope="col"className={clsx(Style.lh, "text-center")} >Mã giao dịch</th> 
                                             </tr>
@@ -839,7 +839,7 @@ function Project(){
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
                                                             <th key={index+'index'}  className={clsx(Style.lh, "text-center")} scope="row">{index}</th>
                                                             <td key={index + 'ing'}>
-                                                                <div className={clsx(Style.imgAccount, " text-center col-4 col-md-2 mx-auto d-block")}>
+                                                                <div className={clsx(Style.imgAccount, " text-center  mx-auto d-block")}>
                                                                     <img id="img-banner1" src={ process.env.REACT_APP_URL +item.userAvatar }
                                                                      className={clsx(Style.img_item, " rounded-circle border border-1 img-fluid img-auto-size ")} />
                                                                 </div>
