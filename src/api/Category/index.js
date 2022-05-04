@@ -11,5 +11,9 @@ const categoryApi={
         return axiosClient.get(url)
 
     },
+    createCategory: (data) => {
+        const url ='/Category/create-category'
+        return axiosClient.post(url, data)
+    },
 }
 export default categoryApi
