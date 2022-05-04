@@ -1,8 +1,10 @@
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import adminUser from '../../../api/User/Admin';
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import * as alertify from 'alertifyjs';
+import logoCharity from '../../../assets/images/logo-charity.png'
+
 
 AdminLogin.propTypes = {
 
@@ -13,7 +15,11 @@ function AdminLogin() {
     const [password, setPassword] = useState();
     const history = useHistory();
     localStorage.clear();
-    const handleSubmit = async (e) => {
+    const toggleForm = () => {
+        const container = document.querySelector('.container');
+        container.classList.toggle('active');
+    };
+    const handleLogin = async (e) => {
         // setToken("1")
         // console.log('login success')
         // localStorage.setItem('token', JSON.stringify('test'));
@@ -24,7 +30,7 @@ function AdminLogin() {
             if (response.isSuccess) {
                 const saveToken = { ...response.data, expiredTime: Date.now() };
                 localStorage.setItem('admin-info', JSON.stringify(saveToken))
-                history.push('/admin/project')
+                history.push('/admin/dashboard')
                 window.location.reload()
             }
             else {
@@ -37,22 +43,28 @@ function AdminLogin() {
     }
     return (
         <>
-            <div className="d-flex flex-column mt-5 align-items-center">
-                <h1>Đăng nhập trang Admin</h1>
-                <form onSubmit={e => handleSubmit(e)}>
-                    <label>
-                        <p>Email</p>
-                        <input type="text" onChange={e => setEmail(e.target.value)} />
-                    </label>
-                    <label>
-                        <p>Password</p>
-                        <input type="password" onChange={e => setPassword(e.target.value)} />
-                    </label>
-                    <div>
-                        <button type="submit" className="p-2" >Login</button>
+
+            <section className="login-form-client">
+
+                <div className="container">
+                    <div className="user signinBx">
+                        <div className="imgBx d-flex flex-column align-items-center justify-content-center">
+                            <img src={logoCharity} alt="Tấm Lòng Vàng" />
+
+                        </div>
+                        <div className="formBx">
+                            <form onSubmit={e => handleLogin(e)}>
+                                <h2 className="fs-5">Quản trị hệ thống</h2>
+                                <input type="text" placeholder="Tên tài khoản / email" onChange={e => setEmail(e.target.value)} />
+                                <input type="password" placeholder="Mật khẩu" onChange={e => setPassword(e.target.value)} />
+                                <button type="submit" className="px-4 py-2 rounded-3 text-light mt-2" >Đăng nhập</button>
+
+                            </form>
+                        </div>
                     </div>
-                </form>
-            </div>
+
+                </div>
+            </section>
         </>
     );
 }

@@ -7,6 +7,8 @@ import projectApi from '../../../api/Project'
 import Loading from '../../../shares/Loading';
 import moment from 'moment';
 import * as utils from '../../../utils/utils.js'
+import Dropdown from "react-bootstrap/Dropdown";
+import { Link } from "react-router-dom";
 ClientProfile.propTypes = {
 
 };
@@ -14,6 +16,8 @@ ClientProfile.propTypes = {
 function ClientProfile(props) {
     const [projectList, setProjectList] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const [currentpage, setCurrentpage] = useState(0)
+
     const fakeData = {
         id: 3,
         avatar: "\\uploads\\Images\\user\\04052022_015730_pexels-photo-7492325.jpg",
@@ -30,7 +34,7 @@ function ClientProfile(props) {
         const fetchProjectList = async () => {
             const params = {
                 userid: fakeData.id,
-                currentpage: 1
+                currentpage: currentpage
             }
             const response = await projectApi.getOwnerProject(params)
             if (response.isSuccess) {
@@ -39,7 +43,7 @@ function ClientProfile(props) {
             }
         }
         fetchProjectList()
-    }, [])
+    }, [currentpage])
     return (
         <>
 
@@ -49,7 +53,7 @@ function ClientProfile(props) {
                         <div className="container py-5">
                             <div className="row">
                                 {/* Thông tin cá nhân  */}
-                                <div className="col-12 col-md-4">
+                                <div className="col-12 col-md-3">
                                     <div className={clsx(Style.userInfo, 'shadow p-4')}>
                                         <div className="w-100">
                                             <img src={process.env.REACT_APP_URL + fakeData.avatar} alt="" className="img-fluid rounded-3" />
@@ -66,36 +70,49 @@ function ClientProfile(props) {
                                     </div>
                                 </div>
                                 {/* Danh sách dự án cá nhân  */}
-                                <div className="col-12 col-md-8">
+                                <div className="col-12 col-md-9">
                                     <div className={clsx(Style.projectInfo, 'shadow p-4')}>
-                                        <div>
-                                            <Table responsive>
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Tên dự án</th>
-                                                        <th>Ngày tạo</th>
-                                                        <th>Ngày kết thúc</th>
-                                                        <th>Số tiền cần (VNĐ)</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        projectList.map((item, index) => (
-                                                            <tr key={index}>
-                                                                <td>{index + 1}</td>
-                                                                <td>{item.title}</td>
-                                                                <td>{moment(item.createTime).format('DD/MM/YYYY')}</td>
-                                                                <td>{moment(item.endDate).format('DD/MM/YYYY')}</td>
-                                                                <td>{utils.formatNumber(item.amountNeed)}</td>
-                                                            </tr>
-                                                        ))
+                                        <Table responsive>
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Tên dự án</th>
+                                                    <th>Ngày tạo</th>
+                                                    <th>Ngày kết thúc</th>
+                                                    <th>Số tiền cần (VNĐ)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {
+                                                    projectList.map((item, index) => (
+                                                        <tr key={index}>
+                                                            <td>{index + 1}</td>
+                                                            <td>{item.title}</td>
+                                                            <td>{moment(item.createTime).format('DD/MM/YYYY')}</td>
+                                                            <td>{moment(item.endDate).format('DD/MM/YYYY')}</td>
+                                                            <td>{utils.formatNumber(item.amountNeed)}</td>
+                                                            <td>
+                                                                <Link to={"/project-detail/" + item.id + "/" + item.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.btnDetail, 'text-muted text-decoration-none')}>Xem chi tiết</Link>
+                                                                <i className="mdi mdi-arrow-right-drop-circle-outline ms-1"></i>
+                                                            </td>
+                                                        </tr>
+                                                    ))
 
-                                                    }
+                                                }
 
-                                                </tbody>
-                                            </Table>
+                                            </tbody>
+                                        </Table>
 
+                                        <div className="d-flex">
+                                            <div>
+                                                <button onClick={() => setCurrentpage(currentpage != 0 ? currentpage - 1 : currentpage)} className={clsx(Style.prevBtn, 'prevBtn bg-info px-2')}>
+                                                    <span className="mdi mdi-chevron-double-left"></span>
+                                                </button>
+                                                <span className="px-3 text-secondary">{currentpage}</span>
+                                                <button onClick={() => setCurrentpage(currentpage + 1)} className={clsx(Style.nextBtn, 'nextBtn bg-info px-2')}>
+                                                    <span className="mdi mdi-chevron-double-right"></span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

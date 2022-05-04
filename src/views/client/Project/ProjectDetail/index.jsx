@@ -649,7 +649,7 @@ function ProjectDetail(props) {
                             <div className={clsx(Style.baseColor, 'd-flex align-items-center my-3 my-lg-0')}>
                                 <i className="mdi mdi-account-multiple-outline fs-1 me-3 pe-2 border-end"></i>
                                 <div className="">
-                                    <p className=" mb-0 py-1">{dataProject.userType === 0 ? 'Cá nhân' : 'Tổ chức'}</p>
+                                    <p className=" mb-0 py-1">{dataProject.userType === 1 ? 'Tổ chức' : 'Cá nhân'}</p>
                                     <Link to={`/profile/${dataProject.userCreateId}`} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, 'text-uppercase text-decoration-none')}>{dataProject.userCreate}</Link>
                                 </div>
                             </div>
@@ -806,7 +806,7 @@ function ProjectDetail(props) {
                                 {
                                     dataProject.isEdit === true ? <button className={clsx(Style.backgroundBaseColor, "fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleWithdraw}>Rút tiền<i className="mdi mdi-cash-multiple ms-1"></i></button> : ""
                                 }
-                                <button className={clsx("doingStatus fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleRefund}>Hoàn tiền<i className="mdi mdi-backup-restore ms-1"></i></button>
+                                <button className={clsx("bg-secondary fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleRefund}>Hoàn tiền<i className="mdi mdi-backup-restore ms-1"></i></button>
 
                             </div>
                         </div>

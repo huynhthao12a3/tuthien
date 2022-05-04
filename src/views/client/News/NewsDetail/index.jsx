@@ -33,9 +33,12 @@ function NewsDetail(props) {
             {
                 isLoading ? <Loading /> : (
                     <div className="container py-5">
-                        <img src={process.env.REACT_APP_URL + newsInfo.bannerPath}
-                            onError={(e) => (e.target.onerror = null, e.target.src = newsBanner)}
-                            className={clsx(Style.imgCard, 'mb-3 img-fluid')} alt="hình ảnh bài viết" />
+                        <div className="text-center">
+
+                            <img src={process.env.REACT_APP_URL + newsInfo.bannerPath}
+                                onError={(e) => (e.target.onerror = null, e.target.src = newsBanner)}
+                                className={clsx(Style.imgCard, 'mb-3 img-fluid')} alt="hình ảnh bài viết" />
+                        </div>
                         <h1 className="fw-bold text-uppercase mt-5 mb-3">{newsInfo.title}</h1>
 
                         <p className='m-0 fst-italic '><i className="mdi mdi-account-edit me-2"></i>{newsInfo.createUser}</p>

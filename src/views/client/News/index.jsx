@@ -40,7 +40,7 @@ function News(props) {
             const params = {
                 keyword: filterSearch,
                 pageindex: currentPage,
-                // category: fillerCategoryCheckbox,
+                categoryid: fillerCategoryCheckbox,
                 status: 2
             }
             const response = await newsApi.getAll(params)
@@ -52,7 +52,7 @@ function News(props) {
             }
         }
         fetchDataNews()
-    }, [filterSearch, currentPage])
+    }, [filterSearch, currentPage, fillerCategoryCheckbox])
 
     const handleSearch = () => {
         const value = $('.inputSearch').val()
@@ -108,7 +108,7 @@ function News(props) {
                                                             <Link to={{ pathname: '/news/' + item.id + '/' + item.friendlyUrl }} onClick={() => { window.scrollTo(0, 0) }} className={clsx(Style.link, "text-uppercase text-decoration-none text-dark")} >{item.title}</Link>
                                                             <div className="d-flex justify-content-between my-3">
 
-                                                                <p className='m-0 fst-italic '><i className="mdi mdi-account-edit me-1"></i>{item.userCreate}</p>
+                                                                <p className='m-0 fst-italic '><i className="mdi mdi-account-edit me-1"></i>{item.createUser}</p>
                                                                 <p className='m-0 fst-italic'>{moment(item.createTime).format("DD/MM/YYYY")}<i className="mdi mdi-calendar-check ms-1"></i></p>
                                                             </div>
                                                             <div className={clsx(Style.shortDescription, "")}>

@@ -27,6 +27,7 @@ import * as utils from '../../../utils/utils.js';
 import Slider from "react-slick";
 // Thư viện xử lý ngày tháng 
 import moment from 'moment'
+import newsApi from '../../../api/News';
 DashboardClient.propTypes = {
 
 };
@@ -80,6 +81,7 @@ function DashboardClient(props) {
             filePath: "https://quybongsen.org/wp-content/uploads/2021/06/191000223_4102555249824894_179774710688888086_n.jpg"
         },
     ]
+
     // Lấy giá TRX
     const [trxPrice, setTrxPrice] = useState();
     useEffect(() => {
@@ -88,12 +90,12 @@ function DashboardClient(props) {
             .then(res => { setTrxPrice(res.tron.vnd) })
     }, [])
 
-
+    // Lấy danh sách project
     const [projectList, setProjectList] = useState([])
+    // Lấy danh sách tin tức
+    const [newsList, setNewsList] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
-
-    // Lấy danh sách project
     useEffect(() => {
         const fetchDataProjectList = async () => {
             const params = {
@@ -107,8 +109,23 @@ function DashboardClient(props) {
                 console.log('danh sách project: ', response.data)
             }
         }
+        const fetchDateNewsList = async () => {
+            const params = {
+                pageindex: 0,
+                status: 2
+            }
+            const response = await newsApi.getAll(params)
+
+            if (response.isSuccess) {
+                setNewsList(response.data)
+                setIsLoading(false)
+                console.log('danh sách news: ', response.data)
+            }
+        }
         fetchDataProjectList()
+        fetchDateNewsList()
     }, [])
+
 
 
 
@@ -230,6 +247,32 @@ function DashboardClient(props) {
                     </div>
                 </div>
             </div>
+            {/* Thành tựu của chúng tôi */}
+            <div className={clsx(Style.activityDashboard)}>
+                <div className="container">
+                    <div className="text-center">
+
+                        <p className={clsx(Style.title, "d-inline-block fs-2 fw-bold position-relative")}>Thành tựu của chúng tôi</p>
+                    </div>
+                    <div className="row">
+                        <div className="col-12 col-lg-4 py-4">
+                            <p className="fs-1 text-center fw-bold">{utils.formatNumber(5350000)} TRX</p>
+                            <p className="m-0 text-center">~ {utils.formatNumber(Number(5350000) * trxPrice)} VNĐ</p>
+                            <p className="text-center fst-italic fs-5">Số tiền đã kêu gọi</p>
+                        </div>
+                        <div className="col-12 col-lg-4 py-4">
+                            <p className="fs-1 text-center fw-bold">{utils.formatNumber(350)}</p>
+                            <p className="fs-5 m-0 text-center">-</p>
+                            <p className="text-center fst-italic fs-5">Số dự án đã lập</p>
+                        </div>
+                        <div className="col-12 col-lg-4 py-4">
+                            <p className="fs-1 text-center fw-bold">{utils.formatNumber(2167)}</p>
+                            <p className="fs-5 m-0 text-center">-</p>
+                            <p className="text-center fst-italic fs-5">Số lượt đóng góp</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {/* Bắt đầu  */}
             <div className={clsx(Style.startDashboard)}>
                 <div className="container">
@@ -262,32 +305,7 @@ function DashboardClient(props) {
                 </div>
             </div>
 
-            {/* Hoạt động của chúng tôi */}
-            <div className={clsx(Style.activityDashboard)}>
-                <div className="container">
-                    <div className="text-center">
 
-                        <p className={clsx(Style.title, "d-inline-block fs-2 fw-bold position-relative")}>Thành tựu của chúng tôi</p>
-                    </div>
-                    <div className="row">
-                        <div className="col-12 col-lg-4 py-4">
-                            <p className="fs-1 text-center fw-bold">{utils.formatNumber(5350000)} TRX</p>
-                            <p className="m-0 text-center">~ {utils.formatNumber(Number(5350000) * trxPrice)} VNĐ</p>
-                            <p className="text-center fst-italic fs-5">Số tiền đã kêu gọi</p>
-                        </div>
-                        <div className="col-12 col-lg-4 py-4">
-                            <p className="fs-1 text-center fw-bold">{utils.formatNumber(350)}</p>
-                            <p className="fs-5 m-0 text-center">-</p>
-                            <p className="text-center fst-italic fs-5">Số dự án đã lập</p>
-                        </div>
-                        <div className="col-12 col-lg-4 py-4">
-                            <p className="fs-1 text-center fw-bold">{utils.formatNumber(2167)}</p>
-                            <p className="fs-5 m-0 text-center">-</p>
-                            <p className="text-center fst-italic fs-5">Số lượt đóng góp</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             {/* Các dự án đã hoàn thành*/}
             <div className={clsx(Style.projectDashboard)}>
@@ -352,18 +370,20 @@ function DashboardClient(props) {
 
                             <Slider {...settingSliderNews}>
                                 {
-                                    fakeDateArtical.map((item, index) => (
+                                    newsList.map((item, index) => (
                                         <div key={index} className={clsx(Style.articalDetail, " p-4 ")}>
                                             <div className={clsx(Style.articalDetailWrap, 'position-relative p-3 rounded-3 shadow')}>
 
                                                 <div className={clsx(Style.header)}>
-                                                    <img src={item.filePath} alt="hình ảnh bài viết" className="" />
+                                                    <img src={process.env.REACT_APP_URL + item.bannerPath} alt="hình ảnh bài viết" className="" />
                                                 </div>
 
                                                 <div className={clsx(Style.body, ' px-3 py-4')}>
-                                                    <a href="./chi-tiet-bai-viet" className='text-decoration-none'>
+                                                    <Link to={{ pathname: '/news/' + item.id + '/' + item.friendlyUrl }} onClick={() => window.scrollTo(0, 0)} className='text-decoration-none '>
                                                         <h4 className="fs-4 text-center text-uppercase">{item.title}</h4>
-                                                    </a>
+
+                                                    </Link>
+
                                                     <div className="d-flex justify-content-between my-4">
 
                                                         <p className='m-0 fst-italic '><i className="mdi mdi-account-edit me-1"></i>{item.createUser}</p>
@@ -374,7 +394,7 @@ function DashboardClient(props) {
                                                     </div>
                                                 </div>
                                                 <div className={clsx(Style.footer)}>
-                                                    <Link to={{ pathname: '/bai-viet/' + item.id + '/' + item.title }} onClick={() => window.scrollTo(0, 0)} className='text-decoration-none '>Xem chi tiết<i className="mdi mdi-arrow-right-bold-circle-outline ms-2"></i></Link>
+                                                    <Link to={{ pathname: '/news/' + item.id + '/' + item.friendlyUrl }} onClick={() => window.scrollTo(0, 0)} className='text-decoration-none '>Xem chi tiết<i className="mdi mdi-arrow-right-bold-circle-outline ms-2"></i></Link>
                                                 </div>
                                             </div>
                                         </div>

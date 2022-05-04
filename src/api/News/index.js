@@ -19,8 +19,8 @@ const newsApi = {
     },
     
     getAll(params) {
-        const url = '/news/get-news'
-        return axiosClient.get(url, {params: params})
+        const url = `/news/get-news`
+        return axiosClient.get(url,{params})
     },
     get: (id) => {
         const url = `/news/get-newsinfo/${id}`

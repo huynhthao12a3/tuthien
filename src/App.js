@@ -25,10 +25,12 @@ import ClientLayout from './layouts/ClientLayout';
 import AdminLayout from './layouts/AdminLayout';
 import NotFound from './shares/NotFound';
 import ClientLogin from './views/client/Login';
+import AdminLogin from "./views/admin/Login/index";
 function App() {
   return (
     <BrowserRouter>
      <Switch>
+         <Route  exact path="/admin/login" component={AdminLogin}/>
          <Route  exact path="/login" component={ClientLogin}/>
          <Route  exact path="/register" component={ClientLogin}/>
          <Route  path="/admin" component={AdminLayout}/>

@@ -17,6 +17,7 @@
 }
 .newsItem{
     border-radius: 8px;
+    min-height: 430px;
     &:hover{
         transform: translateY(-10px);
     }
@@ -26,13 +27,16 @@
         height: 200px;
         object-fit: cover;
     }
-    .link:hover{
-        color: var(--love-color-1) !important;
+    .link{
         overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        :hover{
+            color: var(--love-color-1) !important;
+            
+        }
     }
     .shortDescription{
         overflow: hidden;
