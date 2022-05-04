@@ -17,7 +17,9 @@ import newsApi from "../../../api/News"
 import { Button, Modal, Form } from "react-bootstrap";
 import { CKEditor } from "@ckeditor/ckeditor5-react"
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import Loading from "../../../shares/Loading"
 import Swal from "sweetalert2"
+
 let isCreate= false
 function AdminNews(){
     const imgDefault="\\uploads\\Images\\project\\02052022_043453_default-image-620x600.jpg"
@@ -56,6 +58,7 @@ function AdminNews(){
     const imgFormat = [ 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
     //-------------------------------useState
     const [categoryOptions,setCategoryOptions]= useState([])
+    const [isLoading, setIsLoading] = useState(true)
 
     const [arrayNews, setArrayNews] = useState(arr)
     const [inputSearch,setInputSearch]= useState('')
@@ -73,16 +76,38 @@ function AdminNews(){
     useEffect(async()=>{
         const params= {
             "keyword":inputSearch,
+            'categoryid':inputCategoty.value,
             "pageindex":pageindex,
             "status":inputStatus.value
         }
+
         const respon= await newsApi.getAll(params)
-        setArrayNews(respon.data)
-        console.log(respon.data)
+        if(respon.isSuccess)
+        {
+            setIsLoading(false)
+           
+                setArrayNews(respon.data)
+            
+            console.log(respon.data)
+        }
+        else{
+            Swal.fire("lỗi load dữ liệu")
+        }
+       
         // if(respon.)
         // {
         // }
     },[inputSearch,inputCategoty,inputStatus,pageindex,reLoad])
+    useEffect(async()=>{
+        const respon = await categoryApi.getNews()
+        setCategoryOptions(respon.data.map(function(item){
+            return{
+                value:item.id,
+                label:item.categoryName
+            }
+        }))
+        
+    },[])
     useEffect(()=>{
         setCreateNews({...createNews,friendlyUrl:MakeUrl(createNews.title)})
     },[createNews.title])
@@ -257,7 +282,10 @@ function AdminNews(){
         
     }
     return(
-        <>
+        <div className="flex-grow-1">
+             {
+                isLoading ? <Loading /> : ""
+            }
             <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
                 <div className="container-fluid w-100 pe-5">
                     <div className={clsx('row')}>
@@ -480,7 +508,7 @@ function AdminNews(){
                     </Modal.Footer>
                 </Modal>
             </div>
-        </>
+        </div>
     )
 }
 export default AdminNews

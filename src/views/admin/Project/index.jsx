@@ -21,6 +21,8 @@ import Loading from "../../../shares/Loading"
 import articalApi from "../../../api/Artical"
 import { CKEditor } from "@ckeditor/ckeditor5-react"
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ModalArticalDetail from '../../../shares/ModalArticalDetail'
+let idProjectDetail=0
 function Project(){
     const locations = useLocation().pathname
     const imgDefault="\\uploads\\Images\\project\\02052022_043453_default-image-620x600.jpg"
@@ -71,6 +73,7 @@ function Project(){
     const [imgValueArtical,setImgValueArtical]= useState('')
     const [createArtical,setCreateArtical]=useState(objArtical)
     const [projectNameTransaction,setProjectNameTransaction]=useState('')
+   
     const [transactionValues,setTransactionValues]= useState([{
         amount: '',
         currency: "",
@@ -80,6 +83,7 @@ function Project(){
         userAvatar: "\\uploads\\Images\\User_Avatars\\28042022_030444_anymous_icon.png",
         userName: ""}]
     )
+    const [showArticalDetail,setShowArticalDetail]= useState(false)
     // đừng có mở thg này ra :<
     const [projectDetail,setProjectDetail]= useState(
         {
@@ -354,8 +358,17 @@ function Project(){
     // ẩn hiện modal bài viết
     const handleCloseArtical = () => setShowAtical(false);
     const handleShowArtical =function(itemId){
-        setCreateArtical(objArtical)
-        setCreateArtical({...createArtical,id:itemId})
+        setCreateArtical({
+            'id':itemId,
+            "title": "",
+            "content": "",
+            "banner": {
+              "fileName": "",
+              "filePath": "",
+              "friendlyUrl": "",
+              "note": ""
+            }
+        })
         setImgValueArtical('')
         setShowAtical(true);
     }
@@ -386,6 +399,7 @@ function Project(){
                 if(respon.isSuccess)
                 {
                     Swal.fire("Tạo bài viết thành công")
+                    setCreateArtical(objArtical)
                     setIsAccept(!isAccept)
                     handleCloseArtical()
                 }
@@ -427,8 +441,12 @@ function Project(){
         
         
     }
+    const handleShowArticalDetail =(id)=>{
+        idProjectDetail=id
+        setShowArticalDetail(true)
+    }
     return(
-        <>
+        <div className="flex-grow-1">
            {
                 isLoading ? <Loading /> : ""
             }
@@ -476,12 +494,12 @@ function Project(){
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
-                                                <th scope="col">Mã dự án</th>
+                                                <th scope="col" className="text-center">Mã dự án</th>
                                                 <th scope="col">Tên dự án</th>
                                                 <th scope="col">Người tạo</th>
-                                                <th scope="col">Ngày tạo</th>
-                                                <th scope="col">Ngày kết thúc</th>
-                                                <th scope="col">Trạng thái</th>
+                                                <th scope="col" className="text-center">Ngày tạo</th>
+                                                <th scope="col" className="text-center">Ngày kết thúc</th>
+                                                <th scope="col" className="text-center">Trạng thái</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -490,11 +508,11 @@ function Project(){
                                                     return(
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
                                                             <th key={index+'index'} scope="row">{index}</th>
-                                                            <td key={index+"id"}>{item.id}</td>
+                                                            <td className="text-center" key={index+"id"}>{item.id}</td>
                                                             <td key={index+"title"} className={clsx(Style.titleshow)}>{item.title.length>30?(item.title.slice(0,30)+'...'):item.title}</td>
-                                                            <td key={index+"useCreate"}>{item.userCreate}</td>
-                                                            <td key={index+'createDate'}>{moment(item.createTime).format("DD/MM/YYYY") }</td>
-                                                            <td key={index+'endate'}>{moment(item.endDate).format("DD/MM/YYYY") }</td>
+                                                            <td key={index+"useCreate"} >{item.userCreate}</td>
+                                                            <td key={index+'createDate'} className="text-center">{moment(item.createTime).format("DD/MM/YYYY") }</td>
+                                                            <td key={index+'endate'} className="text-center">{moment(item.endDate).format("DD/MM/YYYY") }</td>
                                                             {/* filterStatus[item.status] */}
                                                             <td key={index+'status'}>
                                                                 <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doingStatus' : 'doneStatus') )}>{ HandleGetLable(filterStatus,item.status).label}
@@ -520,20 +538,23 @@ function Project(){
                                                                        </Dropdown.Item>
                                                                         <Dropdown.Item  as={Link} to={"/admin/project-detail/" + item.id + "/" + MakeUrl(item.title)} target="_blank"
                                                                          className={clsx( Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}
-                                                                         onClick={()=>{ window.scrollTo(0, 0)}}><i className="mdi mdi-window-restore "></i>
+                                                                         onClick={()=>{ window.scrollTo(0, 0)}}>
+                                                                             <i className="mdi mdi-window-restore "></i>
                                                                             Chi tiết
                                                                        </Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
                                                                         <Dropdown.Item as={Link} target="_blank"  to={{ pathname: `/admin/update-project/${item.id}/${item.title}`, state:locations}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}><i className="mdi mdi-lock-reset "></i>
                                                                             Sửa Dự Án
                                                                         </Dropdown.Item>
-                                                                      
-                                                                        {/* <Dropdown.Divider /> */}
-                                                    
+
                                                                         <Dropdown.Item onClick={()=>{handleShow(item.id)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Tiến trình</Dropdown.Item>
                                                                         <Dropdown.Item onClick={()=>{handleShowArtical(item.id)}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}>
                                                                         <i className="mdi mdi-plus-circle-outline"></i>
                                                                             Tạo bài viết
+                                                                        </Dropdown.Item>
+                                                                        <Dropdown.Item onClick={()=>{handleShowArticalDetail(item.id)}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}>
+                                                                        <i className="mdi mdi-window-restore "></i>
+                                                                            Chi tiết bài viết
                                                                         </Dropdown.Item>
                                                                         <Dropdown.Item onClick={()=>{handleShowTransaction(item.title,item.id)}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}>
                                                                         <i className="mdi mdi-swap-horizontal"></i>
@@ -872,9 +893,13 @@ function Project(){
                     <Button variant="primary">Understood</Button>
                     </Modal.Footer> */}
                 </Modal>
+                
+                {
+                    (showArticalDetail)?<ModalArticalDetail state={[showArticalDetail,setShowArticalDetail]} id={idProjectDetail}/>:null
+                }
             </div>
            
-        </>
+        </div>
     )
 }
 

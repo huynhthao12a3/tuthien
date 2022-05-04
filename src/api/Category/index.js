@@ -6,5 +6,10 @@ const categoryApi={
         return axiosClient.get(url)
 
     },
+    getNews() {
+        const url = '/Category/get-news-categories'
+        return axiosClient.get(url)
+
+    },
 }
 export default categoryApi

@@ -67,7 +67,7 @@ function AdminReclaim(){
         return <label style={{ display: 'block', marginTop: 10 }} {...props} />;
     };
     return(
-        <>
+        <div className="flex-grow-1">
             <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
                 <div className="container-fluid w-100 pe-5">
                     <div className={clsx('row')}>
@@ -163,7 +163,7 @@ function AdminReclaim(){
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 export default AdminReclaim
