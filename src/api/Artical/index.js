@@ -15,8 +15,9 @@ const articalApi = {
         return axiosClient.post(url, data)
     },
     editArtical: (data) => {
-        const url =`/artical/edit-artical/${data.id}`
-        return axiosClient.post(url, data)
+        const url =`/project/update-artical/${data.id}`
+        delete data.id
+        return axiosClient.put(url, data)
     },
     
     getAll(params) {

@@ -17,7 +17,9 @@ import newsApi from "../../../api/News"
 import { Button, Modal, Form } from "react-bootstrap";
 import { CKEditor } from "@ckeditor/ckeditor5-react"
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import Loading from "../../../shares/Loading"
 import Swal from "sweetalert2"
+
 let isCreate= false
 function AdminNews(){
     const imgDefault="\\uploads\\Images\\project\\02052022_043453_default-image-620x600.jpg"
@@ -40,13 +42,6 @@ function AdminNews(){
             "filePath": "",
         }
     }
-    const filtercategory = [
-        { value: '1', label: 'Thiên tai' },
-        { value: '2', label: 'Trẻ em' },
-        { value: '3', label: 'Sức khỏe' },
-        { value: '4', label: 'Con người' },
-        { value: '5', label: 'Xã hội' },
-    ]
     // select trạng thái
     const filterStatus = [
         { value: '1', label: 'chờ duyệt' },
@@ -55,7 +50,9 @@ function AdminNews(){
 
     const imgFormat = [ 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
     //-------------------------------useState
-    const [categoryOptions,setCategoryOptions]= useState([])
+    const [categoryOptions,setCategoryOptions]= useState([
+        {value: 0, label: 'Tất cả'}])
+    const [isLoading, setIsLoading] = useState(true)
 
     const [arrayNews, setArrayNews] = useState(arr)
     const [inputSearch,setInputSearch]= useState('')
@@ -65,6 +62,7 @@ function AdminNews(){
     const [imgValue,setImgValue]=useState('')
     const [show, setShow] = useState(false);
     const [reLoad,setReload]=useState(true)
+    const [selected, setSelected] = useState([]);// lưu các giá trị danh mục
 
     const [createNews,setCreateNews]=useState(objNew)
 
@@ -73,16 +71,38 @@ function AdminNews(){
     useEffect(async()=>{
         const params= {
             "keyword":inputSearch,
+            'categoryid':inputCategoty.value,
             "pageindex":pageindex,
             "status":inputStatus.value
         }
+
         const respon= await newsApi.getAll(params)
-        setArrayNews(respon.data)
-        console.log(respon.data)
+        if(respon.isSuccess)
+        {
+            setIsLoading(false)
+           
+                setArrayNews(respon.data)
+            
+            console.log(respon.data)
+        }
+        else{
+            Swal.fire("lỗi load dữ liệu")
+        }
+       
         // if(respon.)
         // {
         // }
     },[inputSearch,inputCategoty,inputStatus,pageindex,reLoad])
+    useEffect(async()=>{
+        const respon = await categoryApi.getNews()
+        setCategoryOptions([...categoryOptions,...respon.data.map(function(item){
+            return{
+                value:item.id,
+                label:item.categoryName
+            }
+        })])
+        
+    },[])
     useEffect(()=>{
         setCreateNews({...createNews,friendlyUrl:MakeUrl(createNews.title)})
     },[createNews.title])
@@ -117,16 +137,16 @@ function AdminNews(){
     },[imgValue])
     //------------------------------------------funtion
     // xử lý hiện labe của 
-    function HandleGetLable(filterlist,index){
+    function HandleGetLable(filter,id){
+        console.log('id',id)
         return(
-            filterlist.find(function(itemCategoty){
-                if (itemCategoty.value===(index+'')){
+            filter.find(function(itemCategoty){
+                if (itemCategoty.value===(id+'')){
                     return itemCategoty
                 }
             })
         )
     }
-    console.log("sdasdsa",HandleGetLable(filtercategory,1))
     const handleChangAvatar= (e)=>{
         setImgValue(e.target.files[0])
     }
@@ -185,9 +205,16 @@ function AdminNews(){
                       "filePath": createNews.banner.filePath,
                       "friendlyUrl": createNews.banner.filePath.slice(createNews.banner.filePath.lastIndexOf("\\")+1),
                       "note":"new-path"
-                    }
+                    },
+                    "category": selected.map(function (item) {
+                        return ({
+                            "categoryId":item.value
+                        })
+                    }),
+                   
                   }
                   const respon = await newsApi.update(data)
+                
                   if(respon.isSuccess)
                   {
                     Swal.fire("Chỉnh sửa bảng tin thành công")
@@ -203,16 +230,24 @@ function AdminNews(){
                     "shortDescription": createNews.shortDescription,
                     "content": createNews.content,
                     "friendlyUrl":createNews.friendlyUrl,
+                    'status':1,
                     "banner": {
                         "fileName": imgValue.name,
                         "filePath": createNews.banner.filePath,
                         "friendlyUrl": imgValue.name,
                         "note": imgValue.name
-                    }
+                    } ,
+                    "category": selected.map(function (item) {
+                        return ({
+                            "categoryId":item.value
+                        })
+                    }),
                 }
+               
                 const respon = await newsApi.createNews(data)
                 if(respon.isSuccess)
                 {
+                    setSelected('')
                     Swal.fire("Tạo bảng tin thành công")
                     setReload(!reLoad)
                     handleClose()
@@ -228,6 +263,7 @@ function AdminNews(){
       
     
     }
+
     const handleDelete=(id)=>{
         const accept= async()=>{
             const respon = await newsApi.delete(id)
@@ -257,7 +293,10 @@ function AdminNews(){
         
     }
     return(
-        <>
+        <div className="flex-grow-1">
+             {
+                isLoading ? <Loading /> : ""
+            }
             <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
                 <div className="container-fluid w-100 pe-5">
                     <div className={clsx('row')}>
@@ -302,7 +341,6 @@ function AdminNews(){
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
-                                                <th scope="col">Danh mục</th>
                                                 <th scope="col">Tiêu đề</th>
                                                 <th scope="col">Ngày Tạo</th>
                                                 <th scope="col">Ngày đăng</th>
@@ -316,10 +354,8 @@ function AdminNews(){
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
                                                             
                                                             <th key={index+'index'} scope="row">{index}</th>
-                                                            <td key={index+'category'}>{
-                                                                HandleGetLable(filtercategory,1).label
-                                                            }</td>
-                                                            <td key={index+"title"} className={clsx(Style.titleshow)}>{item.title.length>30?(item.title.slice(0,30)+'...'):item.title}</td>
+                                                          
+                                                            <td key={index+"title"} className={clsx(Style.titleshowa)}>{item.title.length>30?(item.title.slice(0,30)+'...'):item.title}</td>
                                                             <td key={index+'startDate'}>{moment(item.endDate).format("DD/MM/YYYY") }</td>
                                                           
                                                             <td key={index+'endate'}>{moment(item.endDate).format("DD/MM/YYYY") }</td>
@@ -431,6 +467,10 @@ function AdminNews(){
                                         autoFocus
                                     />
                                 </Form.Group>
+                                <div className='col-12 mt-3 w-100'>
+                                    <label>Danh mục</label>
+                                    <Select value={selected} onChange={setSelected} className={clsx(Style.category, 'w-100')} options={categoryOptions} defaultValue={categoryOptions} isMulti />
+                                </div>
 
                             </Form>
                             <Form className="d-flex justify-content-between col-12">
@@ -480,7 +520,7 @@ function AdminNews(){
                     </Modal.Footer>
                 </Modal>
             </div>
-        </>
+        </div>
     )
 }
 export default AdminNews

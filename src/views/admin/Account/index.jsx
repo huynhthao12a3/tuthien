@@ -12,6 +12,7 @@ import Select from 'react-select'
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { ar } from "date-fns/locale";
+import Loading from "../../../shares/Loading"
 import adminUser from "../../../api/User/Admin"
 import { Button, Modal, Form } from "react-bootstrap";
 import Swal from 'sweetalert2'
@@ -64,7 +65,7 @@ function AdminAccount()
 
     
     const [imgValue,setImgValue]=useState('')
-
+    const [isLoading, setIsLoading] = useState(true)
     const [show, setShow] = useState(false)
 
     //------------------------------------------------------------useEffect
@@ -78,8 +79,15 @@ function AdminAccount()
             'pageindex': pageindex,
         }
         const respons = await adminUser.getAll(data)
-        console.log("respon", respons.data)
-        setArrayUsers(respons.data)
+        if(respons.isSuccess)
+        {
+            setIsLoading(false)
+            setArrayUsers(respons.data)
+        }
+        else{
+            Swal.fire("lỗi")
+        }
+       
     }, [inputSearch, inputType, inputStatus, pageindex, sta])
 
     //đẩy ảnh lên API
@@ -336,7 +344,10 @@ function AdminAccount()
         }
     }
     return (
-        <>
+        <div className="flex-grow-1">
+            {
+                isLoading ? <Loading /> : ""
+            }
             <div className={clsx(Style.project, "main-manage container-fluid w-100")}>
                 <div className="container-fluid w-100 pe-5">
                     <div className={clsx('row')}>
@@ -381,9 +392,9 @@ function AdminAccount()
                                             <tr>
                                                 <th className="text-center" scope="col">#</th>
                                                 <th className="text-center" scope="col">Hình ảnh</th>
-                                                <th className="text-center" scope="col">Họ tên</th>
-                                                <th className="text-center" scope="col">Email</th>
-                                                <th className="text-center" scope="col">Điện thoại</th>
+                                                <th  scope="col">Họ tên</th>
+                                                <th scope="col">Email</th>
+                                                <th  scope="col">Điện thoại</th>
                                                 <th className="text-center" scope="col">Loại</th>
                                                 <th className="text-center" scope="col">Chức vụ</th>
                                                 <th className="text-center" scope="col">Trạng thái</th>
@@ -403,21 +414,12 @@ function AdminAccount()
                                                                 </div>
                                                             </td>
 
-                                                            {/* // <td key={index+"name"} className={clsx(Style.lh,"text-center")} >{item.fullName}</td>
-                                                            // <td key={index+'email'} className={clsx(Style.lh,"text-center")} >{item.email}</td>
-                                                          
-                                                            // <td key={index+'phonNumber'} className={clsx(Style.lh,"text-center")} >{item.phoneNumber}</td>
-                                                            // <td key={index+'type'} className={clsx(Style.lh,"text-center")} >{ HandleGetLable(type,item.type).label}</td>
-                                                            // <td key={index+'isAdmin'} className={clsx(Style.lh,"text-center",item.isAdmin?'text-warning':'text-primary')} >{item.isAdmin?'Admin':'Client'}</td>
-                                                            // <td key={index+'status'} className={clsx(Style.lh,"text-center")} >
-                                                            //     <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? ' doingStatusUse' : 'doingStatusUse') )}>{ HandleGetLable(filterStatus,item.status).label}
-                                                                  
-                                                            //     </span>  */}
+                                                           
 
-                                                            <td key={index + "name"} className={clsx(Style.lh, "text-center")} >{item.fullName}</td>
-                                                            <td key={index + 'email'} className={clsx(Style.lh, "text-center")} >{item.email}</td>
+                                                            <td key={index + "name"} className={clsx(Style.lh, )} >{item.fullName}</td>
+                                                            <td key={index + 'email'} className={clsx(Style.lh, )} >{item.email}</td>
 
-                                                            <td key={index + 'phonNumber'} className={clsx(Style.lh, "text-center")} >{item.phoneNumber}</td>
+                                                            <td key={index + 'phonNumber'} className={clsx(Style.lh, )} >{item.phoneNumber}</td>
                                                             <td key={index + 'type'} className={clsx(Style.lh, "text-center")} >{HandleGetLable(type, item.type).label}</td>
                                                             <td key={index + 'type'} className={clsx(Style.lh, "text-center", item.isAdmin ? 'text-warning' : 'text-primary')} >{item.isAdmin ? 'Admin' : 'Client'}</td>
                                                             <td key={index + 'status'} className={clsx(Style.lh, "text-center")} >
@@ -599,7 +601,7 @@ function AdminAccount()
                     </Modal.Footer>
                 </Modal>
             </div>
-        </>
+        </div>
     )
 }
 export default AdminAccount

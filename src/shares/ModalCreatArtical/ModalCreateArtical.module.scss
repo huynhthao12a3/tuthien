@@ -1,0 +1,17 @@
+.imgAccountUpdate{
+    .img_item1{
+        max-height: 350px;
+        margin-top: 10px;
+    }
+    .btnMoreImg{
+        position: relative;
+        max-width: 160px;
+        margin-right: 0px;
+        margin-top: 20px;
+        color: var(--text-nav-color);
+        background-color: var( --admin-btn-color) ;
+        border-radius: var(--boder-radius);
+        line-height: 1rem;
+    }
+    
+}

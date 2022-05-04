@@ -17,17 +17,19 @@ import * as $ from "jquery"
 import parseISOWithOptions from 'date-fns/fp/parseISOWithOptions';
 function EditProjectUser(prop){
     console.log("prop",prop)
+    let { id,friendlyurl } = useParams();
     //----------------------------------- 
     const history= useHistory()
     const locations = useLocation().pathname
-    let idUrl= locations.slice(locations.indexOf("project/")+1,locations.lastIndexOf("/"))
-    idUrl=idUrl.slice(idUrl.lastIndexOf("/")+1)
+    // let idUrl= locations.slice(locations.indexOf("project/")+1,locations.lastIndexOf("/"))
+    // idUrl=idUrl.slice(idUrl.lastIndexOf("/")+1)
     const imgFormat=['jpeg','gif','png','tiff','raw','psd','jpg']
 
     //---------------------------------- useState
     const [projectValue,setProjectValue]= useState({
         bannerPath:'',
         title:'',
+        status:'',
         friendlyUrl:'',
         shortDescription:'',
         summary:"",
@@ -54,11 +56,15 @@ function EditProjectUser(prop){
     //----------------------------------useEffect
     // get value from api
     useEffect(()=>{
+        console.log("projectValue",projectValue)
+    },[projectValue])
+    useEffect(()=>{
         const getProject=async()=>{
            try{
-                const response = await projectApi.get(idUrl)
+                const response = await projectApi.get(id)
                 if (response.isSuccess) {
                     setProjectValue(response.data)
+                    
                 }
                 else {
                     alertify.alert('lỗi load dữ liệu')
@@ -177,10 +183,11 @@ function EditProjectUser(prop){
             impact !==''  )
             {
                 const data ={
-                    "id":idUrl,
+                    "id":id,
                     "title": title,
                     "shortDescription": shortDescription,
                     "friendlyUrl": friendlyUrl,
+                    "projectStatus":projectValue.status,
                     "summary": summary,
                     "problemToAddress": problemToAddress,
                     "solution":solution,
@@ -198,6 +205,7 @@ function EditProjectUser(prop){
                             })
                     })
                 } 
+                console.log("data",data)
                 const repons= await projectApi.editProject(data)
                 if(repons.isSuccess)
                 {
@@ -209,10 +217,14 @@ function EditProjectUser(prop){
                             className: "bg-base-color"
                         }
                     });
-
-                    let path ="/admin/project-detail/"+prop.location.pathname.slice(prop.location.pathname.indexOf("/admin/update-project/")+"/admin/update-project/".length)
-                    console.log(path)
-                    // history.push(prop.location.state)
+                    let path=''
+                    if(location.includes('admin'))
+                    {
+                        path =`/admin/project-detail/${id}/${friendlyurl}`
+                    }
+                    else{
+                        path =`/project-detail/${id}/${friendlyurl}`
+                    }
                     history.push(path)
                     window.scrollTo(0, 0)
                 }

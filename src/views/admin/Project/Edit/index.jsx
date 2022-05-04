@@ -178,7 +178,7 @@ function EditProject()
     }
 
     return(
-        <>
+        <div className="flex-grow-1">
          <div className={clsx(Style.main,'addprojectmain')}>
             <div className={clsx(Style.titleWrap,'container')}>
                 <div className='row'>
@@ -322,7 +322,7 @@ function EditProject()
             </div>
         </div>
         
-        </>
+        </div>
     )
 }
 export default EditProject
