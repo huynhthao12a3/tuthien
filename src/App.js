@@ -24,10 +24,13 @@ import ArticalDetail from "./views/client/Project/Artical/ArticalDetail";
 import ClientLayout from './layouts/ClientLayout';
 import AdminLayout from './layouts/AdminLayout';
 import NotFound from './shares/NotFound';
+import ClientLogin from './views/client/Login';
 function App() {
   return (
     <BrowserRouter>
      <Switch>
+         <Route  exact path="/login" component={ClientLogin}/>
+         <Route  exact path="/register" component={ClientLogin}/>
          <Route  path="/admin" component={AdminLayout}/>
          <Route  path="/" component={ClientLayout}/>
          

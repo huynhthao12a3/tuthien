@@ -9,6 +9,8 @@ import Nav from "react-bootstrap/Nav";
 import { NavLink } from "react-router-dom";
 import trxCoin from "../../../../assets/images/trx-coin.svg"
 import * as alertify from 'alertifyjs';
+import * as utils from '../../../../utils/utils.js';
+
 import 'alertifyjs/build/css/alertify.css';
 // Dùng chung
 import SetInnerHTML from "../../../../shares/setInnerHTML"
@@ -35,6 +37,7 @@ import projectApi from '../../../../api/Project';
 import clientUser from '../../../../api/User/Client';
 import logoCharity from '../../../../assets/images/default-avatar.jpg'
 import Loading from "./../../../../shares/Loading/index";
+import Table from 'react-bootstrap/Table'
 ProjectDetail.propTypes = {
 
 };
@@ -105,10 +108,7 @@ function ProjectDetail(props) {
         fetchDataProject()
     }, [id])
 
-    // Hàm format string thành number
-    function formatNumber(num) {
-        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-    }
+
 
 
     // URL map location
@@ -609,7 +609,7 @@ function ProjectDetail(props) {
     const saveTransactionRefund = async (hash) => {
         const data = {
             id: id,
-            amount: valueTrx,
+            amount: 0, // đưa value sai ---------------------- check lại
             hash: hash,
         }
         const response = await clientUser.refundProject(data)
@@ -622,7 +622,7 @@ function ProjectDetail(props) {
             }
             {/* Header dự án  */}
             <div className={clsx(Style.headerProject, 'py-5 ')} >
-                <div className="container d-flex justify-content-evenly">
+                <div className="container ">
                     <div className="row">
 
                         <div className="col-12 col-lg-4 d-flex align-items-center justify-content-center">
@@ -660,7 +660,7 @@ function ProjectDetail(props) {
                             <div className="ProgressBarContent my-3">
                                 <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
                                 <ProgressBar striped now={Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100) + 5} label={`${Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100)} %`} />
-                                <span>{formatNumber((Number(dataProject.amountNow) * trxPrice).toFixed(2))} / {formatNumber(dataProject.amountNeed)} VNĐ</span>
+                                <span>{utils.formatNumber((Number(dataProject.amountNow) * trxPrice).toFixed(2))} / {utils.formatNumber(dataProject.amountNeed)} VNĐ</span>
                             </div>
                             <div className="row">
                                 <div className="col-12 col-md-6">
@@ -794,7 +794,7 @@ function ProjectDetail(props) {
 
                                     <div className={clsx(Style.inputTrx, 'd-flex flex-column text-center px-2')}>
                                         <input type="number" inputMode="numeric" min="1" className=" fs-4 py-1 text-center fw-bolder" value={valueTrx} onChange={(e) => setValueTrx(e.target.value)} />
-                                        <span className=" text-muted p-2 ">~ {formatNumber(valueTrx * trxPrice)}</span>
+                                        <span className=" text-muted p-2 ">~ {utils.formatNumber(valueTrx * trxPrice)}</span>
                                     </div>
                                     <div className="d-flex flex-column justify-content-center">
                                         <div className="fw-bold">TRX</div>
@@ -825,7 +825,7 @@ function ProjectDetail(props) {
                         </div>
                         <div className="col-12 col-lg-6 text-end border-end">
                             <p className={clsx(Style.baseColor, 'm-0 fs-5')}>Mục tiêu của chúng tôi</p>
-                            <p className={clsx(Style.foreignColor, 'm-0')}>{formatNumber(dataProject.amountNeed)} VNĐ</p>
+                            <p className={clsx(Style.foreignColor, 'm-0')}>{utils.formatNumber(dataProject.amountNeed)} VNĐ</p>
                         </div>
                     </div>
 
@@ -840,7 +840,7 @@ function ProjectDetail(props) {
                                                 <div style={{ borderBottom: "1px dashed #ccc" }} className="fw-bold text-white">
                                                     T{index + 1}
                                                 </div>
-                                                <div style={{ fontSize: '12px' }} className=" text-muted ">{formatNumber(Number(item.amountNeed))}</div>
+                                                <div style={{ fontSize: '12px' }} className=" text-muted ">{utils.formatNumber(Number(item.amountNeed))}</div>
                                             </button>
                                             {index < dataProject.processes.length - 1 ? <div className={clsx(Style.tabLine)}></div> : ""}
                                         </li>
@@ -911,7 +911,7 @@ function ProjectDetail(props) {
                                                                         <div key={index} className={clsx(Style.expenseCard, 'p-2')}>
                                                                             <div className={clsx(Style.expenseHeader, Style.foreignColor, 'd-flex justify-content-between fs-5')}>
                                                                                 <span className='text-uppercase m-0'>Tổng chi</span>
-                                                                                <span className='text-uppercase m-0'>{formatNumber(Number(itemExpense.amount))} VNĐ</span>
+                                                                                <span className='text-uppercase m-0'>{utils.formatNumber(Number(itemExpense.amount))} VNĐ</span>
                                                                             </div>
                                                                             <div className={clsx(Style.expenseBody, 'p-4 bg-white text-dark')}>
                                                                                 <div className="expense-body-header d-flex justify-content-around flex-column flex-md-row">
@@ -1027,24 +1027,26 @@ function ProjectDetail(props) {
 
                             <Slider {...settingSliderDonors}>
                                 {
-                                    dataProject.transaction.map((item, index) => (
-                                        <div key={index} className={clsx(Style.articalDetail, "d-flex flex-column  p-3 ")}>
-                                            <div className="rounded-circle d-inline-block mx-auto p-2 border">
-                                                <img src={process.env.REACT_APP_URL + item.userAvatar}
-                                                    onError={(e) => (e.target.onerror = null, e.target.src = logoCharity)}
-                                                    alt="hình đại diện" width="100px" height="100px" className=" rounded-circle" />
-                                            </div>
-                                            <div className="my-3">
-                                                <p className="m-0 text-center">{item.userName}</p>
-                                                <div className="m-0 d-flex justify-content-center">
-                                                    <img src={trxCoin} alt="coin" className="" width="16px" />
-                                                    <span className="ms-1 fw-bold">{item.amount}</span>
+                                    dataProject.transaction
+                                        .filter((item) => item.type === 1)
+                                        .map((item, index) => (
+                                            <div key={index} className={clsx(Style.articalDetail, "d-flex flex-column  p-3 ")}>
+                                                <div className="rounded-circle d-inline-block mx-auto p-2 border">
+                                                    <img src={process.env.REACT_APP_URL + item.userAvatar}
+                                                        onError={(e) => (e.target.onerror = null, e.target.src = logoCharity)}
+                                                        alt="hình đại diện" width="80px" height="80px" className=" rounded-circle" />
                                                 </div>
-                                                <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết</a>
+                                                <div className="my-3">
+                                                    <p className="m-0 text-center">{item.userName}</p>
+                                                    <div className="m-0 d-flex justify-content-center">
+                                                        <img src={trxCoin} alt="coin" className="" width="16px" />
+                                                        <span className="ms-1 fw-bold">{item.amount}</span>
+                                                    </div>
+                                                    <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết</a>
 
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))
+                                        ))
                                 }
                             </Slider>
                         </div>
@@ -1052,6 +1054,78 @@ function ProjectDetail(props) {
                 </div>
             </div>
 
+            {/* Lịch sử rút tiền  */}
+            <div id="withdraw" className={clsx(Style.withdraw, "py-5")}>
+                <div className="container">
+                    <div className="row ">
+                        <div className="col-12">
+                            <h2>Lịch sử rút tiền</h2>
+                            <div className={clsx(Style.line)}><hr /></div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12 py-4">
+
+                            <Slider {...settingSliderDonors}>
+                                {
+                                    dataProject.transaction
+                                        .filter((item) => item.type === 2)
+                                        .map((item, index) => (
+                                            <div key={index} className={clsx(Style.articalDetail, "d-flex flex-column  p-3 ")}>
+                                                <div className="rounded-circle d-inline-block mx-auto p-2 border">
+                                                    <img src={process.env.REACT_APP_URL + item.userAvatar}
+                                                        onError={(e) => (e.target.onerror = null, e.target.src = logoCharity)}
+                                                        alt="hình đại diện" width="80px" height="80px" className=" rounded-circle" />
+                                                </div>
+                                                <div className="my-3">
+                                                    <p className="m-0 text-center">{item.userName}</p>
+                                                    <div className="m-0 d-flex justify-content-center">
+                                                        <img src={trxCoin} alt="coin" className="" width="16px" />
+                                                        <span className="ms-1 fw-bold">{item.amount}</span>
+                                                    </div>
+                                                    <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết</a>
+
+                                                </div>
+                                            </div>
+                                        ))
+                                }
+                            </Slider>
+                        </div>
+                    </div>
+                    {/* <Table responsive striped bordered>
+                        <thead>
+                            <tr>
+                                <th scope="col" className="text-center">#</th>
+                                <th scope="col" className="text-center">Người nhận</th>
+                                <th scope="col" className="text-center">Giá trị</th>
+                                <th scope="col" className="text-center">Chi tiết giao dịch</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+
+                                dataProject.transaction
+                                    .filter((item) => item.type === 2)
+                                    .map((item, index) => (
+
+                                        <tr>
+                                            <td className="text-center">{index + 1}</td>
+                                            <td className="text-center">{item.userName}</td>
+                                            <td className="text-center">{item.amount} TRX</td>
+                                            <td className="text-center">
+                                                <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} target="_blank" rel="noreferrer" className={clsx("m-0 d-block text-center text-decoration-none text-muted")}>{item.hash}</a>
+
+                                            </td>
+                                        </tr>
+
+                                    ))
+                            }
+                        </tbody>
+                    </Table> */}
+
+                </div>
+
+            </div>
         </>
 
     );

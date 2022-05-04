@@ -13,6 +13,8 @@ import SetInnerHTML from "./../../../shares/setInnerHTML/index";
 import * as $ from 'jquery'
 import charityBanner from '../../../assets/images/charity_banner.jpg'
 import Loading from "../../../shares/Loading"
+import * as utils from '../../../utils/utils.js';
+
 function ClientProject() {
 
 
@@ -105,9 +107,7 @@ function ClientProject() {
       .then(res => res.json())
       .then(res => { setTrxPrice(res.tron.vnd) })
   }, [])
-  function formatNumber(num) {
-    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-  }
+
   // Amount
 
 
@@ -206,7 +206,7 @@ function ClientProject() {
                           <div className="ProgressBarContent px-3 my-4  bg-light rounded-3">
                             <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
                             <ProgressBar striped now={Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100) + 10} label={`${Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100)} %`} />
-                            <span>{formatNumber((Number(item.amountNow) * trxPrice).toFixed(2))} / {formatNumber(item.amountNeed)} VNĐ</span>
+                            <span>{utils.formatNumber((Number(item.amountNow) * trxPrice).toFixed(2))} / {utils.formatNumber(item.amountNeed)} VNĐ</span>
                           </div>
                           <div className="border-start px-3 py-1 my-3 d-flex flex-column ">
                             <span ><i className="mdi mdi-history fs-5 pe-2"></i>Trạng thái</span>

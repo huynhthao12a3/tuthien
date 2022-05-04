@@ -20,6 +20,9 @@ import NotFound from "./../shares/NotFound/index";
 import DashboardClient from '../views/client/Dashboard';
 import News from '../views/client/News';
 import NewsDetail from '../views/client/News/NewsDetail';
+import Tutorial from '../views/client/Tutorial';
+import About from '../views/client/About';
+import ClientProfile from "./../views/client/Profile/index";
 
 ClientLayout.propTypes = {
     
@@ -47,9 +50,11 @@ function ClientLayout(props) {
                 <Route exact path="/dashboard" component={DashboardClient}/>
                 <Route exact path="/project" component={ClientProject}/>
                 <Route exact path="/news" component={News}/>
+                <Route exact path="/tutorial" component={Tutorial}/>
+                <Route exact path="/about" component={About}/>
+                <Route exact path="/profile" component={ClientProfile}/>
                 <Route exact path="/news/:id/:friendlyurl" component={NewsDetail}/>
                 <Route exact path="/project-detail/:id/:friendlyurl" component={ProjectDetail}/>
-                <Route exact path="/login" component={ClientLogin}/>
                 <Route exact path="/bai-viet/:id/:friendlyurl" component={ArticalDetail}/>
                 
                 {/* Route bắt buộc phải Login mới xemm được */}

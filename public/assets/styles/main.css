@@ -25,7 +25,11 @@
     --love-color-4: #FC9D9A;
     --love-color-5: #FE4365;
 }
-
+#root{
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
 /* các nút cho các trạng thái  */
 .base-color:hover{
@@ -68,11 +72,13 @@
 /* đã hoàng thành */
 
 html{
+    height:100%;
     font-size: 1rem;
     font-family: Roboto, sans-serif !important;
     box-sizing: border-box;
 }  
 body{
+    height:100%;
     padding-right: 0px !important;
     font-family: Roboto, sans-serif !important;
 } 
@@ -223,7 +229,7 @@ body{
     border-bottom-left-radius: 40%;
     color: #fff;
     background-color: var(--love-color-5);
-
+    
 }
 .nextBtn{
    

@@ -15,7 +15,7 @@ const clientUser = {
         return axiosClient.post(url, data)
     },
     register: (data) => {
-        const url = '/user/user-register'
+        const url = '/user/register-user'
         return axiosClient.post(url, data)
     },
     get: (id) => {

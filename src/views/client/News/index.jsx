@@ -8,6 +8,7 @@ import newsBanner from '../../../assets/images/news.png'
 import { Link } from "react-router-dom";
 import moment from "moment";
 import * as $ from 'jquery'
+import SetInnerHTML from "./../../../shares/setInnerHTML/index";
 News.propTypes = {
 
 };
@@ -62,25 +63,16 @@ function News(props) {
             {
                 isLoading ? <Loading /> : (
                     <>
-                        {/* <div className="container-fluid w-100">
-                            <div className="row">
-                                <div className={clsx(Style.bannerNews, 'position-relative align-items-center d-flex flex-column justify-content-center')}> */}
-                        {/* <div className={clsx(Style.bannerSearch, 'w-100 d-flex align-self-center justify-content-center')}>
-                                        <input className={clsx(Style.bannerInput, "px-3 w-50 me-2")} placeholder="Tên bài viết cần tìm..." />
-                                        <button className={clsx(Style.bannerBtn, " text-white bg-base-color rounded-3")} >Tìm Kiếm</button>
-                                    </div> */}
+
                         <img className={clsx(Style.bannerNews)} src={newsBanner} alt="" />
-                        {/* </div>
-                            </div>
-                        </div> */}
                         <div className="py-5 px-3 px-lg-5">
                             <div className="container">
                                 <div className="row">
                                     {/* Danh Mục */}
                                     <div className="col-12 col-md-4">
 
-                                        <div className='w-100 d-flex'>
-                                            <input className="inputSearch px-3 w-50 me-2" placeholder="Tên bài viết..." />
+                                        <div className='w-100 d-flex justify-content-evenly'>
+                                            <input className="inputSearch px-3 " placeholder="Tên bài viết..." />
                                             <button className=" text-white bg-base-color rounded-3" onClick={handleSearch}>Tìm Kiếm</button>
                                         </div>
                                         <div className="my-5" >
@@ -114,10 +106,13 @@ function News(props) {
                                                                     className={clsx(Style.imgCard, 'mb-3')} alt="hình ảnh bài viết" />
                                                             </Link>
                                                             <Link to={{ pathname: '/news/' + item.id + '/' + item.friendlyUrl }} onClick={() => { window.scrollTo(0, 0) }} className={clsx(Style.link, "text-uppercase text-decoration-none text-dark")} >{item.title}</Link>
-                                                            <div className="d-flex justify-content-between my-2">
+                                                            <div className="d-flex justify-content-between my-3">
 
-                                                                <p className='m-0 fst-italic '><i className="mdi mdi-account-edit me-1"></i>Lê Văn Bảo</p>
-                                                                <p className='m-0 fst-italic'>{moment("2022-09-11T09:12:22.737").format("DD/MM/YYYY")}<i className="mdi mdi-calendar-check ms-1"></i></p>
+                                                                <p className='m-0 fst-italic '><i className="mdi mdi-account-edit me-1"></i>{item.userCreate}</p>
+                                                                <p className='m-0 fst-italic'>{moment(item.createTime).format("DD/MM/YYYY")}<i className="mdi mdi-calendar-check ms-1"></i></p>
+                                                            </div>
+                                                            <div className={clsx(Style.shortDescription, "")}>
+                                                                <SetInnerHTML text={item.shortDescription} />
                                                             </div>
                                                         </div>
                                                     </div>

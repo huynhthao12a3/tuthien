@@ -50,7 +50,9 @@ var delay = (function() {
         timer = setTimeout(callback, ms);
     };
 })();
-
+export function formatNumber(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
 /** Auto render empty template */
 export function htmlEmptyTable(col = 10, title = 'Không tìm thấy dữ liệu') {
     if (title == '') { title = 'Không tìm thấy dữ liệu'; }

@@ -21,6 +21,8 @@ import projectApi from '../../../api/Project'
 import Loading from '../../../shares/Loading';
 import SetInnerHTML from '../../../shares/setInnerHTML';
 import ProgressBar from "react-bootstrap/ProgressBar";
+import * as utils from '../../../utils/utils.js';
+
 // Slider trong React Slick
 import Slider from "react-slick";
 // Thư viện xử lý ngày tháng 
@@ -96,7 +98,7 @@ function DashboardClient(props) {
         const fetchDataProjectList = async () => {
             const params = {
                 status: 2,
-                currentpage: 1
+                currentpage: 0
             }
             const response = await projectApi.getAll(params)
             if (response.isSuccess) {
@@ -109,9 +111,6 @@ function DashboardClient(props) {
     }, [])
 
 
-    function formatNumber(num) {
-        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-    }
 
     const settingSliderNews = {
         dots: true,
@@ -272,17 +271,17 @@ function DashboardClient(props) {
                     </div>
                     <div className="row">
                         <div className="col-12 col-lg-4 py-4">
-                            <p className="fs-1 text-center fw-bold">{formatNumber(5350000)} TRX</p>
-                            <p className="m-0 text-center">~ {formatNumber(Number(5350000) * trxPrice)} VNĐ</p>
+                            <p className="fs-1 text-center fw-bold">{utils.formatNumber(5350000)} TRX</p>
+                            <p className="m-0 text-center">~ {utils.formatNumber(Number(5350000) * trxPrice)} VNĐ</p>
                             <p className="text-center fst-italic fs-5">Số tiền đã kêu gọi</p>
                         </div>
                         <div className="col-12 col-lg-4 py-4">
-                            <p className="fs-1 text-center fw-bold">{formatNumber(350)}</p>
+                            <p className="fs-1 text-center fw-bold">{utils.formatNumber(350)}</p>
                             <p className="fs-5 m-0 text-center">-</p>
                             <p className="text-center fst-italic fs-5">Số dự án đã lập</p>
                         </div>
                         <div className="col-12 col-lg-4 py-4">
-                            <p className="fs-1 text-center fw-bold">{formatNumber(2167)}</p>
+                            <p className="fs-1 text-center fw-bold">{utils.formatNumber(2167)}</p>
                             <p className="fs-5 m-0 text-center">-</p>
                             <p className="text-center fst-italic fs-5">Số lượt đóng góp</p>
                         </div>
@@ -299,11 +298,7 @@ function DashboardClient(props) {
                     <div className="row">
 
                         {
-                            projectList.filter((item, index) => {
-                                if (index !== 9) {
-                                    return item
-                                }
-                            }).map((item, index) => (
+                            projectList.map((item, index) => (
 
                                 <div key={index} className={clsx(Style.projectItem, 'col-12  col-md-6 col-xxl-4 p-3 p-md-4')}>
                                     <div className={clsx(Style.projectWrapItem, "overflow-hidden shadow d-flex flex-column")}>
@@ -320,7 +315,7 @@ function DashboardClient(props) {
                                             <div className="ProgressBarContent px-3 my-4  bg-light rounded-3">
                                                 <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
                                                 <ProgressBar striped now={Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100) + 10} label={`${Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100)} %`} />
-                                                <span>{formatNumber((Number(item.amountNow) * trxPrice).toFixed(2))} / {formatNumber(item.amountNeed)} VNĐ</span>
+                                                <span>{utils.formatNumber((Number(item.amountNow) * trxPrice).toFixed(2))} / {utils.formatNumber(item.amountNeed)} VNĐ</span>
                                             </div>
                                             <div className="border-start px-3 py-1 my-3 d-flex flex-column ">
                                                 <span ><i className="mdi mdi-history fs-5 pe-2"></i>Trạng thái</span>
