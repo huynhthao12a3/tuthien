@@ -36,7 +36,7 @@ function AdminNavbar() {
     }
     const location = useLocation().pathname;
     return (
-        <Navbar id="admin-navbar" collapseOnSelect expand="xl" className="bg-white text-dark shadow border-bottom">
+        <Navbar id="admin-navbar" collapseOnSelect expand="xl" className="bg-white text-dark shadow border-bottom flex-shrink-0">
             <div className='container-fluid'>
                 <Navbar.Brand href="/admin/dashboard">
                     <img

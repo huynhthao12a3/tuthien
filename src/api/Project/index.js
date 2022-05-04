@@ -39,6 +39,10 @@ const projectApi = {
     getTransaction:(id)=>{
         const url=`/user/get-transaction?projectid=${id}`
         return axiosClient.get(url)
+    },
+    getOwnerProject:(data)=>{
+        const url=`/Project/get-ownerproject/${data.userid}?currentpage=${data.currentpage}`
+        return axiosClient.get(url)
     }
     
 }

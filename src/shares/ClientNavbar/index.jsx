@@ -144,7 +144,7 @@ function ClientNavbar() {
                         <Nav.Link className={clsx(location === "/project" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/project"><i className="mdi mdi-archive-outline me-2"></i>Dự án</Nav.Link>
                         <Nav.Link className={clsx(location === "/news" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/news"><i className="mdi mdi-newspaper me-2"></i>Tin tức</Nav.Link>
                         <Nav.Link className={clsx(location === "/tutorial" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/tutorial"><i className="mdi mdi-note-multiple-outline me-2"></i>Hướng dẫn</Nav.Link>
-                        <Nav.Link className={clsx(location === "/introduce" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/introduce"><i className="mdi mdi-account-box-outline me-2"></i>Giới thiệu</Nav.Link>
+                        <Nav.Link className={clsx(location === "/about" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/about"><i className="mdi mdi-account-box-outline me-2"></i>Giới thiệu</Nav.Link>
                         <Nav.Link className={clsx(location === "/add-project" ? "active" : "", "create-project text-uppercase rounded-3 px-3 mx-3 text-decoration-none text-center fw-bold")} as={NavLink} to="/add-project">Tạo dự án</Nav.Link>
 
                     </Nav>
@@ -156,7 +156,7 @@ function ClientNavbar() {
                                 (<div className="d-flex flex-column text-end">
                                     <span id="admin-navbar-email " className="px-2 text-dark">{clientInfo.fullName}</span>
                                     <NavDropdown title={'Donor'} id="nav-dropdown" className='text-dark px-2'>
-                                        <NavDropdown.Item >Cá nhân</NavDropdown.Item>
+                                        <NavDropdown.Item as={NavLink} to="/profile" >Cá nhân</NavDropdown.Item>
                                         <NavDropdown.Item onClick={handleLogout} >Đăng xuất</NavDropdown.Item>
                                     </NavDropdown>
                                 </div>) : (
