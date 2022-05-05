@@ -37,7 +37,7 @@ const projectApi = {
         return axiosClient.patch(url)
     },
     getTransaction:(id)=>{
-        const url=`/user/get-transaction?projectid=${id}`
+        const url=`/Project/get-transactions?projectid=${id}` 
         return axiosClient.get(url)
     },
     getOwnerProject:(data)=>{

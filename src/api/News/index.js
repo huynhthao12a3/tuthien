@@ -15,7 +15,8 @@ const newsApi = {
     },
     editNews: (data) => {
         const url =`/news/edit-news/${data.id}`
-        return axiosClient.post(url, data)
+        delete data.id
+        return axiosClient.put(url, data)
     },
     
     getAll(params) {

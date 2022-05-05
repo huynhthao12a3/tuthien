@@ -71,7 +71,7 @@ function ModalArticalDetai(prop){
             >
                 <Modal.Header closeButton>
                 <Modal.Title id="example-custom-modal-styling-title" className="text-black-50">
-                  Bài viết:  {arr.title}
+                  Dự án:  {arr.title}
                 </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -79,7 +79,7 @@ function ModalArticalDetai(prop){
                             <div className="container">
                                 <div className="row">
                                     <div className="col-12 col-lg-6">
-                                        <h2>Bài viết của dự án</h2>
+                                        <h2>Bài viết:</h2>
                                         <div className={clsx(Style.line)}><hr /></div>
                                     </div>
                                  

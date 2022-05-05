@@ -45,12 +45,12 @@ function ModalCreateArtical(props){
                     const respon = await articalApi.editArtical(data)
                     if(respon.isSuccess)
                     {
-                        Swal.fire('Chỉnh dửa bài viết thành công')
+                        Swal.fire('Cập nhật bài viết thành công')
                         setUpdate(!update)
                         handleClose()
                     }
                     else{
-                        Swal.fire('Chỉnh dửa bài viết thất bại')
+                        Swal.fire('Cập nhật bài viết thất bại')
                     }
                     
                 }
@@ -172,7 +172,7 @@ function ModalCreateArtical(props){
                 </Button>
                 <Button  variant="primary" onClick={() => { handleAccept() }}>
                     { 
-                        status===1?'Hoàn thành':'Tạo'
+                        status===1?'Cập nhật':'Tạo'
                     }
                 </Button>
             </div>

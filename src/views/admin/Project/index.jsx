@@ -508,19 +508,17 @@ function Project() {
                                                 arrayProject.map(function(item,index,arr){
                                                     return(
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
-                                                            <th key={index+'index'} scope="row">{index}</th>
-                                                            <td className="text-center" key={index+"id"}>{item.id}</td>
-                                                            <td key={index+"title"} className={clsx(Style.titleshow)}>{item.title.length>30?(item.title.slice(0,30)+'...'):item.title}</td>
-                                                            <td key={index+"useCreate"} >{item.userCreate}</td>
-                                                            <td key={index+'createDate'} className="text-center">{moment(item.createTime).format("DD/MM/YYYY") }</td>
-                                                            <td key={index+'endate'} className="text-center">{moment(item.endDate).format("DD/MM/YYYY") }</td>
+                                                            <th scope="row">{index+1}</th>
+                                                            <td className="text-center" >{item.id}</td>
+                                                            <td  className={clsx(Style.titleshow)}>{item.title.length>30?(item.title.slice(0,30)+'...'):item.title}</td>
+                                                            <td >{item.userCreate}</td>
+                                                            <td  className="text-center">{moment(item.createTime).format("DD/MM/YYYY") }</td>
+                                                            <td  className="text-center">{moment(item.endDate).format("DD/MM/YYYY") }</td>
 
                                                             {/* filterStatus[item.status] */}
-                                                            <td key={index + 'status'}>
+                                                            <td >
                                                                 <span className={clsx(Style.StatusItem, 'position-relative', item.status === 1 ? 'waitingStatus' : (item.status === 2 ? 'doingStatus' : 'doneStatus'))}>{HandleGetLable(filterStatus, item.status).label}
-                                                                    <div className={clsx(Style.changeStatus, 'changeStatus')}>
-                                                                        <span>duyệt dự án</span>
-                                                                    </div>
+                                                                   
                                                                 </span>
                                                             </td>
 
@@ -624,7 +622,7 @@ function Project() {
                                                     <li key={"nav-item" + index} className={clsx(Style.navItem, 'd-flex align-items-center ')} role="presentation">
                                                         <button className={clsx("bg-transparent px-3 px-lg-4  border  rounded-pill ", index === 0 ? "active" : "")} id={"pills-" + index + '-tab'} data-bs-toggle="pill" data-bs-target={"#pills-" + index} type="button" role="tab" aria-controls={"pills-" + index} aria-selected={index == 0 ? "true" : "false"}>
                                                             <div style={{ borderBottom: "1px dashed #ccc" }} className="fw-bold text-white">
-                                                                T{index + 1}
+                                                                {index + 1}
                                                             </div>
                                                             <div style={{ fontSize: '12px' }} className=" text-muted ">{utils.formatNumber(Number(item.amountNeed))}</div>
                                                         </button>
@@ -759,7 +757,7 @@ function Project() {
                 {/* modal tạo bài viết */}
                 <Modal size="xl" show={showAtical} onHide={handleCloseArtical}>
                     <Modal.Header closeButton>
-                        <Modal.Title className="text-black-50">Tạo bảng tin</Modal.Title>
+                        <Modal.Title className="text-black-50">Tạo bài viết</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="container-fluid ">
                         <div className="row p-3">
@@ -855,7 +853,7 @@ function Project() {
                                     <th scope="col" className={clsx(Style.lh, "text-center")} >#</th>
                                     <th scope="col" className={clsx(Style.lh, "text-center")} >Ảnh đại diện</th>
                                     <th scope="col" className={clsx(Style.lh, "text-center")} >Người đóng góp</th>
-                                    <th scope="col" className={clsx(Style.lh, "text-center")} >số tiền đóng góp</th>
+                                    <th scope="col" className={clsx(Style.lh, "text-center")} >Số tiền đóng góp</th>
                                     <th scope="col" className={clsx(Style.lh, "text-center")} >Đơn vị tiền tệ</th>
                                     <th scope="col" className={clsx(Style.lh, "text-center")} >Loại</th>
                                     <th scope="col" className={clsx(Style.lh, "text-center")} >Mã giao dịch</th>
@@ -866,19 +864,19 @@ function Project() {
                                     transactionValues.map(function (item, index, arr) {
                                         return (
                                             <tr key={index} style={{ lineHeight: '2rem' }}>
-                                                <th key={index + 'index'} className={clsx(Style.lh, "text-center")} scope="row">{index}</th>
-                                                <td key={index + 'ing'}>
+                                                <th  className={clsx(Style.lh, "text-center")} scope="row">{index+1}</th>
+                                                <td >
                                                     <div className={clsx(Style.imgAccount, " text-center mx-auto d-block")}>
                                                         <img id="img-banner1" src={process.env.REACT_APP_URL + item.userAvatar}
                                                             className={clsx(Style.img_item, " rounded-circle border border-1 img-fluid img-auto-size ")} />
                                                     </div>
                                                 </td>
 
-                                                <td key={index + "id"} className={clsx(Style.lh, "text-center")} >{item.userName}</td>
-                                                <td key={index + "title"} className={clsx(Style.titleshow, "text-center")}>{item.amount}</td>
-                                                <td key={index + "useCreate"} className={clsx(Style.lh, "text-center")}>TRX</td>
-                                                <td key={index + "useCreate"} className={clsx(Style.lh, "text-center")}>{item.type===1?"Đóng góp":(item.type===2?'Hoàn tiền':'Rút tiền')}</td>
-                                                <td key={index + "hash"} className={clsx(Style.hash, "text-center")}>
+                                                <td  className={clsx(Style.lh, "text-center")} >{item.userName}</td>
+                                                <td className={clsx(Style.titleshow, "text-center")}>{item.amount}</td>
+                                                <td  className={clsx(Style.lh, "text-center")}>TRX</td>
+                                                <td  className={clsx(Style.lh, "text-center")}>{item.type===1?"Đóng góp":(item.type===2?'Hoàn tiền':'Rút tiền')}</td>
+                                                <td  className={clsx(Style.hash, "text-center")}>
                                                     <a href={"https://nile.tronscan.org/#/transaction/" + item.hash}
                                                         target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}> {item.hash.slice(0, 30) + '...'}</a>
 
