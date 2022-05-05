@@ -31,6 +31,10 @@
     flex-direction: column;
 }
 
+/* Màu nền cho trang Admin  */
+.bg-admin{
+    background-color: #F0F3FC;
+}
 /* các nút cho các trạng thái  */
 .base-color:hover{
     color: var(--love-color-1) !important;

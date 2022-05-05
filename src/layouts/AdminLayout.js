@@ -51,6 +51,8 @@ function AdminLayout(props) {
         <>
 
             <AdminNavbar />
+            <div className="bg-admin flex-grow-1">
+
                 <Switch>
                     {/* <Route exact path="/admin" component={AdminLogin}/> */}
                     
@@ -77,6 +79,8 @@ function AdminLayout(props) {
 <Redirect to="/not-found"/>
                 
                 </Switch>
+            </div>
+
             <AdminFooter/>
         </>
     );

@@ -154,8 +154,9 @@ function ClientNavbar() {
                         {
                             clientInfo ?
                                 (<div className="d-flex flex-column text-end">
-                                    <span id="admin-navbar-email " className="px-2 text-dark">{clientInfo.fullName}</span>
-                                    <NavDropdown title={'Donor'} id="nav-dropdown" className='text-dark px-2'>
+                                    <span id="admin-navbar-email" className="px-2">Xin chào <span className="fw-bold">{clientInfo.fullName}</span>!</span>
+
+                                    <NavDropdown title={'Donor'} id="nav-dropdown" className=' px-2'>
                                         <NavDropdown.Item as={NavLink} to="/profile" >Cá nhân</NavDropdown.Item>
                                         <NavDropdown.Item onClick={handleLogout} >Đăng xuất</NavDropdown.Item>
                                     </NavDropdown>
@@ -168,7 +169,7 @@ function ClientNavbar() {
                         }
 
 
-                        <img id="admin-img-avatar" src={clientInfo ? process.env.REACT_APP_URL + clientInfo.avatar : defaultAvatar} alt="" width="40" height="40" className=" rounded-circle" />
+                        <img id="admin-img-avatar" src={clientInfo ? process.env.REACT_APP_URL + clientInfo.avatar : defaultAvatar} alt="" width="40" height="40" className=" rounded-circle border p-1" />
                     </div>
 
                 </Navbar.Collapse>

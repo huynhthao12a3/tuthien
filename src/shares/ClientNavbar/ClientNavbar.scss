@@ -47,8 +47,8 @@
 
 #client-navbar {
     & #nav-dropdown {
-        color: #000;
         padding: 0;
+            color: #777 ;
         &:active, &:hover, &:focus {
             text-decoration: none !important;
         }
@@ -96,7 +96,11 @@
 
      &-email {
         margin-bottom: -5px;
-        color: var(--text-nav-hover);
+        & span {
+            color: var(--love-color-5);
+
+        }
     }
+    
 }
 

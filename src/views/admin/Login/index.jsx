@@ -15,10 +15,7 @@ function AdminLogin() {
     const [password, setPassword] = useState();
     const history = useHistory();
     localStorage.clear();
-    const toggleForm = () => {
-        const container = document.querySelector('.container');
-        container.classList.toggle('active');
-    };
+
     const handleLogin = async (e) => {
         // setToken("1")
         // console.log('login success')

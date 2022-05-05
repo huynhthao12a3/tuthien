@@ -22,6 +22,10 @@ const clientUser = {
         const url = `/user/get-user/${id}`
         return axiosClient.get(url)
     }, 
+    getUserInfo: ()=>{
+        const url="/user/get-userinfo"
+        return axiosClient.get(url)
+    },
     updateUser: (data) => {
         const url = `/user/update-user/${data.userId}`
         return axiosClient.put(url, data)

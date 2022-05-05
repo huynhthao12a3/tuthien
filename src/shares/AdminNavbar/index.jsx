@@ -77,7 +77,7 @@ function AdminNavbar() {
                         {
                             adminInfo ?
                                 (<div className="d-flex flex-column text-end">
-                                    <span id="admin-navbar-email " className="px-2 text-dark">{adminInfo.fullName}</span>
+                                    <span id="admin-navbar-email" className="px-2">Xin chào <span className="fw-bold">{adminInfo.fullName}</span>!</span>
                                     <NavDropdown title={'Admin'} id="nav-dropdown" className='text-dark px-2'>
                                         <NavDropdown.Item as={Link} to={"profile/" + adminInfo.userId}>Cá nhân</NavDropdown.Item>
                                         <NavDropdown.Item onClick={handleLogout}>Đăng xuất</NavDropdown.Item>
@@ -91,7 +91,7 @@ function AdminNavbar() {
                         }
 
 
-                        <img id="admin-img-avatar" src={adminInfo ? process.env.REACT_APP_URL + adminInfo.avatar : defaultAvatar} alt="" width="40" height="40" className=" rounded-circle" />
+                        <img id="admin-img-avatar" src={adminInfo ? process.env.REACT_APP_URL + adminInfo.avatar : defaultAvatar} alt="" width="40" height="40" className=" rounded-circle border p-1" />
                     </div>
                 </Navbar.Collapse>
 
