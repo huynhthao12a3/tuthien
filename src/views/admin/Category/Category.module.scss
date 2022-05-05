@@ -130,4 +130,22 @@
     box-shadow: none !important
 }
 
+// modail
+.imgAccountUpdate{
 
+    .img_item{
+        height: 140px;
+        width: 140px;
+    }
+    .changeimg{
+        z-index: 10 !important;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+   
+}
+.disabled:disabled{
+    color: #aaa;
+}

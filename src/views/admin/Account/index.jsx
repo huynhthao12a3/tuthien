@@ -217,15 +217,14 @@ function AdminAccount()
             text: "Cho Admin hay cho Client?",
             icon: 'info',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: 'var(--love-color-3)',
+            cancelButtonColor: 'var(--love-color-4)',
             confirmButtonText: 'Admin',
             cancelButtonText: 'Client'
         }).then((result) => {
             if (result.isConfirmed) {
                 powerCreate=1
                 handleShow(item,'Tạo tài Khoản Admin')
-
             }
             else if (
                 result.dismiss === Swal.DismissReason.cancel
@@ -277,6 +276,7 @@ function AdminAccount()
                     "phoneNumber": userDetail.phoneNumber,
                     "avatarPath": userDetail.avatar,
                     "email": userDetail.email,
+                    "type": Number(typeCreate.value)
                 }
                 const respon = await adminUser.updateUser(data)
                 if (respon.isSuccess) {
@@ -297,7 +297,8 @@ function AdminAccount()
                         "avatarPath": userDetail.avatar,
                         "password": userDetail.password,
                         "email": userDetail.email,
-                        "address": userDetail.address
+                        "address": userDetail.address,
+                        "type": Number(typeCreate.value)
                     }
                     const responAdmin = await adminUser.registerAdmin(dataAdmin)
                     if (responAdmin.isSuccess) {
@@ -322,7 +323,8 @@ function AdminAccount()
                         "avatarPath": userDetail.avatar,
                         "password": userDetail.password,
                         "email": userDetail.email,
-                        "address": userDetail.address
+                        "address": userDetail.address,
+                        "type": Number(typeCreate.value)
                     }
                     const responAdmin = await adminUser.register(dataClient)
                     if (responAdmin.isSuccess) {
@@ -406,8 +408,8 @@ function AdminAccount()
                                                     return (
                                                         <tr key={index} style={{ lineHeight: '2rem' }}>
 
-                                                            <th key={index + 'index'} scope="row">{index}</th>
-                                                            <td key={index + 'ing'}>
+                                                            <th scope="row">{index+1}</th>
+                                                            <td>
                                                                 <div className={clsx(Style.imgAccount, "col-4 col-md-2")}>
                                                                     <img id="img-banner1" src={
                                                                         (imgFormat.includes(item.avatar.slice(item.avatar.indexOf('.') + 1))) ? (process.env.REACT_APP_URL + item.avatar) : (process.env.REACT_APP_URL + avatarDefalt)} className={clsx(Style.img_item, "rounded-circle border border-1 img-fluid img-auto-size ")} />
@@ -416,20 +418,20 @@ function AdminAccount()
 
                                                            
 
-                                                            <td key={index + "name"} className={clsx(Style.lh, )} >{item.fullName}</td>
-                                                            <td key={index + 'email'} className={clsx(Style.lh, )} >{item.email}</td>
+                                                            <td  className={clsx(Style.lh, )} >{item.fullName}</td>
+                                                            <td className={clsx(Style.lh, )} >{item.email}</td>
 
-                                                            <td key={index + 'phonNumber'} className={clsx(Style.lh, )} >{item.phoneNumber}</td>
-                                                            <td key={index + 'type'} className={clsx(Style.lh, "text-center")} >{HandleGetLable(type, item.type).label}</td>
-                                                            <td key={index + 'type'} className={clsx(Style.lh, "text-center", item.isAdmin ? 'text-warning' : 'text-primary')} >{item.isAdmin ? 'Admin' : 'Client'}</td>
-                                                            <td key={index + 'status'} className={clsx(Style.lh, "text-center")} >
+                                                            <td  className={clsx(Style.lh, )} >{item.phoneNumber}</td>
+                                                            <td  className={clsx(Style.lh, "text-center")} >{HandleGetLable(type, item.type).label}</td>
+                                                            <td  className={clsx(Style.lh, "text-center", item.isAdmin ? 'text-warning' : 'text-primary')} >{item.isAdmin ? 'Admin' : 'Client'}</td>
+                                                            <td  className={clsx(Style.lh, "text-center")} >
                                                                 <span className={clsx(Style.StatusItem, 'position-relative', item.status === 1 ? 'waitingStatus' : (item.status === 2 ? ' doingStatusUse' : 'doingStatusUse'))}>{HandleGetLable(filterStatus, item.status).label}
 
                                                                 </span>
 
                                                             </td>
 
-                                                            <td key={index + 'dropdow'} className=" text-center align-middle ">
+                                                            <td  className=" text-center align-middle ">
                                                                 <Dropdown className="d-inline mx-2 " >
                                                                     <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin")}
                                                                         style={{ position: 'relative', height: '30px', backgroundColor: 'transparent', border: 'none' }}>

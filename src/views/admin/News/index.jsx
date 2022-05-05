@@ -42,31 +42,27 @@ function AdminNews(){
             "filePath": "",
         }
     }
-    // select trạng thái
     const filterStatus = [
         { value: '1', label: 'chờ duyệt' },
         { value: '2', label: 'đã duyệt' },
     ]
-
     const imgFormat = [ 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
-    //-------------------------------useState
-    const [categoryOptions,setCategoryOptions]= useState([
-        {value: 0, label: 'Tất cả'}])
-    const [isLoading, setIsLoading] = useState(true)
 
+    //--------------------------------------------------------------------------------------------------------useState
+    const [categoryOptions,setCategoryOptions]= useState([{value: 0, label: 'Tất cả'}])
+    const [isLoading, setIsLoading] = useState(true)
     const [arrayNews, setArrayNews] = useState(arr)
     const [inputSearch,setInputSearch]= useState('')
-    const [inputCategoty,setInputCategoty]= useState("")
+    const [inputCategoty,setInputCategoty]= useState(categoryOptions[0])
     const [inputStatus,setInputStatus]= useState(filterStatus[1])
     const [pageindex,setPageindex]= useState(0)
     const [imgValue,setImgValue]=useState('')
     const [show, setShow] = useState(false);
     const [reLoad,setReload]=useState(true)
     const [selected, setSelected] = useState([]);// lưu các giá trị danh mục
-
     const [createNews,setCreateNews]=useState(objNew)
 
-    //-------------------------------- useEffect
+    //--------------------------------------------------------------------------------------------------- useEffect
     // get api 
     useEffect(async()=>{
         const params= {
@@ -75,24 +71,17 @@ function AdminNews(){
             "pageindex":pageindex,
             "status":inputStatus.value
         }
-
         const respon= await newsApi.getAll(params)
         if(respon.isSuccess)
         {
             setIsLoading(false)
-           
-                setArrayNews(respon.data)
-            
-            console.log(respon.data)
+            setArrayNews(respon.data)
         }
         else{
             Swal.fire("lỗi load dữ liệu")
         }
-       
-        // if(respon.)
-        // {
-        // }
     },[inputSearch,inputCategoty,inputStatus,pageindex,reLoad])
+
     useEffect(async()=>{
         const respon = await categoryApi.getNews()
         setCategoryOptions([...categoryOptions,...respon.data.map(function(item){
@@ -101,44 +90,39 @@ function AdminNews(){
                 label:item.categoryName
             }
         })])
-        
     },[])
+
     useEffect(()=>{
         setCreateNews({...createNews,friendlyUrl:MakeUrl(createNews.title)})
     },[createNews.title])
+
     useEffect(async()=>{
-        console.log("img",imgValue)
         if (imgValue !== '') {
-            // kiểm tra định dạng ảnh
             let resultimg = imgFormat.find(function (item) {
                 return removeUnicode((imgValue.name).slice((imgValue.name).lastIndexOf('.') + 1)) === removeUnicode(item)
             })
-            // đẩy hình ảnh lên data và lưu lại đường dẩn ảnh tại database
             if (resultimg) {
                 let form = new FormData();
-                // console.log(imgValue,'imgValue')
                 form.append('Image', imgValue);
                 form.append('TypeImage', "new");
-
                 const response = await projectApi.uploadFile(form);
-                setCreateNews({ ...createNews,banner:{filePath:response.data.filePath}})
-                console.log(createNews)
                 if (response.isSuccess) {
+                    setCreateNews({ ...createNews,banner:{filePath:response.data.filePath}})
                 }
                 else {
-                    Swal.fire('upload ảnh thất bại')
+                    Swal.fire('Upload ảnh thất bại')
                 }
             }
             else {
-                Swal.fire('chỉ nhận file ảnh có đuôi là jpeg,gif,png,tiff,raw,psd')
+                Swal.fire('Chỉ nhận file ảnh có đuôi là jpeg,gif,png,tiff,raw,psd')
                 setImgValue('')
             }
         }
     },[imgValue])
-    //------------------------------------------funtion
-    // xử lý hiện labe của 
+
+    //----------------------------------------------------------------------------------funtion
+    // xử lý hiện labe  
     function HandleGetLable(filter,id){
-        console.log('id',id)
         return(
             filter.find(function(itemCategoty){
                 if (itemCategoty.value===(id+'')){
@@ -147,16 +131,12 @@ function AdminNews(){
             })
         )
     }
+    // upload ảnh lên
     const handleChangAvatar= (e)=>{
         setImgValue(e.target.files[0])
     }
-    const handleAcceptProject=(item)=>
-    {
 
-    }
-    const Label = props => {
-        return <label style={{ display: 'block', marginTop: 10 }} {...props} />;
-    };
+
     const handleClose = () => setShow(false);
     const handleShow =async function(id){
         if(isCreate)
@@ -166,6 +146,7 @@ function AdminNews(){
             {
                 setCreateNews({
                     "id":id,
+                    'status':respon.data.status,
                     "title": respon.data.title,
                     "shortDescription": respon.data.shortDescription,
                     "content": respon.data.content,
@@ -174,6 +155,14 @@ function AdminNews(){
                         "filePath": respon.data.bannerPath,
                     }
                 })
+                setSelected(respon.data.category.map((item)=>{
+                    {
+                        return{
+                            value:item.categoryId,
+                            label:item.categoryName
+                        }
+                    }
+                }))
             }
         }
         else{
@@ -181,8 +170,8 @@ function AdminNews(){
             setImgValue('')
         }
         setShow(true);
-
     }
+    // thêm sửa 
     const handleCreate=async()=>{
         if(
             createNews.title!=="",
@@ -193,13 +182,13 @@ function AdminNews(){
         ){
             if(isCreate)
             {
-                console.log("sadsadasdas")
                 const data={
                     "id":createNews.id,
                     "title": createNews.title,
+                    "status":createNews.status,
                     "shortDescription": createNews.shortDescription,
                     "content": createNews.content,
-                    "friendlyUrl": createNews.friendlyUr,
+                    "friendlyUrl": createNews.friendlyUrl,
                     "banner": {
                       "fileName": createNews.banner.filePath.slice(createNews.banner.filePath.lastIndexOf("\\")+1),
                       "filePath": createNews.banner.filePath,
@@ -214,11 +203,11 @@ function AdminNews(){
                    
                   }
                   const respon = await newsApi.update(data)
-                
                   if(respon.isSuccess)
                   {
                     Swal.fire("Chỉnh sửa bảng tin thành công")
                     setReload(!reLoad)
+                    setSelected([])
                   }
                   else{
                     Swal.fire("Chỉnh sửa bảng tin thất bại")
@@ -260,10 +249,8 @@ function AdminNews(){
         else{
             Swal.fire("Vui lòng nhập đủ thông tin")
         }
-      
-    
     }
-
+    // xóa 
     const handleDelete=(id)=>{
         const accept= async()=>{
             const respon = await newsApi.delete(id)
@@ -288,9 +275,7 @@ function AdminNews(){
             if (result.isConfirmed) {
                 accept()
             }
-        })
-        
-        
+        }) 
     }
     return(
         <div className="flex-grow-1">
@@ -353,17 +338,15 @@ function AdminNews(){
                                                     return(
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
                                                             
-                                                            <th key={index+'index'} scope="row">{index}</th>
+                                                            <th scope="row">{index+1}</th>
                                                           
-                                                            <td key={index+"title"} className={clsx(Style.titleshowa)}>{item.title.length>30?(item.title.slice(0,30)+'...'):item.title}</td>
-                                                            <td key={index+'startDate'}>{moment(item.endDate).format("DD/MM/YYYY") }</td>
+                                                            <td  className={clsx(Style.titleshowa)}>{item.title.length>30?(item.title.slice(0,30)+'...'):item.title}</td>
+                                                            <td >{moment(item.endDate).format("DD/MM/YYYY") }</td>
                                                           
-                                                            <td key={index+'endate'}>{moment(item.endDate).format("DD/MM/YYYY") }</td>
-                                                            <td key={index+'status'}>
+                                                            <td >{moment(item.endDate).format("DD/MM/YYYY") }</td>
+                                                            <td >
                                                                 <span className={clsx(Style.StatusItem, 'position-relative', item.status===1 ? 'waitingStatus': ( item.status=== 2 ? 'doneStatus' : 'doingStatus') )}>{ HandleGetLable(filterStatus,item.status).label}
-                                                                    <div onClick={handleAcceptProject(item.id)} className={clsx(Style.changeStatus,'changeStatus')}>
-                                                                        <span>duyệt bảng tin</span>
-                                                                    </div>
+                                                                    
                                                                 </span> 
                                                             </td>
                                                           
@@ -378,12 +361,13 @@ function AdminNews(){
                                                                         <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>
                                                                         Chi tiết</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item onClick={()=>handleDelete(item.id)} className={clsx(Style.itemDrop)}><i class="mdi mdi-delete"></i>
+                                                                        <Dropdown.Item onClick={()=>handleDelete(item.id)} className={clsx(Style.itemDrop)}><i className="mdi mdi-delete"></i>
                                                                         Xoá</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
                                                                         <Dropdown.Item onClick={()=>{
                                                                         isCreate=true 
-                                                                        handleShow(item.id)}} className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa bảng tin</Dropdown.Item>
+                                                                        handleShow(item.id)}} className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>
+                                                                        Sửa bảng tin</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
                                                                        
                                                                     </Dropdown.Menu>
@@ -457,7 +441,7 @@ function AdminNews(){
                                     />
                                 </Form.Group>
                                 <Form.Group controlId="">
-                                    <Form.Label>mô tả ngắn</Form.Label>
+                                    <Form.Label>Mô tả ngắn</Form.Label>
                                     <Form.Control className="border border-secondary"
 
                                         value={createNews.shortDescription}
