@@ -212,9 +212,6 @@ body{
     border-radius: var(--boder-radius);
 }
 /* title admin */
-.admin-title{
-    font-size: 3rem !important;
-}
 /* Sweet alert */
 .swal-text {
     display: block;

@@ -162,7 +162,7 @@ function AdminCategory()
                     },
                     "type": category.type
                 }
-                const respon = await category.UpdateCategoey(data)
+                const respon = await categoryApi.UpdateCategoey(data)
                 if (respon.isSuccess) {
                     handleClose()
                     setSta(sta * (-1))
@@ -237,9 +237,11 @@ function AdminCategory()
     // sửa danh mục
     const handleUpdateCategory=async(id,type)=>{
         powerCreate=3
-        const respon = await categoryApi.get(id)
+        
         try
         {
+            const respon = await categoryApi.get(id)
+            console.log('respon',respon.data)
             if(respon.isSuccess)
             {
                 
@@ -248,9 +250,9 @@ function AdminCategory()
                     "categoryId":respon.data.respon,
                     'categoryName':respon.data.categoryName,
                     "icon":{
-                        "fileName": respon.data.icon.slice(respon.data.icon.lastIndexOd('\\')+1),
+                        "fileName": respon.data.icon.slice(respon.data.icon.lastIndexOf('\\')+1),
                         "filePath":  respon.data.icon,
-                        "friendlyUrl": respon.data.icon.slice(respon.data.icon.lastIndexOd('\\')+1),
+                        "friendlyUrl": respon.data.icon.slice(respon.data.icon.lastIndexOf('\\')+1),
                         "note": "Banner Project"
                     },
                     'type':type
@@ -317,10 +319,9 @@ function AdminCategory()
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item onClick={()=>{handleUpdateCategory(item.id,1)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Sửa danh mục</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={()=>{handleUpdateCategory(item.id,1)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Xem chi tiết</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item onClick={()=>{handleDelete(item.id)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Xóa danh mục</Dropdown.Item>
-                                                                        {/* <Dropdown.Divider /> */}
+                                                                       
                                                                       
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>
@@ -373,10 +374,9 @@ function AdminCategory()
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item onClick={()=>{handleUpdateCategory(item.id,2)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Sửa danh mục</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={()=>{handleUpdateCategory(item.id,2)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Xem chi tiết</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
-                                                                        <Dropdown.Item onClick={()=>{handleDelete(item.id)}}   className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Xóa danh mục</Dropdown.Item>
-                                                                        {/* <Dropdown.Divider /> */}
+                                                                       
                                                                       
                                                                     </Dropdown.Menu>
                                                                 </Dropdown>
@@ -435,7 +435,7 @@ function AdminCategory()
                     <Modal.Footer className="d-flex justify-content-between">
                         <div>
 
-                            <Button  className={clsx("bg-danger",(powerCreate!==3)?'hide':"sleep")} variant="secondary" onClick={()=>{handleDelete()}}>
+                            <Button  className={clsx("bg-danger",(powerCreate!==3)?'hide':"sleep")} variant="secondary" onClick={()=>{handleDelete(category.id)}}>
 
                                 Xóa
                             </Button>

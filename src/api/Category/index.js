@@ -30,7 +30,7 @@ const categoryApi={
     UpdateCategoey:(data)=>{
         const url =`/Category/update-category/${data.id}`
         delete data.id
-        return axiosClient.post(url, data)
+        return axiosClient.put(url, data)
     }
 }
 export default categoryApi

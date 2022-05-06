@@ -47,7 +47,7 @@ function AdminNews(){
         { value: '2', label: 'đã duyệt' },
     ]
     const imgFormat = [ 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
-
+    
     //--------------------------------------------------------------------------------------------------------useState
     const [categoryOptions,setCategoryOptions]= useState([{value: 0, label: 'Tất cả'}])
     const [isLoading, setIsLoading] = useState(true)
@@ -61,7 +61,7 @@ function AdminNews(){
     const [reLoad,setReload]=useState(true)
     const [selected, setSelected] = useState([]);// lưu các giá trị danh mục
     const [createNews,setCreateNews]=useState(objNew)
-
+    // const categoryOptionsCreat=[...categoryOptions.slice(1)]
     //--------------------------------------------------------------------------------------------------- useEffect
     // get api 
     useEffect(async()=>{
@@ -84,7 +84,7 @@ function AdminNews(){
 
     useEffect(async()=>{
         const respon = await categoryApi.getall(2)
-        setCategoryOptions([...categoryOptions,...respon.data.map(function(item){
+        setCategoryOptions([...[{value: 0, label: 'Tất cả'}],...respon.data.map(function(item){
             return{
                 value:item.id,
                 label:item.categoryName
@@ -165,10 +165,10 @@ function AdminNews(){
                 }))
             }
         }
-        else{
-            setCreateNews(objNew)
-            setImgValue('')
-        }
+        // else{
+        //     setCreateNews(objNew)
+        //     setImgValue('')
+        // }
         setShow(true);
     }
     // thêm sửa 
@@ -237,7 +237,10 @@ function AdminNews(){
                 if(respon.isSuccess)
                 {
                     setSelected('')
+
                     Swal.fire("Tạo bảng tin thành công")
+                    setCreateNews(objNew)
+                    setImgValue('')
                     setReload(!reLoad)
                     handleClose()
                 }
@@ -265,7 +268,7 @@ function AdminNews(){
         }
         Swal.fire({
             title: 'Bạn có Chắc?',
-            text: "Bạn muốn xóa bải viết này!",
+            text: "Bạn muốn xóa bài viết này!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: 'var(--nav-color)',
@@ -453,7 +456,7 @@ function AdminNews(){
                                 </Form.Group>
                                 <div className='col-12 mt-3 w-100'>
                                     <label>Danh mục</label>
-                                    <Select value={selected} onChange={setSelected} className={clsx(Style.category, 'w-100')} options={categoryOptions} defaultValue={categoryOptions} isMulti />
+                                    <Select value={selected} onChange={setSelected} className={clsx(Style.category, 'w-100')} options={[...categoryOptions.slice(1)]} defaultValue={[...categoryOptions.slice(1)]} isMulti />
                                 </div>
 
                             </Form>

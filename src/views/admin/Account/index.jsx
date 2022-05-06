@@ -410,7 +410,7 @@ function AdminAccount()
 
                                                             <th scope="row">{index+1}</th>
                                                             <td>
-                                                                <div className={clsx(Style.imgAccount, "col-4 col-md-2")}>
+                                                                <div className={clsx(Style.imgAccount, "col-4 col-md-2 mx-auto")}>
                                                                     <img id="img-banner1" src={
                                                                         (imgFormat.includes(item.avatar.slice(item.avatar.indexOf('.') + 1))) ? (process.env.REACT_APP_URL + item.avatar) : (process.env.REACT_APP_URL + avatarDefalt)} className={clsx(Style.img_item, "rounded-circle border border-1 img-fluid img-auto-size ")} />
                                                                 </div>
