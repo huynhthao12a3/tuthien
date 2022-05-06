@@ -36,7 +36,7 @@ const newsApi = {
         return axiosClient.delete(url)
     },
     getCategoryNews: ()=>{
-        const url = `/Category/get-news-categories`
+        const url = `/Category/get-categories?type=2`
         return axiosClient.get(url)
     },
 }

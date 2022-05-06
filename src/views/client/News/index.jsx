@@ -69,11 +69,11 @@ function News(props) {
                             <div className="container">
                                 <div className="row">
                                     {/* Danh Mục */}
-                                    <div className="col-12 col-md-4">
+                                    <div className="col-12 col-md-3">
 
-                                        <div className='w-100 d-flex justify-content-evenly'>
-                                            <input className="inputSearch px-3 " placeholder="Tên bài viết..." />
-                                            <button className=" text-white bg-base-color rounded-3" onClick={handleSearch}>Tìm Kiếm</button>
+                                        <div className='d-flex '>
+                                            <input type="text" className="w-100 inputSearch px-3 " placeholder="Tên bài viết..." />
+                                            <button className="ms-3 w-50 text-white bg-base-color rounded-3" onClick={handleSearch}>Tìm Kiếm</button>
                                         </div>
                                         <div className="my-5" >
                                             <h5 className="text-uppercase">Danh Mục</h5>
@@ -94,11 +94,11 @@ function News(props) {
                                         </div>
                                     </div>
                                     {/* Tin tức */}
-                                    <div className="col-12 col-md-8">
+                                    <div className="col-12 col-md-9">
                                         <div className="row">
                                             {
                                                 newsArray.map((item, index) => (
-                                                    <div key={index} className="col-12 col-md-6 my-3">
+                                                    <div key={index} className="col-12 col-md-6 col-xxl-4 my-3">
                                                         <div className={clsx(Style.newsItem, 'border shadow p-3')}>
                                                             <Link to={{ pathname: '/news/' + item.id + '/' + item.friendlyUrl }} onClick={() => { window.scrollTo(0, 0) }} >
                                                                 <img src={process.env.REACT_APP_URL + item.bannerPath}

@@ -12,7 +12,7 @@ function Loading(props) {
     }
     return (
         <div style={style} className="position-fixed d-flex flex-column start-0 end-0 top-0 bottom-0 align-items-center justify-content-center bg-white">
-            <img src={logoCharityLoaing} alt="Loading..." />
+            <img src={logoCharityLoaing} className="img-fluid" alt="Loading..." />
             <img src={loadingGif} alt="Loading..." />
         </div>
     );

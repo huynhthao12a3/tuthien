@@ -20,13 +20,11 @@
 }
 .titleProject,.shortDescription {
     display: -webkit-box;
-    max-height: 3.2rem;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
     -webkit-line-clamp: 2;
-    line-height: 1.6rem;
 }
 .ButtonSecondary {
     background-color: var(--love-color-5) ;
@@ -35,7 +33,7 @@
 }
 .projectWrapItem {
     border-radius: 16px;
-    min-height: 640px;
+    min-height: 580px;
 }
 .bannerRow{
     // --bs-gutter-x: 0rem !important;
