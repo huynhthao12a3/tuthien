@@ -137,7 +137,14 @@ function AdminNews(){
     }
 
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        if(isCreate)
+        {
+            setCreateNews(objNew)
+            setImgValue('')
+            setSelected([])
+        }
+        setShow(false)};
     const handleShow =async function(id){
         if(isCreate)
         {
@@ -208,6 +215,7 @@ function AdminNews(){
                     Swal.fire("Chỉnh sửa bảng tin thành công")
                     setReload(!reLoad)
                     setSelected([])
+                    handleClose()
                   }
                   else{
                     Swal.fire("Chỉnh sửa bảng tin thất bại")
@@ -361,7 +369,7 @@ function AdminNews(){
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>
+                                                                        <Dropdown.Item as={Link} to={"/admin/news/"+ item.id +"/"+ MakeUrl(item.title)} target="_blank" className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>
                                                                         Chi tiết</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
                                                                         <Dropdown.Item onClick={()=>handleDelete(item.id)} className={clsx(Style.itemDrop)}><i className="mdi mdi-delete"></i>
@@ -405,7 +413,7 @@ function AdminNews(){
                 </div>
                 <Modal size="xl" show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title className="text-black-50">Tạo bảng tin</Modal.Title>
+                        <Modal.Title className="text-black-50">{!isCreate?'Tạo':'Sửa'} bảng tin</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className="container-fluid ">
                         <div className="row p-3">

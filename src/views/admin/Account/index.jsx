@@ -22,7 +22,7 @@ function AdminAccount()
 {
 
     const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
-    const avatarDefalt = "\\uploads\\Images\\User_Avatars\\28042022_030444_anymous_icon.png"
+    const avatarDefalt = "\\uploads\\Images\\Hide_User\\06052022_080221_anymous_icon.png"
     // danh sách tạm
     const arr = [
         {

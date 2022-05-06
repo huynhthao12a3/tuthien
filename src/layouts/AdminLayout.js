@@ -21,6 +21,7 @@ import AdminCategory from '../views/admin/Category';
 import AdminDonation from '../views/admin/Donation';
 import EditProjectUser from '../views/client/Project/edit';
 import UpdateProcess from "../views/client/Project/Process/Update"
+import NewsDetail from '../views/client/News/NewsDetail';
 
 import ProjectDetail from '../views/client/Project/ProjectDetail';
 
@@ -74,7 +75,7 @@ function AdminLayout(props) {
                     <ProtectedRoute exact path="/admin/add-process" component={AddProcess}/>
                     <ProtectedRoute exact path="/admin/add-project" component={AddProject}/>
                     <ProtectedRoute exact path="/admin/project-detail/:id" component={ProjectDetail}/>
-                    
+                    <Route exact path="/admin/news/:id/:friendlyurl" component={NewsDetail}/>
                     <Route path="/not-found" component={NotFound}/>
 <Redirect to="/not-found"/>
                 
