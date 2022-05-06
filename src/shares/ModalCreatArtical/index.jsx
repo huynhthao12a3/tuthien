@@ -170,7 +170,7 @@ function ModalCreateArtical(props){
                 <Button className="me-2" variant="secondary" onClick={handleClose}>
                     Đóng
                 </Button>
-                <Button  variant="primary" onClick={() => { handleAccept() }}>
+                <Button  style={{backgroundColor:'var(--nav-color)'}} onClick={() => { handleAccept() }}>
                     { 
                         status===1?'Cập nhật':'Tạo'
                     }

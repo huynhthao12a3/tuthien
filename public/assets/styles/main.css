@@ -19,6 +19,7 @@
 
     /* love color green  */
     --nav-color: #58A578;
+    
     --love-color-1: #8FD192;
     --love-color-2: #C8C8A9;
     --love-color-3: #F9CDAD;
@@ -242,4 +243,10 @@ body{
     color: #fff;
     background-color: var(--love-color-5);
 
+}
+.swal2-confirm.swal2-styled{
+    background-color: #2bb9c4 !important;
+}
+.bg-danger.sleep.btn-primary{
+    background-color: var(--love-color-4) !important;
 }

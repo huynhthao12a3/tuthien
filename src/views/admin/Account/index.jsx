@@ -160,8 +160,8 @@ function AdminAccount()
             text: `Bạn muốn ${content} tài khoản người dùng này!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: 'var(--nav-color)',
+            cancelButtonColor: "var(--love-color-4)",
             confirmButtonText: 'Ok!'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -196,8 +196,8 @@ function AdminAccount()
             text: "Bạn muốn xóa tài khoản người dùng này!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: 'var(--nav-color)',
+            cancelButtonColor: 'var(--love-color-4)',
             confirmButtonText: 'Ok!'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -217,8 +217,8 @@ function AdminAccount()
             text: "Cho Admin hay cho Client?",
             icon: 'info',
             showCancelButton: true,
-            confirmButtonColor: 'var(--love-color-3)',
-            cancelButtonColor: 'var(--love-color-4)',
+            confirmButtonColor: 'var(--nav-color)',
+            cancelButtonColor: 'var(--love-color-1)',
             confirmButtonText: 'Admin',
             cancelButtonText: 'Client'
         }).then((result) => {
@@ -586,7 +586,9 @@ function AdminAccount()
                     <Modal.Footer className="d-flex justify-content-between">
                         <div>
 
-                            <Button  className={clsx("bg-danger",(powerCreate!==3)?'hide':"sleep")} variant="secondary" onClick={()=>{handleDelete(userDetail.id)}}>
+                            <Button  className={clsx("bg-danger",(powerCreate!==3)?'hide':"sleep")}  
+                             style={{backgroundColor:'var(--love-color-4) !important'}}
+                             onClick={()=>{handleDelete(userDetail.id)}}>
 
                                 Xóa
                             </Button>
@@ -595,7 +597,7 @@ function AdminAccount()
                             <Button className="me-2" variant="secondary" onClick={handleClose}>
                                 Đóng
                             </Button>
-                            <Button variant="primary" onClick={() => { handleUpdateUser() }}>
+                            <Button style={{backgroundColor:'var(--nav-color)'}} onClick={() => { handleUpdateUser() }}>
                                 Cập Nhật
                             </Button>
                         </div>

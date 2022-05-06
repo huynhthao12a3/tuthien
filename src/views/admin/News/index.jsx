@@ -83,7 +83,7 @@ function AdminNews(){
     },[inputSearch,inputCategoty,inputStatus,pageindex,reLoad])
 
     useEffect(async()=>{
-        const respon = await categoryApi.getNews()
+        const respon = await categoryApi.getall(2)
         setCategoryOptions([...categoryOptions,...respon.data.map(function(item){
             return{
                 value:item.id,
@@ -268,8 +268,8 @@ function AdminNews(){
             text: "Bạn muốn xóa bải viết này!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: 'var(--nav-color)',
+            cancelButtonColor: 'var(--love-color-4)',
             confirmButtonText: 'Ok!'
         }).then((result) => {
             if (result.isConfirmed) {
