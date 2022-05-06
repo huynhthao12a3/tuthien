@@ -222,7 +222,7 @@ function Project() {
     useEffect(async () => {
         const getAllUsers = async () => {
             try {
-                const response = await categoryApi.getProject();
+                const response = await categoryApi.getall(1);
 
                 setCategoryOptions([{ value: 0, label: 'Tất cả' }, ...response.data.map((item) => {
                     return ({
@@ -310,8 +310,8 @@ function Project() {
                     text: "Bạn muốn duyệt dự án này!",
                     icon: 'info',
                     showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
+                    confirmButtonColor: 'var(--nav-color)',
+                    cancelButtonColor: 'var(--love-color-4)',
                     confirmButtonText: 'Ok!'
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -430,7 +430,7 @@ function Project() {
                 setShowTransaction(true)
             }
             else {
-                Swal.fire(`lấy dữ liệu lịch sử giao dịch của dự án ${ProjectTitle} thất bại`)
+                Swal.fire(`lấy dữ liệu lịch sử giao dịch thất bại`)
             }
         }
         catch (e) {
@@ -821,7 +821,7 @@ function Project() {
                             <Button className="me-2" variant="secondary" onClick={handleCloseArtical}>
                                 Đóng
                             </Button>
-                            <Button variant="primary" onClick={() => { handleCreateArtical() }}>
+                            <Button style={{backgroundColor:'var(--nav-color)'}} onClick={() => { handleCreateArtical() }}>
                                 Tạo
                             </Button>
                         </div>

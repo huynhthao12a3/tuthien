@@ -9,6 +9,7 @@ import categoryApi from "../../../api/Category";
 import Swal from "sweetalert2";
 import { Button, Modal, Form } from "react-bootstrap";
 import { ar } from "date-fns/locale";
+import Loading from "../../../shares/Loading"
 let powerCreate=1
 function AdminCategory()
 {
@@ -43,14 +44,16 @@ function AdminCategory()
     const [icon,setIcon]= useState('')
     const [arrCategoryNews, setArrCategoryNews] = useState(arr)
     const [show, setShow] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
     //------------------------------------------funtion
     // xử lý hiện labe của 
 
     useEffect(async()=>{
         try{
-            const respon= await categoryApi.getProject()
+            const respon= await categoryApi.getall(1)
             if(respon.isSuccess)
             {
+                setIsLoading(false)
                 setArrCategoryProjects(respon.data)
                 console.log('respon.data',respon.data)
             }
@@ -63,9 +66,10 @@ function AdminCategory()
 
     useEffect(async()=>{
         try{
-            const respon= await categoryApi.getNews()
+            const respon= await categoryApi.getall(2)
             if(respon.isSuccess)
             {
+                setIsLoading(false)
                 setArrCategoryNews(respon.data)
                 console.log('respon.data',respon.data)
             }
@@ -100,8 +104,8 @@ function AdminCategory()
             text: "Cho 'Dự án' hay cho 'Tin tức'?",
             icon: 'info',
             showCancelButton: true,
-            confirmButtonColor: 'var(--love-color-3)',
-            cancelButtonColor: 'var(--love-color-4)',
+            confirmButtonColor: 'var(--nav-color)',
+            cancelButtonColor: 'var(--love-color-1)',
             confirmButtonText: 'Dự án',
             cancelButtonText: 'Tin tức'
         }).then((result) => {
@@ -147,25 +151,26 @@ function AdminCategory()
     const handleCategory = async () => {
         if (category.categoryName !== '' &&category.icon.filePath !== '') {
             if (powerCreate == 3) {
-                // const data = {
-                //     "categoryName": "",
-                //     "icon": {
-                //         "fileName": "",
-                //         "filePath": "",
-                //         "friendlyUrl": "",
-                //         "note": ""
-                //     },
-                //     "type": 0
-                // }
-                // const respon = await adminUser.updateUser(data)
-                // if (respon.isSuccess) {
-                //     handleClose()
-                //     setSta(sta * (-1))
-                //     Swal.fire('Cập nhật thông tin thành công')
-                // }
-                // else {
-                //     Swal.fire('Cập nhật thông tin thất bại')
-                // }
+                const data = {
+                    "id":category.id,
+                    "categoryName": category.categoryName,
+                    "icon": {
+                        "fileName": category.icon.fileName,
+                        "filePath": category.icon.filePath,
+                        "friendlyUrl": category.icon.friendlyUrl,
+                        "note":category.icon.note
+                    },
+                    "type": category.type
+                }
+                const respon = await category.UpdateCategoey(data)
+                if (respon.isSuccess) {
+                    handleClose()
+                    setSta(sta * (-1))
+                    Swal.fire('Cập nhật thông tin danh mục thành công')
+                }
+                else {
+                    Swal.fire('Cập nhật thông tin danh mục thất bại')
+                }
             }
             else{
                 // tạo danh mục 
@@ -192,9 +197,7 @@ function AdminCategory()
         }
            
     }
-    const handle1=()=>{
 
-    }
     const handleDelete=(id)=>{  
         const DeleteApiFunc = async () => {
             const respon = await categoryApi.Delete(id)
@@ -222,8 +225,8 @@ function AdminCategory()
             text: "Bạn muốn xóa danh mục này!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: 'var(--nav-color)',
+            cancelButtonColor: 'var(--love-color-4)',
             confirmButtonText: 'Ok!'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -231,8 +234,45 @@ function AdminCategory()
             }
         }) 
     }
+    // sửa danh mục
+    const handleUpdateCategory=async(id,type)=>{
+        powerCreate=3
+        const respon = await categoryApi.get(id)
+        try
+        {
+            if(respon.isSuccess)
+            {
+                
+                setCategory({
+                    'id':id,
+                    "categoryId":respon.data.respon,
+                    'categoryName':respon.data.categoryName,
+                    "icon":{
+                        "fileName": respon.data.icon.slice(respon.data.icon.lastIndexOd('\\')+1),
+                        "filePath":  respon.data.icon,
+                        "friendlyUrl": respon.data.icon.slice(respon.data.icon.lastIndexOd('\\')+1),
+                        "note": "Banner Project"
+                    },
+                    'type':type
+             
+                })
+                handleShow(category,'Chỉnh sửa danh mục')
+            }
+            else{
+                Swal.fire('Lấy dữ liệu danh mục thất bại')
+            }
+        }catch(e)
+        {
+            console.error(e)
+        }
+       
+        
+    }
     return(
-        <>
+        <div className="flex-grow-1">
+         {
+                isLoading ? <Loading /> : ""
+            }
             <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
                 <div className="container-fluid w-100 pe-5">
                     <div className={clsx('row')}>
@@ -277,7 +317,7 @@ function AdminCategory()
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Sửa danh mục</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={()=>{handleUpdateCategory(item.id,1)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Sửa danh mục</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
                                                                         <Dropdown.Item onClick={()=>{handleDelete(item.id)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Xóa danh mục</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
@@ -333,7 +373,7 @@ function AdminCategory()
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Sửa danh mục</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={()=>{handleUpdateCategory(item.id,2)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Sửa danh mục</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
                                                                         <Dropdown.Item onClick={()=>{handleDelete(item.id)}}   className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Xóa danh mục</Dropdown.Item>
                                                                         {/* <Dropdown.Divider /> */}
@@ -411,7 +451,7 @@ function AdminCategory()
                     </Modal.Footer>
                 </Modal>
             </div>
-        </>
+        </div>
     )
 }
 export default AdminCategory
