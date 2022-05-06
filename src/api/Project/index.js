@@ -29,7 +29,7 @@ const projectApi = {
         return axiosClient.get(url)
     },
     getCategoryProject: ()=>{
-        const url = `/Category/get-project-categories`
+        const url = `/Category/get-categories?type=1`
         return axiosClient.get(url)
     },
     upStatusProject:(id)=>{

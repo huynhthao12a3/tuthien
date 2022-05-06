@@ -3,3 +3,18 @@
     // width: 100%;
     border-radius: 16px;
 }
+.newsItem {
+    .imgCardItem {
+        width: 100%;
+        height: 150px;
+        object-fit: fill;
+    }
+    .linkItem {
+        color: var(--nav-color);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+}

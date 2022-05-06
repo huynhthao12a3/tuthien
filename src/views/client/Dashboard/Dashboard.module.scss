@@ -1,18 +1,42 @@
 .dashboardBanner {
-    background-image: url(../../../assets/images/dashboard_banner.jpg);
-    background-position:center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 500px;
-    width: 100%;
-   padding-top: 150px;
+    // background-image: url(../../../assets/images/dashboard_banner1.jpg);
+//     background-position:center;
+//     background-size: contain;   
+//     background-repeat: no-repeat;
+//     width: 100%;
+//    padding-top: 150px;
+.titleBanner{
+    font-family: 'Lavishly Yours', Roboto;
+        // font-size: 5rem;
+        color: #242a6e !important;
 }
+}
+
+@media (max-width: 576px) {
+    .titleBanner {
+            font-size: 2rem;
+
+        }
+}
+@media (min-width: 576px) and (max-width: 992px) {
+    .titleBanner {
+            font-size: 3rem;
+
+        }
+}
+@media (min-width: 992px) {
+    .titleBanner {
+            font-size: 5rem;
+
+        }
+}
+
 
 // Phần đầu của trang
 .headerDashboard {
     padding-top: 80px;
     padding-bottom: 50px;
-    background-color: #F9F9F9;
+    // background-color: #F9F9F9;
     h1{
         color: var(--nav-color);
     }
@@ -43,23 +67,28 @@
         transform: translateX(-50%)
     }
 }
-
+.intro {
+    padding-bottom: 100px;
+    
+}
 // Đóng góp và tạo dự án
 .startDashboard {
     padding: 80px 0;
-    background-color: #F1F6FF;
+    background-image: linear-gradient(0deg,#fff 5%,#f3f6fe 17%,#ecf0fd 51%,#f2f5fd 83%,#fdfdfe 95%);
+    background-size: cover;
+    background-repeat: no-repeat;
 
 }
 
 // Thành tựu của chúng tôi
 .activityDashboard {
     padding: 80px 0;
-background-color: #f9f9f9;
+// background-color: #f9f9f9;
 }
 
 // Dự án
 .projectDashboard {
-    background-color: #F9F9F9;
+    // background-color: #F9F9F9;
     padding: 80px 0;
     .projectWrapItem {
         border-radius: 16px;
@@ -100,7 +129,9 @@ background-color: #f9f9f9;
 // Tin tức
 .newsDashboard{
     padding: 80px 0;
-background-color: #F1F6FF;
+    background-image: linear-gradient(0deg,#fff 5%,#f3f6fe 17%,#ecf0fd 51%,#f2f5fd 83%,#fdfdfe 95%);
+    background-size: cover;
+    background-repeat: no-repeat;
     .articalDetailWrap {
         background-color: #fff;
         // border: 2px  solid #ccc;
@@ -155,5 +186,7 @@ background-color: #F1F6FF;
 // Gía trị của chúng tôi
 .valuesDashboard {
     padding: 80px 0;
-background-color: #F1F6FF;
+    background-image: linear-gradient(0deg,#fff 5%,#f3f6fe 17%,#ecf0fd 51%,#f2f5fd 83%,#fdfdfe 95%);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
