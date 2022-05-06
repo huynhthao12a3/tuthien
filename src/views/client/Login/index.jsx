@@ -22,7 +22,8 @@ function ClientLogin() {
         avatarPath: "",
         password: "",
         email: "",
-        address: ""
+        address: "",
+        type: 2
     })
 
     localStorage.clear();

@@ -11,9 +11,11 @@ function Loading(props) {
         zIndex: 100,
     }
     return (
-        <div style={style} className="position-fixed d-flex flex-column start-0 end-0 top-0 bottom-0 align-items-center justify-content-center bg-white">
-            <img src={logoCharityLoaing} className="img-fluid" alt="Loading..." />
-            <img src={loadingGif} alt="Loading..." />
+        <div style={style} className="position-fixed  start-0 end-0 top-0 bottom-0  bg-white">
+            <div className="container-fluid d-flex flex-column h-100 align-items-center justify-content-center">
+                <img src={logoCharityLoaing} className="img-fluid" alt="Loading..." />
+                <img src={loadingGif} alt="Loading..." />
+            </div>
         </div>
     );
 }

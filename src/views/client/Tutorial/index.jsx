@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from "clsx";
 import Style from './Tutorial.module.scss'
 import trxCoin from "../../../assets/images/trx-coin.svg"
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 Tutorial.propTypes = {
 
 };
 
 function Tutorial(props) {
+    useEffect(() => {
+        AOS.init({
+            once: true,
+            duration: 1200,
+            anchorPlacement: 'bottom',
+        });
+    })
     return (
         <>
             <div className={clsx(Style.headerTutorial)}>
-                <div className="container py-5">
+                <div className="container py-5" data-aos="zoom-in">
                     <h1 className="fs-3">Chúng tôi nhận đóng góp thông qua đồng TRX.</h1>
                     <div className="d-flex flex-column flex-md-row  mt-5">
                         <div className="mx-md-5">
@@ -28,8 +36,8 @@ function Tutorial(props) {
                 {/* Hướng dẫn gây quỹ */}
                 <div className="create-project">
                     <h2 className="fs-3 my-5">Bắt đầu gây quỹ cộng đồng với Tấm Lòng Vàng</h2>
-                    <div className="row">
-                        <div className="col-12 col-md-3">
+                    <div className="row justify-content-evenly" data-aos="fade-right">
+                        <div className="col-12 col-md-3 ">
                             <div className="d-flex flex-row flex-md-column ">
                                 <div className="flex-grow-1 mx-auto mb-3">
                                     <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>1</div>
@@ -40,7 +48,8 @@ function Tutorial(props) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 col-md-3">
+
+                        <div className="col-12 col-md-3  ">
                             <div className="d-flex flex-row flex-md-column ">
                                 <div className="flex-grow-1 mx-auto mb-3">
                                     <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>2</div>
@@ -51,10 +60,25 @@ function Tutorial(props) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 col-md-3">
+
+                        <div className="col-12 col-md-3  ">
                             <div className="d-flex flex-row flex-md-column ">
                                 <div className="flex-grow-1 mx-auto mb-3">
                                     <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>3</div>
+                                </div>
+                                <div className="ps-3 ps-md-0">
+                                    <p className="lh-base fw-bold text-md-center px-2 p-md-0">Xác minh dự án</p>
+                                    <p className={clsx(Style.description, 'px-2')}>Chúng tôi xác minh dự án của bạn trên website Tấm Lòng Vàng và thông báo cho bạn.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row justify-content-evenly mt-3 mt-lg-5 " data-aos="fade-right">
+
+                        <div className="col-12 col-md-3">
+                            <div className="d-flex flex-row flex-md-column ">
+                                <div className="flex-grow-1 mx-auto mb-3">
+                                    <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>4</div>
                                 </div>
                                 <div className="ps-3 ps-md-0">
                                     <p className="lh-base fw-bold text-md-center px-2 p-md-0">Thực hiện mục tiêu đề ra</p>
@@ -62,10 +86,12 @@ function Tutorial(props) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-12 col-md-3">
+
+
+                        <div className="col-12 col-md-3 ">
                             <div className="d-flex flex-row flex-md-column ">
                                 <div className="flex-grow-1 mx-auto mb-3">
-                                    <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>4</div>
+                                    <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>5</div>
                                 </div>
                                 <div className="ps-3 ps-md-0">
                                     <p className="lh-base fw-bold text-md-center px-2 p-md-0">Cập nhật hoạt động</p>
@@ -74,16 +100,16 @@ function Tutorial(props) {
                             </div>
                         </div>
 
-
-
-
                     </div>
+
+
+
                 </div>
                 <hr></hr>
                 {/* Hướng dẫn đóng góp */}
                 <div className="create-project">
                     <h2 className="fs-3 my-5">Đóng góp hỗ trợ dự án</h2>
-                    <div className="row">
+                    <div className="row" data-aos="fade-up">
                         <div className="col-12 col-md-4">
                             <div className="d-flex flex-row flex-md-column ">
                                 <div className="flex-grow-1 mx-auto mb-3">

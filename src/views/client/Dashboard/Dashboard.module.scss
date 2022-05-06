@@ -17,17 +17,31 @@
             font-size: 2rem;
 
         }
+        .intro {
+            img{
+                margin-top: -120px;
+            }
+        }
 }
 @media (min-width: 576px) and (max-width: 992px) {
     .titleBanner {
             font-size: 3rem;
 
         }
+        .intro {
+            img{
+                margin-top: -200px;
+            }
+        }
 }
 @media (min-width: 992px) {
     .titleBanner {
             font-size: 5rem;
-
+        }
+        .intro {
+            img{
+                margin-top: -300px;
+            }
         }
 }
 
@@ -42,12 +56,19 @@
     }
     .introItem{
         border-radius: 16px;
-        min-height: 250px;
+        // min-height: 250px;
         img {
             width: 100%;
             height: 250px;
             object-fit: fill;
         }
+    }
+    .headerItem{
+    // background-color: #f1f6ff;
+
+        // background-image: linear-gradient(0deg,#fdfdfe 5%,#f3f6fe 12%,#ecf0fd 51%,#f2f5fd 83%,#fdfdfe 95%);
+        // background-size: cover;
+        // background-repeat: no-repeat;
     }
     
 }
@@ -74,7 +95,7 @@
 // Đóng góp và tạo dự án
 .startDashboard {
     padding: 80px 0;
-    background-image: linear-gradient(0deg,#fff 5%,#f3f6fe 17%,#ecf0fd 51%,#f2f5fd 83%,#fdfdfe 95%);
+    background-image: linear-gradient(0deg,#fff 5%,#f3f6fe 12%,#ecf0fd 51%,#f2f5fd 83%,#fdfdfe 95%);
     background-size: cover;
     background-repeat: no-repeat;
 
@@ -129,7 +150,7 @@
 // Tin tức
 .newsDashboard{
     padding: 80px 0;
-    background-image: linear-gradient(0deg,#fff 5%,#f3f6fe 17%,#ecf0fd 51%,#f2f5fd 83%,#fdfdfe 95%);
+    background-image: linear-gradient(0deg,#fff 5%,#f3f6fe 12%,#ecf0fd 51%,#f2f5fd 83%,#fdfdfe 95%);
     background-size: cover;
     background-repeat: no-repeat;
     .articalDetailWrap {
@@ -186,7 +207,7 @@
 // Gía trị của chúng tôi
 .valuesDashboard {
     padding: 80px 0;
-    background-image: linear-gradient(0deg,#fff 5%,#f3f6fe 17%,#ecf0fd 51%,#f2f5fd 83%,#fdfdfe 95%);
+    background-image: linear-gradient(0deg,#fff 5%,#f3f6fe 12%,#ecf0fd 51%,#f2f5fd 83%,#fdfdfe 95%);
     background-size: cover;
     background-repeat: no-repeat;
 }

@@ -404,26 +404,24 @@ function AddProcess(props) {
                                             {
                                                 listProcessValue.map(function (item, index) {
                                                     return (
-                                                        <>
-                                                            <tr className={clsx(Style.itemProcess, "cursor-pointer")} >
-                                                                <th onClick={() => { calbackGetProcess(index) }}>{index}</th>
-                                                                <th onClick={() => { calbackGetProcess(index) }}>{item.title}</th>
-                                                                <td className=" text-center align-middle ">
+                                                        <tr key={index} className={clsx(Style.itemProcess, "cursor-pointer")} >
+                                                            <th onClick={() => { calbackGetProcess(index) }}>{index}</th>
+                                                            <th onClick={() => { calbackGetProcess(index) }}>{item.title}</th>
+                                                            <td className=" text-center align-middle ">
 
 
-                                                                    <Dropdown className="d-inline mx-2" >
-                                                                        <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin")}>
-                                                                            <i className={clsx(Style.iconDrop, "text-light mdi mdi-dots-vertical font-18  text-primary")}></i>
-                                                                        </Dropdown.Toggle>
+                                                                <Dropdown className="d-inline mx-2" >
+                                                                    <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin")}>
+                                                                        <i className={clsx(Style.iconDrop, "text-light mdi mdi-dots-vertical font-18  text-primary")}></i>
+                                                                    </Dropdown.Toggle>
 
-                                                                        <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                            <Dropdown.Item onClick={() => { HandleDeleteProcess(index) }} className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore pe-2"></i>Xóa</Dropdown.Item>
-                                                                        </Dropdown.Menu>
-                                                                    </Dropdown>
-                                                                </td>
-                                                            </tr>
+                                                                    <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
+                                                                        <Dropdown.Item onClick={() => { HandleDeleteProcess(index) }} className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore pe-2"></i>Xóa</Dropdown.Item>
+                                                                    </Dropdown.Menu>
+                                                                </Dropdown>
+                                                            </td>
+                                                        </tr>
 
-                                                        </>
                                                     )
                                                 })
                                             }
