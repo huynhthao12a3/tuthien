@@ -277,7 +277,7 @@ function AdminCategory()
                 <div className="container-fluid w-100 pe-5">
                     <div className={clsx('row')}>
                         <div className={clsx(Style.titleBlock, ' w-100 main-top col-12 pt-4 pb-4')}>
-                            <h3 className={clsx(Style.titleProject)}>Quản lý danh mục</h3>
+                            <h3 className={clsx(Style.titleProject,'admin-title')}>Quản lý danh mục</h3>
                             <button onClick={()=>{handleCreateCategory(category)}} className={clsx(Style.btnCreateProject,"btn")}>
                             <span className="mdi mdi-plus-circle pe-2"></span> Tạo Danh Mục </button>
                         </div>
