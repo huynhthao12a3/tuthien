@@ -7,7 +7,7 @@ import introItem from '../../../assets/images/intro_item.png'
 import introBanner from '../../../assets/images/intro_banner.png'
 import handBanner from '../../../assets/images/banner_hand.jpg'
 import banner from '../../../assets/images/banner.png'
-import banner1 from '../../../assets/images/banner1.jpg'
+import banner1 from '../../../assets/images/banner1.png'
 import donate from '../../../assets/images/donate.svg'
 import createProject from '../../../assets/images/create_project.svg'
 import charityBanner from '../../../assets/images/charity_banner.jpg'
@@ -39,11 +39,11 @@ DashboardClient.propTypes = {
 
 function DashboardClient(props) {
     useEffect(() => {
-        // AOS.init({
-        //     once: false,
-        //     duration: 1000,
-        //     anchorPlacement: 'bottom',
-        // });
+        AOS.init({
+            once: true,
+            duration: 1200,
+            anchorPlacement: 'bottom',
+        });
     })
     // Lấy giá TRX
     const [trxPrice, setTrxPrice] = useState();
@@ -125,48 +125,12 @@ function DashboardClient(props) {
                 isLoading ? <Loading /> : (
                     <>
 
-                        {/* <div id="carouselExample" class={clsx(Style.carousel, "carousel slide position-relative")} data-bs-ride="carousel">
-                            <div className="position-absolute start-0 end-0  mx-auto" style={{ zIndex: 1000, maxWidth: '900px' }}>
-                                <p className="fs-3 lh-base text-white fst-italic " >
-                                    "Với nhiều hoạt động lớn có ý nghĩa xã hội và nhân văn trên cả nước, Tấm Lòng Vàng đã và đang nỗ lực hết sức để hoàn thành sứ mệnh của mình, trở thành một điển hình cho tinh thần tương thân tương ái của người Việt."</p>
-                                <p className={clsx(Style.titleBanner, "fs-1 lh-base text-white ")} >
-                                    Chia sẽ từ tấm lòng
-                                </p>
-                                <p className={clsx(Style.titleBanner, "fs-1 lh-base text-white")} >
-                                    Lan tỏa những điều tốt đẹp
-                                </p>
-                            </div>
-                            <div class="carousel-inner">
-                                <div class="carousel-item ">
-                                    <img src={dashboardBanner} class="carousel-img d-block w-100  "
-                                        alt="he-thong-erp" />
-                                </div>
-
-                                <div class="carousel-item">
-                                    <img src={dashboardBanner1} class="carousel-img d-block w-100   " alt="big-data-iot" />
-                                </div>
-
-                                <div class="carousel-item active">
-                                    <img src={dashboardBanner2} class="carousel-img d-block w-100   " alt="e-commerce" />
-                                </div>
-                            </div>
-                            <button class="carousel-control-prev d-none d-md-block" type="button" data-bs-target="#carouselExample"
-                                data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next d-none d-md-block" type="button" data-bs-target="#carouselExample"
-                                data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
-                        </div> */}
                         {/* Phần Banner */}
                         <div className={clsx(Style.dashboardBanner, 'position-relative')}>
-                            <img src={dashboardBanner1} class="img-fluid w-100 "
+                            <img src={dashboardBanner1} className="img-fluid w-100 "
                                 alt="Chia sẽ từ tấm lòng, lan tỏa những điều tốt đẹp" />
 
-                            <div className="position-absolute start-0 end-0 top-0 pt-3 pt-lg-5">
+                            <div className="position-absolute start-0 end-0 top-0 pt-3 pt-lg-5" data-aos="fade-down">
                                 <p className={clsx(Style.titleBanner, " lh-base text-center")} >
                                     Chia sẽ từ tấm lòng
                                 </p>
@@ -180,7 +144,7 @@ function DashboardClient(props) {
                         {/* Phần đầu  */}
                         <div className={clsx(Style.headerDashboard)} >
                             <div className="container-fluid ">
-                                <div className="row">
+                                <div className="row ">
                                     <div className="col-12 col-md-6 mx-auto">
                                         <h1 className="text-center fs-1 lh-base">Giải pháp công nghệ đồng hành cùng hoạt động từ thiện minh bạch</h1>
                                     </div>
@@ -188,31 +152,43 @@ function DashboardClient(props) {
 
 
                             </div>
-                            <div className="container mt-5">
-                                <div className="row mb-3 mb-lg-5">
-                                    <div className="col-12  p-3 p-md-4" >
-                                        <div className={clsx(Style.introItem, 'shadow overflow-hidden d-flex flex-column flex-lg-row')}>
-                                            <img src={banner} alt="" />
-                                            <div className="content p-4">
-                                                <h2 className="fs-2 lh-base ">Minh bạch cho người lập dự án</h2>
-                                                <p className="fs-4 ">Giúp tự động thống kê và công khai 24/7 mọi số tiền nhận ủng hộ và chi hỗ trợ thông qua địa chỉ ví.</p>
-                                            </div>
-                                        </div>
+                            <div className={clsx(Style.headerItem)}>
 
+                                <div className="container mt-5">
+                                    <div className="row mb-3 mb-lg-5">
+                                        <div className="col-12 col-md-6  p-3 p-md-4" data-aos="fade-right" >
+                                            <div className={clsx(Style.introItem, 'shadow overflow-hidden ')}>
+                                                <img src={banner1} alt="" className="img-fluid" />
+
+                                            </div>
+
+                                        </div>
+                                        <div className="col-12 col-md-6  p-3 p-md-4 align-self-center" data-aos="fade-left"  >
+                                            <div className={clsx(Style.introItem)}>
+                                                <h2 className="fs-2 lh-base ">Minh bạch cho người lập dự án</h2>
+                                                <p className="fs-4 ">Giúp tự động thống kê và công khai 24/7 mọi số tiền nhận ủng hộ và chi tiêu thông qua địa chỉ ví.</p>
+                                            </div>
+
+                                        </div>
                                     </div>
 
-                                    <div className="col-12  p-3 p-md-4" >
-                                        <div className={clsx(Style.introItem, 'shadow overflow-hidden d-flex flex-column flex-lg-row')}>
-                                            <div className="content p-4 order-2 order-md-1">
+                                    <div className="row mb-3 mb-lg-5">
+
+                                        <div className="col-12 col-md-6 order-2 order-md-1 p-3 p-md-4 align-self-center" data-aos="fade-right" >
+                                            <div className={clsx(Style.introItem)}>
                                                 <h2 className="fs-2 lh-base ">Niềm tin cho người đóng góp</h2>
                                                 <p className="fs-4 ">Giúp thuận tiện theo dõi thông tin tài chính các chiến dịch thiện nguyện mà mình quan tâm hay dễ dàng tương tác, hỗ trợ kịp thời cho người gây quỹ.</p>
                                             </div>
-                                            <img src={banner1} alt="" className="order-1 order-md-2" />
+
                                         </div>
+                                        <div className="col-12 col-md-6 order-1 order-md-2 p-3 p-md-4" data-aos="fade-left" >
+                                            <div className={clsx(Style.introItem, 'shadow overflow-hidden ')}>
+                                                <img src={banner} alt="" className="img-fluid" />
 
+                                            </div>
+
+                                        </div>
                                     </div>
-
-
 
                                 </div>
                             </div>
@@ -221,17 +197,17 @@ function DashboardClient(props) {
                         {/* Intro */}
                         <div className={clsx(Style.intro)}>
                             <div className="container">
-                                <div className=" p-3 p-lg-5 position-relative" >
+                                <div className=" p-3 p-lg-5 position-relative" data-aos="zoom-in" >
 
                                     <p className="fs-3 lh-base fst-italic text-center" >
-                                        "Chúng tôi hoạt động không vì lợi nhuận, trên nguyên tắc hỗ trợ kêu gọi vốn, nhằm mục đích từ thiện. Hỗ trợ và khuyến khích phát triển giáo dục, sức khỏe, y tế, thể dục thể thao, khoa học."
+                                        "Chúng tôi hoạt động không vì lợi nhuận, trên nguyên tắc hỗ trợ kêu gọi vốn, nhằm mục đích từ thiện. Hỗ trợ và khuyến khích phát triển giáo dục, an sinh xã hội, sức khỏe, thể dục thể thao, khoa học."
                                     </p>
                                     <p className="fs-3 lh-base fst-italic text-center" >
                                         "Với nhiều hoạt động lớn có ý nghĩa xã hội và nhân văn trên cả nước, Tấm Lòng Vàng đã và đang nỗ lực hết sức để hoàn thành sứ mệnh của mình, trở thành một điển hình cho tinh thần tương thân tương ái của người Việt."
                                     </p>
                                 </div>
                             </div>
-                            <img src={handBanner} alt="" className="img-fluid " style={{ marginTop: '-200px' }} />
+                            <img src={handBanner} alt="" className="img-fluid " />
                         </div>
                         {/*Giá trị của chúng tôi */}
                         <div className={clsx(Style.valuesDashboard)}>

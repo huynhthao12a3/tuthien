@@ -120,16 +120,17 @@ function News(props) {
 
                                             }
                                         </div>
-                                        <div className="w-100 mt-5 d-flex justify-content-center ">
-                                            <div>
-                                                <button onClick={() => setCurrentPage(currentPage != 0 ? currentPage - 1 : currentPage)} className={clsx(Style.prevBtn, 'prevBtn px-2')}>
-                                                    <span className="mdi mdi-chevron-double-left"></span>
-                                                </button>
-                                                <span className="px-3 text-secondary">{currentPage}</span>
-                                                <button onClick={() => setCurrentPage(currentPage + 1)} className={clsx(Style.nextBtn, 'nextBtn px-2')}>
-                                                    <span className="mdi mdi-chevron-double-right"></span>
-                                                </button>
-                                            </div>
+
+                                    </div>
+                                    <div className="w-100 mt-5 d-flex justify-content-center ">
+                                        <div>
+                                            <button onClick={() => setCurrentPage(currentPage != 0 ? currentPage - 1 : currentPage)} className={clsx(Style.prevBtn, 'prevBtn px-2')}>
+                                                <span className="mdi mdi-chevron-double-left"></span>
+                                            </button>
+                                            <span className="px-3 text-secondary">{currentPage}</span>
+                                            <button onClick={() => setCurrentPage(currentPage + 1)} className={clsx(Style.nextBtn, 'nextBtn px-2')}>
+                                                <span className="mdi mdi-chevron-double-right"></span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

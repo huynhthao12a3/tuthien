@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import logo from '../../assets/images/logo.png'
 import logoCharity from '../../assets/images/logo-charity.png'
+import logoCharityLoading from '../../assets/images/logo-charity-loading.png'
 import { mainColor } from '../../assets/js/main.js'
 import defaultAvatar from '../../assets/images/default-avatar.jpg'
 
@@ -41,8 +42,8 @@ function AdminNavbar() {
                 <Navbar.Brand href="/admin/dashboard">
                     <img
                         alt="logo"
-                        src={logoCharity}
-                        width="120px"
+                        src={logoCharityLoading}
+                        width="260px"
                         className=" d-inline-block "
                     />{' '}
                     {/* <div style={{ width: '100px', height: '80px' }}>

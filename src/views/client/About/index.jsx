@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import aboutImg from '../../../assets/images/about.svg'
 import traditionalImg from '../../../assets/images/traditional.svg'
@@ -8,16 +8,25 @@ import seeImg from '../../../assets/images/see.svg'
 import projectImg from '../../../assets/images/project.svg'
 import clsx from "clsx";
 import Style from './About.module.scss'
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 About.propTypes = {
 
 };
 
 function About(props) {
+    useEffect(() => {
+        AOS.init({
+            once: true,
+            duration: 1200,
+            anchorPlacement: 'bottom',
+        });
+    })
     return (
         <div className={clsx(Style.wrapAbout)}>
             {/* Về chúng tôi  */}
             <div className="container">
-                <div className="d-flex flex-column flex-lg-row mb-5">
+                <div className="d-flex flex-column flex-lg-row mb-5" data-aos="zoom-in">
 
                     <div className="">
                         <h2>Về chúng tôi</h2>
@@ -37,7 +46,7 @@ function About(props) {
                         <p className={clsx(Style.title, "d-inline-block fs-2 fw-bold position-relative")}>Tại sao nên chọn chúng tôi</p>
                     </div>
                     <div className="row">
-                        <div className="col-12 col-lg-6 py-4">
+                        <div className="col-12 col-lg-6 py-4" data-aos="fade-right">
                             <div className="d-flex flex-column">
                                 <img src={traditionalImg} height="100px" alt="" className="mx-auto" />
                                 <p className="text-center fs-4 fw-bold pt-3">Mô hình từ thiện truyền thống</p>
@@ -47,7 +56,7 @@ function About(props) {
                                 <p className="text-center mt-0">Thiếu minh bạch</p>
                             </div>
                         </div>
-                        <div className="col-12 col-lg-6 py-4">
+                        <div className="col-12 col-lg-6 py-4" data-aos="fade-left">
                             <div className="d-flex flex-column">
                                 <img src={solutionImg} height="100px" alt="" className="mx-auto" />
                                 <p className="text-center fs-4 fw-bold pt-3">Giải pháp của chúng tôi</p>
@@ -67,7 +76,7 @@ function About(props) {
                     <div className="text-center">
                         <p className={clsx(Style.title, "d-inline-block fs-2 fw-bold position-relative")}>Điểm nổi bật</p>
                     </div>
-                    <div className="row">
+                    <div className="row" data-aos="fade-up">
                         <div className="col-12 col-lg-4 py-4">
                             <div className="d-flex flex-column">
                                 <img src={blockchainImg} height="100px" alt="" className="mx-auto" />
