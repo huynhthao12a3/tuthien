@@ -37,6 +37,18 @@
         }
 
     }
+    .prevBtn{
+        // border-top-right-radius:30% ;
+        border-top-left-radius: 40%;
+        border-bottom-left-radius: 40%;
+        color: #fff;
+    }
+    .nextBtn{
+        // border-top-right-radius:30% ;
+        border-top-right-radius: 40%;
+        border-bottom-right-radius: 40%;
+        color: #fff;
+    }
     .listPoject{
         overflow: visible;
         background-color: var(--admin-background);

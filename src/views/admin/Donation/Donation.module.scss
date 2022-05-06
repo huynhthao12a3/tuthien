@@ -37,13 +37,43 @@
         }
 
     }
+    .prevBtn{
+        // border-top-right-radius:30% ;
+        border-top-left-radius: 40%;
+        border-bottom-left-radius: 40%;
+        color: #fff;
+    }
+    .nextBtn{
+        // border-top-right-radius:30% ;
+        border-top-right-radius: 40%;
+        border-bottom-right-radius: 40%;
+        color: #fff;
+    }
     .listPoject{
         overflow: visible;
         background-color: var(--admin-background);
         padding: 15px;
         border-radius: var(--boder-radius);
         .table_responsive{
+            
             overflow: visible;
+            .imgAccount{
+                width: 50px;
+                .img_item{
+                    height: 50px;
+                    width: 50px;
+                }
+            }
+            .hash{
+                .baseColor{
+                    color: rgb(207, 168, 25);
+                    .baseColor:hover{
+                        cursor: pointer;
+                color: rgba(207, 168, 25,0.7);
+                
+                    }
+                }
+            }
             cursor: pointer;
             .titleshow{
                 display: block;

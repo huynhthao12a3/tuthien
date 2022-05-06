@@ -407,7 +407,7 @@ function AdminCategory()
                         <div className="row p-3">
                             <div className={clsx(Style.imgAccountUpdate, "col-3 position-relative")}>
 
-                                <img className={clsx(Style.img_item, "rounded-circle position-relative border border-1 img-fluid img-auto-size")}
+                                <img className={clsx(Style.img_item, "rounded-circle  position-relative border border-1 img-fluid img-auto-size")}
                                     src={category.icon.filePath?process.env.REACT_APP_URL+category.icon.filePath:process.env.REACT_APP_URL + imgDefault} alt="" />
                                 <input type="file" className={clsx(Style.changeimg, 'position-absolute')} onChange={(e) => { handleChangAvatar(e) }} style={{ cursor: "pointer", opacity: "0", cursor: "pointer" }} />
                             </div>

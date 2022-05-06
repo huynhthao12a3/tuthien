@@ -13,69 +13,67 @@ import categoryApi from "../../../api/Category";
 import projectApi from "../../../api/Project";
 import moment from "moment";
 import { ar } from "date-fns/locale";
+import Loading from "../../../shares/Loading"
+
+import Swal from "sweetalert2";
+import DanateApi from "../../../api/Donate";
 function AdminDonation(){
+    const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
+    const avatarDefalt = "\\uploads\\Images\\Hide_User\\06052022_080221_anymous_icon.png"
      //-------------------------------------------------------
     const arr=[
-        {
-        "id": 10,
-        "senter": "Trần văn thuận",
-        "projectName":'ủng hộ miền trung',
-        "time": "23/09/2022",
-        "mount":"300",
-        "mountType":"TRX"
-        },
-    ]
-    const filtercategory = [
-        { value: '1', label: 'Thiên tai' },
-        { value: '2', label: 'Trẻ em' },
-        { value: '3', label: 'Sức khỏe' },
-        { value: '4', label: 'Con người' },
-        { value: '5', label: 'Xã hội' },
+       
+            {
+                "userName": "Nguyễn Minh Hiếu",
+                "userAvatar": "\\uploads\\Images\\client\\06052022_081259_phonepicutres-TA.jpg",
+                "projectId": 2,
+                "projectName": "MONG MỎI LẮP CHI GIẢ ĐỂ LAO ĐỘNG MƯU SINH CHĂM LO CHO GIA ĐÌNH",
+                "amount": 500,
+                "currency": "TRX",
+                "hash": "79095d1ae2b8f13c4d47aea67dee0d5372e944a0b90c5c8f243c50fa5f2a9c3d",
+                "type": 1
+            },
+       
     ]
     // select trạng thái
     const filterStatus = [
-        { value: '1', label: 'chờ duyệt' },
-        { value: '2', label: 'đã duyệt' },
+        { value: '0', label: 'Tất cả' },
+        { value: '1', label: 'Đóng góp' },
+        { value: '2', label: 'Hoàn tiền' },
+        { value: '3', label: 'Rút tiền' },
     ]
-
      // datePicker
-     const {
-        allowedMaxDays,
-        allowedDays,
-        allowedRange,
-        beforeToday,
-        afterToday,
-        combine
-    } = DateRangePicker;
-    const Ranges = [
-        {
-            label: 'Hôm nay',
-            value: [startOfDay(new Date()), endOfDay(new Date())]
-        },
-        {
-            label: 'Hôm qua',
-            value: [startOfDay(addDays(new Date(), -1)), endOfDay(addDays(new Date(), -1))]
-        },
-        {
-            label: '7 ngày trước',
-            value: [startOfDay(subDays(new Date(), 6)), endOfDay(new Date())]
-        },
-        {
-            label: '30 ngày trước',
-            value: [startOfDay(subDays(new Date(), 29)), endOfDay(new Date())]
-        },
-        {
-            label: '1 năm trước',
-            value: [startOfDay(subDays(new Date(), 364)), endOfDay(new Date())]
-        },
-    ];
-
+    
     //-------------------------------useState
     const [categoryOptions,setCategoryOptions]= useState([])
 
     const [arrayProject, setArrayProject] = useState(arr)
-    const [inputSearch,setInputSearch]= useState('')
-    const [inputDate,setInputDate]=useState('')
+    const [inputStatus, setInputStatus] = useState(filterStatus[0])
+    const [pageindex, setPageindex] = useState(0)
+    const [isLoading, setIsLoading] = useState(true)
+
+    //-------------------------------------------useEffect
+    useEffect(async()=>{
+        try{
+            const params={
+                "currentindex":pageindex,
+                "type":inputStatus.value,
+            }
+            const respons= await DanateApi.getall(params)
+            if(respons.isSuccess)
+            {
+                setIsLoading(false)
+                setArrayProject(respons.data)
+                console.log("respon",respons.data)
+            }
+            else{
+                Swal.fire('Load dữ liệu lên thất bại')
+            }
+        }
+        catch(e){
+            console.error(e)
+        }
+    },[inputStatus,pageindex])
     //------------------------------------------funtion
     // xử lý hiện labe của 
     function HandleGetLable(filterlist,index){
@@ -88,7 +86,7 @@ function AdminDonation(){
             })
         )
     }
-    console.log("sdasdsa",HandleGetLable(filtercategory,1))
+    
   
 
     const handleAcceptProject=(item)=>
@@ -100,7 +98,11 @@ function AdminDonation(){
     };
     return(
         <>
-            <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
+         {
+
+            isLoading ? <Loading /> : (
+                <>
+                   <div className={clsx(Style.project,"main-manage container-fluid w-100")}>
                 <div className="container-fluid w-100 pe-5">
                     <div className={clsx('row')}>
                         <div className={clsx(Style.titleBlock, ' w-100 main-top col-12 pt-4 pb-4')}>
@@ -112,25 +114,11 @@ function AdminDonation(){
                 <div className={clsx('row')}>
                     <div className={clsx(Style.filterBlock, 'filter col-3')}>
                         <div className={Style.filterBlockSpan}>
-                            <div className={''}>
-                                <h5 className={clsx(Style.searchContent,'')}>Tìm kiếm</h5>
-                                <div className="form-group">
-                                    <input value={inputSearch} onChange={(e)=>{setInputSearch(e.target.value)}} id="ipt-text-search" type="text" className={clsx(Style.searchInput, Style.Inputfocus, 'form-control')}  placeholder="Tìm theo tên bảng tin" autoComplete="off" />
-                                </div>
-                            </div>
                           
-                            <div className="mt-4">
-                                <h5 className={clsx(Style.searchContent,'')}>Ngày đăng</h5>
-                                <div class="form-group" style={{ position: 'relative' }}>
-                                <DateRangePicker className={clsx(Style.rangeDate,Style.Inputfocus,'projectDaterang')}
-                                    disabledDate={afterToday()}
-                                    format='dd/MM/yyyy'
-                                    defaultValue={[new Date(), new Date()]}
-                                    character=' - '
-                                    ranges={Ranges}
-                                >
-                                </DateRangePicker>
-                              
+                            <div className={'mt-4'}>
+                                <h5 className={clsx(Style.searchContent, '')}>Trạng thái</h5>
+                                <div className="form-group">
+                                    <Select defaultValue={inputStatus} onChange={setInputStatus} className={clsx(Style.Inputfocus)} placeholder='trạng thái' options={filterStatus} />
                                 </div>
                             </div>
                            
@@ -140,16 +128,17 @@ function AdminDonation(){
                         <div className={clsx(Style.listPoject)}>
                             <div className="page-aside-right">
                                 <div className={clsx(Style.table_responsive, 'table-responsive')}>
-                                    <table class="table">
+                                    <table className="table">
                                         <thead>
                                             <tr>
                                                 <th scope="col">#</th>
-                                                <th scope="col">Mã giao dịch</th>
+                                                <th scope="col">Hình ảnh</th>
                                                 <th scope="col">Người gửi</th>
                                                 <th scope="col">Tên dự án</th>
-                                                <th scope="col">thời gian</th>
+                                                {/* <th scope="col">thời gian</th> */}
                                                 <th scope="col">Số tiền</th>
-                                                <th scope="col">Loại tiền</th>
+                                                <th className="text-center" scope="col">Loại tiền</th>
+                                                <th className="text-center" scope="col">Hash</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -158,17 +147,26 @@ function AdminDonation(){
                                                     return(
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
                                                             
-                                                            <th key={index+'index'} scope="row">{index}</th>
-                                                            <td key={index+"title"} className={clsx(Style.titleshow)}>{item.id}</td>
-                                                            <td key={index+"title"} >{item.senter}</td>
-                                                            <td key={index+"title"} >{item.projectName}</td>
-                                                            <td key={index+"title"} >{item.time}</td>
-                                                            <td key={index+"title"} >{item.mount}</td>
-                                                            <td key={index+'status'}>
+                                                            <th  scope="row">{index}</th>
+                                                            <td>
+                                                                <div className={clsx(Style.imgAccount, "col-4 col-md-2")}>
+                                                                    <img id="img-banner1" src={(item.userAvatar)?(process.env.REACT_APP_URL + item.userAvatar):(process.env.REACT_APP_URL + avatarDefalt)} className={clsx(Style.img_item, "rounded-circle border border-1 img-fluid img-auto-size ")} />
+                                                                </div>
+                                                            </td>
+                                                            <td  >{item.userName}</td>
+                                                            <td  >{item.projectName.length>15?item.projectName.slice(0,15)+'...':item.projectName}</td>
+                                                            <td  >{item.amount}</td>
+                                                            <td className="text-center">{item.currency}</td>
+                                                            <td  className={clsx(Style.hash, "text-center")}>
+                                                                <a href={"https://nile.tronscan.org/#/transaction/"+ item.hash}
+                                                                    target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}> {item.hash.slice(0, 20) + '...'}</a>
+
+                                                            </td>
+                                                            {/* <td key={index+'status'}>
                                                                 <span className={clsx(Style.StatusItem, 'position-relative', 'doneStatus' )}>
                                                                     {item.mountType}
                                                                 </span> 
-                                                            </td>
+                                                            </td> */}
                                                           
                                                             <td key={index+'dropdow'} className=" text-center align-middle ">
                                                                 <Dropdown className="d-inline mx-2" >
@@ -198,8 +196,24 @@ function AdminDonation(){
                             </div>  
                         </div>
                     </div>
+                    <div className="col-3 py-3"></div>
+                    <di className="col-9 d-flex justify-content-start py-3">
+                        <div>
+                            <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, 'bg-info px-2')}>
+                                <span className="mdi mdi-chevron-double-left"></span>
+                            </button>
+                            <span className="px-3 text-secondary">{pageindex}</span>
+                            <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, 'bg-info px-2')}>
+                                <span className="mdi mdi-chevron-double-right"></span>
+                            </button>
+                        </div>
+                    </di>
                 </div>
             </div>
+                </>
+            )
+            }
+         
         </>
     )
 }

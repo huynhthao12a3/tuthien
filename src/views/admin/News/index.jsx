@@ -43,8 +43,9 @@ function AdminNews(){
         }
     }
     const filterStatus = [
-        { value: '1', label: 'chờ duyệt' },
-        { value: '2', label: 'đã duyệt' },
+        { value: '0', label: 'Tất cả' },
+        { value: '1', label: 'Chờ duyệt' },
+        { value: '2', label: 'Đã duyệt' },
     ]
     const imgFormat = [ 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
     
@@ -54,7 +55,7 @@ function AdminNews(){
     const [arrayNews, setArrayNews] = useState(arr)
     const [inputSearch,setInputSearch]= useState('')
     const [inputCategoty,setInputCategoty]= useState(categoryOptions[0])
-    const [inputStatus,setInputStatus]= useState(filterStatus[1])
+    const [inputStatus,setInputStatus]= useState(filterStatus[0])
     const [pageindex,setPageindex]= useState(0)
     const [imgValue,setImgValue]=useState('')
     const [show, setShow] = useState(false);
@@ -395,21 +396,23 @@ function AdminNews(){
                                             
                                         </tbody>
                                     </table>
-                                    <div className="d-flex">
-                                        <div>
-                                            <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, 'prevBtn bg-info px-2')}>
-                                                <span className="mdi mdi-chevron-double-left"></span>
-                                            </button>
-                                            <span className="px-3 text-secondary">{pageindex}</span>
-                                            <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, 'nextBtn bg-info px-2')}>
-                                                <span className="mdi mdi-chevron-double-right"></span>
-                                            </button>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                             </div>  
                         </div>
                     </div>
+                    <div className="col-3 py-3"></div>
+                    <di className="col-9 d-flex justify-content-start py-3">
+                        <div>
+                            <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, 'bg-info px-2')}>
+                                <span className="mdi mdi-chevron-double-left"></span>
+                            </button>
+                            <span className="px-3 text-secondary">{pageindex}</span>
+                            <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, 'bg-info px-2')}>
+                                <span className="mdi mdi-chevron-double-right"></span>
+                            </button>
+                        </div>
+                    </di>
                 </div>
                 <Modal size="xl" show={show} onHide={handleClose}>
                     <Modal.Header closeButton>

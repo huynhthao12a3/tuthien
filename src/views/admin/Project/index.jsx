@@ -44,9 +44,9 @@ function Project() {
     // select trạng thái
     const filterStatus = [
         { value: '0', label: 'Tất cả' },
-        { value: '1', label: 'đang chờ duyệt' },
-        { value: '2', label: 'đang thực thi' },
-        { value: '3', label: 'hoàn thành' },
+        { value: '1', label: 'Đang chờ duyệt' },
+        { value: '2', label: 'Đang thực thi' },
+        { value: '3', label: 'Hoàn thành' },
     ]
     const objArtical = {
         "title": "",
@@ -577,21 +577,23 @@ function Project() {
 
                                         </tbody>
                                     </table>
-                                    <div className="d-flex">
-                                        <div>
-                                            <button onClick={() => setCurrentpage(currentpage != 0 ? currentpage - 1 : currentpage)} className={clsx(Style.prevBtn, 'bg-info px-2')}>
-                                                <span className="mdi mdi-chevron-double-left"></span>
-                                            </button>
-                                            <span className="px-3 text-secondary">{currentpage}</span>
-                                            <button onClick={() => setCurrentpage(currentpage + 1)} className={clsx(Style.nextBtn, 'bg-info px-2')}>
-                                                <span className="mdi mdi-chevron-double-right"></span>
-                                            </button>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div className="col-3 py-3"></div>
+                    <di className="col-9 d-flex justify-content-start py-3">
+                        <div>
+                            <button onClick={() => setCurrentpage(currentpage != 0 ? currentpage - 1 : currentpage)} className={clsx(Style.prevBtn, 'bg-info px-2')}>
+                                <span className="mdi mdi-chevron-double-left"></span>
+                            </button>
+                            <span className="px-3 text-secondary">{currentpage}</span>
+                            <button onClick={() => setCurrentpage(currentpage + 1)} className={clsx(Style.nextBtn, 'bg-info px-2')}>
+                                <span className="mdi mdi-chevron-double-right"></span>
+                            </button>
+                        </div>
+                    </di>
                 </div>
                 {/* modal chọn tiến trình                        */}
                 <Modal size='xl' show={show} onHide={handleClose} animation={false}>

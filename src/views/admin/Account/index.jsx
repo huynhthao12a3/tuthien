@@ -39,15 +39,15 @@ function AdminAccount()
         },
     ]
     const type = [
-        {  value: '0',label:'tất cả'},
-        { value: '1', label: 'cá nhân' },
-        { value: '2', label: 'tổ chức' },
+        {  value: '0',label:'Tất cả'},
+        { value: '1', label: 'Cá nhân' },
+        { value: '2', label: 'Tổ chức' },
     ]
     // select trạng thái
     const filterStatus = [
-        { value: '0', label: 'tất cả' },
-        { value: '1', label: 'khóa' },
-        { value: '2', label: 'đang hoạt động' },
+        { value: '0', label: 'Tất cả' },
+        { value: '1', label: 'Khóa' },
+        { value: '2', label: 'Dang hoạt động' },
     ]
     //---------------------------------------------------------useState
 
@@ -472,22 +472,26 @@ function AdminAccount()
 
                                         </tbody>
                                     </table>
-                                    <div className="d-flex">
-                                        <div>
-                                            <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, 'bg-info px-2')}>
-                                                <span className="mdi mdi-chevron-double-left"></span>
-                                            </button>
-                                            <span className="px-3 text-secondary">{pageindex}</span>
-                                            <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, 'bg-info px-2')}>
-                                                <span className="mdi mdi-chevron-double-right"></span>
-                                            </button>
-                                        </div>
-                                    </div>
+                                   
                                 </div>
                             </div>
                         </div>
+                        
+                    </div>
+                    <div className="col-3 py-3"></div>
+                    <div className="col-9 d-flex justify-content-start py-3">
+                    <div>
+                        <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, 'bg-info px-2')}>
+                            <span className="mdi mdi-chevron-double-left"></span>
+                        </button>
+                        <span className="px-3 text-secondary">{pageindex}</span>
+                        <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, 'bg-info px-2')}>
+                            <span className="mdi mdi-chevron-double-right"></span>
+                        </button>
                     </div>
                 </div>
+                </div>
+             
                 <Modal size="lg" show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title className="text-black-50">{userDetail.content}</Modal.Title>
@@ -545,8 +549,8 @@ function AdminAccount()
                                         value={HandleGetLable(type,userDetail.type)}
 
                                         onChange={setTypeCreate}
-                                        options={type}
-                                        defaultValue={type}
+                                        options={type.slice(1)}
+                                        defaultValue={type.slice(1)}
                                         className={clsx(Style.category, 'w-100')}
                                     ></Select>
 
@@ -601,7 +605,7 @@ function AdminAccount()
                                 Đóng
                             </Button>
                             <Button style={{backgroundColor:'var(--nav-color)'}} onClick={() => { handleUpdateUser() }}>
-                                Cập Nhật
+                               {powerCreate===3?'Cập Nhật':'Tạo'} 
                             </Button>
                         </div>
 
