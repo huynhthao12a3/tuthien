@@ -41,10 +41,10 @@ function DashboardClient(props) {
     useEffect(() => {
         AOS.init({
             once: true,
-            duration: 1200,
+            duration: 2000,
             anchorPlacement: 'bottom',
         });
-    })
+    }, [])
     // Lấy giá TRX
     const [trxPrice, setTrxPrice] = useState();
     useEffect(() => {
@@ -305,13 +305,12 @@ function DashboardClient(props) {
                         <div className={clsx(Style.projectDashboard)}>
                             <div className="container">
                                 <div className="text-center">
-                                    <p className={clsx(Style.title, "d-inline-block  fs-2 fw-bold position-relative")}>Các dự án đã hoàn thành</p>
+                                    <p className={clsx(Style.title, "d-inline-block  fs-2 fw-bold position-relative")}>Các dự án đang thực thi</p>
                                 </div>
                                 <div className="row">
 
                                     {
                                         projectList.map((item, index) => (
-
                                             <div key={index} className={clsx(Style.projectItem, 'col-12  col-md-6 col-xxl-4 p-3 p-md-4')}>
                                                 <div className={clsx(Style.projectWrapItem, "overflow-hidden shadow d-flex flex-column")}>
                                                     <div className="w-100 ">
@@ -319,32 +318,36 @@ function DashboardClient(props) {
                                                             onError={(e) => (e.target.onerror = null, e.target.src = charityBanner)}
                                                             className={clsx(Style.imgCard)} alt="hình ảnh dự án" />
                                                     </div>
-                                                    <div className="p-3 d-flex flex-column flex-grow-1 justify-content-evenly " >
-                                                        <Link to={"/project-detail/" + item.id + "/" + item.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.titleProject, " d-block my-4 text-decoration-none text-uppercase fs-5 fw-bold text-dark")}>{item.title}</Link>
+                                                    <div className="p-3 d-flex flex-column flex-grow-1 justify-content-around " >
+                                                        <Link to={"/project-detail/" + item.id + "/" + item.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.titleProject, "  my-2 text-decoration-none text-uppercase fs-5 fw-bold text-dark")}>{item.title}</Link>
                                                         <div className={clsx(Style.shortDescription)}>
                                                             <SetInnerHTML text={item.shortDescription} />
                                                         </div>
-                                                        <div className="ProgressBarContent px-3 my-4  bg-light rounded-3">
-                                                            <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
-                                                            <ProgressBar striped now={Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100) + 10} label={`${Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100)} %`} />
-                                                            <span>{utils.formatNumber((Number(item.amountNow) * trxPrice).toFixed(2))} / {utils.formatNumber(item.amountNeed)} VNĐ</span>
-                                                        </div>
-                                                        <div className="border-start px-3 py-1 my-3 d-flex flex-column ">
-                                                            <span ><i className="mdi mdi-history fs-5 pe-2"></i>Trạng thái</span>
-                                                            <span className={clsx(Style.baseColor, 'text-uppercase')}>{item.status === 1 ? "Đang chờ duyệt" : (item.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</span>
-                                                        </div>
-                                                        <div className='d-flex flex-column flex-xl-row align-items-center  justify-content-between '>
-                                                            <div className="d-flex align-items-center ">
-                                                                <span><i className="mdi mdi-account-multiple-outline fs-5 me-1 pe-2"></i></span>
-                                                                <p className='text-decoration-none m-0 text-uppercase'>{item.userCreate}</p>
+                                                        <div className="mt-4">
+
+                                                            <div className="ProgressBarContent px-3 my-2  bg-light rounded-3">
+                                                                <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
+                                                                <ProgressBar striped now={Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100) + 10} label={`${Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100)} %`} />
+                                                                <span>{utils.formatNumber((Number(item.amountNow) * trxPrice).toFixed(2))} / {utils.formatNumber(item.amountNeed)} VNĐ</span>
                                                             </div>
-                                                            <Link to={"/project-detail/" + item.id + "/" + item.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.btnDetail, 'text-muted text-decoration-none bg-white px-4 py-2 fw-bold')}>Xem chi tiết</Link>
+                                                            <div className="border-start px-3 py-1 my-2 d-flex flex-column ">
+                                                                <span ><i className="mdi mdi-history fs-5 pe-2"></i>Trạng thái</span>
+                                                                <span className={clsx(Style.baseColor, 'text-uppercase')}>{item.status === 1 ? "Đang chờ duyệt" : (item.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</span>
+                                                            </div>
+                                                            <div className='d-flex flex-column flex-xl-row align-items-center  justify-content-between '>
+                                                                <div className="d-flex align-items-center ">
+                                                                    <span><i className="mdi mdi-account-multiple-outline fs-5 me-1 "></i></span>
+                                                                    <p className='text-decoration-none m-0 '>{item.userCreate}</p>
+                                                                </div>
+                                                                <Link to={"/project-detail/" + item.id + "/" + item.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.btnDetail, 'text-muted text-decoration-none bg-white px-4 py-2 fw-bold')}>Xem chi tiết</Link>
+                                                            </div>
                                                         </div>
 
 
                                                     </div>
                                                 </div>
                                             </div>
+
                                         ))
                                     }
                                 </div>

@@ -23,7 +23,7 @@ function ClientLogin() {
         password: "",
         email: "",
         address: "",
-        type: 2
+        type: 1
     })
 
     localStorage.clear();
@@ -154,23 +154,7 @@ function ClientLogin() {
     console.log(clientDetail)
     return (
         <>
-            {/* <div className="d-flex flex-column mt-5 align-items-center">
-                <h1>Đăng nhập trang Client</h1>
-                <form >
-                    <label>
-                        <p>Email</p>
-                        <input type="text" onChange={e => setEmail(e.target.value)} />
-                    </label>
-                    <label>
-                        <p>Password</p>
-                        <input type="password" onChange={e => setPassword(e.target.value)} />
-                    </label>
-                    <div>
-                        <button type="submit" className="p-2 m-2" >Đăng nhập</button>
-                        <button type="submit" className="p-2 m-2" >Đăng ký</button>
-                    </div>
-                </form>
-            </div> */}
+
             <section className="login-form-client">
 
                 <div className="container">
@@ -204,7 +188,12 @@ function ClientLogin() {
                                 <input type="text" placeholder="Địa chỉ" onChange={e => setClientDetail({ ...clientDetail, address: e.target.value })} />
                                 <input type="email" placeholder="Email" onChange={e => setClientDetail({ ...clientDetail, email: e.target.value })} />
                                 <input type="password" placeholder="Mật khẩu" onChange={e => setClientDetail({ ...clientDetail, password: e.target.value })} />
-                                <button type="submit" className="px-4 py-2 rounded-3 text-light mt-2" >Đăng ký</button>
+                                <label for="type" className="me-2">Loại tài khoản:</label>
+                                <select id="type" value={clientDetail.type} onChange={e => setClientDetail({ ...clientDetail, type: e.target.value })}>
+                                    <option value="1">Cá nhân</option>
+                                    <option value="2">Tổ chức</option>
+                                </select>
+                                <button type="submit" className="d-block px-4 py-2 rounded-3 text-light mt-2" >Đăng ký</button>
 
                             </form>
 

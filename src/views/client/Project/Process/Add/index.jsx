@@ -207,43 +207,55 @@ function AddProcess(props) {
 
     // Tạo dự án trên Smart Contract 
     async function createProjectSM() {
-        try {
+        if ((await tronweb.trx.getBalance(tronweb.defaultAddress.base58)) > 120000000) {
 
 
-            // Quy đổi VND -> SUN (1 TRX = 1.000.000 SUN)
-            const amountNeedVnd = listProcessValue.reduce(function (total, number) {
-                return total + number.amountNeed
-            }, 0);
-            const amountNeedSun = Math.round((amountNeedVnd / trxPrice) * 1000000)
-            console.log('SUN: ', amountNeedSun);
+            try {
 
-            const transaction = await tronweb.transactionBuilder.createSmartContract({
-                abi: [{ "inputs": [{ "internalType": "uint256", "name": "_amountneed", "type": "uint256" }, { "internalType": "uint256", "name": "_endDate", "type": "uint256" }], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "sendFrom", "type": "address" }, { "indexed": false, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "string", "name": "messages", "type": "string" }], "name": "PayEnvent", "type": "event" }, { "inputs": [], "name": "AmountNeed", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "AmountNow", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "Donate", "outputs": [], "stateMutability": "payable", "type": "function" }, { "inputs": [], "name": "EndDate", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "Refund", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "Timestap", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "Withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "listMembers", "outputs": [{ "internalType": "address", "name": "addressDonate", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "stateMutability": "view", "type": "function" }],
 
-                bytecode: "608060405234801561001057600080fd5b50d3801561001d57600080fd5b50d2801561002a57600080fd5b5060405161063d38038061063d8339818101604052604081101561004d57600080fd5b508051602091820151604080516060810182523380825294810184905201819052600080546001600160a01b0319169093179092556001556002556105a6806100976000396000f3fe60806040526004361061006b5760003560e01c80631954f39e14610070578063195dd2c6146100b15780632a9ac5c8146100e057806333ac2627146101505780635b6b431d1461016f5780635d268629146101b3578063a09f2da2146101e2578063f66958f814610211575b600080fd5b34801561007c57600080fd5b50d3801561008957600080fd5b50d2801561009657600080fd5b5061009f610240565b60408051918252519081900360200190f35b3480156100bd57600080fd5b50d380156100ca57600080fd5b50d280156100d757600080fd5b5061009f610246565b3480156100ec57600080fd5b50d380156100f957600080fd5b50d2801561010657600080fd5b5061012d6004803603602081101561011d57600080fd5b50356001600160a01b031661024a565b604080516001600160a01b03909316835260208301919091528051918290030190f35b61016d6004803603602081101561016657600080fd5b503561026f565b005b34801561017b57600080fd5b50d3801561018857600080fd5b50d2801561019557600080fd5b5061016d600480360360208110156101ac57600080fd5b503561037c565b3480156101bf57600080fd5b50d380156101cc57600080fd5b50d280156101d957600080fd5b5061016d61045c565b3480156101ee57600080fd5b50d380156101fb57600080fd5b50d2801561020857600080fd5b5061009f610546565b34801561021d57600080fd5b50d3801561022a57600080fd5b50d2801561023757600080fd5b5061009f61054c565b60025490565b4290565b600360205260009081526040902080546001909101546001600160a01b039091169082565b60025442106102b3576040805162461bcd60e51b815260206004820152600b60248201526a141c9bda9958dd08115b9960aa1b604482015290519081900360640190fd5b336000908152600360205260409020546001600160a01b031661031b5760408051808201825233808252602080830185815260009283526003909152929020905181546001600160a01b0319166001600160a01b039091161781559051600190910155610334565b3360009081526003602052604090206001018054820190555b604080513381523060208201526060818301819052600790820152667375636365737360c81b608082015290516000805160206105518339815191529181900360a00190a150565b6000546001600160a01b03163314801561039857506001544710155b80156103a5575060025442115b6103e6576040805162461bcd60e51b815260206004820152600d60248201526c15da5d1a191c985dc811985a5b609a1b604482015290519081900360640190fd5b604051339082156108fc029083906000818181858888f19350505050158015610413573d6000803e3d6000fd5b50604080513081523360208201526060818301819052600790820152667375636365737360c81b608082015290516000805160206105518339815191529181900360a00190a150565b6002544211801561046e575060015447105b6104ad576040805162461bcd60e51b815260206004820152600b60248201526a1499599d5b990811985a5b60aa1b604482015290519081900360640190fd5b3360008181526003602052604080822060010154905181156108fc0292818181858888f193505050501580156104e7573d6000803e3d6000fd5b50336000818152600360209081526040808320600101929092558151308152908101929092526060828201819052600790830152667375636365737360c81b6080830152516000805160206105518339815191529181900360a00190a1565b60015490565b479056fe2335156a506d67c95b1da1ee5c172bc7a41bcaac9d6d892184d9976d37f2b40da264697066735822122072a6e6c89b2d9f1ae1d599c583540f51cf099da068326c3ca1d6a55a31d2e39a64736f6c63430007000033",
-                feeLimit: 400000000,
-                callValue: 0,
-                userFeePercentage: 100,
-                originEnergyLimit: 1000000,
-                parameters: [amountNeedSun, Math.round(projectObj.enddate.getTime() / 1000)]
-            }, tronweb.defaultAddress.hex);
+                // Quy đổi VND -> SUN (1 TRX = 1.000.000 SUN)
+                const amountNeedVnd = listProcessValue.reduce(function (total, number) {
+                    return total + number.amountNeed
+                }, 0);
+                const amountNeedSun = Math.round((amountNeedVnd / trxPrice) * 1000000)
+                console.log('SUN: ', amountNeedSun);
 
-            const signedTransaction = await tronweb.trx.sign(transaction)
+                const transaction = await tronweb.transactionBuilder.createSmartContract({
+                    abi: [{ "inputs": [{ "internalType": "uint256", "name": "_amountneed", "type": "uint256" }, { "internalType": "uint256", "name": "_endDate", "type": "uint256" }], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": false, "internalType": "address", "name": "sendFrom", "type": "address" }, { "indexed": false, "internalType": "address", "name": "to", "type": "address" }, { "indexed": false, "internalType": "string", "name": "messages", "type": "string" }], "name": "PayEnvent", "type": "event" }, { "inputs": [], "name": "AmountNeed", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "AmountNow", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "Donate", "outputs": [], "stateMutability": "payable", "type": "function" }, { "inputs": [], "name": "EndDate", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "Refund", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "Timestap", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }], "name": "Withdraw", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "listMembers", "outputs": [{ "internalType": "address", "name": "addressDonate", "type": "address" }, { "internalType": "uint256", "name": "amount", "type": "uint256" }], "stateMutability": "view", "type": "function" }],
 
-            const contractInstance = await tronweb.trx.sendRawTransaction(signedTransaction)
+                    bytecode: "608060405234801561001057600080fd5b50d3801561001d57600080fd5b50d2801561002a57600080fd5b5060405161063d38038061063d8339818101604052604081101561004d57600080fd5b508051602091820151604080516060810182523380825294810184905201819052600080546001600160a01b0319169093179092556001556002556105a6806100976000396000f3fe60806040526004361061006b5760003560e01c80631954f39e14610070578063195dd2c6146100b15780632a9ac5c8146100e057806333ac2627146101505780635b6b431d1461016f5780635d268629146101b3578063a09f2da2146101e2578063f66958f814610211575b600080fd5b34801561007c57600080fd5b50d3801561008957600080fd5b50d2801561009657600080fd5b5061009f610240565b60408051918252519081900360200190f35b3480156100bd57600080fd5b50d380156100ca57600080fd5b50d280156100d757600080fd5b5061009f610246565b3480156100ec57600080fd5b50d380156100f957600080fd5b50d2801561010657600080fd5b5061012d6004803603602081101561011d57600080fd5b50356001600160a01b031661024a565b604080516001600160a01b03909316835260208301919091528051918290030190f35b61016d6004803603602081101561016657600080fd5b503561026f565b005b34801561017b57600080fd5b50d3801561018857600080fd5b50d2801561019557600080fd5b5061016d600480360360208110156101ac57600080fd5b503561037c565b3480156101bf57600080fd5b50d380156101cc57600080fd5b50d280156101d957600080fd5b5061016d61045c565b3480156101ee57600080fd5b50d380156101fb57600080fd5b50d2801561020857600080fd5b5061009f610546565b34801561021d57600080fd5b50d3801561022a57600080fd5b50d2801561023757600080fd5b5061009f61054c565b60025490565b4290565b600360205260009081526040902080546001909101546001600160a01b039091169082565b60025442106102b3576040805162461bcd60e51b815260206004820152600b60248201526a141c9bda9958dd08115b9960aa1b604482015290519081900360640190fd5b336000908152600360205260409020546001600160a01b031661031b5760408051808201825233808252602080830185815260009283526003909152929020905181546001600160a01b0319166001600160a01b039091161781559051600190910155610334565b3360009081526003602052604090206001018054820190555b604080513381523060208201526060818301819052600790820152667375636365737360c81b608082015290516000805160206105518339815191529181900360a00190a150565b6000546001600160a01b03163314801561039857506001544710155b80156103a5575060025442115b6103e6576040805162461bcd60e51b815260206004820152600d60248201526c15da5d1a191c985dc811985a5b609a1b604482015290519081900360640190fd5b604051339082156108fc029083906000818181858888f19350505050158015610413573d6000803e3d6000fd5b50604080513081523360208201526060818301819052600790820152667375636365737360c81b608082015290516000805160206105518339815191529181900360a00190a150565b6002544211801561046e575060015447105b6104ad576040805162461bcd60e51b815260206004820152600b60248201526a1499599d5b990811985a5b60aa1b604482015290519081900360640190fd5b3360008181526003602052604080822060010154905181156108fc0292818181858888f193505050501580156104e7573d6000803e3d6000fd5b50336000818152600360209081526040808320600101929092558151308152908101929092526060828201819052600790830152667375636365737360c81b6080830152516000805160206105518339815191529181900360a00190a1565b60015490565b479056fe2335156a506d67c95b1da1ee5c172bc7a41bcaac9d6d892184d9976d37f2b40da264697066735822122072a6e6c89b2d9f1ae1d599c583540f51cf099da068326c3ca1d6a55a31d2e39a64736f6c63430007000033",
+                    feeLimit: 400000000,
+                    callValue: 0,
+                    userFeePercentage: 100,
+                    originEnergyLimit: 1000000,
+                    parameters: [amountNeedSun, Math.round(projectObj.enddate.getTime() / 1000)]
+                }, tronweb.defaultAddress.hex);
 
-            console.log("address sc: ", tronweb.address.fromHex(contractInstance.transaction.contract_address))
-            console.log("amountNeedSun: ", amountNeedSun)
-            console.log("Second timestap: ", Math.round(projectObj.enddate.getTime() / 1000))
-            // if (typeof contractInstance.transaction.contract_address === "string") {
-            handleFinal(tronweb.address.fromHex(contractInstance.transaction.contract_address))
-            // }
-        } catch (err) {
-            console.error(err)
+                const signedTransaction = await tronweb.trx.sign(transaction)
+
+                const contractInstance = await tronweb.trx.sendRawTransaction(signedTransaction)
+
+                console.log("address sc: ", tronweb.address.fromHex(contractInstance.transaction.contract_address))
+                console.log("amountNeedSun: ", amountNeedSun)
+                console.log("Second timestap: ", Math.round(projectObj.enddate.getTime() / 1000))
+                // if (typeof contractInstance.transaction.contract_address === "string") {
+                handleFinal(tronweb.address.fromHex(contractInstance.transaction.contract_address))
+                // }
+            } catch (err) {
+                console.error(err)
+                swal2.fire({
+                    title: "Tạo dự án thất bại",
+                    text: "Vui lòng kiểm tra số dư ví.",
+                    icon: "error",
+                    confirmButtonColor: 'var(--love-color-1)'
+
+                });
+            }
+        } else {
             swal2.fire({
-                title: "Tạo dự án thất bại",
-                text: "Vui lòng kiểm tra số dư ví.",
-                icon: "error",
+                title: "Thông báo",
+                text: "Số dư ví không đủ",
+                icon: "info",
                 confirmButtonColor: 'var(--love-color-1)'
 
             });

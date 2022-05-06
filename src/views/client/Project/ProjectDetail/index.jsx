@@ -168,21 +168,14 @@ function ProjectDetail(props) {
     // Setting slider 
     const settingSliderArtical = {
         dots: true,
-        slidesToShow: 3,
+        slidesToShow: 2,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 5000,
         adaptiveHeight: true,
 
         responsive: [
-            {
-                breakpoint: 1200,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                    arrows: false
-                }
-            },
+
             {
                 breakpoint: 768,
                 settings: {
@@ -302,69 +295,81 @@ function ProjectDetail(props) {
 
     // Gọi hàm Donate từ Smart Contract
     async function donate() {
-        try {
-            const sm = await tronweb.contract().at(dataProject.addressContract)
+        if ((await tronweb.trx.getBalance(tronweb.defaultAddress.base58)) > (valueTrx * 1000000)) {
 
-            const result = await sm.Donate(valueTrx * 1000000).send({
-                feeLimit: 100_000_000,
-                callValue: valueTrx * 1000000,
-                // shouldPollResponse:true
-            })
-                .then((res) => {
-                    console.log('Donate: ', res)
 
-                    if (typeof res === 'string') {
-                        swal2.fire({
-                            title: "Xác nhận đóng góp.",
-                            text: "Đóng góp của bạn sẽ được cập nhật trong giây lát.",
-                            icon: "success",
-                            confirmButtonColor: 'var(--love-color-1)'
+            try {
+                const sm = await tronweb.contract().at(dataProject.addressContract)
 
-                        });
-
-                        const checkConfirmTransaction = setInterval(async () => {
-                            console.log("chạy 1 lần: ", res)
-                            await tronweb.trx.getUnconfirmedTransactionInfo(res)
-                                .then((response) => {
-                                    if (response.receipt) {
-                                        if (response.receipt.result === "SUCCESS") {
-                                            clearInterval(checkConfirmTransaction)
-                                            console.log("Giao dịch thành công. Lưu vào database.")
-                                            saveTransactionDonate(res)
-                                            swal2.fire({
-                                                title: "Đóng góp thành công.",
-                                                html: "Đóng góp của bạn đã được xác nhận thành công. </br> Chúng tôi chân thành cảm ơn bạn. </br> Chúc bạn luôn mạnh khỏe và thành công trong cuộc sống.</br> "
-                                                    + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Chi tiết giao dịch</a>`,
-                                                icon: "success",
-                                                confirmButtonColor: 'var(--love-color-1)'
-
-                                            });
-                                        }
-                                        if (response.receipt.result !== "SUCCESS") {
-                                            clearInterval(checkConfirmTransaction)
-                                            console.log("FAIL - clearInterval")
-                                            swal2.fire({
-                                                title: "Đóng góp không thành công.",
-                                                html: "Giao dịch thất bại. Vui lòng kiểm tra số dư ví.</br>"
-                                                    + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Chi tiết giao dịch</a>`,
-                                                icon: "error",
-                                                confirmButtonColor: 'var(--love-color-1)'
-
-                                            });
-                                        }
-                                    }
-                                })
-                        }, 2000)
-                    }
+                const result = await sm.Donate(valueTrx * 1000000).send({
+                    feeLimit: 100_000_000,
+                    callValue: valueTrx * 1000000,
+                    // shouldPollResponse:true
                 })
+                    .then((res) => {
+                        console.log('Donate: ', res)
+
+                        if (typeof res === 'string') {
+                            swal2.fire({
+                                title: "Xác nhận đóng góp.",
+                                text: "Đóng góp của bạn sẽ được cập nhật trong giây lát.",
+                                icon: "success",
+                                confirmButtonColor: 'var(--love-color-1)'
+
+                            });
+
+                            const checkConfirmTransaction = setInterval(async () => {
+                                console.log("chạy 1 lần: ", res)
+                                await tronweb.trx.getUnconfirmedTransactionInfo(res)
+                                    .then((response) => {
+                                        if (response.receipt) {
+                                            if (response.receipt.result === "SUCCESS") {
+                                                clearInterval(checkConfirmTransaction)
+                                                console.log("Giao dịch thành công. Lưu vào database.")
+                                                saveTransactionDonate(res)
+                                                swal2.fire({
+                                                    title: "Đóng góp thành công.",
+                                                    html: "Đóng góp của bạn đã được xác nhận thành công. </br> Chúng tôi chân thành cảm ơn bạn. </br> Chúc bạn luôn mạnh khỏe và thành công trong cuộc sống.</br> "
+                                                        + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Chi tiết giao dịch</a>`,
+                                                    icon: "success",
+                                                    confirmButtonColor: 'var(--love-color-1)'
+
+                                                });
+                                            }
+                                            if (response.receipt.result !== "SUCCESS") {
+                                                clearInterval(checkConfirmTransaction)
+                                                console.log("FAIL - clearInterval")
+                                                swal2.fire({
+                                                    title: "Đóng góp không thành công.",
+                                                    html: "Giao dịch thất bại. Vui lòng kiểm tra số dư ví.</br>"
+                                                        + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Chi tiết giao dịch</a>`,
+                                                    icon: "error",
+                                                    confirmButtonColor: 'var(--love-color-1)'
+
+                                                });
+                                            }
+                                        }
+                                    })
+                            }, 2000)
+                        }
+                    })
 
 
-        }
-        catch (err) {
-            console.error(err);
+            }
+            catch (err) {
+                console.error(err);
+                swal2.fire({
+                    title: "Đóng góp không thành công",
+                    icon: "error",
+                    confirmButtonColor: 'var(--love-color-1)'
+
+                });
+            }
+        } else {
             swal2.fire({
-                title: "Đóng góp không thành công",
-                icon: "error",
+                title: "Thông báo",
+                text: "Số dư ví không đủ",
+                icon: "info",
                 confirmButtonColor: 'var(--love-color-1)'
 
             });
@@ -802,11 +807,20 @@ function ProjectDetail(props) {
                                         <div className="fw-bold">VNĐ</div>
                                     </div>
                                 </div>
-                                <button className={clsx(Style.backgroundForeignColor, "fs-5 w-100 mt-5 p-2 text-white text-center text-uppercase")} onClick={handleDonate}>Đóng góp<i className="mdi mdi-arrow-right-drop-circle-outline ms-1"></i></button>
+                                {
+                                    dataProject.status !== 1 ? (
+                                        <>
+                                            <button className={clsx(Style.backgroundForeignColor, "fs-5 w-100 mt-5 p-2 text-white text-center text-uppercase")} onClick={handleDonate}>Đóng góp<i className="mdi mdi-arrow-right-drop-circle-outline ms-1"></i></button>
+                                            <button className={clsx("bg-secondary fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleRefund}>Hoàn tiền<i className="mdi mdi-backup-restore ms-1"></i></button>
+                                        </>
+
+                                    ) : <button className={clsx("bg-secondary fs-5 w-100 p-2 text-white text-center text-uppercase")} >Vui lòng chờ duyệt để tham gia đóng góp</button>
+
+                                }
+
                                 {
                                     dataProject.isEdit === true ? <button className={clsx(Style.backgroundBaseColor, "fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleWithdraw}>Rút tiền<i className="mdi mdi-cash-multiple ms-1"></i></button> : ""
                                 }
-                                <button className={clsx("bg-secondary fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleRefund}>Hoàn tiền<i className="mdi mdi-backup-restore ms-1"></i></button>
 
                             </div>
                         </div>
@@ -1025,30 +1039,37 @@ function ProjectDetail(props) {
                     <div className="row">
                         <div className="col-12 py-4">
 
-                            <Slider {...settingSliderDonors}>
-                                {
-                                    dataProject.transaction
-                                        .filter((item) => item.type === 1)
-                                        .map((item, index) => (
-                                            <div key={index} className={clsx(Style.articalDetail, "d-flex flex-column  p-3 ")}>
-                                                <div className="rounded-circle d-inline-block mx-auto p-2 border">
-                                                    <img src={process.env.REACT_APP_URL + item.userAvatar}
-                                                        onError={(e) => (e.target.onerror = null, e.target.src = logoCharity)}
-                                                        alt="hình đại diện" width="80px" height="80px" className=" rounded-circle" />
-                                                </div>
-                                                <div className="my-3">
-                                                    <p className="m-0 text-center">{item.userName}</p>
-                                                    <div className="m-0 d-flex justify-content-center">
-                                                        <img src={trxCoin} alt="coin" className="" width="16px" />
-                                                        <span className="ms-1 fw-bold">{item.amount}</span>
-                                                    </div>
-                                                    <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết</a>
+                            {
+                                (dataProject.transaction.filter((item) => item.type === 1).length > 0) ? (
+                                    <>
+                                        <Slider {...settingSliderDonors}>
+                                            {
+                                                dataProject.transaction
+                                                    .filter((item) => item.type === 1)
+                                                    .map((item, index) => (
+                                                        <div key={index} className={clsx(Style.articalDetail, "d-flex flex-column  p-3 ")}>
+                                                            <div className="rounded-circle d-inline-block mx-auto p-2 border">
+                                                                <img src={process.env.REACT_APP_URL + item.userAvatar}
+                                                                    onError={(e) => (e.target.onerror = null, e.target.src = logoCharity)}
+                                                                    alt="hình đại diện" width="80px" height="80px" className=" rounded-circle" />
+                                                            </div>
+                                                            <div className="my-3">
+                                                                <p className="m-0 text-center">{item.userName}</p>
+                                                                <div className="m-0 d-flex justify-content-center">
+                                                                    <img src={trxCoin} alt="coin" className="" width="16px" />
+                                                                    <span className="ms-1 fw-bold">{item.amount}</span>
+                                                                </div>
+                                                                <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết</a>
 
-                                                </div>
-                                            </div>
-                                        ))
-                                }
-                            </Slider>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                            }
+
+                                        </Slider>
+                                    </>
+                                ) : <p className="px-3 text-center fst-italic">Chúng tôi mong chờ sự đóng góp từ các bạn để dự án được triển khai tốt hơn.</p>
+                            }
                         </div>
                     </div>
                 </div>
@@ -1065,63 +1086,39 @@ function ProjectDetail(props) {
                     </div>
                     <div className="row">
                         <div className="col-12 py-4">
+                            {
+                                (dataProject.transaction.filter((item) => item.type === 2).length > 0) ? (
+                                    <>
+                                        <Slider {...settingSliderDonors}>
+                                            {
+                                                dataProject.transaction
+                                                    .filter((item) => item.type === 2)
+                                                    .map((item, index) => (
+                                                        <div key={index} className={clsx(Style.articalDetail, "d-flex flex-column  p-3 ")}>
+                                                            <div className="rounded-circle d-inline-block mx-auto p-2 border">
+                                                                <img src={process.env.REACT_APP_URL + item.userAvatar}
+                                                                    onError={(e) => (e.target.onerror = null, e.target.src = logoCharity)}
+                                                                    alt="hình đại diện" width="80px" height="80px" className=" rounded-circle" />
+                                                            </div>
+                                                            <div className="my-3">
+                                                                <p className="m-0 text-center">{item.userName}</p>
+                                                                <div className="m-0 d-flex justify-content-center">
+                                                                    <img src={trxCoin} alt="coin" className="" width="16px" />
+                                                                    <span className="ms-1 fw-bold">{item.amount}</span>
+                                                                </div>
+                                                                <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết</a>
 
-                            <Slider {...settingSliderDonors}>
-                                {
-                                    dataProject.transaction
-                                        .filter((item) => item.type === 2)
-                                        .map((item, index) => (
-                                            <div key={index} className={clsx(Style.articalDetail, "d-flex flex-column  p-3 ")}>
-                                                <div className="rounded-circle d-inline-block mx-auto p-2 border">
-                                                    <img src={process.env.REACT_APP_URL + item.userAvatar}
-                                                        onError={(e) => (e.target.onerror = null, e.target.src = logoCharity)}
-                                                        alt="hình đại diện" width="80px" height="80px" className=" rounded-circle" />
-                                                </div>
-                                                <div className="my-3">
-                                                    <p className="m-0 text-center">{item.userName}</p>
-                                                    <div className="m-0 d-flex justify-content-center">
-                                                        <img src={trxCoin} alt="coin" className="" width="16px" />
-                                                        <span className="ms-1 fw-bold">{item.amount}</span>
-                                                    </div>
-                                                    <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết</a>
-
-                                                </div>
-                                            </div>
-                                        ))
-                                }
-                            </Slider>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                            }
+                                        </Slider>
+                                    </>
+                                ) : <p className="px-3 text-center fst-italic">Chúng tôi mong chờ sự đóng góp từ các bạn để dự án được triển khai tốt hơn.</p>
+                            }
                         </div>
                     </div>
-                    {/* <Table responsive striped bordered>
-                        <thead>
-                            <tr>
-                                <th scope="col" className="text-center">#</th>
-                                <th scope="col" className="text-center">Người nhận</th>
-                                <th scope="col" className="text-center">Giá trị</th>
-                                <th scope="col" className="text-center">Chi tiết giao dịch</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
 
-                                dataProject.transaction
-                                    .filter((item) => item.type === 2)
-                                    .map((item, index) => (
-
-                                        <tr>
-                                            <td className="text-center">{index + 1}</td>
-                                            <td className="text-center">{item.userName}</td>
-                                            <td className="text-center">{item.amount} TRX</td>
-                                            <td className="text-center">
-                                                <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} target="_blank" rel="noreferrer" className={clsx("m-0 d-block text-center text-decoration-none text-muted")}>{item.hash}</a>
-
-                                            </td>
-                                        </tr>
-
-                                    ))
-                            }
-                        </tbody>
-                    </Table> */}
 
                 </div>
 

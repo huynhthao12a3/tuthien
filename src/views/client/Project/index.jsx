@@ -72,22 +72,7 @@ function ClientProject() {
     fetchDataProjectList()
   }, [fillerStatusCheckbox, fillerCategoryCheckbox, filterSearch, currentPage])
 
-  // useEffect(() => {
-  //   const fetchDataProjectList = async () => {
-  //     const params = {
-  //       keyword: filterSearch,
-  //       categoryid: fillerCategoryCheckbox,
-  //       status: fillerStatusCheckbox,
-  //       currentpage: currentPage
-  //     }
-  //     const response = await projectApi.getAll(params)
-  //     if (response.isSuccess) {
-  //       setProjectList([...projectList, ...response.data])
-  //       console.log('danh sách project: ', projectList)
-  //     }
-  //   }
-  //   fetchDataProjectList()
-  // }, [currentPage])
+
 
   // Lấy danh mục
   useEffect(() => {
