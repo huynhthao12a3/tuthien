@@ -39,11 +39,13 @@ function AdminAccount()
         },
     ]
     const type = [
-        { value: '1', label: 'tổ chức' },
-        { value: '2', label: 'cá nhân' },
+        {  value: '0',label:'tất cả'},
+        { value: '1', label: 'cá nhân' },
+        { value: '2', label: 'tổ chức' },
     ]
     // select trạng thái
     const filterStatus = [
+        { value: '0', label: 'tất cả' },
         { value: '1', label: 'khóa' },
         { value: '2', label: 'đang hoạt động' },
     ]
@@ -54,8 +56,8 @@ function AdminAccount()
 
     // bộ lọc
     const [inputSearch, setInputSearch] = useState('')
-    const [inputType, setInputType] = useState([...type][1])
-    const [inputStatus, setInputStatus] = useState(filterStatus[1])
+    const [inputType, setInputType] = useState([...type][0])
+    const [inputStatus, setInputStatus] = useState(filterStatus[0])
     const [pageindex, setPageindex] = useState(0)// trang 
 
     const [sta, setSta] = useState(1)// load lại danh sách
@@ -72,12 +74,13 @@ function AdminAccount()
 
     //load danh sách từ API
     useEffect(async () => {
-        const data = {
-            "keyword": inputSearch,
+        const data= {
             "type": inputType.value,
+            "keyword": inputSearch,
             "status": inputStatus.value,
             'pageindex': pageindex,
         }
+       
         const respons = await adminUser.getAll(data)
         if(respons.isSuccess)
         {
