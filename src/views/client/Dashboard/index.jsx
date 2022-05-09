@@ -207,7 +207,7 @@ function DashboardClient(props) {
                                     </p>
                                 </div>
                             </div>
-                            <img src={handBanner} alt="" className="img-fluid " />
+                            <img src={handBanner} alt="" className="img-fluid w-100" />
                         </div>
                         {/*Giá trị của chúng tôi */}
                         <div className={clsx(Style.valuesDashboard)}>
