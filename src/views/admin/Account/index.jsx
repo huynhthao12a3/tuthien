@@ -144,7 +144,7 @@ function AdminAccount()
             const respon = await adminUser.lock(item)
             if (respon.isSuccess) {
                 Swal.fire(
-                    'Đã khóa!',
+                    `Đã ${content}!`,
                     `${content} tài khoản thành công`,
                     'success'
                 )
@@ -481,11 +481,11 @@ function AdminAccount()
                     <div className="col-3 py-3"></div>
                     <div className="col-9 d-flex justify-content-start py-3">
                     <div>
-                        <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, 'bg-info px-2')}>
+                        <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, 'px-2')}>
                             <span className="mdi mdi-chevron-double-left"></span>
                         </button>
                         <span className="px-3 text-secondary">{pageindex}</span>
-                        <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, 'bg-info px-2')}>
+                        <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, ' px-2')}>
                             <span className="mdi mdi-chevron-double-right"></span>
                         </button>
                     </div>

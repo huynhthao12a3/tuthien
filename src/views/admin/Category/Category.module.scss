@@ -49,6 +49,7 @@
         border-bottom-right-radius: 40%;
         color: #fff;
     }
+
     .prevBtn{
         // border-top-right-radius:30% ;
         border-top-left-radius: 40%;
@@ -75,6 +76,15 @@
                 max-width: 250px;
                 height: 49.38px;
                 overflow: hidden;
+            }
+            .imgAccount{
+               
+                width: 40px;
+                .img_item{
+                    height: 40px;
+                    width: 40px;
+                }
+                
             }
             .StatusItem{
                 .changeStatus{

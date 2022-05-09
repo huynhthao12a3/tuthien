@@ -25,6 +25,8 @@
     --love-color-3: #F9CDAD;
     --love-color-4: #FC9D9A;
     --love-color-5: #FE4365;
+
+    --btnPage-color: #5edb92;
 }
 #root{
     min-height: 100%;
@@ -249,4 +251,24 @@ body{
 }
 .bg-danger.sleep.btn-primary{
     background-color: var(--love-color-4) !important;
+}
+.tt-sum .rs-picker-toggle-clean.rs-btn-close,
+ .tt-sum .rs-picker-toggle-caret.rs-icon,
+ .tt-sum .rs-picker-toggle-placeholder{
+    margin-top: 5px;
+}
+/* @keyframes example {
+    from { margin-top: 0px;}
+    to {}
+  } */
+.card-cv{
+   
+}
+.card-cv{
+    transition: all 0.3s;
+   
+}
+.card-cv:hover{
+    
+    margin-top: -10px;
 }
