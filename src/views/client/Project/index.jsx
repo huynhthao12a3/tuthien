@@ -42,7 +42,7 @@ function ClientProject() {
     setFilterSearch(value)
   }
   // checkbox
-  const [fillerStatusCheckbox, setFillerStatusCheckbox] = useState(0)
+  const [fillerStatusCheckbox, setFillerStatusCheckbox] = useState(2)
   const [fillerCategoryCheckbox, setFillerCategoryCheckbox] = useState(0)
 
   // console.log('status :', fillerStatusCheckbox)

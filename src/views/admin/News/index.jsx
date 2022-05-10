@@ -325,8 +325,8 @@ function AdminNews() {
                         </div>
                     </div>
                     <div className={clsx('list col-9')}>
-                        <div className={clsx(Style.listPoject)}>
-                            <div className="page-aside-right">
+                        <div className={clsx(Style.listPoject, 'h-100')}>
+                            <div className="page-aside-right  h-100 d-flex flex-column justify-content-between">
                                 <div className={clsx(Style.table_responsive, 'table-responsive')}>
                                     <table className="table">
                                         <thead>
@@ -393,21 +393,21 @@ function AdminNews() {
                                     </table>
 
                                 </div>
+                                <div className="d-flex">
+                                    <div>
+                                        <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, ' px-2')}>
+                                            <span className="mdi mdi-chevron-double-left"></span>
+                                        </button>
+                                        <span className="px-3 text-secondary">{pageindex}</span>
+                                        <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, ' px-2')}>
+                                            <span className="mdi mdi-chevron-double-right"></span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div className="col-3 py-3"></div>
-                    <di className="col-9 d-flex justify-content-start py-3">
-                        <div>
-                            <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, ' px-2')}>
-                                <span className="mdi mdi-chevron-double-left"></span>
-                            </button>
-                            <span className="px-3 text-secondary">{pageindex}</span>
-                            <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, ' px-2')}>
-                                <span className="mdi mdi-chevron-double-right"></span>
-                            </button>
-                        </div>
-                    </di>
+
                 </div>
                 <Modal size="xl" show={show} onHide={handleClose}>
                     <Modal.Header closeButton>

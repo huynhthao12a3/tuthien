@@ -27,20 +27,31 @@ function UpdateProcess(props) {
     // const location = useLocation().pathname.slice(useLocation().pathname.lastIndexOf("/") + 1);
     let locationsq = useLocation().pathname.slice(1)
     locationsq = locationsq.slice(0, locationsq.indexOf("/"))
-    console.log("locationsq",locationsq)
-    
+    console.log("locationsq", locationsq)
+
     const { id } = useParams()
     console.log('id: ', id)
     const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
+    const fileFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg', 'pdf', 'doc', 'docx']
     const processProp = props.location.state
     console.log('processProp', props)
     const history = useHistory()
+    console.log('history: ', history.location)
     const listTypeExpen = [
         { value: '1', label: 'Thanh toán' },
     ]
+    const listStatusProcess = [
+        // { value: '0', label: 'Trạng thái' },
+        { value: '1', label: 'Chưa bắt đầu' },
+        { value: '2', label: 'Đang thực thi' },
+        { value: '3', label: 'Đã hoàn thành' }
+    ]
     //---------------------------------------------------------- hook
     const [processValue, setProcessValue] = useState(processProp)
+    console.log('value: ', processValue)
     const [imgValue, setImgValue] = useState('')
+    const [uploadFileValue, setUploadFileValue] = useState('')
+    const [fileValue, setFileValue] = useState('')
     const [indexExpense, setIndexExpense] = useState(-1)
     const [listImgUgl, setListImgUgl] = useState(processProp.listImages
         // processProp.listImages.map(function(item){
@@ -56,6 +67,7 @@ function UpdateProcess(props) {
     // expense
     const [description, setDescription] = useState('')
     const [typeEpen, setTypeEpen] = useState(listTypeExpen[0]);
+    const [statusProcess, setStatusProcess] = useState(listStatusProcess[processValue.status - 1]);
     const [amountNeed, setAmountNeed] = useState(0)
     const [amountWord, setAmountWord] = useState('')
     const [listExpense, setListExpense] = useState(processProp.expenses.map(function (item) {
@@ -100,6 +112,55 @@ function UpdateProcess(props) {
             }
         }
     }, [imgValue])
+
+    // Upload hóa đơn process 
+    const uploadFileBill = (e) => {
+        setUploadFileValue(e.target.files[0])
+    }
+
+    // useEffect(() => {
+    //     const fetchImage = async () => {
+    //         let form = new FormData();
+    //         form.append('Image', uploadFileValue);
+    //         form.append('TypeImage', "process-bill");
+    //         const response = await processApi.uploadFile(form);
+    //         if (response.isSuccess) {
+    //             setFileValue(response.data)
+    //         }
+    //         else {
+    //             alertify.alert('Upload ảnh thất bại. Vui lòng kiểm tra định dạng ảnh.')
+    //         }
+    //     }
+    //     fetchImage()
+    // }, [uploadFileValue])
+
+    useEffect(async () => {
+        if (uploadFileValue !== '') {
+            // kiểm tra định dạng file
+            let resultimg = fileFormat.find(function (item) {
+                return removeUnicode((uploadFileValue.name).slice((uploadFileValue.name).lastIndexOf('.') + 1)) === removeUnicode(item)
+            })
+            // đẩy hình ảnh lên data và lưu lại đường dẩn ảnh tại database
+            if (resultimg) {
+
+                let form = new FormData();
+                form.append('Image', uploadFileValue);
+                form.append('TypeImage', "process-bill");
+                const response = await processApi.uploadFile(form);
+                console.log("response.data", response.data)
+                if (response.isSuccess) {
+                    setFileValue(response.data)
+                }
+                else {
+                    alertify.alert('Upload file thất bại')
+                }
+            }
+            else {
+                alertify.alert('Chỉ nhận file có đuôi là jpeg, gif, png, tiff, raw, psd, pdf, doc, docx')
+                setUploadFileValue('')
+            }
+        }
+    }, [uploadFileValue])
 
     useEffect(() => {
         const btnUpdate = $('.updateProcess')
@@ -151,6 +212,10 @@ function UpdateProcess(props) {
                 description,
                 typepen: typeEpen,
                 amount: amountNeed,
+                file: {
+                    id: 0,
+                    ...fileValue
+                }
             }])
 
             setDescription('')
@@ -186,11 +251,16 @@ function UpdateProcess(props) {
                 description,
                 typepen: typeEpen,
                 amount: amountNeed,
+                file: {
+                    id: 0,
+                    ...fileValue
+                }
             }
             setListExpense(arrExpense)
             setDescription('')
             setTypeEpen(listTypeExpen[0])
             setAmountNeed(0)
+            setFileValue('')
             setIndexExpense(-1)
             $('.ajs-button.ajs-ok').css({ "background-color": "var(--admin-btn-color)" });
 
@@ -204,14 +274,14 @@ function UpdateProcess(props) {
 
     // xóa process
     const HandleDeleteProcess = (index) => {
-        alertify.confirm('Thông báo', 'bạn có chắc muốn xóa tiến trình này',
+        alertify.confirm('Thông báo', 'Bạn có chắc muốn xóa tiến trình này',
             function () {
                 const arr1 = [...listExpense.slice(0, index), ...listExpense.slice(index + 1)]
                 setListExpense(arr1)
-                alertify.success('xóa thành công')
+                alertify.success('Xóa thành công')
             },
             function () {
-                alertify.error('đã hủy xóa')
+                alertify.error('Đã hủy xóa')
             });
     }
     // up lên API
@@ -223,12 +293,14 @@ function UpdateProcess(props) {
                 "title": processValue.title,
                 "shortDescription": processValue.shortDescription,
                 "content": processValue.content,
+                "status": Number(statusProcess.value),
                 "expenses": listExpense.map(function (item) {
                     return ({
                         "id": item.id,
                         "description": item.description,
                         "type": item.typepen.label,
-                        "amount": item.amount
+                        "amount": item.amount,
+                        "file": item.file
                     })
                 })
                 ,
@@ -243,25 +315,25 @@ function UpdateProcess(props) {
                 })
 
             }
+
             const response = await processApi.editProcess(data);
             if (response.isSuccess) {
                 // alertify.alert('Tạo dự án thành công')
                 swal({
                     title: "Thông báo",
-                    text: "Thêm tiến trình thành công.",
+                    text: "Cập nhật tiến trình thành công.",
                     icon: "success",
                     button: {
                         className: "bg-base-color"
                     }
                 });
-                if(locationsq.includes("admin"))
-                {
+                if (locationsq.includes("admin")) {
                     console.log(1)
                     history.push('/admin/project')
                 }
-                else{
-                    history.push('/dashboard')
-                } 
+                else {
+                    history.push('/project')
+                }
             }
             else {
                 // alertify.alert('Tạo dự án thất bại')
@@ -309,7 +381,7 @@ function UpdateProcess(props) {
                                 <div className="col-12 col-md-2 position-relative mt-2 m">
                                     <div className='w-100 h-100 d-flex justify-content-end flex-column align-items-center '>
                                         <button onClick={handleDeleteImg} className={clsx(Style.btnLessImg, 'btndeleteImg btn  mt-1 mt-md-2 py-1 py-md-2')}>
-                                            xóa
+                                            Xóa
                                         </button>
                                         <button className={clsx(Style.btnMoreImg, 'btntMoreImg btn  mt-1  py-1 ')}>
                                             <span style={{ cursor: "pointer", position: "absolute", textAlign: "center", fontSize: "1rem", lineHeight: "1.7rem", width: "100%", left: "0", right: "0" }}>Thêm ảnh</span>
@@ -361,6 +433,14 @@ function UpdateProcess(props) {
                                     </div>
                                 </div>
 
+                                {/* Trạng thái  */}
+                                <div className={clsx('col-12 pt-3 ')}>
+                                    <label >Trạng thái tiến trình</label>
+                                    <div className="form-group">
+                                        <Select defaultValue={statusProcess} onChange={setStatusProcess} className={clsx(Style.Inputfocus)} placeholder='Trạng thái' options={listStatusProcess} />
+                                    </div>
+                                </div>
+
                             </div>
 
                             {/* danh sách  */}
@@ -390,6 +470,13 @@ function UpdateProcess(props) {
                                                 removePlugins: ['image', 'MediaEmbed', 'Table'],
                                             }}
                                         />
+                                    </div>
+                                    {/* Hóa đơn  */}
+                                    <div className={clsx('col-12 pt-3 ')}>
+                                        <label >Hóa đơn chi tiêu</label>
+                                        <div className="form-group">
+                                            <input onChange={(e) => uploadFileBill(e)} name="bill" type="file" accept="image/jpeg,image/jpg,image/gif,image/png,application/pdf,application/doc,application/docx"></input>
+                                        </div>
                                     </div>
                                     {/* hình thức chi tiêu  */}
                                     <div className={clsx('col-12 pt-3 ')}>
@@ -439,24 +526,22 @@ function UpdateProcess(props) {
                                             {
                                                 listExpense.map(function (item, index) {
                                                     return (
-                                                        <>
-                                                            <tr className={clsx(Style.itemProcess, "cursor-pointer")} >
-                                                                <th onClick={() => { calbackGetProcess(index) }}>{index}</th>
-                                                                <th onClick={() => { calbackGetProcess(index) }}>{item.amount}</th>
-                                                                <td className=" text-center align-middle ">
-                                                                    <Dropdown className="d-inline mx-2" >
-                                                                        <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin")}>
-                                                                            <i className={clsx(Style.iconDrop, "text-light mdi mdi-dots-vertical font-18  text-primary")}></i>
-                                                                        </Dropdown.Toggle>
+                                                        <tr key={index} className={clsx(Style.itemProcess, "cursor-pointer")} >
+                                                            <th onClick={() => { calbackGetProcess(index) }}>{index}</th>
+                                                            <th onClick={() => { calbackGetProcess(index) }}>{item.amount}</th>
+                                                            <td className=" text-center align-middle ">
+                                                                <Dropdown className="d-inline mx-2" >
+                                                                    <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin")}>
+                                                                        <i className={clsx(Style.iconDrop, "text-light mdi mdi-dots-vertical font-18  text-primary")}></i>
+                                                                    </Dropdown.Toggle>
 
-                                                                        <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                            <Dropdown.Item onClick={() => { HandleDeleteProcess(index) }} className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore pe-2"></i>Xóa</Dropdown.Item>
-                                                                        </Dropdown.Menu>
-                                                                    </Dropdown>
-                                                                </td>
-                                                            </tr>
+                                                                    <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
+                                                                        <Dropdown.Item onClick={() => { HandleDeleteProcess(index) }} className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore pe-2"></i>Xóa</Dropdown.Item>
+                                                                    </Dropdown.Menu>
+                                                                </Dropdown>
+                                                            </td>
+                                                        </tr>
 
-                                                        </>
                                                     )
                                                 })
                                             }

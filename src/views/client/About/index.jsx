@@ -31,7 +31,7 @@ function About(props) {
                     <div className="">
                         <h2>Về chúng tôi</h2>
                         <p>Chúng tôi là Tấm Lòng Vàng, nền tảng quyên góp minh bạch với sự hỗ trợ của blockchain. Chúng tôi thúc đẩy hoạt động trao tiền điện tử mang tính biến đổi, sử dụng công nghệ mới làm công cụ từ thiện và đầu tư vào đổi mới, nghiên cứu và phát triển chuỗi khối.</p>
-                        <p>Tác động lớn nhất của chúng tôi là hỗ trợ cho những người khó khăn có khả năng độc lập về tài chính thông qua việc áp dụng tiền điện tử.</p>
+                        <p>Tác động lớn nhất của chúng tôi là hỗ trợ cho những người khó khăn thông qua việc áp dụng tiền điện tử.</p>
                         <p>Chúng tôi cách mạng hóa hoạt động trao tặng bằng cách minh bạch hơn và giải quyết các vấn đề phức tạp trong lĩnh vực xã hội như thiếu tin tưởng vào các tổ chức phi lợi nhuận, phí chuyển tiền cao, quy trình kém hiệu quả và thiếu trách nhiệm giải trình trong chi tiêu của các nhà tài trợ.</p>
                     </div>
                     <div className="mx-auto w-100">

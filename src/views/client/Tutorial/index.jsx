@@ -56,20 +56,20 @@ function Tutorial(props) {
                                     <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>1</div>
                                 </div>
                                 <div className="ps-3 ps-md-0">
-                                    <p className="lh-base fw-bold text-md-center px-2 p-md-0">Tạo tài khoản</p>
-                                    <p className={clsx(Style.description, 'px-2')}>Truy cập vào website Tấm Lòng Vàng và tạo tài khoản của bạn gồm tên tài khoản, ảnh đại diện để cộng đồng dễ dàng nhận ra và tương tác với bạn.</p>
+                                    <p className="lh-base fw-bold text-md-center px-2 p-md-0">Tạo ví TronLink</p>
+                                    <p className={clsx(Style.description, 'px-2')}>Truy cập vào tiện ích TronLink trên Chrome, Microsoft Edge hoặc Cốc Cốc và tạo ví TronLink.</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="col-12 col-md-3  ">
+                        <div className="col-12 col-md-3 ">
                             <div className="d-flex flex-row flex-md-column ">
                                 <div className="flex-grow-1 mx-auto mb-3">
                                     <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>2</div>
                                 </div>
                                 <div className="ps-3 ps-md-0">
-                                    <p className="lh-base fw-bold text-md-center px-2 p-md-0">Tạo dự án gây quỹ</p>
-                                    <p className={clsx(Style.description, 'px-2')}>Sử dụng chức năng “Tạo dự án” trên website Tấm Lòng Vàng để tạo chiến dịch, ban hành và chia sẻ mục tiêu gây quỹ với cộng đồng qua các nền tảng mạng xã hội.</p>
+                                    <p className="lh-base fw-bold text-md-center px-2 p-md-0">Đăng ký tài khoản</p>
+                                    <p className={clsx(Style.description, 'px-2')}>Truy cập vào website Tấm Lòng Vàng và đăng ký tài khoản của bạn gồm tên tài khoản, ảnh đại diện để cộng đồng dễ dàng nhận ra và tương tác với bạn.</p>
                                 </div>
                             </div>
                         </div>
@@ -80,18 +80,32 @@ function Tutorial(props) {
                                     <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>3</div>
                                 </div>
                                 <div className="ps-3 ps-md-0">
+                                    <p className="lh-base fw-bold text-md-center px-2 p-md-0">Tạo dự án gây quỹ</p>
+                                    <p className={clsx(Style.description, 'px-2')}>Sử dụng chức năng “Tạo dự án” trên website Tấm Lòng Vàng để tạo chiến dịch, ban hành và chia sẻ mục tiêu gây quỹ với cộng đồng qua các nền tảng mạng xã hội.</p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div className="row justify-content-evenly mt-3 mt-lg-5 " data-aos="fade-right">
+
+                        <div className="col-12 col-md-3  ">
+                            <div className="d-flex flex-row flex-md-column ">
+                                <div className="flex-grow-1 mx-auto mb-3">
+                                    <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>4</div>
+                                </div>
+                                <div className="ps-3 ps-md-0">
                                     <p className="lh-base fw-bold text-md-center px-2 p-md-0">Xác minh dự án</p>
                                     <p className={clsx(Style.description, 'px-2')}>Chúng tôi xác minh dự án của bạn trên website Tấm Lòng Vàng và thông báo cho bạn.</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="row justify-content-evenly mt-3 mt-lg-5 " data-aos="fade-right">
 
                         <div className="col-12 col-md-3">
                             <div className="d-flex flex-row flex-md-column ">
                                 <div className="flex-grow-1 mx-auto mb-3">
-                                    <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>4</div>
+                                    <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>5</div>
                                 </div>
                                 <div className="ps-3 ps-md-0">
                                     <p className="lh-base fw-bold text-md-center px-2 p-md-0">Thực hiện mục tiêu đề ra</p>
@@ -104,7 +118,7 @@ function Tutorial(props) {
                         <div className="col-12 col-md-3 ">
                             <div className="d-flex flex-row flex-md-column ">
                                 <div className="flex-grow-1 mx-auto mb-3">
-                                    <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>5</div>
+                                    <div className={clsx(Style.circle, " d-flex justify-content-center align-items-center")}>6</div>
                                 </div>
                                 <div className="ps-3 ps-md-0">
                                     <p className="lh-base fw-bold text-md-center px-2 p-md-0">Cập nhật hoạt động</p>

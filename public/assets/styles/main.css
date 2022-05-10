@@ -235,7 +235,7 @@ body{
     border-top-left-radius: 40%;
     border-bottom-left-radius: 40%;
     color: #fff;
-    background-color: var(--love-color-5);
+    background-color: var(--btnPage-color);
     
 }
 .nextBtn{
@@ -243,7 +243,7 @@ body{
     border-top-right-radius: 40%;
     border-bottom-right-radius: 40%;
     color: #fff;
-    background-color: var(--love-color-5);
+    background-color: var(--btnPage-color);
 
 }
 .swal2-confirm.swal2-styled{
