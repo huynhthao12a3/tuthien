@@ -257,7 +257,7 @@ function AdminDashboard(){
             <div className="col-lg-3 ">
               <Link to='' className='card-cv shadow-sm p-3 mb-2 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
-                  <h5 className='text-secondary'>Dự án chờ duyệt</h5>
+                  <h5 className='text-secondary'>Số dự án chờ duyệt</h5>
                   <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.projectWaitting}</b> dự án</span>
                 </div>
                 <div className={clsx('col-3 d-flex justify-content-end ')}>
@@ -269,7 +269,7 @@ function AdminDashboard(){
             <div className="col-lg-3 ">
               <Link to='' className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
-                  <h5 className='text-secondary'>Dự án đang chạy</h5>
+                  <h5 className='text-secondary'>Số dự án đang chạy</h5>
                   <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.projectImlementation}</b> dự án</span>
                 </div>
                 <div className={clsx('col-3 d-flex justify-content-end ')}>
@@ -293,7 +293,7 @@ function AdminDashboard(){
             <div className="col-lg-3 ">
               <Link to='' className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
-                  <h5 className='text-secondary'>Tài khoản xác minh</h5>
+                  <h5 className='text-secondary'>Tài khoản chưa xác minh</h5>
                   <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.lockUsers}</b> tài khoản</span>
                 </div>
                 <div className={clsx('col-3 d-flex justify-content-end ')}>
@@ -394,7 +394,7 @@ function AdminDashboard(){
                                       
 
                                       <td  className={clsx(Style.lh, )} >{item.fullName}</td>
-                                      <td className={clsx(Style.lh,'text-center' )} >{item.sumAmountDonated}</td>
+                                      <td className={clsx(Style.lh,'text-center' )} >{item.sumAmountDonated} <span className='text-warning'>TRX</span></td>
 
                                   </tr>
 

@@ -322,12 +322,12 @@ function ProjectDetail(props) {
                                         if (response.receipt) {
                                             if (response.receipt.result === "SUCCESS") {
                                                 clearInterval(checkConfirmTransaction)
-                                                setIsLoading(false)
                                                 console.log("Giao dịch thành công. Lưu vào database.")
                                                 saveTransactionDonate(res)
+                                                setIsLoading(false)
                                                 swal2.fire({
                                                     title: "Đóng góp thành công.",
-                                                    html: "Đóng góp của bạn đã được xác nhận thành công. </br> Chúng tôi chân thành cảm ơn bạn. </br> Chúc bạn luôn mạnh khỏe và thành công trong cuộc sống.</br> "
+                                                    html: "Đóng góp của bạn đã được xác nhận thành công. </br></br> Chúng tôi chân thành cảm ơn bạn. </br></br> Chúc bạn luôn mạnh khỏe và thành công trong cuộc sống.</br> "
                                                         + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" >Chi tiết giao dịch</a>`,
                                                     icon: "success",
                                                     confirmButtonColor: 'var(--love-color-1)'
@@ -454,9 +454,9 @@ function ProjectDetail(props) {
                                     if (response.receipt) {
                                         if (response.receipt.result === "SUCCESS") {
                                             clearInterval(checkConfirmTransaction)
-                                            setIsLoading(false)
                                             console.log("Rút tiền thành công. Lưu vào database.")
                                             saveTransactionWithdraw(res)
+                                            setIsLoading(false)
                                             swal2.fire({
                                                 title: "Rút tiền thành công.",
                                                 html: "Yêu cầu rút tiền của bạn đã được xác nhận thành công.</br>"
@@ -574,9 +574,9 @@ function ProjectDetail(props) {
                                     if (response.receipt) {
                                         if (response.receipt.result === "SUCCESS") {
                                             clearInterval(checkConfirmTransaction)
-                                            setIsLoading(false)
                                             console.log("Hoàn tiền thành công. Lưu vào database.")
                                             saveTransactionRefund(res)
+                                            setIsLoading(false)
                                             swal2.fire({
                                                 title: "Hoàn tiền thành công.",
                                                 html: "Yêu cầu hoàn tiền của bạn đã được xác nhận thành công.</br>"
@@ -672,19 +672,24 @@ function ProjectDetail(props) {
                                             <ProgressBar striped now={Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100) + 5} label={`${Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100)} %`} />
                                             <span>{utils.formatNumber((Number(dataProject.amountNow) * trxPrice).toFixed(2))} / {utils.formatNumber(dataProject.amountNeed)} VNĐ</span>
                                         </div>
-                                        <div className="row">
-                                            <div className="col-12 col-md-6">
-                                                <Button className={clsx(Style.backgroundForeignColor, 'my-2 w-100 text-light border-0')}>
-                                                    <a href={"https://nile.tronscan.org/#/contract/" + dataProject.addressContract + "/transactions"} target="_blank" rel="noreferrer" className={clsx('d-inline-block w-100 text-white text-decoration-none')}><i className='mdi mdi-dropbox me-1'></i>Xem trên Blockchain</a>
-                                                </Button>
+                                        {
+                                            dataProject.status !== 1 ? (
+                                                <div className="row">
+                                                    <div className="col-12 col-md-6">
+                                                        <Button className={clsx(Style.backgroundForeignColor, 'my-2 w-100 text-light border-0')}>
+                                                            <a href={"https://nile.tronscan.org/#/contract/" + dataProject.addressContract + "/transactions"} target="_blank" rel="noreferrer" className={clsx('d-inline-block w-100 text-white text-decoration-none')}><i className='mdi mdi-dropbox me-1'></i>Xem trên Blockchain</a>
+                                                        </Button>
 
 
-                                            </div>
-                                            <div className="col-12 col-md-6">
-                                                <Button className={clsx(Style.backgroundForeignColor, 'px-5 my-2 w-100 text-light border-0')}><i className='mdi mdi-heart-outline me-1'></i>Theo dõi</Button>
+                                                    </div>
+                                                    <div className="col-12 col-md-6">
+                                                        <Button className={clsx(Style.backgroundForeignColor, 'px-5 my-2 w-100 text-light border-0')}><i className='mdi mdi-heart-outline me-1'></i>Theo dõi</Button>
 
-                                            </div>
-                                        </div>
+                                                    </div>
+                                                </div>
+                                            ) : ""
+                                        }
+
 
 
                                         <div className={clsx(Style.baseColor, 'd-flex flex-column flex-md-row justify-content-between align-items-center my-3')}>
@@ -692,7 +697,7 @@ function ProjectDetail(props) {
                                                 <span className="text-white"><i className="mdi mdi-history pe-2"></i>Trạng thái</span>
                                                 <span className={clsx(Style.baseColor, 'text-uppercase')}>{dataProject.status === 1 ? "Đang chờ duyệt" : (dataProject.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</span>
                                             </div>
-                                            {
+                                            {/* {
                                                 dataProject.isEdit === true ? (
                                                     <Link to={{
                                                         pathname: `/update-project/${id}/${dataProject.friendlyUrl}`,
@@ -702,7 +707,7 @@ function ProjectDetail(props) {
                                                         <i className="mdi mdi-tooltip-edit me-2"></i>Chỉnh sửa dự án</Link>
 
                                                 ) : null
-                                            }
+                                            } */}
 
                                         </div>
                                         {/* <Button className={clsx(Style.backgroundForeignColor, 'px-5 text-light border-0 w-100 fw-bold')}><i className='mdi mdi-currency-btc me-1'></i>Quyên góp</Button> */}
@@ -880,14 +885,14 @@ function ProjectDetail(props) {
                                                                     <p className={clsx(Style.foreignColor, 'm-0 fs-5 text-uppercase')}>{item.status === 1 ? "Chưa bắt đầu" : (item.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</p>
                                                                 </div>
                                                             </div>
-                                                            {
+                                                            {/* {
                                                                 dataProject.isEdit === true ? (
                                                                     <Link to={{
                                                                         pathname: `/update-process/${item.processId}`,
                                                                         state: item // chuyền dữ liệu qua Update-process
                                                                     }} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, Style.editBtn, "align-self-end  my-2 py-2 px-4 px-lg-5 fw-light rounded-3 text-center   text-uppercase text-decoration-none")} ><i className="mdi mdi-tooltip-edit me-2"></i>Chỉnh sửa tiến trình</Link>
                                                                 ) : null
-                                                            }
+                                                            } */}
 
                                                         </div>
 
@@ -950,7 +955,7 @@ function ProjectDetail(props) {
                                                                                                 <span className="">
                                                                                                     <div className={clsx(Style.foreignColor)}><i className="mdi mdi-file-check me-1"></i>Hóa đơn</div>
                                                                                                     <div className="text-md-center">
-                                                                                                        <a href={itemExpense.list} download className={clsx(Style.foreignColor)}><i className="mdi mdi-briefcase-download fs-4"></i></a>
+                                                                                                        <a href={process.env.REACT_APP_URL + itemExpense.file} download className={clsx(Style.foreignColor)}><i className="mdi mdi-briefcase-download fs-4"></i></a>
                                                                                                     </div>
                                                                                                 </span>
                                                                                             </div>
@@ -961,7 +966,7 @@ function ProjectDetail(props) {
                                                                                             </div>
                                                                                             <div className="expense-body-transaction">
                                                                                                 <p className={clsx(Style.foreignColor, 'm-0')}><i className="mdi mdi-repeat me-1"></i>Lịch sử giao dịch</p>
-                                                                                                <a href={"https://nile.tronscan.org/#/contract/" + dataProject.addressContract} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, 'text-decoration-none')}>Xem trên Blockchain</a>
+                                                                                                <a href={"https://nile.tronscan.org/#/contract/" + dataProject.addressContract + "/transactions"} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, 'text-decoration-none')}>Xem trên Blockchain</a>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>

@@ -33,6 +33,7 @@ import moment from 'moment'
 import newsApi from '../../../api/News';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import clientUser from '../../../api/User/Client';
 DashboardClient.propTypes = {
 
 };
@@ -57,6 +58,12 @@ function DashboardClient(props) {
     const [projectList, setProjectList] = useState([])
     // Lấy danh sách tin tức
     const [newsList, setNewsList] = useState([])
+    const [dashboardReport, setDashboardReport] = useState({
+        amountDonated: "19446.00 TRX",
+        donated: 26,
+        projectCreated: 4
+
+    })
     const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
@@ -85,6 +92,19 @@ function DashboardClient(props) {
                 console.log('danh sách news: ', response.data)
             }
         }
+        const fetchDashboardReport = async () => {
+            const params = {
+                year: 2022
+            }
+            const response = await clientUser.dashboardStatistical(params)
+
+            if (response.isSuccess) {
+                setDashboardReport(response.data)
+                setIsLoading(false)
+                console.log('report : ', response.data)
+            }
+        }
+        fetchDashboardReport()
         fetchDataProjectList()
         fetchDateNewsList()
     }, [])
@@ -250,17 +270,17 @@ function DashboardClient(props) {
                                 </div>
                                 <div className="row">
                                     <div className="col-12 col-lg-4 py-4">
-                                        <p className="fs-1 text-center fw-bold">{utils.formatNumber(5350000)} TRX</p>
-                                        <p className="m-0 text-center">~ {utils.formatNumber(Number(5350000) * trxPrice)} VNĐ</p>
+                                        <p className="fs-1 text-center fw-bold">{utils.formatNumber(dashboardReport.amountDonated)}</p>
+                                        <p className="m-0 text-center">~ {utils.formatNumber(Number(dashboardReport.amountDonated.slice(0, dashboardReport.amountDonated.length - 4)) * trxPrice)} VNĐ</p>
                                         <p className="text-center fst-italic fs-5">Số tiền đã kêu gọi</p>
                                     </div>
                                     <div className="col-12 col-lg-4 py-4">
-                                        <p className="fs-1 text-center fw-bold">{utils.formatNumber(350)}</p>
+                                        <p className="fs-1 text-center fw-bold">{utils.formatNumber(dashboardReport.projectCreated)}</p>
                                         <p className="fs-5 m-0 text-center">-</p>
                                         <p className="text-center fst-italic fs-5">Số dự án đã lập</p>
                                     </div>
                                     <div className="col-12 col-lg-4 py-4">
-                                        <p className="fs-1 text-center fw-bold">{utils.formatNumber(2167)}</p>
+                                        <p className="fs-1 text-center fw-bold">{utils.formatNumber(dashboardReport.donated)}</p>
                                         <p className="fs-5 m-0 text-center">-</p>
                                         <p className="text-center fst-italic fs-5">Số lượt đóng góp</p>
                                     </div>

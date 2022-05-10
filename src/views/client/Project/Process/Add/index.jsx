@@ -110,7 +110,7 @@ function AddProcess(props) {
 
             swal2.fire({
                 title: "Thông báo",
-                text: `Thêm tiến trình vào dự án  ${projectObj.projectname} thành công`,
+                text: `Thêm tiến trình thành công`,
                 icon: "success",
                 confirmButtonColor: 'var(--love-color-1)'
 
@@ -122,7 +122,7 @@ function AddProcess(props) {
             $('.ajs-button.ajs-ok').css({ "background-color": "var(--status-waiting-color)" });
             swal2.fire({
                 title: "Thông báo",
-                text: `Thêm tiến trình vào dự án ${projectObj.projectname}  thất bại !`,
+                text: `Thêm tiến trình thất bại !`,
                 icon: "error",
                 confirmButtonColor: 'var(--love-color-1)'
 
@@ -158,25 +158,25 @@ function AddProcess(props) {
             setIndexProcess(-1)
             $('.ajs-button.ajs-ok').css({ "background-color": "var(--admin-btn-color)" });
 
-            alertify.alert('Thông báo', `Sửa tiến trình của dự án  ${projectObj.projectname}  thành công!`);
+            alertify.alert('Thông báo', `Sửa tiến trình thành công!`);
         }
         else {
             $('.ajs-button.ajs-ok').css({ "background-color": "var(--status-waiting-color)" });
-            alertify.alert('Thông báo', `Sửa tiến trình của dự án  ${projectObj.projectname}  thất bại !`);
+            alertify.alert('Thông báo', `Sửa tiến trình thất bại !`);
         }
 
     }
 
     // xóa process
     const HandleDeleteProcess = (index) => {
-        alertify.confirm('Thông báo', 'bạn có chắc muốn xóa tiến trình này',
+        alertify.confirm('Thông báo', 'Bạn có chắc muốn xóa tiến trình này',
             function () {
                 const arr1 = [...listProcessValue.slice(0, index), ...listProcessValue.slice(index + 1)]
                 setListProcessValue(arr1)
-                alertify.success('xóa thành công')
+                alertify.success('Xóa thành công')
             },
             function () {
-                alertify.error('đã hủy xóa')
+                alertify.error('Đã hủy xóa')
 
             });
     }
@@ -288,6 +288,7 @@ function AddProcess(props) {
                         "shortDescription": item.shortDescription,
                         "content": '',
                         "amountNeed": item.amountNeed,
+                        "status": 1
                     })
                 }),
                 "category": (projectObj.category).map(function (item) {
@@ -309,7 +310,7 @@ function AddProcess(props) {
 
                 swal2.fire({
                     title: "Tạo dự án thành công.",
-                    html: `</br><a href="https://nile.tronscan.io/#/contract/${addressSC}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Xem trên Blockchain</a>`,
+                    // html: `</br><a href="https://nile.tronscan.io/#/contract/${addressSC}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" }>Xem trên Blockchain</a>`,
                     icon: "success",
                     confirmButtonColor: 'var(--love-color-1)'
 
@@ -417,7 +418,7 @@ function AddProcess(props) {
                                                 listProcessValue.map(function (item, index) {
                                                     return (
                                                         <tr key={index} className={clsx(Style.itemProcess, "cursor-pointer")} >
-                                                            <th onClick={() => { calbackGetProcess(index) }}>{index}</th>
+                                                            <th onClick={() => { calbackGetProcess(index) }}>{index + 1}</th>
                                                             <th onClick={() => { calbackGetProcess(index) }}>{item.title}</th>
                                                             <td className=" text-center align-middle ">
 

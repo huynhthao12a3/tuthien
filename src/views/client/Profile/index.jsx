@@ -27,7 +27,6 @@ ClientProfile.propTypes = {
 
 function ClientProfile(props) {
     // const imgDefault = "\\uploads\\Images\\project\\02052022_043453_default-image-620x600.jpg"
-
     const locations = useLocation().pathname
 
     const [projectList, setProjectList] = useState([])
@@ -39,6 +38,8 @@ function ClientProfile(props) {
         phoneNumber: "0987654321",
         address: "kp5, phường Trảng dài, tp Biên Hòa, tỉnh Đồng Nai."
     })
+    const [userTransaction, setUserTransaction] = useState([])
+
     const [isLoading, setIsLoading] = useState(true)
     const [currentpage, setCurrentpage] = useState(0)
 
@@ -53,7 +54,18 @@ function ClientProfile(props) {
 
             }
         }
+        const fetchUserTransaction = async () => {
+            const response = await clientUser.getTransaction();
+            if (response.isSuccess) {
+                setUserTransaction(response.data)
+                setIsLoading(false)
+                console.log(response.data)
+                console.log('transaction: ', response.data)
+            }
+        }
         fetchUserInfo()
+        fetchUserTransaction()
+
     }, [])
     useEffect(() => {
         const fetchProjectList = async () => {
@@ -178,7 +190,6 @@ function ClientProfile(props) {
         })
     const handleShow = async function (id) {
         try {
-
             const respon = await projectApi.get(id)
             if (respon.isSuccess) {
                 setProjectDetail(respon.data)
@@ -345,7 +356,6 @@ function ClientProfile(props) {
             console.error(e)
         }
 
-
     }
     return (
         <>
@@ -357,7 +367,7 @@ function ClientProfile(props) {
                             <div className="row">
                                 {/* Thông tin cá nhân  */}
                                 <div className="col-12 col-lg-3">
-                                    <div className={clsx(Style.userInfo, 'shadow p-4')}>
+                                    <div className={clsx(Style.userInfo, 'bg-white shadow p-4')}>
                                         <div className="w-100 text-center">
                                             <img src={process.env.REACT_APP_URL + userInfo.avatar} alt="" className="img-fluid rounded-3" />
                                         </div>
@@ -374,8 +384,8 @@ function ClientProfile(props) {
                                 </div>
                                 {/* Danh sách dự án cá nhân  */}
                                 <div className="col-12 col-lg-9 mt-4 mt-lg-0">
-                                    <div className={clsx(Style.projectInfo, 'h-100 shadow p-4 d-flex flex-column justify-content-between')} style={{ minHeight: '500px' }}>
-                                        <div className="table-responsive overflow-visible">
+                                    <div className={clsx(Style.projectInfo, 'bg-white h-100 shadow p-4 d-flex flex-column justify-content-between')} style={{ minHeight: '500px' }}>
+                                        <div className="table-responsive h-100">
 
                                             <table className="table align-middle">
                                                 <thead>
@@ -449,14 +459,56 @@ function ClientProfile(props) {
 
                                         <div className="d-flex">
                                             <div>
-                                                <button onClick={() => setCurrentpage(currentpage != 0 ? currentpage - 1 : currentpage)} className={clsx(Style.prevBtn, 'prevBtn bg-info px-2')}>
+                                                <button onClick={() => setCurrentpage(currentpage != 0 ? currentpage - 1 : currentpage)} className={clsx(Style.prevBtn, 'prevBtn  px-2')}>
                                                     <span className="mdi mdi-chevron-double-left"></span>
                                                 </button>
                                                 <span className="px-3 text-secondary">{currentpage}</span>
-                                                <button onClick={() => setCurrentpage(currentpage + 1)} className={clsx(Style.nextBtn, 'nextBtn bg-info px-2')}>
+                                                <button onClick={() => setCurrentpage(currentpage + 1)} className={clsx(Style.nextBtn, 'nextBtn  px-2')}>
                                                     <span className="mdi mdi-chevron-double-right"></span>
                                                 </button>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row mt-4">
+                                <div className="col-12">
+                                    <div className={clsx(Style.projectInfo, 'bg-white h-100 shadow p-4 d-flex flex-column justify-content-between')} >
+                                        <div className="table-responsive ">
+
+                                            <table className="table align-middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th className={clsx(Style.tableTh)}>Tên dự án</th>
+                                                        <th className={clsx(Style.tableTh, 'text-end')}>Số tiền</th>
+                                                        <th className={clsx(Style.tableTh, 'text-end')}>Loại tiền</th>
+                                                        <th className={clsx(Style.tableTh, 'text-end')}>Thời gian</th>
+                                                        <th className={clsx(Style.tableTh, 'text-center')}></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        userTransaction.map((item, index) => (
+                                                            <tr key={index}>
+                                                                <td>{index + 1}</td>
+                                                                <td >{item.projectName.length > 35 ? item.projectName.slice(0, 35) + '...' : item.projectName}</td>
+                                                                <td className="text-end">{item.amount}</td>
+                                                                <td className="text-end">{item.currency}</td>
+                                                                <td className="text-end">{moment.utc(item.createTime).local().format('DD/MM/YYYY hh:mm')}</td>
+                                                                <td className="text-end">
+                                                                    <a href={"https://nile.tronscan.org/#/transaction/" + item.hash}
+                                                                        target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center ")}>Chi tiết giao dịch</a>
+                                                                </td>
+
+
+                                                            </tr>
+                                                        ))
+
+                                                    }
+
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -583,7 +635,7 @@ function ClientProfile(props) {
                                                                                                         <span className="">
                                                                                                             <div className={clsx(Style.foreignColor)}><i className="mdi mdi-file-check me-1"></i>Hóa đơn</div>
                                                                                                             <div className="text-md-center">
-                                                                                                                <a href={itemExpense.list} download className={clsx(Style.foreignColor)}><i className="mdi mdi-briefcase-download fs-4"></i></a>
+                                                                                                                <a href={process.env.REACT_APP_URL + itemExpense.file} download className={clsx(Style.foreignColor)}><i className="mdi mdi-briefcase-download fs-4"></i></a>
                                                                                                             </div>
                                                                                                         </span>
                                                                                                     </div>
@@ -717,51 +769,54 @@ function ClientProfile(props) {
                             {/* <Modal.Header closeButton>
                     </Modal.Header> */}
                             <Modal.Body>
+                                <div className="table-responsive">
 
-                                <table className="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" className={clsx(Style.lh, "text-center")} >#</th>
-                                            <th scope="col" className={clsx(Style.lh, "text-center")} >Ảnh đại diện</th>
-                                            <th scope="col" className={clsx(Style.lh, "text-center")} >Người đóng góp</th>
-                                            <th scope="col" className={clsx(Style.lh, "text-center")} >Số tiền đóng góp</th>
-                                            <th scope="col" className={clsx(Style.lh, "text-center")} >Đơn vị tiền tệ</th>
-                                            <th scope="col" className={clsx(Style.lh, "text-center")} >Loại</th>
-                                            <th scope="col" className={clsx(Style.lh, "text-center")} >Mã giao dịch</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            transactionValues.map(function (item, index, arr) {
-                                                return (
-                                                    <tr key={index} style={{ lineHeight: '2rem' }}>
-                                                        <th className={clsx(Style.lh, "text-center")} scope="row">{index + 1}</th>
-                                                        <td >
-                                                            <div className={clsx(Style.imgAccount, " text-center mx-auto d-block")}>
-                                                                <img id="img-banner1" src={process.env.REACT_APP_URL + item.userAvatar}
-                                                                    className={clsx(Style.img_item, " rounded-circle border border-1 img-fluid img-auto-size ")} />
-                                                            </div>
-                                                        </td>
+                                    <table className="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" className={clsx(Style.lh, "text-center")} >#</th>
+                                                <th scope="col" className={clsx(Style.lh, "text-center")} >Ảnh đại diện</th>
+                                                <th scope="col" className={clsx(Style.lh, "text-center")} >Người đóng góp</th>
+                                                <th scope="col" className={clsx(Style.lh, "text-center")} >Số tiền đóng góp</th>
+                                                <th scope="col" className={clsx(Style.lh, "text-center")} >Đơn vị tiền tệ</th>
+                                                <th scope="col" className={clsx(Style.lh, "text-center")} >Loại</th>
+                                                <th scope="col" className={clsx(Style.lh, "text-center")} >Mã giao dịch</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                transactionValues.map(function (item, index, arr) {
+                                                    return (
+                                                        <tr key={index} style={{ lineHeight: '2rem' }}>
+                                                            <th className={clsx(Style.lh, "text-center")} scope="row">{index + 1}</th>
+                                                            <td >
+                                                                <div className={clsx(Style.imgAccount, " text-center mx-auto d-block")}>
+                                                                    <img id="img-banner1" src={process.env.REACT_APP_URL + item.userAvatar}
+                                                                        className={clsx(Style.img_item, " rounded-circle border border-1 img-fluid img-auto-size ")} />
+                                                                </div>
+                                                            </td>
 
-                                                        <td className={clsx(Style.lh, "text-center")} >{item.userName}</td>
-                                                        <td className={clsx(Style.titleshow, "text-center")}>{item.amount}</td>
-                                                        <td className={clsx(Style.lh, "text-center")}>TRX</td>
-                                                        <td className={clsx(Style.lh, "text-center")}>{item.type === 1 ? "Đóng góp" : (item.type === 2 ? 'Hoàn tiền' : 'Rút tiền')}</td>
-                                                        <td className={clsx(Style.hash, "text-center")}>
-                                                            <a href={"https://nile.tronscan.org/#/transaction/" + item.hash}
-                                                                target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}> {item.hash.slice(0, 30) + '...'}</a>
+                                                            <td className={clsx(Style.lh, "text-center")} style={{ minWidth: '200px' }}>{item.userName}</td>
+                                                            <td className={clsx(Style.titleshow, "text-center")} style={{ minWidth: '200px' }}>{item.amount}</td>
+                                                            <td className={clsx(Style.lh, "text-center")} style={{ minWidth: '100px' }}>TRX</td>
+                                                            <td className={clsx(Style.lh, "text-center")} style={{ minWidth: '100px' }}>{item.type === 1 ? "Đóng góp" : (item.type === 2 ? 'Hoàn tiền' : 'Rút tiền')}</td>
+                                                            <td className={clsx(Style.hash, "text-center")} style={{ minWidth: '200px' }}>
+                                                                <a href={"https://nile.tronscan.org/#/transaction/" + item.hash}
+                                                                    target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết giao dịch</a>
 
-                                                        </td>
-                                                    </tr>
-
-
-                                                )
-                                            })
-                                        }
+                                                            </td>
+                                                        </tr>
 
 
-                                    </tbody>
-                                </table>
+                                                    )
+                                                })
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </Modal.Body>
                             <div className="d-flex justify-content-end pb-2 px-2">
                                 <Button variant="secondary" className="" style={{ width: '150px' }} onClick={() => setShowTransaction(false)}>

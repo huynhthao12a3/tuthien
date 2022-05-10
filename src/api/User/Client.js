@@ -44,6 +44,14 @@ const clientUser = {
         const url = `/user/refund-donate?projectid=${data.id}`
         delete data.id
         return axiosClient.post(url, data)
+    },
+    getTransaction: () => {
+        const url = `/user/get-user-transaction`
+        return axiosClient.get(url)
+    },
+    dashboardStatistical: (params) => {
+        const url ='Dashboard/dash-board-statistical'
+        return axiosClient.get(url,{params})
     }
 }
 

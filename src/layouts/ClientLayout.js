@@ -52,12 +52,12 @@ function ClientLayout(props) {
                 <Route exact path="/news" component={News}/>
                 <Route exact path="/tutorial" component={Tutorial}/>
                 <Route exact path="/about" component={About}/>
-                <Route exact path="/profile" component={ClientProfile}/>
                 <Route exact path="/news/:id/:friendlyurl" component={NewsDetail}/>
                 <Route exact path="/project-detail/:id/:friendlyurl" component={ProjectDetail}/>
                 <Route exact path="/bai-viet/:id/:friendlyurl" component={ArticalDetail}/>
                 
                 {/* Route bắt buộc phải Login mới xemm được */}
+                <ProtectedRoute exact path="/profile" component={ClientProfile} role='client'/>
                 <ProtectedRoute exact path="/add-project" component={AddProject} role='client'/>
                 <ProtectedRoute exact path="/add-process" component={AddProcess} role='client'/>
               

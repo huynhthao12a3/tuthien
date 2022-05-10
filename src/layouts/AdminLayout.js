@@ -56,9 +56,11 @@ function AdminLayout(props) {
 
                 <Switch>
                     {/* <Route exact path="/admin" component={AdminLogin}/> */}
-                    
+                        
                     <Route exact path="/admin/login" component={AdminLogin}/>
-                    <Route exact path="/admin" component={AdminDashboard}/>
+                    {/* <Route exact path="/admin" component={AdminDashboard}/> */}
+                    <ProtectedRoute exact path="/admin" component={AdminDashboard}/>
+                    {/* <Redirect from="/admin" to="/admin/dashboard" /> */}
                     <ProtectedRoute exact path="/admin/dashboard" component={AdminDashboard}/>
                     <ProtectedRoute exact path="/admin/project" component={Project}/>
                     <ProtectedRoute exact path="/admin/add-project" component={AddProject} />
@@ -76,8 +78,8 @@ function AdminLayout(props) {
                     <ProtectedRoute exact path="/admin/add-project" component={AddProject}/>
                     <ProtectedRoute exact path="/admin/project-detail/:id" component={ProjectDetail}/>
                     <Route exact path="/admin/news/:id/:friendlyurl" component={NewsDetail}/>
-                    <Route path="/not-found" component={NotFound}/>
-<Redirect to="/not-found"/>
+                    <Route path="/admin/not-found" component={NotFound}/>
+                    <Redirect to="/admin/not-found"/>
                 
                 </Switch>
             </div>
