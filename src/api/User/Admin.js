@@ -51,7 +51,10 @@ const adminUser = {
         const url = `/user/update-user/${data.id}`
         return axiosClient.put(url, data)
     }, 
-    
+    getAllDashBoardRatings() {
+        const url = '/Dashboard/dash-board-ratings'
+        return axiosClient.get(url)
+   },
 }
 
 export default adminUser;
