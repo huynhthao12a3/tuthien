@@ -25,7 +25,7 @@ const articalApi = {
         return axiosClient.get(url, {params: params})
     },
     get: (id) => {
-        const url = `/artical/get-artical/${id}`
+        const url = `/project/get-artical/${id}`
         return axiosClient.get(url)
     },
 }

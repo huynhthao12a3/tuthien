@@ -17,9 +17,8 @@ import adminUser from "../../../api/User/Admin"
 import { Button, Modal, Form } from "react-bootstrap";
 import Swal from 'sweetalert2'
 
-let powerCreate=1
-function AdminAccount()
-{
+let powerCreate = 1
+function AdminAccount() {
 
     const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
     const avatarDefalt = "\\uploads\\Images\\Hide_User\\06052022_080221_anymous_icon.png"
@@ -39,7 +38,7 @@ function AdminAccount()
         },
     ]
     const type = [
-        {  value: '0',label:'Tất cả'},
+        { value: '0', label: 'Tất cả' },
         { value: '1', label: 'Cá nhân' },
         { value: '2', label: 'Tổ chức' },
     ]
@@ -47,7 +46,7 @@ function AdminAccount()
     const filterStatus = [
         { value: '0', label: 'Tất cả' },
         { value: '1', label: 'Khóa' },
-        { value: '2', label: 'Dang hoạt động' },
+        { value: '2', label: 'Đang hoạt động' },
     ]
     //---------------------------------------------------------useState
 
@@ -63,10 +62,10 @@ function AdminAccount()
     const [sta, setSta] = useState(1)// load lại danh sách
 
 
-    const [typeCreate,setTypeCreate]=useState([...type][1])// selector trạng thái
+    const [typeCreate, setTypeCreate] = useState([...type][1])// selector trạng thái
 
-    
-    const [imgValue,setImgValue]=useState('')
+
+    const [imgValue, setImgValue] = useState('')
     const [isLoading, setIsLoading] = useState(true)
     const [show, setShow] = useState(false)
 
@@ -74,23 +73,22 @@ function AdminAccount()
 
     //load danh sách từ API
     useEffect(async () => {
-        const data= {
+        const data = {
             "type": inputType.value,
             "keyword": inputSearch,
             "status": inputStatus.value,
             'pageindex': pageindex,
         }
-       
+
         const respons = await adminUser.getAll(data)
-        if(respons.isSuccess)
-        {
+        if (respons.isSuccess) {
             setIsLoading(false)
             setArrayUsers(respons.data)
         }
-        else{
+        else {
             Swal.fire("lỗi")
         }
-       
+
     }, [inputSearch, inputType, inputStatus, pageindex, sta])
 
     //đẩy ảnh lên API
@@ -226,28 +224,27 @@ function AdminAccount()
             cancelButtonText: 'Client'
         }).then((result) => {
             if (result.isConfirmed) {
-                powerCreate=1
-                handleShow(item,'Tạo tài Khoản Admin')
+                powerCreate = 1
+                handleShow(item, 'Tạo tài Khoản Admin')
             }
             else if (
                 result.dismiss === Swal.DismissReason.cancel
-            ){
-                powerCreate=2
-                handleShow(item,'Tạo tài Khoản Client')
+            ) {
+                powerCreate = 2
+                handleShow(item, 'Tạo tài Khoản Client')
 
             }
         })
-        
+
     }
 
     // hiển thị modal 
 
-    const handleShow = function(item,content){
+    const handleShow = function (item, content) {
         console.log(powerCreate)
-        if(powerCreate===3)
-        { 
+        if (powerCreate === 3) {
             console.log('sadsadsadsadas')
-            setUserDetail({...item,content:content})
+            setUserDetail({ ...item, content: content })
         }
         else {
             setImgValue('')
@@ -358,7 +355,7 @@ function AdminAccount()
                     <div className={clsx('row')}>
                         <div className={clsx(Style.titleBlock, ' w-100 main-top col-12 pt-4 pb-4')}>
                             <h3 className={clsx(Style.titleProject)}>Quản lý tài khoản người dùng</h3>
-                            <span  onClick={()=>{
+                            <span onClick={() => {
                                 handleChosePosition(userDetail)
                             }} className={clsx(Style.btnCreateProject, "btn")}>
                                 <span className="mdi mdi-plus-circle pe-2"></span> Tạo tài khoản người dùng </span>
@@ -397,9 +394,9 @@ function AdminAccount()
                                             <tr>
                                                 <th className="text-center" scope="col">#</th>
                                                 <th className="text-center" scope="col">Hình ảnh</th>
-                                                <th  scope="col">Họ tên</th>
+                                                <th scope="col">Họ tên</th>
                                                 <th scope="col">Email</th>
-                                                <th  scope="col">Điện thoại</th>
+                                                <th scope="col">Điện thoại</th>
                                                 <th className="text-center" scope="col">Loại</th>
                                                 <th className="text-center" scope="col">Chức vụ</th>
                                                 <th className="text-center" scope="col">Trạng thái</th>
@@ -411,7 +408,7 @@ function AdminAccount()
                                                     return (
                                                         <tr key={index} style={{ lineHeight: '2rem' }}>
 
-                                                            <th scope="row">{index+1}</th>
+                                                            <th scope="row">{index + 1}</th>
                                                             <td>
                                                                 <div className={clsx(Style.imgAccount, "col-4 col-md-2 mx-auto")}>
                                                                     <img id="img-banner1" src={
@@ -419,22 +416,22 @@ function AdminAccount()
                                                                 </div>
                                                             </td>
 
-                                                           
 
-                                                            <td  className={clsx(Style.lh, )} >{item.fullName}</td>
-                                                            <td className={clsx(Style.lh, )} >{item.email}</td>
 
-                                                            <td  className={clsx(Style.lh, )} >{item.phoneNumber}</td>
-                                                            <td  className={clsx(Style.lh, "text-center")} >{HandleGetLable(type, item.type).label}</td>
-                                                            <td  className={clsx(Style.lh, "text-center", item.isAdmin ? 'text-warning' : 'text-primary')} >{item.isAdmin ? 'Admin' : 'Client'}</td>
-                                                            <td  className={clsx(Style.lh, "text-center")} >
+                                                            <td className={clsx(Style.lh,)} >{item.fullName}</td>
+                                                            <td className={clsx(Style.lh,)} >{item.email}</td>
+
+                                                            <td className={clsx(Style.lh,)} >{item.phoneNumber}</td>
+                                                            <td className={clsx(Style.lh, "text-center")} >{HandleGetLable(type, item.type).label}</td>
+                                                            <td className={clsx(Style.lh, "text-center", item.isAdmin ? 'text-warning' : 'text-primary')} >{item.isAdmin ? 'Admin' : 'Client'}</td>
+                                                            <td className={clsx(Style.lh, "text-center")} >
                                                                 <span className={clsx(Style.StatusItem, 'position-relative', item.status === 1 ? 'waitingStatus' : (item.status === 2 ? ' doingStatusUse' : 'doingStatusUse'))}>{HandleGetLable(filterStatus, item.status).label}
 
                                                                 </span>
 
                                                             </td>
 
-                                                            <td  className=" text-center align-middle ">
+                                                            <td className=" text-center align-middle ">
                                                                 <Dropdown className="d-inline mx-2 " >
                                                                     <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin")}
                                                                         style={{ position: 'relative', height: '30px', backgroundColor: 'transparent', border: 'none' }}>
@@ -442,10 +439,11 @@ function AdminAccount()
                                                                     </Dropdown.Toggle>
 
                                                                     <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item onClick={()=>{
-                                                                      
-                                                                            powerCreate=3
-                                                                            handleShow(item,'Chỉnh sửa thông tin người dùng')}} className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>
+                                                                        <Dropdown.Item onClick={() => {
+
+                                                                            powerCreate = 3
+                                                                            handleShow(item, 'Chỉnh sửa thông tin người dùng')
+                                                                        }} className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>
 
                                                                             Chi tiết
                                                                         </Dropdown.Item>
@@ -453,7 +451,7 @@ function AdminAccount()
                                                                             Mở khóa tài khoản
                                                                         </Dropdown.Item>
                                                                         <Dropdown.Item onClick={() => handleblockAcount('khóa', item.id)} className={clsx(Style.itemDrop, item.status === 1 ? "hide" : "show")} >
-                                                                        <i class="mdi mdi-block-helper"></i>
+                                                                            <i class="mdi mdi-block-helper"></i>
 
                                                                             Khóa tài khoản
                                                                         </Dropdown.Item>
@@ -472,26 +470,26 @@ function AdminAccount()
 
                                         </tbody>
                                     </table>
-                                   
+
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                     <div className="col-3 py-3"></div>
                     <div className="col-9 d-flex justify-content-start py-3">
-                    <div>
-                        <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, 'px-2')}>
-                            <span className="mdi mdi-chevron-double-left"></span>
-                        </button>
-                        <span className="px-3 text-secondary">{pageindex}</span>
-                        <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, ' px-2')}>
-                            <span className="mdi mdi-chevron-double-right"></span>
-                        </button>
+                        <div>
+                            <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, 'bg-info px-2')}>
+                                <span className="mdi mdi-chevron-double-left"></span>
+                            </button>
+                            <span className="px-3 text-secondary">{pageindex}</span>
+                            <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, 'bg-info px-2')}>
+                                <span className="mdi mdi-chevron-double-right"></span>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                </div>
-             
+
                 <Modal size="lg" show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title className="text-black-50">{userDetail.content}</Modal.Title>
@@ -533,7 +531,7 @@ function AdminAccount()
                                 <Form.Group className="col-6 px-2 d-inline-block " controlId="">
                                     <Form.Label>Email</Form.Label>
                                     <Form.Control className="border border-secondary"
-                                        readOnly={powerCreate===3?true:false}
+                                        readOnly={powerCreate === 3 ? true : false}
                                         value={userDetail.email}
                                         onChange={(e) => { setUserDetail({ ...userDetail, email: e.target.value }) }}
                                         type="email"
@@ -544,9 +542,9 @@ function AdminAccount()
                                 <Form.Group className="col-6 px-2 d-inline-block " controlId="">
                                     <Form.Label>Loại</Form.Label>
 
-                                    <Select  
-                                        isDisabled={powerCreate===3?true:false}  
-                                        value={HandleGetLable(type,userDetail.type)}
+                                    <Select
+                                        isDisabled={powerCreate === 3 ? true : false}
+                                        value={HandleGetLable(type, userDetail.type)}
 
                                         onChange={setTypeCreate}
                                         options={type.slice(1)}
@@ -558,12 +556,12 @@ function AdminAccount()
 
                             </Form>
 
-                            <Form className={clsx("d-flex justify-content-between col-12 ",(powerCreate===3)?'hide':"sleep")}>
+                            <Form className={clsx("d-flex justify-content-between col-12 ", (powerCreate === 3) ? 'hide' : "sleep")}>
 
                                 <Form.Group className="col-6 px-2 d-inline-block " controlId="">
                                     <Form.Label>Địa chỉ</Form.Label>
                                     <Form.Control className="border border-secondary"
-                                        readOnly={powerCreate===3?true:false}
+                                        readOnly={powerCreate === 3 ? true : false}
                                         value={userDetail.address}
                                         onChange={(e) => { setUserDetail({ ...userDetail, address: e.target.value }) }}
                                         type="text"
@@ -574,7 +572,7 @@ function AdminAccount()
                                 <Form.Group className="col-6 px-2 d-inline-block " controlId="">
                                     <Form.Label>Mật Khẩu</Form.Label>
                                     <Form.Control className="border border-secondary"
-                                        readOnly={powerCreate===3?true:false}
+                                        readOnly={powerCreate === 3 ? true : false}
                                         value={userDetail.password}
                                         onChange={(e) => { setUserDetail({ ...userDetail, password: e.target.value }) }}
                                         type="password"
@@ -593,9 +591,9 @@ function AdminAccount()
                     <Modal.Footer className="d-flex justify-content-between">
                         <div>
 
-                            <Button  className={clsx("bg-danger",(powerCreate!==3)?'hide':"sleep")}  
-                             style={{backgroundColor:'var(--love-color-4) !important'}}
-                             onClick={()=>{handleDelete(userDetail.id)}}>
+                            <Button className={clsx("bg-danger", (powerCreate !== 3) ? 'hide' : "sleep")}
+                                style={{ backgroundColor: 'var(--love-color-4) !important' }}
+                                onClick={() => { handleDelete(userDetail.id) }}>
 
                                 Xóa
                             </Button>
@@ -604,8 +602,8 @@ function AdminAccount()
                             <Button className="me-2" variant="secondary" onClick={handleClose}>
                                 Đóng
                             </Button>
-                            <Button style={{backgroundColor:'var(--nav-color)'}} onClick={() => { handleUpdateUser() }}>
-                               {powerCreate===3?'Cập Nhật':'Tạo'} 
+                            <Button style={{ backgroundColor: 'var(--nav-color)' }} onClick={() => { handleUpdateUser() }}>
+                                {powerCreate === 3 ? 'Cập Nhật' : 'Tạo'}
                             </Button>
                         </div>
 

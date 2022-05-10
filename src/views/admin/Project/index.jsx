@@ -21,14 +21,14 @@ import Loading from "../../../shares/Loading"
 import articalApi from "../../../api/Artical"
 import { CKEditor } from "@ckeditor/ckeditor5-react"
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-
+import imgDefault from '../../../assets/images/default_image.png'
 import ModalArticalDetail from '../../../shares/ModalArticalDetail'
 import * as utils from '../../../utils/utils.js';
-let idProjectDetail=0
+let idProjectDetail = 0
 function Project() {
 
     const locations = useLocation().pathname
-    const imgDefault = "\\uploads\\Images\\project\\02052022_043453_default-image-620x600.jpg"
+    // const imgDefault = "\\uploads\\Images\\project\\02052022_043453_default-image-620x600.jpg"
     const imgFormat = ['gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
     //-------------------------------------------------------
     const arr = [
@@ -74,11 +74,11 @@ function Project() {
     const [showTransaction, setShowTransaction] = useState(false)
     const [show, setShow] = useState(false);
 
-    const [imgValueArtical,setImgValueArtical]= useState('')
-    const [createArtical,setCreateArtical]=useState(objArtical)
-    const [projectNameTransaction,setProjectNameTransaction]=useState('')
-   
-    const [transactionValues,setTransactionValues]= useState([{
+    const [imgValueArtical, setImgValueArtical] = useState('')
+    const [createArtical, setCreateArtical] = useState(objArtical)
+    const [projectNameTransaction, setProjectNameTransaction] = useState('')
+
+    const [transactionValues, setTransactionValues] = useState([{
 
         amount: '',
         currency: "",
@@ -89,7 +89,7 @@ function Project() {
         userName: ""
     }]
     )
-    const [showArticalDetail,setShowArticalDetail]= useState(false)
+    const [showArticalDetail, setShowArticalDetail] = useState(false)
     // đừng có mở thg này ra :<
     const [projectDetail, setProjectDetail] = useState(
         {
@@ -357,16 +357,16 @@ function Project() {
     // ẩn hiện modal bài viết
     const handleCloseArtical = () => setShowAtical(false);
 
-    const handleShowArtical =function(itemId){
+    const handleShowArtical = function (itemId) {
         setCreateArtical({
-            'id':itemId,
+            'id': itemId,
             "title": "",
             "content": "",
             "banner": {
-              "fileName": "",
-              "filePath": "",
-              "friendlyUrl": "",
-              "note": ""
+                "fileName": "",
+                "filePath": "",
+                "friendlyUrl": "",
+                "note": ""
             }
         })
 
@@ -385,9 +385,9 @@ function Project() {
         ) {
             const data = {
                 'id': createArtical.id,
-                "tilte": createArtical.title,
+                "title": createArtical.title,
                 "content": createArtical.content,
-                'friendlyUrl':MakeUrl(createArtical.title),
+                'friendlyUrl': MakeUrl(createArtical.title),
                 // "friendlyUrl":createArtical.friendlyUrl,
                 "banner": {
                     "fileName": createArtical.banner.fileName,
@@ -440,13 +440,13 @@ function Project() {
 
     }
 
-    const handleShowArticalDetail =(id)=>{
-        idProjectDetail=id
+    const handleShowArticalDetail = (id) => {
+        idProjectDetail = id
         setShowArticalDetail(true)
     }
-    return(
+    return (
         <div className="flex-grow-1">
-           {
+            {
 
                 isLoading ? <Loading /> : ""
             }
@@ -505,20 +505,20 @@ function Project() {
                                         <tbody>
                                             {
 
-                                                arrayProject.map(function(item,index,arr){
-                                                    return(
-                                                        <tr key={index} style={{lineHeight:'2rem'}}>
-                                                            <th scope="row">{index+1}</th>
+                                                arrayProject.map(function (item, index, arr) {
+                                                    return (
+                                                        <tr key={index} style={{ lineHeight: '2rem' }}>
+                                                            <th scope="row">{index + 1}</th>
                                                             <td className="text-center" >{item.id}</td>
-                                                            <td  className={clsx(Style.titleshow)}>{item.title.length>30?(item.title.slice(0,30)+'...'):item.title}</td>
+                                                            <td className={clsx(Style.titleshow)}>{item.title.length > 30 ? (item.title.slice(0, 30) + '...') : item.title}</td>
                                                             <td >{item.userCreate}</td>
-                                                            <td  className="text-center">{moment(item.createTime).format("DD/MM/YYYY") }</td>
-                                                            <td  className="text-center">{moment(item.endDate).format("DD/MM/YYYY") }</td>
+                                                            <td className="text-center">{moment(item.createTime).format("DD/MM/YYYY")}</td>
+                                                            <td className="text-center">{moment(item.endDate).format("DD/MM/YYYY")}</td>
 
                                                             {/* filterStatus[item.status] */}
                                                             <td >
                                                                 <span className={clsx(Style.StatusItem, 'position-relative', item.status === 1 ? 'waitingStatus' : (item.status === 2 ? 'doingStatus' : 'doneStatus'))}>{HandleGetLable(filterStatus, item.status).label}
-                                                                   
+
                                                                 </span>
                                                             </td>
 
@@ -535,11 +535,11 @@ function Project() {
                                                                             className={clsx(Style.itemDrop, "align-self-end  rounded-3  text-dark text-decoration-none")}
                                                                             onClick={() => { handleAcceptProject(item.id, item.status) }}><i className="mdi mdi-playlist-check"></i>
                                                                             Duyệt dự án
-                                                                       </Dropdown.Item>
-                                                                        <Dropdown.Item  as={Link} to={"/admin/project-detail/" + item.id + "/" + MakeUrl(item.title)} target="_blank"
-                                                                         className={clsx( Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}
-                                                                         onClick={()=>{ window.scrollTo(0, 0)}}>
-                                                                             <i className="mdi mdi-window-restore "></i>
+                                                                        </Dropdown.Item>
+                                                                        <Dropdown.Item as={Link} to={"/admin/project-detail/" + item.id + "/" + MakeUrl(item.title)} target="_blank"
+                                                                            className={clsx(Style.itemDrop, "align-self-end  rounded-3  text-dark text-decoration-none")}
+                                                                            onClick={() => { window.scrollTo(0, 0) }}>
+                                                                            <i className="mdi mdi-window-restore "></i>
 
                                                                             Chi tiết
                                                                         </Dropdown.Item>
@@ -549,17 +549,17 @@ function Project() {
                                                                         </Dropdown.Item>
 
 
-                                                                        <Dropdown.Item onClick={()=>{handleShow(item.id)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Tiến trình</Dropdown.Item>
-                                                                        <Dropdown.Item onClick={()=>{handleShowArtical(item.id)}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}>
-                                                                        <i className="mdi mdi-plus-circle-outline"></i>
+                                                                        <Dropdown.Item onClick={() => { handleShow(item.id) }} className={clsx(Style.itemDrop)}><i className="mdi mdi-lock-reset "></i>Sửa Tiến trình</Dropdown.Item>
+                                                                        <Dropdown.Item onClick={() => { handleShowArtical(item.id) }} className={clsx(Style.itemDrop, "align-self-end  rounded-3  text-dark text-decoration-none")}>
+                                                                            <i className="mdi mdi-plus-circle-outline"></i>
                                                                             Tạo bài viết
                                                                         </Dropdown.Item>
-                                                                        <Dropdown.Item onClick={()=>{handleShowArticalDetail(item.id)}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}>
-                                                                        <i className="mdi mdi-window-restore "></i>
+                                                                        <Dropdown.Item onClick={() => { handleShowArticalDetail(item.id) }} className={clsx(Style.itemDrop, "align-self-end  rounded-3  text-dark text-decoration-none")}>
+                                                                            <i className="mdi mdi-window-restore "></i>
                                                                             Chi tiết bài viết
                                                                         </Dropdown.Item>
-                                                                        <Dropdown.Item onClick={()=>{handleShowTransaction(item.title,item.id)}} className={clsx(Style.itemDrop,"align-self-end  rounded-3  text-dark text-decoration-none")}>
-                                                                        <i className="mdi mdi-swap-horizontal"></i>
+                                                                        <Dropdown.Item onClick={() => { handleShowTransaction(item.title, item.id) }} className={clsx(Style.itemDrop, "align-self-end  rounded-3  text-dark text-decoration-none")}>
+                                                                            <i className="mdi mdi-swap-horizontal"></i>
 
                                                                             Xem lịch sử giao dịch
                                                                         </Dropdown.Item>
@@ -577,7 +577,7 @@ function Project() {
 
                                         </tbody>
                                     </table>
-                                   
+
                                 </div>
                             </div>
                         </div>
@@ -784,7 +784,7 @@ function Project() {
                                         value={createArtical.title}
                                         onChange={(e) => { setCreateArtical({ ...createArtical, title: e.target.value }) }}
                                         type="text"
-                                        placeholder="tiêu đề bải viết"
+                                        placeholder="tiêu đề bài viết"
                                         autoFocus
                                     />
                                 </Form.Group>
@@ -824,7 +824,7 @@ function Project() {
                             <Button className="me-2" variant="secondary" onClick={handleCloseArtical}>
                                 Đóng
                             </Button>
-                            <Button style={{backgroundColor:'var(--nav-color)'}} onClick={() => { handleCreateArtical() }}>
+                            <Button style={{ backgroundColor: 'var(--nav-color)' }} onClick={() => { handleCreateArtical() }}>
                                 Tạo
                             </Button>
                         </div>
@@ -867,7 +867,7 @@ function Project() {
                                     transactionValues.map(function (item, index, arr) {
                                         return (
                                             <tr key={index} style={{ lineHeight: '2rem' }}>
-                                                <th  className={clsx(Style.lh, "text-center")} scope="row">{index+1}</th>
+                                                <th className={clsx(Style.lh, "text-center")} scope="row">{index + 1}</th>
                                                 <td >
                                                     <div className={clsx(Style.imgAccount, " text-center mx-auto d-block")}>
                                                         <img id="img-banner1" src={process.env.REACT_APP_URL + item.userAvatar}
@@ -875,11 +875,11 @@ function Project() {
                                                     </div>
                                                 </td>
 
-                                                <td  className={clsx(Style.lh, "text-center")} >{item.userName}</td>
+                                                <td className={clsx(Style.lh, "text-center")} >{item.userName}</td>
                                                 <td className={clsx(Style.titleshow, "text-center")}>{item.amount}</td>
-                                                <td  className={clsx(Style.lh, "text-center")}>TRX</td>
-                                                <td  className={clsx(Style.lh, "text-center")}>{item.type===1?"Đóng góp":(item.type===2?'Hoàn tiền':'Rút tiền')}</td>
-                                                <td  className={clsx(Style.hash, "text-center")}>
+                                                <td className={clsx(Style.lh, "text-center")}>TRX</td>
+                                                <td className={clsx(Style.lh, "text-center")}>{item.type === 1 ? "Đóng góp" : (item.type === 2 ? 'Hoàn tiền' : 'Rút tiền')}</td>
+                                                <td className={clsx(Style.hash, "text-center")}>
                                                     <a href={"https://nile.tronscan.org/#/transaction/" + item.hash}
                                                         target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}> {item.hash.slice(0, 30) + '...'}</a>
 
@@ -904,9 +904,9 @@ function Project() {
                     <Button variant="primary">Understood</Button>
                     </Modal.Footer> */}
                 </Modal>
-                
+
                 {
-                    (showArticalDetail)?<ModalArticalDetail state={[showArticalDetail,setShowArticalDetail]} id={idProjectDetail}/>:null
+                    (showArticalDetail) ? <ModalArticalDetail state={[showArticalDetail, setShowArticalDetail]} id={idProjectDetail} /> : null
                 }
             </div>
 

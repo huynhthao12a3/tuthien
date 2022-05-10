@@ -8,6 +8,8 @@ import * as Style from './Login.scss'
 import swal2 from 'sweetalert2'
 import { Link } from "react-router-dom";
 import logoCharity from '../../../assets/images/logo-charity.png'
+import defaultImg from "../../../assets/images/default_image.png"
+
 ClientLogin.propTypes = {
 
 };
@@ -16,6 +18,7 @@ function ClientLogin() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [imgValue, setImgValue] = useState('')
+    const [previewImg, setPreviewImg] = useState('')
     const [clientDetail, setClientDetail] = useState({
         fullName: "",
         phoneNumber: "",
@@ -128,29 +131,35 @@ function ClientLogin() {
     };
     const handleChangeAvatar = (e) => {
         setImgValue(e.target.files[0])
-        console.log(e.target.files[0])
+        const file = e.target.files[0]
+        file.review = URL.createObjectURL(file)
+        setPreviewImg(file)
+        fetchImage();
+        // console.log(e.target.files[0])
     }
 
-    //đẩy ảnh lên API
     useEffect(() => {
         if (location.pathname === '/register') {
             console.log(location.pathname)
             toggleForm()
         }
-        const fetchImage = async () => {
-            let form = new FormData();
-            form.append('Image', imgValue);
-            form.append('TypeImage', "client");
-            const response = await clientUser.uploadFile(form);
-            if (response.isSuccess) {
-                setClientDetail({ ...clientDetail, avatarPath: response.data.filePath })
-            }
-            else {
-                setClientDetail({ ...clientDetail, avatarPath: "\\uploads\\Images\\User_Avatars\\28042022_030444_anymous_icon.png" })
-            }
+    }, [])
+    //đẩy ảnh lên API
+
+    const fetchImage = async () => {
+        let form = new FormData();
+        form.append('Image', imgValue);
+        form.append('TypeImage', "client");
+        const response = await clientUser.uploadFile(form);
+        if (response.isSuccess) {
+            setClientDetail({ ...clientDetail, avatarPath: response.data.filePath })
         }
-        fetchImage();
-    }, [imgValue])
+        else {
+            setClientDetail({ ...clientDetail, avatarPath: "\\uploads\\Images\\User_Avatars\\28042022_030444_anymous_icon.png" })
+        }
+    }
+
+
     console.log(clientDetail)
     return (
         <>
@@ -173,7 +182,7 @@ function ClientLogin() {
                                 <h2>Đăng nhập hệ thống</h2>
                                 <input type="text" placeholder="Tên tài khoản / email" onChange={e => setEmail(e.target.value)} />
                                 <input type="password" placeholder="Mật khẩu" onChange={e => setPassword(e.target.value)} />
-                                <button type="submit" className="px-4 py-2 rounded-3 text-light mt-2" >Đăng nhập</button>
+                                <button type="submit" className="px-4 py-2 rounded-3 text-light mt-2" >Đăng nhập <i className="mdi mdi-login-variant"></i></button>
 
                             </form>
                         </div>
@@ -182,18 +191,22 @@ function ClientLogin() {
                         <div className="formBx">
                             <form onSubmit={e => handleRegister(e)}>
                                 <h2>Đăng ký tài khoản</h2>
-                                <input type="file" onChange={e => handleChangeAvatar(e)} />
+                                <div className="w-100 position-relative">
+
+                                    <img src={previewImg.review ? previewImg.review : defaultImg} className=" mx-auto d-block img-fluid" alt="Preview Register " style={{ width: '100px' }} />
+                                    <input type="file" onChange={e => handleChangeAvatar(e)} className="w-100 h-100 position-absolute start-0 end-0 top-0 bottom-0" style={{ opacity: 0 }} />
+                                </div>
                                 <input type="text" placeholder="Họ và tên" onChange={e => setClientDetail({ ...clientDetail, fullName: e.target.value })} />
                                 <input type="number" placeholder="Số điện thoại" onChange={e => setClientDetail({ ...clientDetail, phoneNumber: e.target.value })} />
                                 <input type="text" placeholder="Địa chỉ" onChange={e => setClientDetail({ ...clientDetail, address: e.target.value })} />
                                 <input type="email" placeholder="Email" onChange={e => setClientDetail({ ...clientDetail, email: e.target.value })} />
                                 <input type="password" placeholder="Mật khẩu" onChange={e => setClientDetail({ ...clientDetail, password: e.target.value })} />
-                                <label for="type" className="me-2">Loại tài khoản:</label>
+                                <label htmlFor="type" className="me-2">Loại tài khoản:</label>
                                 <select id="type" value={clientDetail.type} onChange={e => setClientDetail({ ...clientDetail, type: e.target.value })}>
                                     <option value="1">Cá nhân</option>
                                     <option value="2">Tổ chức</option>
                                 </select>
-                                <button type="submit" className="d-block px-4 py-2 rounded-3 text-light mt-2" >Đăng ký</button>
+                                <button type="submit" className="d-block px-4 py-2 rounded-3 text-light mt-2" >Đăng ký <i className="mdi mdi-login-variant"></i></button>
 
                             </form>
 

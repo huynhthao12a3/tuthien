@@ -80,7 +80,8 @@
     .articalDetailWrap {
         background-color: #fff;
         // border: 2px  solid #ccc;
-        min-height: 40rem;
+        min-height: 52
+        0px;
         & .header {
             & img {
             width: 100%;
@@ -105,13 +106,13 @@
             }
             & .bodyDesc {
                 display: -webkit-box;
-                max-height:10rem;
+                // max-height:10rem;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: normal;
-                -webkit-line-clamp: 5;
-                line-height: 1.6rem;
+                -webkit-line-clamp: 3;
+                // line-height: 1.6rem;
             }
         }
 

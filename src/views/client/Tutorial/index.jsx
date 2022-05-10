@@ -26,7 +26,20 @@ function Tutorial(props) {
                         <div className="mx-md-5">
                             <img src={trxCoin} alt="trx coin - tron nertwork" />
                         </div>
-                        <p className="lh-base fs-5 ">Nếu bạn đã có TRX bên trong ví TronLink, chỉ cần đăng ký tài khoản Tấm Lòng Vàng và quyên góp TRX cho dự án yêu thích của bạn, sau đó xem dự án trên blockchain.</p>
+                        <div className="d-flex flex-column">
+                            <p className="lh-base fs-5 ">Nếu bạn đã có TRX bên trong ví TronLink, chỉ cần đăng ký tài khoản Tấm Lòng Vàng và quyên góp TRX cho dự án yêu thích của bạn, sau đó xem dự án trên blockchain.</p>
+
+                            <div className="d-flex">
+                                <p className="me-2">Cài đặt ví <strong>TronLink</strong> tại đây: </p>
+                                <a href="https://chrome.google.com/webstore/detail/tronlink/ibnejdfjmmkpcnlpebklmnkoeoihofec" target="_blank" rel="noreferrer" className="base-color text-decoration-none text-success" >TronLink</a>
+                            </div>
+                            <div className="d-flex">
+                                <p className="me-2">Mua, bán <strong>TRX</strong> tại đây: </p>
+
+                                <a href="https://www.binance.com/" target="_blank" rel="noreferrer" className="base-color text-decoration-none text-success me-2" >Binance</a>
+                                <a href="https://www.kraken.com/" target="_blank" rel="noreferrer" className="base-color text-decoration-none text-success" >Kraken</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

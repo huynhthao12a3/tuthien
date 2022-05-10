@@ -30,7 +30,7 @@ function creatActical(){
                             value={createNews.title}
                             onChange={(e) => { setCreateNews({ ...createNews, title: e.target.value }) }}
                             type="text"
-                            placeholder="tiêu đề bải viết"
+                            placeholder="tiêu đề bài viết"
                             autoFocus
                         />
                     </Form.Group>
