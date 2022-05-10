@@ -4,6 +4,7 @@ import * as $ from 'jquery'
 import { Chart, registerables } from 'chart.js';
 import {useEffect} from 'react'
 import { DatePicker } from 'rsuite';
+import Loading from "../../../shares/Loading"
 import adminUser from '../../../api/User/Admin';
 import Swal from 'sweetalert2';
 
@@ -115,6 +116,7 @@ function AdminDashboard(){
   const [isChange, setIsChange] = useState(true)// trang 
   const [arrayUsers,setArrayUsers]= useState(arr)
   const [yearvalue,setYearvalue]=useState(years[0])
+  const [isLoading, setIsLoading] = useState(true)
   
   useEffect(async()=>{
     try{
@@ -126,6 +128,7 @@ function AdminDashboard(){
       if(respons.isSuccess)
       {
         setDataDashBoard(respons.data)
+        setIsLoading(false)
       }
      
       else{
@@ -216,6 +219,7 @@ function AdminDashboard(){
         {
             console.log(respons.data)
             setArrayUsers(respons.data)
+            setIsLoading(false)
         }   
         else{
           Swal.fire('Load dữ liệu lên thất bại')
@@ -240,6 +244,9 @@ function AdminDashboard(){
 
     return(
       <>
+        {
+
+          isLoading ? <Loading /> : (
       <div className='container'>
         <div className='row mt-5' >
         <div className="col-lg-3 ">
@@ -340,10 +347,6 @@ function AdminDashboard(){
                                     <tr key={index} style={{ lineHeight: '2rem' }}>
 
                                         <th scope="row">{index+1}</th>
-                                       
-
-                                        
-
                                         <td  className={clsx(Style.lh, )} >{item.fullName}</td>
                                         <td className={clsx(Style.lh,'text-center' )} >{item.sumProjectCreated}</td>
 
@@ -356,15 +359,6 @@ function AdminDashboard(){
 
                     </tbody>
                 </table>
-                {/* <div>
-                        <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, ' px-2')}>
-                            <span className="mdi mdi-chevron-double-left"></span>
-                        </button>
-                        <span className="px-3 text-secondary">{pageindex}</span>
-                        <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, ' px-2')}>
-                            <span className="mdi mdi-chevron-double-right"></span>
-                        </button>
-                    </div> */}
               </div>
                                    
           </div>
@@ -405,23 +399,16 @@ function AdminDashboard(){
 
                   </tbody>
               </table>
-              {/* <div>
-                      <button onClick={() => setPageindex(pageindex != 0 ? pageindex - 1 : pageindex)} className={clsx(Style.prevBtn, ' px-2')}>
-                          <span className="mdi mdi-chevron-double-left"></span>
-                      </button>
-                      <span className="px-3 text-secondary">{pageindex}</span>
-                      <button onClick={() => setPageindex(pageindex + 1)} className={clsx(Style.nextBtn, ' px-2')}>
-                          <span className="mdi mdi-chevron-double-right"></span>
-                      </button>
-                  </div> */}
-</div>
-                     
-</div>
-      </div>
 
-    
+            </div>
+                                    
+              </div>
+            </div>
 
-</div>
+                
+
+          </div>
+          )}
 
       </> 
     )
