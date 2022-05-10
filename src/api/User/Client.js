@@ -52,6 +52,10 @@ const clientUser = {
     dashboardStatistical: (params) => {
         const url ='Dashboard/dash-board-statistical'
         return axiosClient.get(url,{params})
+    },
+    confirmEmail: (params) => {
+        const url ='confirm-email'
+        return axiosClient.get(url,{params})
     }
 }
 

@@ -80,7 +80,7 @@ function AdminNavbar() {
                                 (<div className="d-flex flex-column text-end">
                                     <span id="admin-navbar-email" className="px-2">Xin chào <span className="fw-bold">{adminInfo.fullName}</span>!</span>
                                     <NavDropdown title={'Admin'} id="nav-dropdown" className='text-dark px-2'>
-                                        <NavDropdown.Item as={Link} to={"profile/" + adminInfo.userId}>Cá nhân</NavDropdown.Item>
+                                        {/* <NavDropdown.Item as={Link} to={"profile/" + adminInfo.userId}>Cá nhân</NavDropdown.Item> */}
                                         <NavDropdown.Item onClick={handleLogout}>Đăng xuất</NavDropdown.Item>
                                     </NavDropdown>
                                 </div>) : (
