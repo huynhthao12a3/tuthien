@@ -14,6 +14,7 @@ let powerCreate=1
 function AdminCategory()
 {
     const imgDefault = "\\uploads\\Images\\project\\02052022_043453_default-image-620x600.jpg"
+    const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
      //-------------------------------------------------------
     const arr=[
         {
@@ -297,7 +298,8 @@ function AdminCategory()
                                             <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Id</th>
-                                                <th scope="col">Tên danh mục</th>
+                                                <th className="text-center" scope="col">Icon</th>
+                                                <th className="ps-5" scope="col">Tên danh mục</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -307,8 +309,14 @@ function AdminCategory()
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
                                                             
                                                             <th scope="row">{index+1}</th>
-                                                            <td className={clsx(Style.titleshow)}>{item.id}</td>
-                                                            <td   >{item.categoryName}
+                                                            <td >{item.id}</td>
+                                                            <td>
+
+                                                                <div className={clsx(Style.imgAccount,'mx-auto')}>
+                                                                <img id="img-banner1" src={ (item.filePath)? (process.env.REACT_APP_URL + item.filePath):(process.env.REACT_APP_URL + imgDefault)} className={clsx(Style.img_item, "rounded-circle border border-1 img-fluid img-auto-size ")} />
+                                                                </div>
+                                                            </td>
+                                                            <td  className="ps-5" >{item.categoryName}
                                                             </td>
                                                           
                                                             <td  className=" text-center align-middle ">
@@ -349,10 +357,11 @@ function AdminCategory()
                                 <div className={clsx(Style.table_responsive, 'table-responsive')}>
                                     <table className="table">
                                         <thead>
-                                            <tr>
+                                        <tr>
                                                 <th scope="col">#</th>
                                                 <th scope="col">Id</th>
-                                                <th scope="col">Tên danh mục</th>
+                                                <th className="text-center" scope="col">Icon</th>
+                                                <th className="ps-5" scope="col">Tên danh mục</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -361,29 +370,35 @@ function AdminCategory()
                                                     return(
                                                         <tr key={index} style={{lineHeight:'2rem'}}>
                                                             
-                                                            <th  scope="row">{index+1}</th>
-                                                            <td className={clsx(Style.titleshow)}>{item.id}</td>
-                                                            <td   >{item.categoryName.length>50?(item.categoryName.slice(0,50)+'...'):item.categoryName}
-                                                            </td>
-                                                          
-                                                            <td  className=" text-center align-middle ">
-                                                                <Dropdown className="d-inline mx-2" >
-                                                                    <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin" )}
-                                                                    style={{position:'relative',height:'30px' ,backgroundColor:'transparent', border:'none' }}>
-                                                                                <i className={clsx(Style.iconDrop, "text-light mdi mdi-dots-vertical font-18 text-primary")}></i>
-                                                                    </Dropdown.Toggle>
+                                                        <th scope="row">{index+1}</th>
+                                                        <td >{item.id}</td>
+                                                        <td>
 
-                                                                    <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                        <Dropdown.Item onClick={()=>{handleUpdateCategory(item.id,2)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Xem chi tiết</Dropdown.Item>
-                                                                        {/* <Dropdown.Divider /> */}
-                                                                       
-                                                                      
-                                                                    </Dropdown.Menu>
-                                                                </Dropdown>
-                                                            </td>
-                                                                
+                                                            <div className={clsx(Style.imgAccount,'mx-auto')}>
+                                                            <img id="img-banner1" src={ (item.filePath)? (process.env.REACT_APP_URL + item.filePath):(process.env.REACT_APP_URL + imgDefault)} className={clsx(Style.img_item, "rounded-circle border border-1 img-fluid img-auto-size ")} />
+                                                            </div>
+                                                        </td>
+                                                        <td  className="ps-5" >{item.categoryName}
+                                                        </td>
+                                                      
+                                                        <td  className=" text-center align-middle ">
+                                                            <Dropdown className="d-inline mx-2" >
+                                                                <Dropdown.Toggle id="dropdown-autoclose-true" className={clsx(Style.btnDrop, "project-admin" )}
+                                                                style={{position:'relative',height:'30px' ,backgroundColor:'transparent', border:'none' }}>
+                                                                            <i className={clsx(Style.iconDrop, "text-light mdi mdi-dots-vertical font-18 text-primary")}></i>
+                                                                </Dropdown.Toggle>
+
+                                                                <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
+                                                                    <Dropdown.Item onClick={()=>{handleUpdateCategory(item.id,1)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Xem chi tiết</Dropdown.Item>
+                                                                    {/* <Dropdown.Divider /> */}
+                                                                   
+                                                                  
+                                                                </Dropdown.Menu>
+                                                            </Dropdown>
+                                                        </td>
                                                             
-                                                        </tr>
+                                                        
+                                                    </tr>
 
                                                         )
                                                 })

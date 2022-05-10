@@ -142,7 +142,7 @@ function AdminAccount() {
             const respon = await adminUser.lock(item)
             if (respon.isSuccess) {
                 Swal.fire(
-                    'Đã khóa!',
+                    `Đã ${content}!`,
                     `${content} tài khoản thành công`,
                     'success'
                 )

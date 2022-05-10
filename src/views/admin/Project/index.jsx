@@ -582,14 +582,15 @@ function Project() {
                             </div>
                         </div>
                     </div>
+                    
                     <div className="col-3 py-3"></div>
                     <di className="col-9 d-flex justify-content-start py-3">
                         <div>
-                            <button onClick={() => setCurrentpage(currentpage != 0 ? currentpage - 1 : currentpage)} className={clsx(Style.prevBtn, 'bg-info px-2')}>
+                            <button onClick={() => setCurrentpage(currentpage != 0 ? currentpage - 1 : currentpage)} className={clsx(Style.prevBtn, ' px-2')}>
                                 <span className="mdi mdi-chevron-double-left"></span>
                             </button>
                             <span className="px-3 text-secondary">{currentpage}</span>
-                            <button onClick={() => setCurrentpage(currentpage + 1)} className={clsx(Style.nextBtn, 'bg-info px-2')}>
+                            <button onClick={() => setCurrentpage(currentpage + 1)} className={clsx(Style.nextBtn, ' px-2')}>
                                 <span className="mdi mdi-chevron-double-right"></span>
                             </button>
                         </div>

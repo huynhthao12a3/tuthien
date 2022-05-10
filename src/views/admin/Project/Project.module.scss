@@ -38,13 +38,13 @@
 
     }
     .prevBtn{
-        // border-top-right-radius:30% ;
+        background-color: var(--btnPage-color);
         border-top-left-radius: 40%;
         border-bottom-left-radius: 40%;
         color: #fff;
     }
     .nextBtn{
-        // border-top-right-radius:30% ;
+        background-color: var(--btnPage-color);
         border-top-right-radius: 40%;
         border-bottom-right-radius: 40%;
         color: #fff;
@@ -77,16 +77,16 @@
                 }
             }
             .prevBtn{
-                // border-top-right-radius:30% ;
+                background-color: var(--btnPage-color);
                 border-top-left-radius: 40%;
                 border-bottom-left-radius: 40%;
                 color: #fff;
             }
             .nextBtn{
-                // border-top-right-radius:30% ;
+                background-color: var(--btnPage-color);
                 border-top-right-radius: 40%;
                 border-bottom-right-radius: 40%;
-                color: #fff;
+                color: rgb(199, 0, 0);
             }
             
            
