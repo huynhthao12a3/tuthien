@@ -78,18 +78,18 @@ function AddProject() {
             // })
             // đẩy hình ảnh lên data và lưu lại đường dẩn ảnh tại database
             // if (resultimg) {
-                let form = new FormData();
-                // console.log(imgValue,'imgValue')
-                form.append('Image', imgValue);
-                form.append('TypeImage', "project");
+            let form = new FormData();
+            // console.log(imgValue,'imgValue')
+            form.append('Image', imgValue);
+            form.append('TypeImage', "project");
 
-                const response = await projectApi.uploadFile(form);
-                setProjectValue({ ...projectValue, urlImg: response.data })
-                if (response.isSuccess) {
-                }
-                else {
-                    alertify.alert('upload ảnh thất bại')
-                }
+            const response = await projectApi.uploadFile(form);
+            setProjectValue({ ...projectValue, urlImg: response.data })
+            if (response.isSuccess) {
+            }
+            else {
+                alertify.alert('upload ảnh thất bại')
+            }
             // }
             // else {
             //     alertify.alert('chỉ nhận file ảnh có đuôi là jpeg,gif,png,tiff,raw,psd')
@@ -146,7 +146,7 @@ function AddProject() {
         />
     );
     const handlecheckValues = () => {
-        console.log('projectValue',projectValue)
+        console.log('projectValue', projectValue)
         if (
             projectValue.urlImg !== '' &&
             projectValue.projectname !== '' &&
@@ -162,28 +162,27 @@ function AddProject() {
             // $('.ajs-button.ajs-ok').css({"background-color": "var(--admin-btn-color)"});
             // alertify.alert('Thông báo', `Thành công`);
 
-            
-            if(locations.includes("admin"))
-            {
-                console.log('đủ',locations)
-                return { pathname:"/admin/add-process", state: projectValue }
-            }
-            else{
-                console.log(0)
-                return { pathname:"/add-process", state: projectValue }
 
-            // if (locations === "admin") {
-            //     history.push({ pathname: "/admin/add-process", state: projectValue })
-            // }
-            // else {
-            //     history.push({ pathname: "/add-process", state: projectValue })
+            if (locations.includes("admin")) {
+                console.log('đủ', locations)
+                return { pathname: "/admin/add-process", state: projectValue }
+            }
+            else {
+                console.log(0)
+                return { pathname: "/add-process", state: projectValue }
+
+                // if (locations === "admin") {
+                //     history.push({ pathname: "/admin/add-process", state: projectValue })
+                // }
+                // else {
+                //     history.push({ pathname: "/add-process", state: projectValue })
 
             }
         }
         else {
             console.log('lỗi')
         }
-         
+
         //     // $('.ajs-button.ajs-ok').css({"background-color": "var(--status-waiting-color)"});
         //     // alertify.alert('Thông báo', `vui lòng không bỏ trống các trường `);
         //     // swal2.fire({

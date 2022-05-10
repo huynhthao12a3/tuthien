@@ -61,7 +61,7 @@ function ClientNavbar() {
                         <Nav.Link className={clsx(location === "/news" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/news"><i className="mdi mdi-newspaper me-2"></i>Tin tức</Nav.Link>
                         <Nav.Link className={clsx(location === "/tutorial" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/tutorial"><i className="mdi mdi-note-multiple-outline me-2"></i>Hướng dẫn</Nav.Link>
                         <Nav.Link className={clsx(location === "/about" ? "active" : "", "client-nav-link text-uppercase text-center fw-bold")} as={NavLink} to="/about"><i className="mdi mdi-account-box-outline me-2"></i>Giới thiệu</Nav.Link>
-                        <Nav.Link className={clsx(location === "/add-project" ? "active" : "", "create-project text-uppercase rounded-3 px-3 mx-3 text-decoration-none text-center fw-bold")} as={NavLink} to="/add-project">Tạo dự án</Nav.Link>
+                        <Nav.Link className={clsx(location === "/add-project" ? "active" : "", "create-project text-uppercase rounded-3 px-3 mx-3 text-decoration-none text-center fw-bold mt-3 mt-xl-0")} as={NavLink} to="/add-project">Tạo dự án</Nav.Link>
 
                     </Nav>
 
