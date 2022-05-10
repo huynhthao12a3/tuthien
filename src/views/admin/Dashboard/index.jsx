@@ -243,7 +243,7 @@ function AdminDashboard(){
       <div className='container'>
         <div className='row mt-5' >
         <div className="col-lg-3 ">
-              <Link to='' className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
+              <div className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
                   <h5 className='text-secondary'>Tổng số dự án</h5>
                   <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.projectCreated}</b> dự án</span>
@@ -252,10 +252,10 @@ function AdminDashboard(){
                   <span className="mdi mdi-projector-screen px-2 mb-2 text-white rounded " 
                   style={{fontSize:'1.5rem',backgroundColor:'#2bb9c4', maxHeight:'40px'}}></span>
                 </div>
-              </Link>
+              </div>
             </div>
             <div className="col-lg-3 ">
-              <Link to='' className='card-cv shadow-sm p-3 mb-2 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
+              <div className='card-cv shadow-sm p-3 mb-2 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
                   <h5 className='text-secondary'>Số dự án chờ duyệt</h5>
                   <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.projectWaitting}</b> dự án</span>
@@ -264,10 +264,10 @@ function AdminDashboard(){
                   <span className="mdi mdi-projector-screen px-2 mb-2 text-white rounded " 
                   style={{fontSize:'1.5rem',backgroundColor:'#FA6767', maxHeight:'40px'}}></span>
                 </div>
-              </Link>
+              </div>
             </div>
             <div className="col-lg-3 ">
-              <Link to='' className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
+              <div className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
                   <h5 className='text-secondary'>Số dự án đang chạy</h5>
                   <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.projectImlementation}</b> dự án</span>
@@ -276,10 +276,10 @@ function AdminDashboard(){
                   <span className="mdi mdi-projector-screen px-2 mb-2 text-white rounded " 
                   style={{fontSize:'1.5rem',backgroundColor:'#fa6800', maxHeight:'40px'}}></span>
                 </div>
-              </Link>
+              </div>
             </div>
             <div className="col-lg-3 ">
-              <Link to='' className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
+              <div className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
                   <h5 className='text-secondary'>Dự án hoàn thành</h5>
                   <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.projectCompleted}</b> dự án</span>
@@ -288,10 +288,10 @@ function AdminDashboard(){
                   <span className="mdi mdi-projector-screen px-2 mb-2 text-white rounded " 
                   style={{fontSize:'1.5rem',backgroundColor:'#2bb9c4', maxHeight:'40px'}}></span>
                 </div>
-              </Link>
+              </div>
             </div>
             <div className="col-lg-3 ">
-              <Link to='' className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
+              <div className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
                   <h5 className='text-secondary'>Tài khoản chưa xác minh</h5>
                   <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.lockUsers}</b> tài khoản</span>
@@ -300,7 +300,7 @@ function AdminDashboard(){
                   <span className="mdi mdi-account-box px-2 mb-2 text-white rounded " 
                   style={{fontSize:'1.5rem',backgroundColor:'#FA6767', maxHeight:'40px'}}></span>
                 </div>
-              </Link>
+              </div>
             </div>
            
           
