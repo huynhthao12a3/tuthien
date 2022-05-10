@@ -55,6 +55,10 @@ const adminUser = {
         const url = '/Dashboard/dash-board-ratings'
         return axiosClient.get(url)
    },
+   getStatistical:(params)=>{
+       const url=`/Dashboard/dash-board-statistical?Year=${params.Year}`
+       return axiosClient.get(url)
+   }
 }
 
 export default adminUser;

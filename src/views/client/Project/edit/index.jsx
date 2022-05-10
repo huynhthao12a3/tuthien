@@ -82,7 +82,7 @@ function EditProjectUser(prop){
     useEffect(async()=>{
         const getAllUsers = async () => {
             try {
-                const response = await categoryApi.getProject();
+                const response = await categoryApi.getall(1);
                 setCategoryOptions(response.data.map((item)=>{
                     return({
                         value:item.id,

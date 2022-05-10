@@ -25,6 +25,7 @@ function AdminDonation(){
        
             {
                 "userName": "Nguyễn Minh Hiếu",
+                'createTime':"2022-05-09T04:56:05.3994789",
                 "userAvatar": "\\uploads\\Images\\client\\06052022_081259_phonepicutres-TA.jpg",
                 "projectId": 2,
                 "projectName": "MONG MỎI LẮP CHI GIẢ ĐỂ LAO ĐỘNG MƯU SINH CHĂM LO CHO GIA ĐÌNH",
@@ -138,6 +139,8 @@ function AdminDonation(){
                                                 {/* <th scope="col">thời gian</th> */}
                                                 <th scope="col">Số tiền</th>
                                                 <th className="text-center" scope="col">Loại tiền</th>
+                                                <th className="text-center" scope="col">Ngày</th>
+                                                <th className="text-center" scope="col">thời gian</th>
                                                 <th className="text-center" scope="col">Hash</th>
                                             </tr>
                                         </thead>
@@ -157,7 +160,9 @@ function AdminDonation(){
                                                             <td  >{item.projectName.length>15?item.projectName.slice(0,15)+'...':item.projectName}</td>
                                                             <td  >{item.amount}</td>
                                                             <td className="text-center">{item.currency}</td>
-                                                            <td  className={clsx(Style.hash, "text-center")}>
+                                                            <td className="text-center">{moment(item.createTime).format('DD/DD/YYYY')}</td>
+                                                            <td className="text-center">{moment(item.createTime).format('hh:mm:ss')}</td>
+                                                            <td  className={clsx(Style.hash, "text-center")} data-toggle="tooltip" data-placement="top" title="Xem chi tiết hơn tại tronscan">
                                                                 <a href={"https://nile.tronscan.org/#/transaction/"+ item.hash}
                                                                     target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}> {item.hash.slice(0, 20) + '...'}</a>
 
