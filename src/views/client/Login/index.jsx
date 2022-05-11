@@ -114,6 +114,13 @@ function ClientLogin() {
 
             } catch (error) {
                 console.error(error);
+                swal2.fire({
+                    title: "Thông báo",
+                    text: 'Đăng ký tài khoản không thành công.',
+                    icon: "info",
+                    confirmButtonColor: 'var(--love-color-1)'
+
+                });
             }
         } else {
             swal2.fire({
@@ -155,7 +162,7 @@ function ClientLogin() {
             setClientDetail({ ...clientDetail, avatarPath: response.data.filePath })
         }
         else {
-            setClientDetail({ ...clientDetail, avatarPath: "\\uploads\\Images\\User_Avatars\\28042022_030444_anymous_icon.png" })
+            setClientDetail({ ...clientDetail, avatarPath: "\\uploads\\Images\\logo\\11052022_021846_tam_long_vang_logo.png" })
         }
     }
 
