@@ -10,13 +10,12 @@ ConfirmEmail.propTypes = {
 };
 
 function ConfirmEmail(props) {
-    // const { email, code } = useParams()
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
     const email = searchParams.get("email");
-    const code = searchParams.get("code");
-    console.log("email: ", email);
-    console.log("code: ", code);
+    const code = searchParams.get("code").replaceAll(' ', '+');
+    console.log('email: ', email);
+    console.log('code: ', code);
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         const fetchConfirmEmail = async () => {
