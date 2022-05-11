@@ -54,7 +54,7 @@ const clientUser = {
         return axiosClient.get(url,{params})
     },
     confirmEmail: (params) => {
-        const url =`confirm-email?email=${params.email}&code=${params.code}`
+        const url =`/user/confirm-email?email=${params.email}&code=${params.code}`
         return axiosClient.patch(url)
     }
 }
