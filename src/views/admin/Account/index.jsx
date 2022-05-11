@@ -276,6 +276,7 @@ function AdminAccount() {
                     "phoneNumber": userDetail.phoneNumber,
                     "avatarPath": userDetail.avatar,
                     "email": userDetail.email,
+                    "address":userDetail.address,
                     "type": Number(typeCreate.value)
                 }
                 const respon = await adminUser.updateUser(data)
@@ -525,6 +526,19 @@ function AdminAccount() {
                                         autoFocus
                                     />
                                 </Form.Group>
+                                <Form.Group controlId="">
+                                    <Form.Label>Địa chỉ</Form.Label>
+                                    <Form.Control className="border border-secondary"
+
+                                        value={userDetail.address}
+                                        onChange={(e) => { setUserDetail({ ...userDetail, address: e.target.value }) }}
+                                        type="text"
+                                        placeholder="đồng nai/ vĩnh cửu/ thiện tân"
+                                        autoFocus
+                                    />
+                                </Form.Group>
+                                
+                               
 
                             </Form>
                             <Form className="d-flex justify-content-between col-12">
@@ -553,23 +567,14 @@ function AdminAccount() {
                                     ></Select>
 
                                 </Form.Group>
+                               
 
                             </Form>
 
-                            <Form className={clsx("d-flex justify-content-between col-12 ", (powerCreate === 3) ? 'hide' : "sleep")}>
-
-                                <Form.Group className="col-6 px-2 d-inline-block " controlId="">
-                                    <Form.Label>Địa chỉ</Form.Label>
-                                    <Form.Control className="border border-secondary"
-                                        readOnly={powerCreate === 3 ? true : false}
-                                        value={userDetail.address}
-                                        onChange={(e) => { setUserDetail({ ...userDetail, address: e.target.value }) }}
-                                        type="text"
-                                        placeholder="đồng nai/ vĩnh cửu/ thiện tân"
-                                        autoFocus
-                                    />
-                                </Form.Group>
-                                <Form.Group className="col-6 px-2 d-inline-block " controlId="">
+                            <Form className={clsx("d-flex justify-content-between col-12 ")}>
+                               
+                               
+                                <Form.Group className={clsx('col-6 px-2 d-inline-block',(powerCreate === 3) ? 'hide' : "sleep")} controlId="">
                                     <Form.Label>Mật Khẩu</Form.Label>
                                     <Form.Control className="border border-secondary"
                                         readOnly={powerCreate === 3 ? true : false}

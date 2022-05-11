@@ -226,7 +226,7 @@ body{
   .d-flex.justify-content-between.hide ,.bg-danger.btn-secondary.hide{
       display: none !important;
   }
-  .d-flex.modal-footer .hide{
+  .d-inline-block.hide{
     display: none !important;
   }
 

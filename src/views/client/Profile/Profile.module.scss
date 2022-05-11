@@ -264,3 +264,22 @@
 .backgroundForeignColor {
     background-color: var(--love-color-5) !important;
 }
+.imgAccountUpdate{
+
+    .img_item{
+        height: 100%;
+        max-height: 160px;
+        width: 100%;
+    }
+    .changeimg{
+        z-index: 10 !important;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+    }
+   
+}
+.disabled:disabled{
+    color: #aaa;
+}

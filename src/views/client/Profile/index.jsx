@@ -20,6 +20,8 @@ import { CKEditor } from "@ckeditor/ckeditor5-react"
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import imgDefault from '../../../assets/images/default_image.png'
 import ModalArticalDetai from '../../../shares/ModalArticalDetail';
+import adminUser from "../../../api/User/Admin"
+import Select from 'react-select'
 let idProjectDetail = 0
 ClientProfile.propTypes = {
 
@@ -28,8 +30,10 @@ ClientProfile.propTypes = {
 function ClientProfile(props) {
     // const imgDefault = "\\uploads\\Images\\project\\02052022_043453_default-image-620x600.jpg"
     const locations = useLocation().pathname
+    const imgFormat = ['gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
 
     const [projectList, setProjectList] = useState([])
+    const [sta, setSta] = useState(1)// load lại danh sách
     const [userInfo, setUserInfo] = useState({
         id: 3,
         avatar: "\\uploads\\Images\\user\\04052022_015730_pexels-photo-7492325.jpg",
@@ -42,6 +46,7 @@ function ClientProfile(props) {
 
     const [isLoading, setIsLoading] = useState(true)
     const [currentpage, setCurrentpage] = useState(0)
+    
 
 
     useEffect(() => {
@@ -66,7 +71,7 @@ function ClientProfile(props) {
         fetchUserInfo()
         fetchUserTransaction()
 
-    }, [])
+    }, [sta])
     useEffect(() => {
         const fetchProjectList = async () => {
             const params = {
@@ -82,6 +87,8 @@ function ClientProfile(props) {
         }
         fetchProjectList()
     }, [currentpage])
+
+    
 
     const [show, setShow] = useState(false);
     // Tiến trình
@@ -203,6 +210,83 @@ function ClientProfile(props) {
         }
     }
 
+    // cập nhật thông tin người dùng
+    const type = [
+        { value: '0', label: 'Tất cả' },
+        { value: '1', label: 'Cá nhân' },
+        { value: '2', label: 'Tổ chức' },
+    ]
+    const handleChangAvatar = (e) => {
+        setImgValue(e.target.files[0])
+    }
+
+    const [imgValue, setImgValue] = useState('')
+    // const [sta, setSta] = useState(1)// load lại danh sách
+    const [typeCreate, setTypeCreate] = useState([...type][1])// selector trạng thái
+    const [showEdit, setShowEdit] = useState(false)
+
+    useEffect(async () => {
+        if (imgValue !== '') {
+            let resultimg = imgFormat.find(function (item) {
+                return removeUnicode((imgValue.name).slice((imgValue.name).lastIndexOf('.') + 1)) === removeUnicode(item)
+            })
+            if (resultimg) {
+                let form = new FormData();
+                form.append('Image', imgValue);
+                form.append('TypeImage', "user");
+                const response = await projectApi.uploadFile(form);
+                setUserInfo({ ...userInfo, avatar: response.data.filePath })
+                if (!response.isSuccess) {
+                    Swal.fire('Tải ảnh lên thất bại')
+                }
+            }
+            else {
+                Swal.fire('Tải ảnh lên thất bại')
+                resultimg = ''
+            }
+        }
+    }, [imgValue])
+
+    const handleCloseEdit= ()=>{setShowEdit(false)}
+    const handleShowEdit = ()=>{setShowEdit(true)}
+
+    function HandleGetLable(filterlist, index) {
+        return (
+            filterlist.find(function (itemCategoty) {
+                if (itemCategoty.value === (index + '')) {
+                    return itemCategoty
+                }
+            })
+        )
+    }
+    const handleUpdateUser = async () => {
+        if (
+            userInfo.fullName !== '' &&
+            userInfo.phoneNumber !== '' &&
+            userInfo.email !== '') {
+            const data = {
+                'id': userInfo.id,
+                "fullName": userInfo.fullName,
+                "phoneNumber": userInfo.phoneNumber,
+                "avatarPath": userInfo.avatar,
+                "email": userInfo.email,
+                "type": Number(typeCreate.value)
+            }
+            const respon = await adminUser.updateUser(data)
+            if (respon.isSuccess) {
+                handleCloseEdit()
+                setSta(sta * (-1))
+                Swal.fire('Cập nhật thông tin thành công')
+            }
+            else {
+                Swal.fire('Cập nhật thông tin thất bại')
+            }
+            
+        }
+        else {
+            Swal.fire('Vui lòng điển đủ thông tin')
+        }
+    }
     // Bài viết 
     const [createArtical, setCreateArtical] = useState({
         "title": "",
@@ -277,7 +361,6 @@ function ClientProfile(props) {
         setImgValueArtical(e.target.files[0])
     }
 
-    const imgFormat = ['gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
 
     useEffect(async () => {
         console.log("img", imgValueArtical)
@@ -378,7 +461,7 @@ function ClientProfile(props) {
                                         <p><strong>Số điện thoại:</strong> {userInfo.phoneNumber}</p>
                                         <p><strong>Địa chỉ:</strong> {userInfo.address}</p>
                                         <div className="text-center pt-3">
-                                            <button className="bg-base-color px-4 py-2 rounded-3 text-white">Chỉnh sửa thông tin</button>
+                                            <button onClick={()=>{handleShowEdit()}} className="bg-base-color px-4 py-2 rounded-3 text-white">Chỉnh sửa thông tin</button>
                                         </div>
                                     </div>
                                 </div>
@@ -826,6 +909,133 @@ function ClientProfile(props) {
                             {/* <Modal.Footer>
                     <Button variant="primary">Understood</Button>
                     </Modal.Footer> */}
+                        </Modal>
+
+
+
+
+                        {/* sửa thông tin người dùng  */}
+
+                        <Modal size="lg" show={showEdit} onHide={handleCloseEdit}>
+                            <Modal.Header closeButton>
+                                <Modal.Title className="text-black-50">Cập nhật thông tin cá nhân</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body className="container-fluid ">
+                                <div className="row p-3">
+                                    <div className={clsx(Style.imgAccountUpdate, "col-3 position-relative")}>
+
+                                        <img className={clsx(Style.img_item, "rounded-circle position-relative border border-1 img-fluid img-auto-size")}
+                                            src={process.env.REACT_APP_URL + userInfo.avatar} alt="" />
+                                        <input type="file" className={clsx(Style.changeimg, 'position-absolute')} onChange={(e) => { handleChangAvatar(e) }} style={{ cursor: "pointer", opacity: "0", cursor: "pointer" }} />
+                                    </div>
+
+                                    <Form className="col-9 py-2">
+                                        <Form.Group controlId="exampleForm.ControlInput1">
+                                            <Form.Label>Họ tên</Form.Label>
+                                            <Form.Control className="border border-secondary"
+                                                value={userInfo.fullName}
+                                                onChange={(e) => { setUserInfo({ ...userInfo, fullName: e.target.value }) }}
+                                                type="text"
+                                                placeholder="name"
+                                                autoFocus
+                                            />
+                                        </Form.Group>
+                                        <Form.Group controlId="">
+                                            <Form.Label>Số điện thoại</Form.Label>
+                                            <Form.Control className="border border-secondary"
+
+                                                value={userInfo.phoneNumber}
+                                                onChange={(e) => { setUserInfo({ ...userInfo, phoneNumber: e.target.value }) }}
+                                                type="text"
+                                                placeholder="098765432"
+                                                autoFocus
+                                            />
+                                        </Form.Group>
+                                        <Form.Group controlId="">
+                                            <Form.Label>Địa chỉ</Form.Label>
+                                            <Form.Control className="border border-secondary"
+
+                                                value={userInfo.address}
+                                                onChange={(e) => { setUserInfo({ ...userInfo, address: e.target.value }) }}
+                                                type="text"
+                                                placeholder="đồng nai/ vĩnh cửu/ thiện tân"
+                                                autoFocus
+                                            />
+                                        </Form.Group>
+
+                                    </Form>
+                                    <Form className="d-flex justify-content-between col-12">
+                                        <Form.Group className="col-6 px-2 d-inline-block " controlId="">
+                                            <Form.Label>Email</Form.Label>
+                                            <Form.Control className="border border-secondary"
+                                                readOnly={true}
+                                                value={userInfo.email}
+                                                onChange={(e) => { setUserInfo({ ...userInfo, email: e.target.value }) }}
+                                                type="email"
+                                                placeholder="email@gmail.com"
+                                                autoFocus
+                                            />
+                                        </Form.Group>
+                                        <Form.Group className="col-6 px-2 d-inline-block " controlId="">
+                                            <Form.Label>Loại</Form.Label>
+
+                                            <Select
+                                                // isDisabled={powerCreate === 3 ? true : false}
+                                                value={HandleGetLable(type, userInfo.type)}
+
+                                                onChange={setTypeCreate}
+                                                options={type.slice(1)}
+                                                defaultValue={type.slice(1)}
+                                                className={clsx(Style.category, 'w-100')}
+                                            ></Select>
+
+                                        </Form.Group>
+
+                                    </Form>
+
+                                    {/* <Form className={clsx("d-flex justify-content-between col-12 ", (powerCreate === 3) ? 'hide' : "sleep")}>
+
+                                        <Form.Group className="col-6 px-2 d-inline-block " controlId="">
+                                            <Form.Label>Địa chỉ</Form.Label>
+                                            <Form.Control className="border border-secondary"
+                                                readOnly={powerCreate === 3 ? true : false}
+                                                value={userInfo.address}
+                                                onChange={(e) => { setUserInfo({ ...userInfo, address: e.target.value }) }}
+                                                type="text"
+                                                placeholder="đồng nai/ vĩnh cửu/ thiện tân"
+                                                autoFocus
+                                            />
+                                        </Form.Group>
+                                        <Form.Group className="col-6 px-2 d-inline-block " controlId="">
+                                            <Form.Label>Mật Khẩu</Form.Label>
+                                            <Form.Control className="border border-secondary"
+                                                readOnly={powerCreate === 3 ? true : false}
+                                                value={userInfo.password}
+                                                onChange={(e) => { setUserInfo({ ...userInfo, password: e.target.value }) }}
+                                                type="password"
+                                                placeholder="tối thiểu 6 ký tự"
+                                                autoFocus
+                                            />
+
+                                        </Form.Group>
+
+
+                                    </Form> */}
+                                </div>
+
+                            </Modal.Body>
+                            <Modal.Footer className="d-flex justify-content-end">
+                               
+                                <div>
+                                    <Button className="me-2" variant="secondary" onClick={handleCloseEdit}>
+                                        Đóng
+                                    </Button>
+                                    <Button style={{ backgroundColor: 'var(--nav-color)' }} onClick={() => { handleUpdateUser() }}>
+                                        Cập nhật
+                                    </Button>
+                                </div>
+
+                            </Modal.Footer>
                         </Modal>
                     </div>
                 )
