@@ -56,7 +56,7 @@ function ClientLayout(props) {
                 <Route exact path="/news/:id/:friendlyurl" component={NewsDetail}/>
                 <Route exact path="/project-detail/:id/:friendlyurl" component={ProjectDetail}/>
                 <Route exact path="/bai-viet/:id/:friendlyurl" component={ArticalDetail}/>
-                <Route exact path="/confirm/:email/:code" component={ConfirmEmail}/>
+                <Route path="/confirm" component={ConfirmEmail}/>
                 
                 {/* Route bắt buộc phải Login mới xemm được */}
                 <ProtectedRoute exact path="/profile" component={ClientProfile} role='client'/>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import swal2 from "sweetalert2";
 import clientUser from '../../../api/User/Client';
 import Loading from "./../../../shares/Loading/index";
@@ -10,7 +10,13 @@ ConfirmEmail.propTypes = {
 };
 
 function ConfirmEmail(props) {
-    const { email, code } = useParams()
+    // const { email, code } = useParams()
+    const { search } = useLocation();
+    const searchParams = new URLSearchParams(search);
+    const email = searchParams.get("email");
+    const code = searchParams.get("code");
+    console.log("email: ", email);
+    console.log("code: ", code);
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         const fetchConfirmEmail = async () => {
