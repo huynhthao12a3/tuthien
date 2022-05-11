@@ -12,8 +12,8 @@ ConfirmEmail.propTypes = {
 function ConfirmEmail(props) {
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
-    const email = searchParams.get("email");
-    const code = searchParams.get("code").replaceAll(' ', '+');
+    const email = encodeURIComponent(searchParams.get("email"));
+    const code = encodeURIComponent(searchParams.get("code").replaceAll(' ', '+'));
     console.log('email: ', email);
     console.log('code: ', code);
     const [isLoading, setIsLoading] = useState(true);
