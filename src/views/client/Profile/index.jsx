@@ -495,7 +495,7 @@ function ClientProfile(props) {
                                                                 <td >{item.projectName.length > 35 ? item.projectName.slice(0, 35) + '...' : item.projectName}</td>
                                                                 <td className="text-end">{item.amount}</td>
                                                                 <td className="text-end">{item.currency}</td>
-                                                                <td className="text-end">{moment.utc(item.createTime).local().format('DD/MM/YYYY hh:mm')}</td>
+                                                                <td className="text-end">{moment.utc(item.createTime).local().format('DD/MM/YYYY hh:mm A')}</td>
                                                                 <td className="text-end">
                                                                     <a href={"https://nile.tronscan.org/#/transaction/" + item.hash}
                                                                         target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center ")}>Chi tiết giao dịch</a>

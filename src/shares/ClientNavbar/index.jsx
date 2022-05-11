@@ -39,7 +39,7 @@ function ClientNavbar() {
     const location = useLocation().pathname
     console.log(location)
     return (
-        <Navbar id="client-navbar" collapseOnSelect expand="xl" className={clsx(Style.clientNavbar, "bg-light text-dark shadow border-bottom")}>
+        <Navbar id="client-navbar" collapseOnSelect expand="xl" className={clsx(Style.clientNavbar, "bg-light text-dark shadow border-bottom flex-shrink-0")}>
             <div className='container-fluid'>
                 <Navbar.Brand href="/dashboard">
                     <img

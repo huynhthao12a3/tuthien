@@ -45,6 +45,7 @@ function ClientLayout(props) {
         <>
 
         <ClientNavbar/>
+        <div className=" flex-grow-1">
             <Switch>
                 {/* Route không cần Login vẫn xem được */}
                 <Route exact path="/" component={DashboardClient}/>
@@ -69,6 +70,8 @@ function ClientLayout(props) {
                 <Redirect to="/not-found"/>
 
             </Switch>
+</div>
+
         <ClientFooter/>
         </>
     );
