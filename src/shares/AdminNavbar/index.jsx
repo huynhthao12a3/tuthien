@@ -60,7 +60,7 @@ function AdminNavbar() {
                         <Nav.Link className={clsx(location === "/admin/donation" ? "active" : "", "admin-nav-link text-uppercase fw-bold")} as={NavLink} to="/admin/donation"><i className="mdi mdi-history me-2"></i>Lịch sử quyên góp</Nav.Link>
                         <Nav.Link className={clsx(location === "/admin/news" ? "active" : "", "admin-nav-link text-uppercase fw-bold")} as={NavLink} to="/admin/news"><i className="mdi mdi-newspaper me-2"></i>Tin tức</Nav.Link>
                         <Nav.Link className={clsx(location === "/admin/category" ? "active" : "", "admin-nav-link text-uppercase fw-bold")} as={NavLink} to="/admin/category"><i className="mdi mdi-group me-2"></i>Danh mục</Nav.Link>
-                        <Nav.Link className={clsx(location === "/admin/reclaim" ? "active" : "", "admin-nav-link text-uppercase fw-bold")} as={NavLink} to="/admin/reclaim"><i className="mdi mdi-format-page-break me-2"></i>Kháng cáo</Nav.Link>
+                        {/* <Nav.Link className={clsx(location === "/admin/reclaim" ? "active" : "", "admin-nav-link text-uppercase fw-bold")} as={NavLink} to="/admin/reclaim"><i className="mdi mdi-format-page-break me-2"></i>Kháng cáo</Nav.Link> */}
 
                     </Nav>
 

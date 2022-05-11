@@ -137,7 +137,7 @@ function AdminDonation()
                                                             <th className="text-center" scope="col">Số tiền</th>
                                                             <th className="text-center" scope="col">Loại tiền</th>
                                                             <th className="text-center" scope="col">Ngày</th>
-                                                            <th className="text-center" scope="col">thời gian</th>
+                                                            <th className="text-center" scope="col">Thời gian</th>
                                                             <th className="text-center" scope="col">Hash</th>
                                                         </tr>
                                                     </thead>
@@ -158,7 +158,7 @@ function AdminDonation()
                                                                         <td  >{item.amount}</td>
                                                                         <td className="text-center">{item.currency}</td>
                                                                         <td className="text-center">{moment(item.createTime).format('DD/MM/yyyy')}</td>
-                                                                        <td className="text-center">{moment(item.createTime).format('hh:mm:ss')}</td>
+                                                                        <td className="text-center">{moment.utc(item.createTime).local().format('hh:mm:ss a')}</td>
                                                                         <td className={clsx(Style.hash, "text-center")}>
                                                                             <a href={"https://nile.tronscan.org/#/transaction/" + item.hash}
                                                                                 target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}> {item.hash.slice(0, 20) + '...'}</a>

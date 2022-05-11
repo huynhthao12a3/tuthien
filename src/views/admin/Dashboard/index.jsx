@@ -6,7 +6,6 @@ import {useEffect} from 'react'
 import { DatePicker } from 'rsuite';
 import adminUser from '../../../api/User/Admin';
 import Swal from 'sweetalert2';
-
 import {
   Chart as ChartJs,
   ArcElement,
@@ -68,77 +67,98 @@ Chart.register(
   SubTitle
 );
 
+// các biến ko thể thay đổi giá trị bang đầu
 let date= new Date()
 let getYear=date.getFullYear()
-
-let years= [
-  {  value: 2022 ,label:2022},
-]
+let years= [{value: 2022 ,label:2022},]
 let dataMonth=[]
 let labels=[]
+
 function AdminDashboard(){
-
-
-  const arr={
-    "ratingProjects": [
-      {
-        "fullName": "Huỳnh Văn Thảo",
-        "sumProjectCreated": 3
-      },
-    ],
-    "ratingDonated": [
-      {
-        "fullName": "Huỳnh Văn Thảo",
-        "sumAmountDonated": 1424
-      },
-    ]
-  }
-
-  const objDashBoad={
-    "amountDonated": "5772.00 TRX",
-    "projectCreated": 4,
-    "donated": 18,
-    "projectCompleted": 0,
-    "projectImlementation": 3,
-    "projectWaitting": 1,
-    "lockUsers": 0,
-    "donatedInMonth": [
-      {
-        "donated": 0,
-        "month": 0
-      }
-    ]
-  }
- 
-  // const [dataMonth,setDataMonth]=useState([])
-  const [dataDashBoard,setDataDashBoard]=useState(objDashBoad)
-  const [isChange, setIsChange] = useState(true)// trang 
-  const [arrayUsers,setArrayUsers]= useState(arr)
-  const [yearvalue,setYearvalue]=useState(years[0])
+    //--------------------------------------- các biến 
+    const arr={
+      "ratingProjects": [
+        {
+          "fullName": "Huỳnh Văn Thảo",
+          "sumProjectCreated": 3
+        },
+      ],
+      "ratingDonated": [
+        {
+          "fullName": "Huỳnh Văn Thảo",
+          "sumAmountDonated": 1424
+        },
+      ]
+    }
+    const objDashBoad={
+      "amountDonated": "5772.00 TRX",
+      "projectCreated": 4,
+      "donated": 18,
+      "projectCompleted": 0,
+      "projectImlementation": 3,
+      "projectWaitting": 1,
+      "lockUsers": 0,
+      "donatedInMonth": [
+        {
+          "donated": 0,
+          "month": 0
+        }
+      ]
+    }
   
+
+  //-----------------------------------------useState()
+
+  const [dataDashBoard,setDataDashBoard]=useState(objDashBoad)// lưu dữ liệu từ api tră về
+  const [isChange, setIsChange] = useState(true)  // giúp load lại dữ liệu 
+  const [arrayUsers,setArrayUsers]= useState(arr) // lưu dữ liệu từ api user trả về
+  const [yearvalue,setYearvalue]=useState(years[0]) //lưu giá trị trả về từ select years
+  
+  //--------------------------------------------useEffect 
+
+  // lấy dữ liệu từ api trả về 
   useEffect(async()=>{
     try{
-      const params={
-        "Year":yearvalue.label
-      }
-
-      const respons= await adminUser.getStatistical(params)
-      if(respons.isSuccess)
-      {
-        setDataDashBoard(respons.data)
-      }
-     
-      else{
-        Swal.fire('Load dữ liệu thất bại')
-      }
-     
+          const params={"Year":yearvalue.label}
+          const respons= await adminUser.getStatistical(params)
+          if(respons.isSuccess)
+          {
+            setDataDashBoard(respons.data)
+          }
+          else{
+            Swal.fire('Load dữ liệu thất bại')
+          }
     }
-    catch(e)
-    {
-      console.log(e)
+    catch(e){
+          console.log(e)
     }
   },[yearvalue])
+
+  // lấy dữ liệu từ api user trả về 
+  useEffect(async()=>{   
+    try{
+      const respons= await adminUser.getAllDashBoardRatings()
+      if(respons.isSuccess){
+          setArrayUsers(respons.data)
+      }   
+      else{
+        Swal.fire('Load dữ liệu lên thất bại')
+      }
+    } 
+    catch(e){
+      console.error(e)
+    }
+
+  },[])
   
+  // lấy dữ liệu cho select year
+  useEffect(()=>{
+    for(let i = 2022+1 ;i <= getYear; i++ ){
+      years.push({ value: i ,label:i},)
+    }
+  },[])
+
+  // lấy ngày với số lước donat cho biểu đồ
   useEffect(()=>{
     dataMonth=[]
     labels=[]
@@ -155,7 +175,7 @@ function AdminDashboard(){
       labels: dataMonth ,
           datasets: [
               {
-                  label: 'Số tiền quyên góp',
+                  label: 'Số lượt góp',
                   data:labels,
                   backgroundColor: '#5494FE'
               },
@@ -169,7 +189,7 @@ function AdminDashboard(){
             plugins: {
                 title: {
                     display: true,
-                    text: `¤ Tổng số tiền quyên góp trong tháng ¤`,
+                    text: `¤ Tổng số tiền quyên góp các tháng ¤`,
                     color: '#6c757d',
                     font: {
                         size: 24,
@@ -202,30 +222,7 @@ function AdminDashboard(){
     useEffect(()=>{
    
     },[])
-    useEffect(async()=>{
-      
-      for(let i = 2022+1 ;i <= getYear; i++ )
-      {
-        years.push({ value: i ,label:i},)
-       
-      }
-      console.log(years)
-      try{
-        const respons= await adminUser.getAllDashBoardRatings()
-        if(respons.isSuccess)
-        {
-            console.log(respons.data)
-            setArrayUsers(respons.data)
-        }   
-        else{
-          Swal.fire('Load dữ liệu lên thất bại')
-        }
-      } 
-      catch(e)
-      {
-        console.error(e)
-      }
-    },[])
+
     
     function HandleGetLable(filterlist, index) {
         return (
@@ -247,7 +244,7 @@ function AdminDashboard(){
               <div className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
                   <h5 className='text-secondary'>Tổng số dự án</h5>
-                  <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.projectCreated}</b> dự án</span>
+                  <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'1.5rem'}}>{dataDashBoard.projectCreated}</b> dự án</span>
                 </div>
                 <div className={clsx('col-3 d-flex justify-content-end ')}>
                   <span className="mdi mdi-projector-screen px-2 mb-2 text-white rounded " 
@@ -259,7 +256,7 @@ function AdminDashboard(){
               <div className='card-cv shadow-sm p-3 mb-2 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
                   <h5 className='text-secondary'>Số dự án chờ duyệt</h5>
-                  <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.projectWaitting}</b> dự án</span>
+                  <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'1.5rem'}}>{dataDashBoard.projectWaitting}</b> dự án</span>
                 </div>
                 <div className={clsx('col-3 d-flex justify-content-end ')}>
                   <span className="mdi mdi-projector-screen px-2 mb-2 text-white rounded " 
@@ -271,7 +268,7 @@ function AdminDashboard(){
               <div className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
                   <h5 className='text-secondary'>Số dự án đang chạy</h5>
-                  <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.projectImlementation}</b> dự án</span>
+                  <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'1.5rem'}}>{dataDashBoard.projectImlementation}</b> dự án</span>
                 </div>
                 <div className={clsx('col-3 d-flex justify-content-end ')}>
                   <span className="mdi mdi-projector-screen px-2 mb-2 text-white rounded " 
@@ -283,7 +280,7 @@ function AdminDashboard(){
               <div className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
                   <h5 className='text-secondary'>Dự án hoàn thành</h5>
-                  <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.projectCompleted}</b> dự án</span>
+                  <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'1.5rem'}}>{dataDashBoard.projectCompleted}</b> dự án</span>
                 </div>
                 <div className={clsx('col-3 d-flex justify-content-end ')}>
                   <span className="mdi mdi-projector-screen px-2 mb-2 text-white rounded " 
@@ -294,8 +291,33 @@ function AdminDashboard(){
             <div className="col-lg-3 ">
               <div className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
                 <div className={clsx('col-9')}>
-                  <h5 className='text-secondary'>Tài khoản chưa xác minh</h5>
-                  <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'2.2rem'}}>{dataDashBoard.lockUsers}</b> tài khoản</span>
+                  <h5 className='text-secondary'>Tổng số lượt quyên góp</h5>
+                  <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'1.3rem'}}>{dataDashBoard.donated}</b> Lượt</span>
+                </div>
+                <div className={clsx('col-3 d-flex justify-content-end ')}>
+                  <span className="mdi mdi-format-align-center px-2 mb-2 text-white rounded " 
+                  style={{fontSize:'1.5rem',backgroundColor:'#2bb9c4', maxHeight:'40px'}}></span>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-3 ">
+              <div className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
+                <div className={clsx('col-9')}>
+                  <h5 className='text-secondary'>Tổng số tiền quyên góp</h5>
+                  <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'1.3rem'}}>{dataDashBoard.amountDonated.slice(0,dataDashBoard.amountDonated.lastIndexOf(' '))}</b> TRX</span>
+                </div>
+                <div className={clsx('col-3 d-flex justify-content-end ')}>
+                
+                  <span className="mdi mdi-database-plus px-2 mb-2 text-white rounded " 
+                  style={{fontSize:'1.5rem',backgroundColor:'#2bb9c4', maxHeight:'40px'}}></span>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-3 ">
+              <div className='card-cv shadow-sm p-3 mb-3 bg-body rounded bg-white p-4 d-flex justify-content-between text-decoration-none'>
+                <div className={clsx('col-9')}>
+                  <h5 className='text-secondary'>Tài khoản đang bị khóa</h5>
+                  <span className=' text-secondary font-weight-bold'><b className='' style={{fontSize:'1.3rem'}}>{dataDashBoard.lockUsers}</b> tài khoản</span>
                 </div>
                 <div className={clsx('col-3 d-flex justify-content-end ')}>
                   <span className="mdi mdi-account-box px-2 mb-2 text-white rounded " 
@@ -395,7 +417,7 @@ function AdminDashboard(){
                                       
 
                                       <td  className={clsx(Style.lh, )} >{item.fullName}</td>
-                                      <td className={clsx(Style.lh,'text-center' )} >{item.sumAmountDonated} <span className='text-warning'>TRX</span></td>
+                                      <td className={clsx(Style.lh,'text-center' )} >{item.sumAmountDonated} <span style={{color:'var(--nav-color)'}}>TRX</span></td>
 
                                   </tr>
 
