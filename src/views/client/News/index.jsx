@@ -4,7 +4,7 @@ import newsApi from '../../../api/News'
 import Loading from '../../../shares/Loading';
 import clsx from "clsx";
 import Style from './News.module.scss'
-import newsBanner from '../../../assets/images/news.png'
+import newsBanner from '../../../assets/images/together-2450081.jpg'
 import { Link } from "react-router-dom";
 import moment from "moment";
 import * as $ from 'jquery'
@@ -63,8 +63,13 @@ function News(props) {
             {
                 isLoading ? <Loading /> : (
                     <>
-
-                        <img className={clsx(Style.bannerNews)} src={newsBanner} alt="" />
+                        <div className='position-relative'>
+                            <img className={clsx(Style.bannerNews,'img-fluid')} src={newsBanner} alt="" />
+                            <div className='position-absolute d-flex justify-content-center align-items-center text-white' style={{top:'0', bottom:0,right:0,left:0 , backgroundColor:"rgba(0,0,0,0.1)"}}>
+                                <h1 className='text-uppercase display-1 mb-5'><b className='mb-lg-5 d-block'>tin tức</b></h1>
+                                
+                            </div>
+                        </div>
                         <div className="py-5 px-3 px-lg-5">
                             <div className="container">
                                 <div className="row">
@@ -103,7 +108,7 @@ function News(props) {
                                                             <Link to={{ pathname: '/news/' + item.id + '/' + item.friendlyUrl }} onClick={() => { window.scrollTo(0, 0) }} >
                                                                 <img src={process.env.REACT_APP_URL + item.bannerPath}
                                                                     onError={(e) => (e.target.onerror = null, e.target.src = newsBanner)}
-                                                                    className={clsx(Style.imgCard, 'mb-3')} alt="hình ảnh bài viết" />
+                                                                    className={clsx(Style.imgCard, 'mb-3')} alt="hình ảnh bài viết" />T
                                                             </Link>
                                                             <Link to={{ pathname: '/news/' + item.id + '/' + item.friendlyUrl }} onClick={() => { window.scrollTo(0, 0) }} className={clsx(Style.link, "text-uppercase text-decoration-none text-dark")} >{item.title}</Link>
                                                             <div className="d-flex justify-content-between my-3">
