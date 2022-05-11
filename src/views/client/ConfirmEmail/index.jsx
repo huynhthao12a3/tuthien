@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useHistory, Link } from "react-router-dom";
 import swal2 from "sweetalert2";
 import clientUser from '../../../api/User/Client';
 import Loading from "./../../../shares/Loading/index";
@@ -11,11 +11,12 @@ ConfirmEmail.propTypes = {
 
 function ConfirmEmail(props) {
     const { search } = useLocation();
+    const history = useHistory();
     const searchParams = new URLSearchParams(search);
     const email = encodeURIComponent(searchParams.get("email"));
     const code = encodeURIComponent(searchParams.get("code").replaceAll(' ', '+'));
-    console.log('email: ', email);
-    console.log('code: ', code);
+    // console.log('email: ', email);
+    // console.log('code: ', code);
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         const fetchConfirmEmail = async () => {
@@ -25,6 +26,7 @@ function ConfirmEmail(props) {
             }
             const response = await clientUser.confirmEmail(params)
             if (response.isSuccess) {
+                history.push('/dashboard')
                 setIsLoading(false)
                 swal2.fire({
                     title: "Thông báo",
@@ -35,6 +37,7 @@ function ConfirmEmail(props) {
                 });
             }
             else {
+                history.push('/dashboard')
                 setIsLoading(false)
                 swal2.fire({
                     title: "Thông báo",
@@ -43,10 +46,11 @@ function ConfirmEmail(props) {
                     confirmButtonColor: 'var(--love-color-1)'
 
                 });
+
             }
         }
         fetchConfirmEmail()
-    }, [email])
+    }, [])
     return (
         <>
             {isLoading ? <Loading /> : ""}

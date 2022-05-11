@@ -238,6 +238,11 @@ export function isPhoneNumber(phone) {
 
 }
 
+// Check password match 
+export function checkPasswordMatch(value1, value2) {
+    return value1 === value2
+}
+
 /** Disable double click action not include with:
  * [data-toggle="dropdown"]: Button dropdown
  * [data-dismiss="modal"]: Button close modal
