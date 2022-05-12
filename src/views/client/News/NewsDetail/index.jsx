@@ -53,7 +53,7 @@ function NewsDetail(props) {
                         <div className="row">
 
                             <div className="col-12 col-lg-8 ">
-                                <div className="p-3 shadow rounded-3 border">
+                                <div className="p-3 shadow rounded-3 border bg-white">
 
                                     <div className="text-center">
 
@@ -74,8 +74,8 @@ function NewsDetail(props) {
 
                                 </div>
                             </div>
-                            <div className="col-12 col-lg-3 mt-5 mt-lg-0   ">
-                                <div className="p-3 shadow-sm rounded-3 border">
+                            <div className="col-12 col-lg-3 mt-5 mt-lg-0  ">
+                                <div className="p-3 shadow-sm rounded-3 border bg-white ">
                                     <h2 className="fs-4 text-muted">Các tin tức khác:</h2>
                                     {
                                         newsArray
