@@ -194,8 +194,8 @@ function ClientLogin() {
 
     useEffect(() => {
         if (location.pathname === '/register') {
-            console.log(location.pathname)
-            // toggleForm()
+            // console.log(location.pathname)
+            toggleForm()
         }
     }, [])
     //đẩy ảnh lên API
