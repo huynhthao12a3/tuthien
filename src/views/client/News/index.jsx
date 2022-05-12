@@ -4,7 +4,7 @@ import newsApi from '../../../api/News'
 import Loading from '../../../shares/Loading';
 import clsx from "clsx";
 import Style from './News.module.scss'
-import newsBanner from '../../../assets/images/together-2450081.jpg'
+import newsBanner from '../../../assets/images/together-2450081.webp'
 import { Link } from "react-router-dom";
 import moment from "moment";
 import * as $ from 'jquery'
@@ -108,7 +108,7 @@ function News(props) {
                                                             <Link to={{ pathname: '/news/' + item.id + '/' + item.friendlyUrl }} onClick={() => { window.scrollTo(0, 0) }} >
                                                                 <img src={process.env.REACT_APP_URL + item.bannerPath}
                                                                     onError={(e) => (e.target.onerror = null, e.target.src = newsBanner)}
-                                                                    className={clsx(Style.imgCard, 'mb-3')} alt="hình ảnh bài viết" />T
+                                                                    className={clsx(Style.imgCard, 'mb-3')} alt="hình ảnh bài viết" />
                                                             </Link>
                                                             <Link to={{ pathname: '/news/' + item.id + '/' + item.friendlyUrl }} onClick={() => { window.scrollTo(0, 0) }} className={clsx(Style.link, "text-uppercase text-decoration-none text-dark")} >{item.title}</Link>
                                                             <div className="d-flex justify-content-between my-3">
