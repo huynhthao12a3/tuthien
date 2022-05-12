@@ -226,6 +226,9 @@ body{
   .d-flex.justify-content-between.hide ,.bg-danger.btn-secondary.hide{
       display: none !important;
   }
+  .hide.btn.btn-primary{
+    display: none !important;
+  }
   .d-inline-block.hide{
     display: none !important;
   }
