@@ -62,7 +62,7 @@ function ArticalDetail(props) {
                                 </div>
                                 <div className="col-12 col-md-3">
                                     <div className="d-flex flex-column justify-content-end">
-                                        <p className='m-0 fst-italic text-muted'>{dataArtical.createUser}<i className="mdi mdi-account-edit ms-1"></i></p>
+                                        <p className='m-0 fst-italic text-muted'><i className="mdi mdi-account-edit me-1"></i>{dataArtical.userCreate}</p>
                                         <p className='m-0 fst-italic text-muted'><i className="mdi mdi-calendar-check me-1"></i>{moment(dataArtical.createTime).format("DD/MM/YYYY")}</p>
 
                                     </div>

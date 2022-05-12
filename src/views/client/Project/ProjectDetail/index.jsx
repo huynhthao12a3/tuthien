@@ -390,7 +390,7 @@ function ProjectDetail(props) {
     const handleWithdraw = () => {
         console.log(new Date().getTime())
         console.log(new Date(dataProject.endDate).getTime())
-        if ((new Date().getTime()) >= (new Date(dataProject.endDate).getTime())) {
+        if ((new Date().getTime()) >= (new Date(moment.utc(dataProject.endDate).local()).getTime())) {
             if (!!window.tronWeb === false) {
                 swal2.fire({
                     title: "Thông báo",
@@ -1022,8 +1022,8 @@ function ProjectDetail(props) {
 
                                                                             <div className="d-flex justify-content-between my-4">
 
-                                                                                <p className='m-0 fst-italic '><i className="mdi mdi-account-edit me-1"></i>{item.createUser}</p>
-                                                                                <p className='m-0 fst-italic'>{moment(item.createTime).format("DD/MM/YYYY")}<i className="mdi mdi-calendar-check ms-1"></i></p>
+                                                                                <p className='m-0 fst-italic '><i className="mdi mdi-account-edit me-1"></i>{item.userCreate}</p>
+                                                                                <p className='m-0 fst-italic'>{moment.utc(item.createTime).local().format("DD/MM/YYYY")}<i className="mdi mdi-calendar-check ms-1"></i></p>
                                                                             </div>
                                                                             <div className={clsx(Style.bodyDesc)}>
                                                                                 <SetInnerHTML text={item.content} />
