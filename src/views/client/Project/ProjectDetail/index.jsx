@@ -107,6 +107,9 @@ function ProjectDetail(props) {
         }
         fetchDataProject()
     }, [id])
+    useEffect(()=>{
+        console.log("dataProject",dataProject.articals)
+    },[dataProject])
 
     // URL map location
     const urlLocation = "https://www.google.com/maps/embed/v1/place?key=AIzaSyDEhyx111_aA4TIk0BPHGyLTOZnIFChjGc&q=" + dataProject.location.replaceAll(' ', '+');
@@ -1015,7 +1018,7 @@ function ProjectDetail(props) {
                                                                         </div>
 
                                                                         <div className={clsx(Style.body, ' px-3 py-4')}>
-                                                                            <Link to={"/bai-viet/" + item.articalId + "/" + item.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className='text-decoration-none '>
+                                                                            <Link to={"/bai-viet/"+ item.articalId +"/" + item.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className='text-decoration-none '>
 
                                                                                 <h4 className="fs-4 text-center text-uppercase">{item.title}</h4>
                                                                             </Link>

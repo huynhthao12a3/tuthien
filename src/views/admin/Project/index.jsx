@@ -377,10 +377,10 @@ function Project() {
         console.log("data", createArtical.banner.fileName)
         console.log(createArtical)
         if (
-            createArtical.title !== "",
-            createArtical.shortDescription !== "",
-            createArtical.content !== "",
-            createArtical.friendlyUrl !== "",
+            createArtical.title !== "" &&
+            createArtical.shortDescription !== ""&&
+            createArtical.content !== ""&&
+            createArtical.friendlyUrl !== ""&&
             createArtical.banner.filePath !== ""
         ) {
             const data = {

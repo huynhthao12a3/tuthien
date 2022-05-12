@@ -32,6 +32,7 @@ function ModalCreateArtical(props) {
                         'id': obj.id,
                         "title": obj.title,
                         "content": obj.content,
+                        "friendlyUrl":MakeUrl(obj.title),
                         "banner": {
                             "fileName": obj.banner.fileName,
                             "filePath": obj.banner.filePath,
