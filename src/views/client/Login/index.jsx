@@ -290,7 +290,7 @@ function ClientLogin() {
                                         <input type="password" placeholder="Nhập lại mật khẩu" onChange={e => setClientDetail({ ...clientDetail, rePassword: e.target.value })} />
                                         <span className="d-block" style={{ fontSize: '12px', color: 'red' }}>{validatePassword}</span>
                                         <label htmlFor="type" className="me-2">Loại tài khoản:</label>
-                                        <select id="type" value={clientDetail.type} onChange={e => setClientDetail({ ...clientDetail, type: e.target.value })}>
+                                        <select id="type" value={clientDetail.type} onChange={e => setClientDetail({ ...clientDetail, type: Number(e.target.value) })}>
                                             <option value="1">Cá nhân</option>
                                             <option value="2">Tổ chức</option>
                                         </select>

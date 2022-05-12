@@ -1078,9 +1078,13 @@ function ProjectDetail(props) {
                                                                         </div>
                                                                         <div className="my-3">
                                                                             <p className="m-0 text-center">{item.userName}</p>
-                                                                            <div className="m-0 d-flex justify-content-center">
-                                                                                <img src={trxCoin} alt="coin" className="" width="16px" />
-                                                                                <span className="ms-1 fw-bold">{item.amount}</span>
+                                                                            <div className="m-0 d-flex flex-column justify-content-center">
+                                                                                <div className="d-flex justify-content-center">
+
+                                                                                    <img src={trxCoin} alt="coin" className="" width="16px" />
+                                                                                    <span className="ms-1 fw-bold">{item.amount}</span>
+                                                                                </div>
+                                                                                <span className="text-center" style={{ fontSize: '12px' }}>{utils.formatNumber(Math.floor(Number(item.amount) * trxPrice))} VNĐ</span>
                                                                             </div>
                                                                             <a href={"https://nile.tronscan.org/#/transaction/" + item.hash} target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết</a>
 
