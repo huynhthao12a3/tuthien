@@ -56,6 +56,10 @@ const clientUser = {
     confirmEmail: (params) => {
         const url =`/user/confirm-email?email=${params.email}&code=${params.code}`
         return axiosClient.patch(url)
+    },
+    updateUserInfo:(data)=>{
+        const url =`/User/update-userinfo`
+        return axiosClient.put(url,data)
     }
 }
 

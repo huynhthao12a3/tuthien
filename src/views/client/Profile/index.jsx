@@ -22,6 +22,7 @@ import imgDefault from '../../../assets/images/default_image.png'
 import ModalArticalDetai from '../../../shares/ModalArticalDetail';
 import adminUser from "../../../api/User/Admin"
 import Select from 'react-select'
+
 let idProjectDetail = 0
 ClientProfile.propTypes = {
 
@@ -265,14 +266,14 @@ function ClientProfile(props) {
             userInfo.phoneNumber !== '' &&
             userInfo.email !== '') {
             const data = {
-                'id': userInfo.id,
                 "fullName": userInfo.fullName,
                 "phoneNumber": userInfo.phoneNumber,
                 "avatarPath": userInfo.avatar,
                 "email": userInfo.email,
-                "type": Number(typeCreate.value)
+                "type": Number(typeCreate.value),
+                "address":userInfo.address
             }
-            const respon = await adminUser.updateUser(data)
+            const respon = await clientUser.updateUserInfo(data)
             if (respon.isSuccess) {
                 handleCloseEdit()
                 setSta(sta * (-1))
@@ -980,7 +981,7 @@ function ClientProfile(props) {
                                             <Form.Label>Loại</Form.Label>
 
                                             <Select
-                                                // isDisabled={powerCreate === 3 ? true : false}
+                                                isDisabled={true }
                                                 value={HandleGetLable(type, userInfo.type)}
 
                                                 onChange={setTypeCreate}

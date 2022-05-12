@@ -513,7 +513,7 @@ function UpdateProcess(props) {
                             <h3 className={clsx(Style.title_content, "pb-1  pd-md-3 mt-md-1 mt-3")} >Danh sách tiến trình</h3>
                             <div className={clsx(Style.process_list, 'row ms-md-3 mt-md-3')}>
                                 {/* {projectObj.projectname} */}
-                                <h5 className="pt-2 ps-3" style={{ color: "#666", fontSize: "1.1rem" }}>Tên tiến trình: </h5>
+                                <h5 className="pt-2 ps-3" style={{ color: "#666", fontSize: "1.1rem" }}>Tên tiến trình: {processProp.title}</h5>
                                 <div className="col-12 ps-2 pe-2">
                                     <table className="table">
                                         <thead>
