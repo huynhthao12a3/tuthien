@@ -659,7 +659,7 @@ function ProjectDetail(props) {
                                         <div className={clsx(Style.baseColor, 'd-flex align-items-center my-3 my-lg-0')}>
                                             <i className="mdi mdi-account-multiple-outline fs-1 me-3 pe-2 border-end"></i>
                                             <div className="">
-                                                <p className=" mb-0 py-1">{dataProject.userType === 1 ? 'Cá nhân' : 'Tổ chức'}</p>
+                                                <p className=" mb-0 py-1">{dataProject.userType == 1 ? 'Cá nhân' : 'Tổ chức'}</p>
                                                 <Link to={`/profile/${dataProject.userCreateId}`} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.baseColor, 'text-uppercase text-decoration-none')}>{dataProject.userCreate}</Link>
                                             </div>
                                         </div>
