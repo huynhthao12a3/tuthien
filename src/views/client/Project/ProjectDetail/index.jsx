@@ -826,11 +826,11 @@ function ProjectDetail(props) {
                                                     : <button className={clsx("bg-secondary fs-5 w-100 p-2 text-white text-center text-uppercase")} >Vui lòng chờ duyệt để tham gia đóng góp</button>
 
                                             }
-                                            {/* {
-                                                (new Date().getTime()) >= (new Date(dataProject.endDate).getTime())
+                                            {
+                                                (new Date().getTime()) >= (new Date(dataProject.endDate).getTime()) && dataProject.status === 4
                                                     ? <button className={clsx("bg-secondary fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleRefund}>Hoàn tiền<i className="mdi mdi-backup-restore ms-1"></i></button>
                                                     : ""
-                                            } */}
+                                            }
                                             {
                                                 (new Date().getTime()) >= (new Date(dataProject.endDate).getTime()) && dataProject.isEdit === true
                                                     ? <button className={clsx(Style.backgroundBaseColor, "fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleWithdraw}>Rút tiền<i className="mdi mdi-cash-multiple ms-1"></i></button>
