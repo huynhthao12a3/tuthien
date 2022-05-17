@@ -36,6 +36,10 @@ const projectApi = {
         const url=`/Project/update-status-project/${id}`
         return axiosClient.patch(url)
     },
+    upStatusProjectFail:(id)=>{
+        const url=`/Project/update-status-project/${id}?iscancelled=true`
+        return axiosClient.patch(url)
+    },
     getTransaction:(id)=>{
         const url=`/Project/get-transactions?projectid=${id}` 
         return axiosClient.get(url)

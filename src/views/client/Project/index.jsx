@@ -22,7 +22,8 @@ function ClientProject() {
   const statusArray = [
     { id: 1, name: 'Đang chờ duyệt' },
     { id: 2, name: 'Đang thực thi' },
-    { id: 3, name: 'Hoàn thành' }
+    { id: 3, name: 'Đã hoàn thành' },
+    { id: 4, name: 'Thất bại' }
   ]
   // const categoryArray = [
   //   { id: 1, name: 'Thiên nhiên' },
@@ -42,7 +43,7 @@ function ClientProject() {
     setFilterSearch(value)
   }
   // checkbox
-  const [fillerStatusCheckbox, setFillerStatusCheckbox] = useState(2)
+  const [fillerStatusCheckbox, setFillerStatusCheckbox] = useState(0)
   const [fillerCategoryCheckbox, setFillerCategoryCheckbox] = useState(0)
 
   // console.log('status :', fillerStatusCheckbox)
@@ -198,7 +199,8 @@ function ClientProject() {
                                   </div>
                                   <div className="border-start px-3 py-1 my-2 d-flex flex-column ">
                                     <span ><i className="mdi mdi-history fs-5 pe-2"></i>Trạng thái</span>
-                                    <span className={clsx(Style.baseColor, 'text-uppercase')}>{item.status === 1 ? "Đang chờ duyệt" : (item.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</span>
+                                    <span className={clsx(Style.baseColor, 'text-uppercase')}>{item.status === 1 ? "Đang chờ duyệt" : (item.status === 2 ? "Đang thực thi" : (item.status === 3 ? "Đã hoàn thành" : "Thất bại"))}</span>
+
                                   </div>
                                   <div className='d-flex flex-column flex-xl-row align-items-center  justify-content-between '>
                                     <div className="d-flex align-items-center ">

@@ -46,7 +46,8 @@ function Project() {
         { value: '0', label: 'Tất cả' },
         { value: '1', label: 'Đang chờ duyệt' },
         { value: '2', label: 'Đang thực thi' },
-        { value: '3', label: 'Hoàn thành' },
+        { value: '3', label: 'Đã hoàn thành' },
+        { value: '4', label: 'Thất bại' },
     ]
     const objArtical = {
         "title": "",
@@ -378,9 +379,9 @@ function Project() {
         console.log(createArtical)
         if (
             createArtical.title !== "" &&
-            createArtical.shortDescription !== ""&&
-            createArtical.content !== ""&&
-            createArtical.friendlyUrl !== ""&&
+            createArtical.shortDescription !== "" &&
+            createArtical.content !== "" &&
+            createArtical.friendlyUrl !== "" &&
             createArtical.banner.filePath !== ""
         ) {
             const data = {
@@ -517,7 +518,7 @@ function Project() {
 
                                                             {/* filterStatus[item.status] */}
                                                             <td >
-                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status === 1 ? 'waitingStatus' : (item.status === 2 ? 'doingStatus' : 'doneStatus'))}>{HandleGetLable(filterStatus, item.status).label}
+                                                                <span className={clsx(Style.StatusItem, 'position-relative', item.status === 1 ? 'waitingStatus' : (item.status === 2 ? 'doingStatus' : (item.status === 3 ? 'doneStatus' : 'failStatus')))}>{HandleGetLable(filterStatus, item.status).label}
 
                                                                 </span>
                                                             </td>

@@ -43,6 +43,8 @@ ProjectDetail.propTypes = {
 };
 
 function ProjectDetail(props) {
+    const tronweb = window.tronWeb;
+
     const locations = useLocation().pathname
     const [isLoading, setIsLoading] = useState(true)
 
@@ -97,14 +99,53 @@ function ProjectDetail(props) {
     const { id, friendlyurl } = useParams()
     console.log(id)
     useEffect(() => {
+        // Lấy thông tin dự án từ API
         const fetchDataProject = async () => {
             const response = await projectApi.get(id)
             if (response.isSuccess) {
                 setDataProject(response.data)
                 setIsLoading(false)
-                console.log('project :', response.data)
+                console.log('project from api: ', response.data)
+                console.log('data-project: ', dataProject)
+                // Lấy kết quả dự án từ Blockchain
+                console.log('- Time now: ', new Date().getTime())
+                console.log('- Time enddate: ', new Date(response.data.endDate).getTime())
+                console.log('- Time enddate utc: ', new Date(moment.utc(response.data.endDate).local()).getTime())
+                // if (response.data.status === 2 && (new Date().getTime()) >= (new Date(moment.utc(dataProject.endDate).local()).getTime())) {
+                //     const sm = await tronweb.contract().at(response.data.addressContract)
+                //     const result = await sm.Result().call()
+                //         .then(
+                //             (res) => {
+                //                 if (res) {
+                //                     console.log('- project success: ', res)
+                //                     const updateProjectSuccess = async () => {
+                //                         const result = await projectApi.upStatusProject(id)
+                //                         if (result.isSuccess) {
+                //                             console.log('success: ', result.message)
+                //                         } else {
+                //                             console.log('fail: ', result.message)
+                //                         }
+                //                     }
+                //                     updateProjectSuccess()
+                //                 } else {
+                //                     console.log('- project fail: ', res)
+                //                     const updateProjectFail = async () => {
+                //                         const result = await projectApi.upStatusProjectFail(id)
+                //                         if (result.isSuccess) {
+                //                             console.log('success: ', result.message)
+                //                         } else {
+                //                             console.log('fail: ', result.message)
+                //                         }
+                //                     }
+                //                     updateProjectFail()
+                //                 }
+                //             }
+                //         )
+                // }
+
             }
         }
+
         fetchDataProject()
     }, [id])
     useEffect(() => {
@@ -234,6 +275,8 @@ function ProjectDetail(props) {
         fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=vnd")
             .then(res => res.json())
             .then(res => { setTrxPrice(res.tron.vnd) })
+
+
     }, [])
 
     // useEffect(() => {
@@ -253,14 +296,13 @@ function ProjectDetail(props) {
     //     loggedIn: window.tronWeb && window.tronWeb.ready
     // })
     // console.log(statusTronWeb)
-    const tronweb = window.tronWeb;
     // const HttpProvider = tronweb.providers.HttpProvider;
     // tronweb.eventServer = new HttpProvider("https://nile.trongrid.io")
 
     // ------------------------------------------------------------------- DONATE 
     // Hàm xử lý đóng góp cho dự án
     const handleDonate = () => {
-        if ((new Date().getTime()) < (new Date(dataProject.endDate).getTime())) {
+        if ((new Date().getTime()) < new Date(moment.utc(dataProject.endDate).local()).getTime()) {
             if (!!window.tronWeb === false) {
                 swal2.fire({
                     title: "Thông báo",
@@ -330,7 +372,7 @@ function ProjectDetail(props) {
                                                 setIsLoading(false)
                                                 swal2.fire({
                                                     title: "Đóng góp thành công.",
-                                                    html: "Đóng góp của bạn đã được xác nhận thành công. </br></br> Chúng tôi chân thành cảm ơn bạn. </br></br> Chúc bạn luôn mạnh khỏe và thành công trong cuộc sống.</br> "
+                                                    html: "Đóng góp của bạn đã được xác nhận thành công. </br></br> Chúng tôi chân thành cảm ơn bạn. </br></br> Chúc bạn luôn mạnh khỏe và thành công trong cuộc sống.</br> </br> Lưu ý: giá trị TRX biến đổi theo thời gian.</br> "
                                                         + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" >Chi tiết giao dịch</a>`,
                                                     icon: "success",
                                                     confirmButtonColor: 'var(--love-color-1)'
@@ -392,7 +434,7 @@ function ProjectDetail(props) {
     // Hàm xử lý rút tiền 
     const handleWithdraw = () => {
         console.log(new Date().getTime())
-        console.log(new Date(dataProject.endDate).getTime())
+        console.log(new Date(moment.utc(dataProject.endDate).local()).getTime())
         if ((new Date().getTime()) >= (new Date(moment.utc(dataProject.endDate).local()).getTime())) {
             if (!!window.tronWeb === false) {
                 swal2.fire({
@@ -514,7 +556,7 @@ function ProjectDetail(props) {
     const handleRefund = () => {
         console.log(new Date().getTime())
         console.log(new Date(dataProject.endDate).getTime())
-        if ((new Date().getTime()) >= (new Date(dataProject.endDate).getTime())) {
+        if ((new Date().getTime()) >= new Date(moment.utc(dataProject.endDate).local()).getTime()) {
             if (!!window.tronWeb === false) {
                 swal2.fire({
                     title: "Thông báo",
@@ -673,7 +715,7 @@ function ProjectDetail(props) {
                                         <div className="ProgressBarContent my-3">
                                             <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
                                             <ProgressBar striped now={Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100) + 5} label={`${Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100)} %`} />
-                                            <span>{utils.formatNumber((Number(dataProject.amountNow) * trxPrice).toFixed(2))} / {utils.formatNumber(dataProject.amountNeed)} VNĐ</span>
+                                            <span>{utils.formatNumber((Number(dataProject.amountNow) * trxPrice).toFixed(0))} VNĐ <span className="text-muted" style={{ fontSize: '12px' }}>({dataProject.amountNow} TRX)</span> / {utils.formatNumber(dataProject.amountNeed)} VNĐ  <span className="text-muted" style={{ fontSize: '12px' }}>({dataProject.amountTRXNeed} TRX)</span></span>
                                         </div>
                                         {
                                             dataProject.status !== 1 ? (
@@ -698,7 +740,7 @@ function ProjectDetail(props) {
                                         <div className={clsx(Style.baseColor, 'd-flex flex-column flex-md-row justify-content-between align-items-center my-3')}>
                                             <div className="border-start px-3 d-flex flex-column align-self-start">
                                                 <span className="text-white"><i className="mdi mdi-history pe-2"></i>Trạng thái</span>
-                                                <span className={clsx(Style.baseColor, 'text-uppercase')}>{dataProject.status === 1 ? "Đang chờ duyệt" : (dataProject.status === 2 ? "Đang thực thi" : "Đã hoàn thành")}</span>
+                                                <span className={clsx(Style.baseColor, 'text-uppercase')}>{dataProject.status === 1 ? "Đang chờ duyệt" : (dataProject.status === 2 ? "Đang thực thi" : (dataProject.status === 3 ? "Đã hoàn thành" : "Thất bại"))}</span>
                                             </div>
                                             {/* {
                                                 dataProject.isEdit === true ? (
@@ -827,12 +869,12 @@ function ProjectDetail(props) {
 
                                             }
                                             {
-                                                (new Date().getTime()) >= (new Date(dataProject.endDate).getTime()) && dataProject.status === 4
+                                                dataProject.status === 4
                                                     ? <button className={clsx("bg-secondary fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleRefund}>Hoàn tiền<i className="mdi mdi-backup-restore ms-1"></i></button>
                                                     : ""
                                             }
                                             {
-                                                (new Date().getTime()) >= (new Date(dataProject.endDate).getTime()) && dataProject.isEdit === true
+                                                dataProject.status === 3 && dataProject.isEdit === true
                                                     ? <button className={clsx(Style.backgroundBaseColor, "fs-5 w-100 p-2 text-white text-center text-uppercase")} onClick={handleWithdraw}>Rút tiền<i className="mdi mdi-cash-multiple ms-1"></i></button>
                                                     : ""
                                             }

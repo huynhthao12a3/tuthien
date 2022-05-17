@@ -18,23 +18,22 @@ import Loading from "../../../shares/Loading"
 import Swal from "sweetalert2";
 import DanateApi from "../../../api/Donate";
 
-function AdminDonation() 
-{
+function AdminDonation() {
     const avatarDefalt = "\\uploads\\Images\\Hide_User\\06052022_080221_anymous_icon.png"
-     //-------------------------------------------------------
-    const arr=[
-       
-            {
-                "userName": "Nguyễn Minh Hiếu",
-                'createTime':"2022-05-09T04:56:05.3994789",
-                "userAvatar": "\\uploads\\Images\\client\\06052022_081259_phonepicutres-TA.jpg",
-                "projectId": 2,
-                "projectName": "MONG MỎI LẮP CHI GIẢ ĐỂ LAO ĐỘNG MƯU SINH CHĂM LO CHO GIA ĐÌNH",
-                "amount": 500,
-                "currency": "TRX",
-                "hash": "79095d1ae2b8f13c4d47aea67dee0d5372e944a0b90c5c8f243c50fa5f2a9c3d",
-                "type": 1
-            },
+    //-------------------------------------------------------
+    const arr = [
+
+        {
+            "userName": "Nguyễn Minh Hiếu",
+            'createTime': "2022-05-09T04:56:05.3994789",
+            "userAvatar": "\\uploads\\Images\\client\\06052022_081259_phonepicutres-TA.jpg",
+            "projectId": 2,
+            "projectName": "MONG MỎI LẮP CHI GIẢ ĐỂ LAO ĐỘNG MƯU SINH CHĂM LO CHO GIA ĐÌNH",
+            "amount": 500,
+            "currency": "TRX",
+            "hash": "79095d1ae2b8f13c4d47aea67dee0d5372e944a0b90c5c8f243c50fa5f2a9c3d",
+            "type": 1
+        },
     ]
     // select trạng thái
     const filterStatus = [
@@ -95,7 +94,7 @@ function AdminDonation()
     const Label = props => {
         return <label style={{ display: 'block', marginTop: 10 }} {...props} />;
     };
-    return(
+    return (
         <>
             {
 
@@ -147,7 +146,7 @@ function AdminDonation()
                                                                 return (
                                                                     <tr key={index} style={{ lineHeight: '2rem' }}>
 
-                                                                        <th scope="row">{index+1}</th>
+                                                                        <th scope="row">{index + 1}</th>
                                                                         <td>
                                                                             <div className={clsx(Style.imgAccount, "col-4 col-md-2")}>
                                                                                 <img id="img-banner1" src={(item.userAvatar) ? (process.env.REACT_APP_URL + item.userAvatar) : (process.env.REACT_APP_URL + avatarDefalt)} className={clsx(Style.img_item, "rounded-circle border border-1 img-fluid img-auto-size ")} />
@@ -158,13 +157,13 @@ function AdminDonation()
                                                                         <td  >{item.amount}</td>
                                                                         <td className="text-center">{item.currency}</td>
                                                                         <td className="text-center">{moment(item.createTime).format('DD/MM/yyyy')}</td>
-                                                                        <td className="text-center">{moment.utc(item.createTime).local().format('hh:mm:ss a')}</td>
+                                                                        <td className="text-center">{moment.utc(item.createTime).local().format('hh:mm:ss A')}</td>
                                                                         <td className={clsx(Style.hash, "text-center")}>
                                                                             <a href={"https://nile.tronscan.org/#/transaction/" + item.hash}
                                                                                 target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}> {item.hash.slice(0, 20) + '...'}</a>
 
                                                                         </td>
-                                                                 
+
 
                                                                         <td key={index + 'dropdow'} className=" text-center align-middle ">
                                                                             <Dropdown className="d-inline mx-2" >

@@ -147,6 +147,7 @@ function AddProject() {
     );
     const handlecheckValues = () => {
         console.log('projectValue', projectValue)
+        console.log('time: ', moment(projectValue.enddate).utc().format('DD/MM/YYYY'))
         if (
             projectValue.urlImg !== '' &&
             projectValue.projectname !== '' &&

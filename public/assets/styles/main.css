@@ -46,7 +46,7 @@
     background-color: var( --love-color-1);
 }
 /* đang chờ */
-.waitingStatus ,.doingStatus ,.doneStatus,.doingStatusUse{
+.waitingStatus ,.doingStatus ,.doneStatus,.doingStatusUse, .failStatus{
     border-radius: var(--boder-radius);
     text-align: center;
     display: inline-block;
@@ -74,6 +74,10 @@
 .doneStatus{
     background-color: var(--status-done-background) !important;
     color: var(--status-done-color);
+}
+.failStatus{
+    background-color: #F0F3FC !important;
+    color: var(--status-waiting-color);
 }
 /* đang thực thi */
 /* đã hoàng thành */
