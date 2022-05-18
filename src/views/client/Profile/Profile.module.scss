@@ -109,6 +109,44 @@
         }
     }
 }
+
+// Dự án đang theo dõi
+
+    .projectWrapItem {
+        border-radius: 16px;
+        min-height: 550px;
+        .baseColor {
+            color: var(--nav-color);
+        }
+        .titleProject:hover {
+            color: var(--nav-color) !important;
+        }
+        .btnDetail {
+            border: 1px solid var(--love-color-1);
+            border-radius: 8px;
+            &:hover {
+                color: var(--nav-color) !important;
+        
+            }
+        }
+        .imgCard {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .titleProject,.shortDescription {
+            display: -webkit-box;
+            max-height: 3.2rem;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            -webkit-line-clamp: 2;
+            line-height: 1.6rem;
+        }
+    }
+
+
 // scss chung
 .Inputfocus:focus{
     color: #495057;

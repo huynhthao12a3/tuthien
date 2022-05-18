@@ -60,7 +60,11 @@ const clientUser = {
     updateUserInfo:(data)=>{
         const url =`/User/update-userinfo`
         return axiosClient.put(url,data)
-    }
+    },
+    followProject:(id)=>{
+        const url =`/User/follow-project?projectid=${id}`
+        return axiosClient.post(url)
+    },
 }
 
 export default clientUser;

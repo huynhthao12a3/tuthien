@@ -47,6 +47,7 @@ function ProjectDetail(props) {
 
     const locations = useLocation().pathname
     const [isLoading, setIsLoading] = useState(true)
+    const [isFollow, setIsFollow] = useState(false)
 
     const [dataProject, setDataProject] = useState({
         userCreateId: 1,
@@ -105,6 +106,7 @@ function ProjectDetail(props) {
             if (response.isSuccess) {
                 setDataProject(response.data)
                 setIsLoading(false)
+                setIsFollow(response.data.isFollow)
                 console.log('project from api: ', response.data)
                 console.log('data-project: ', dataProject)
                 // Lấy kết quả dự án từ Blockchain
@@ -670,6 +672,14 @@ function ProjectDetail(props) {
         const response = await clientUser.refundProject(data)
         console.log('Đã lưu refund vào database: ', response.data)
     }
+
+    // Theo dõi dự án
+    const handleFollow = async () => {
+        const response = await clientUser.followProject(id)
+        if (response.isSuccess) {
+            setIsFollow(!isFollow)
+        }
+    }
     return (
         <>
             {
@@ -728,7 +738,7 @@ function ProjectDetail(props) {
 
                                                     </div>
                                                     <div className="col-12 col-md-6">
-                                                        <Button className={clsx(Style.backgroundForeignColor, 'px-5 my-2 w-100 text-light border-0')}><i className='mdi mdi-heart-outline me-1'></i>Theo dõi</Button>
+                                                        <Button onClick={handleFollow} className={clsx(Style.backgroundForeignColor, 'px-5 my-2 w-100 text-light border-0')}><i className={clsx('mdi me-1', isFollow ? 'mdi-heart' : "mdi-heart-outline")}></i>{isFollow ? "Đang Theo dõi" : "Theo dõi"}</Button>
 
                                                     </div>
                                                 </div>

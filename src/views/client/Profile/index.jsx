@@ -22,6 +22,7 @@ import imgDefault from '../../../assets/images/default_image.png'
 import ModalArticalDetai from '../../../shares/ModalArticalDetail';
 import adminUser from "../../../api/User/Admin"
 import Select from 'react-select'
+import ProgressBar from "react-bootstrap/ProgressBar";
 
 let idProjectDetail = 0
 ClientProfile.propTypes = {
@@ -41,13 +42,15 @@ function ClientProfile(props) {
         fullName: "Huỳnh Văn Thảo",
         email: "thao321@gmail.com",
         phoneNumber: "0987654321",
-        address: "kp5, phường Trảng dài, tp Biên Hòa, tỉnh Đồng Nai."
+        address: "kp5, phường Trảng dài, tp Biên Hòa, tỉnh Đồng Nai.",
+        projectFollow: []
     })
     const [userTransaction, setUserTransaction] = useState([])
 
     const [isLoading, setIsLoading] = useState(true)
+    // const [isFollow, setIsFollow] = useState(true)
     const [currentpage, setCurrentpage] = useState(0)
-    
+
 
 
     useEffect(() => {
@@ -89,7 +92,7 @@ function ClientProfile(props) {
         fetchProjectList()
     }, [currentpage])
 
-    
+
 
     const [show, setShow] = useState(false);
     // Tiến trình
@@ -248,8 +251,8 @@ function ClientProfile(props) {
         }
     }, [imgValue])
 
-    const handleCloseEdit= ()=>{setShowEdit(false)}
-    const handleShowEdit = ()=>{setShowEdit(true)}
+    const handleCloseEdit = () => { setShowEdit(false) }
+    const handleShowEdit = () => { setShowEdit(true) }
 
     function HandleGetLable(filterlist, index) {
         return (
@@ -271,7 +274,7 @@ function ClientProfile(props) {
                 "avatarPath": userInfo.avatar,
                 "email": userInfo.email,
                 "type": Number(typeCreate.value),
-                "address":userInfo.address
+                "address": userInfo.address
             }
             const respon = await clientUser.updateUserInfo(data)
             if (respon.isSuccess) {
@@ -282,7 +285,7 @@ function ClientProfile(props) {
             else {
                 Swal.fire('Cập nhật thông tin thất bại')
             }
-            
+
         }
         else {
             Swal.fire('Vui lòng điển đủ thông tin')
@@ -441,6 +444,14 @@ function ClientProfile(props) {
         }
 
     }
+    console.log('follow: ', userInfo.projectFollow)
+    // Theo dõi dự án
+    // const handleFollow = async (id) => {
+    //     const response = await clientUser.followProject(id)
+    //     if (response.isSuccess) {
+    //         setIsFollow(!isFollow)
+    //     }
+    // }
     return (
         <>
 
@@ -462,7 +473,7 @@ function ClientProfile(props) {
                                         <p><strong>Số điện thoại:</strong> {userInfo.phoneNumber}</p>
                                         <p><strong>Địa chỉ:</strong> {userInfo.address}</p>
                                         <div className="text-center pt-3">
-                                            <button onClick={()=>{handleShowEdit()}} className="bg-base-color px-4 py-2 rounded-3 text-white">Chỉnh sửa thông tin</button>
+                                            <button onClick={() => { handleShowEdit() }} className="bg-base-color px-4 py-2 rounded-3 text-white">Chỉnh sửa thông tin</button>
                                         </div>
                                     </div>
                                 </div>
@@ -597,6 +608,61 @@ function ClientProfile(props) {
                                     </div>
                                 </div>
                             </div>
+                            {
+                                userInfo.projectFollow.length > 0 ? (
+                                    <div className="row mt-5">
+
+                                        <div className="text-center">
+                                            <p className={clsx(Style.title, "d-inline-block  fs-2 fw-bold position-relative")}>Các dự án đang theo dõi</p>
+                                        </div>
+                                        {
+                                            userInfo.projectFollow.map((item, index) => (
+                                                <div key={index} className={clsx(Style.projectItem, ' col-12  col-md-6 col-xxl-4 p-3 p-md-4')}>
+                                                    <div className={clsx(Style.projectWrapItem, "bg-white overflow-hidden shadow d-flex flex-column")}>
+                                                        <div className="w-100 ">
+                                                            <img src={process.env.REACT_APP_URL + item.projectFollow.bannerPath}
+                                                                className={clsx(Style.imgCard)} alt="hình ảnh dự án" />
+                                                        </div>
+                                                        <div className="p-3 d-flex flex-column flex-grow-1 justify-content-around " >
+                                                            <Link to={"/project-detail/" + item.projectFollow.id + "/" + item.projectFollow.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.titleProject, "  my-2 text-decoration-none text-uppercase fs-5 fw-bold text-dark")}>{item.projectFollow.title}</Link>
+                                                            <div className={clsx(Style.shortDescription)}>
+                                                                <SetInnerHTML text={item.projectFollow.shortDescription} />
+                                                            </div>
+                                                            <div className="mt-4">
+
+                                                                <div className="ProgressBarContent px-3 my-2  bg-light rounded-3">
+                                                                    <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
+                                                                    <ProgressBar striped now={Math.floor(((Number(item.projectFollow.amountNow)) / Number(item.projectFollow.amountTRXNeed)) * 100) + 10} label={`${Math.floor(((Number(item.projectFollow.amountNow)) / Number(item.projectFollow.amountTRXNeed)) * 100)} %`} />
+                                                                    <span>{utils.formatNumber((Number(item.projectFollow.amountNow)).toFixed(2))} / {utils.formatNumber(item.projectFollow.amountTRXNeed)} TRX</span>
+                                                                </div>
+                                                                <div className="border-start px-3 py-1 my-2 d-flex flex-column ">
+                                                                    <span ><i className="mdi mdi-history fs-5 pe-2"></i>Trạng thái</span>
+                                                                    <span className={clsx(Style.baseColor, 'text-uppercase')}>{item.projectFollow.status === 1 ? "Đang chờ duyệt" : (item.projectFollow.status === 2 ? "Đang thực thi" : (item.projectFollow.status === 3 ? "Đã hoàn thành" : "Thất bại"))}</span>
+
+                                                                </div>
+                                                                {/* <div className='d-flex flex-column flex-xl-row align-items-center  justify-content-between '>
+                                                                <div className="d-flex align-items-center ">
+                                                                    <span><i className="mdi mdi-account-multiple-outline fs-5 me-1 "></i></span>
+                                                                    <p className='text-decoration-none m-0 '>{item.projectFollow.userCreate}</p>
+                                                                </div>
+                                                                <Button onClick={handleFollow(item.projectFollow.id)} className={clsx(Style.backgroundForeignColor, 'px-5 my-2 w-100 text-light border-0')}><i className={clsx('mdi me-1', isFollow ? 'mdi-heart' : "mdi-heart-outline")}></i>{isFollow ? "Đang Theo dõi" : "Theo dõi"}</Button>
+
+                                                                <Link to={"/project-detail/" + item.projectFollow.id + "/" + item.projectFollow.friendlyUrl} onClick={() => window.scrollTo(0, 0)} className={clsx(Style.btnDetail, 'text-muted text-decoration-none bg-white px-4 py-2 fw-bold')}>Xem chi tiết</Link>
+                                                            </div> */}
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            ))
+                                        }
+                                    </div>
+                                ) :
+                                    ""
+                            }
+
                         </div>
                         {/* modal chọn tiến trình                        */}
                         <Modal size='xl' show={show} onHide={() => setShow(false)} animation={false}>
@@ -981,7 +1047,7 @@ function ClientProfile(props) {
                                             <Form.Label>Loại</Form.Label>
 
                                             <Select
-                                                isDisabled={true }
+                                                isDisabled={true}
                                                 value={HandleGetLable(type, userInfo.type)}
 
                                                 onChange={setTypeCreate}
@@ -1026,7 +1092,7 @@ function ClientProfile(props) {
 
                             </Modal.Body>
                             <Modal.Footer className="d-flex justify-content-end">
-                               
+
                                 <div>
                                     <Button className="me-2" variant="secondary" onClick={handleCloseEdit}>
                                         Đóng
