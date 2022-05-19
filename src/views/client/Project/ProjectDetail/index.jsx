@@ -723,9 +723,9 @@ function ProjectDetail(props) {
                                         <SetInnerHTML text={dataProject.shortDescription} />
 
                                         <div className="ProgressBarContent my-3">
-                                            <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
-                                            <ProgressBar striped now={Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100) + 5} label={`${Math.floor(((Number(dataProject.amountNow) * trxPrice) / Number(dataProject.amountNeed)) * 100)} %`} />
-                                            <span>{utils.formatNumber((Number(dataProject.amountNow) * trxPrice).toFixed(0))} VNĐ <span className="text-muted" style={{ fontSize: '12px' }}>({dataProject.amountNow} TRX)</span> / {utils.formatNumber(dataProject.amountNeed)} VNĐ  <span className="text-muted" style={{ fontSize: '12px' }}>({dataProject.amountTRXNeed} TRX)</span></span>
+                                            <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình <span className="text-muted" style={{ fontSize: '10px' }}>giá trị TRX biến đổi theo thời gian</span></p>
+                                            <ProgressBar striped now={Math.floor(((Number(dataProject.amountNow)) / Number(dataProject.amountTRXNeed)) * 100) + 5} label={`${Math.floor(((Number(dataProject.amountNow)) / Number(dataProject.amountTRXNeed)) * 100)} %`} />
+                                            <span>{dataProject.amountNow} TRX <span className="text-muted" style={{ fontSize: '12px' }}>({utils.formatNumber((Number(dataProject.amountNow) * trxPrice).toFixed(0))} VNĐ)</span> / {dataProject.amountTRXNeed} TRX <span className="text-muted" style={{ fontSize: '12px' }}>({utils.formatNumber(dataProject.amountNeed)} VNĐ)</span></span>
                                         </div>
                                         {
                                             dataProject.status !== 1 ? (

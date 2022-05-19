@@ -347,8 +347,10 @@ function DashboardClient(props) {
 
                                                             <div className="ProgressBarContent px-3 my-2  bg-light rounded-3">
                                                                 <p className={clsx(Style.baseColor, 'mb-1')}>Tiến trình</p>
-                                                                <ProgressBar striped now={Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100) + 10} label={`${Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100)} %`} />
-                                                                <span>{utils.formatNumber((Number(item.amountNow) * trxPrice).toFixed(2))} / {utils.formatNumber(item.amountNeed)} VNĐ</span>
+                                                                {/* <ProgressBar striped now={Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100) + 10} label={`${Math.floor(((Number(item.amountNow) * trxPrice) / Number(item.amountNeed)) * 100)} %`} /> */}
+                                                                {/* <span>{utils.formatNumber((Number(item.amountNow) * trxPrice).toFixed(2))} / {utils.formatNumber(item.amountNeed)} VNĐ</span> */}
+                                                                <ProgressBar striped now={Math.floor(((Number(item.amountNow)) / Number(item.amountTRXNeed)) * 100) + 5} label={`${Math.floor(((Number(item.amountNow)) / Number(item.amountTRXNeed)) * 100)} %`} />
+                                                                <span>{item.amountNow} TRX / {item.amountTRXNeed} TRX <span className="text-muted" style={{ fontSize: '12px' }}>({utils.formatNumber(item.amountNeed)} VNĐ)</span></span>
                                                             </div>
                                                             <div className="border-start px-3 py-1 my-2 d-flex flex-column ">
                                                                 <span ><i className="mdi mdi-history fs-5 pe-2"></i>Trạng thái</span>
