@@ -113,6 +113,8 @@ function ProjectDetail(props) {
                 console.log('- Time now: ', new Date().getTime())
                 console.log('- Time enddate: ', new Date(response.data.endDate).getTime())
                 console.log('- Time enddate utc: ', new Date(moment.utc(response.data.endDate).local()).getTime())
+
+
                 // if (response.data.status === 2 && (new Date().getTime()) >= (new Date(moment.utc(dataProject.endDate).local()).getTime())) {
                 //     const sm = await tronweb.contract().at(response.data.addressContract)
                 //     const result = await sm.Result().call()
@@ -596,60 +598,72 @@ function ProjectDetail(props) {
 
         try {
             const sm = await tronweb.contract().at(dataProject.addressContract)
-            const result = await sm.Refund().send({
-                feeLimit: 100_000_000,
-                // shouldPollResponse:true
-            })
-                .then((res) => {
-                    console.log('Refund: ', res)
+            const checkRefund = await sm.listMembers(tronweb.defaultAddress.base58).call()
+            console.log('result refund: ', parseInt(checkRefund.amount._hex))
+            if (parseInt(checkRefund.amount._hex) > 0) {
 
-                    if (typeof res === 'string') {
-                        setIsLoading(true)
-                        // swal2.fire({
-                        //     title: "Xác nhận hoàn tiền.",
-                        //     text: "Yêu cầu hoàn tiền của bạn sẽ được cập nhật trong giây lát.",
-                        //     icon: "success",
-                        //     confirmButtonColor: 'var(--love-color-1)'
-
-                        // });
-
-                        const checkConfirmTransaction = setInterval(async () => {
-                            console.log("chạy 1 lần")
-                            console.log("data: ", res)
-                            await tronweb.trx.getUnconfirmedTransactionInfo(res)
-                                .then((response) => {
-                                    if (response.receipt) {
-                                        if (response.receipt.result === "SUCCESS") {
-                                            clearInterval(checkConfirmTransaction)
-                                            console.log("Hoàn tiền thành công. Lưu vào database.")
-                                            saveTransactionRefund(res)
-                                            setIsLoading(false)
-                                            swal2.fire({
-                                                title: "Hoàn tiền thành công.",
-                                                html: "Yêu cầu hoàn tiền của bạn đã được xác nhận thành công.</br>"
-                                                    + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" >Chi tiết giao dịch</a>`,
-                                                icon: "success",
-                                                confirmButtonColor: 'var(--love-color-1)'
-
-                                            });
-                                        }
-                                        if (response.receipt.result !== "SUCCESS") {
-                                            clearInterval(checkConfirmTransaction)
-                                            setIsLoading(false)
-                                            console.log("FAIL - clearInterval")
-                                            swal2.fire({
-                                                title: "Hoàn tiền không thành công.",
-                                                html: `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" >Chi tiết giao dịch</a>`,
-                                                icon: "error",
-                                                confirmButtonColor: 'var(--love-color-1)'
-
-                                            });
-                                        }
-                                    }
-                                })
-                        }, 2000)
-                    }
+                const result = await sm.Refund().send({
+                    feeLimit: 100_000_000,
+                    // shouldPollResponse:true
                 })
+                    .then((res) => {
+                        console.log('Refund: ', res)
+
+                        if (typeof res === 'string') {
+                            setIsLoading(true)
+                            // swal2.fire({
+                            //     title: "Xác nhận hoàn tiền.",
+                            //     text: "Yêu cầu hoàn tiền của bạn sẽ được cập nhật trong giây lát.",
+                            //     icon: "success",
+                            //     confirmButtonColor: 'var(--love-color-1)'
+
+                            // });
+
+                            const checkConfirmTransaction = setInterval(async () => {
+                                console.log("chạy 1 lần")
+                                console.log("data: ", res)
+                                await tronweb.trx.getUnconfirmedTransactionInfo(res)
+                                    .then((response) => {
+                                        if (response.receipt) {
+                                            if (response.receipt.result === "SUCCESS") {
+                                                clearInterval(checkConfirmTransaction)
+                                                console.log("Hoàn tiền thành công. Lưu vào database.")
+                                                saveTransactionRefund(res)
+                                                setIsLoading(false)
+                                                swal2.fire({
+                                                    title: "Hoàn tiền thành công.",
+                                                    html: "Yêu cầu hoàn tiền của bạn đã được xác nhận thành công.</br>"
+                                                        + `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" >Chi tiết giao dịch</a>`,
+                                                    icon: "success",
+                                                    confirmButtonColor: 'var(--love-color-1)'
+
+                                                });
+                                            }
+                                            if (response.receipt.result !== "SUCCESS") {
+                                                clearInterval(checkConfirmTransaction)
+                                                setIsLoading(false)
+                                                console.log("FAIL - clearInterval")
+                                                swal2.fire({
+                                                    title: "Hoàn tiền không thành công.",
+                                                    html: `</br><a href="https://nile.tronscan.org/#/transaction/${res}" target="_blank" rel="noreferrer" class="base-color text-decoration-none text-success" >Chi tiết giao dịch</a>`,
+                                                    icon: "error",
+                                                    confirmButtonColor: 'var(--love-color-1)'
+
+                                                });
+                                            }
+                                        }
+                                    })
+                            }, 2000)
+                        }
+                    })
+            } else {
+                swal2.fire({
+                    title: "Địa chỉ ví của bạn không có tham gia đóng góp cho dự án này.",
+                    icon: "info",
+                    confirmButtonColor: 'var(--love-color-1)'
+
+                });
+            }
         }
         catch (err) {
             console.error(err);
