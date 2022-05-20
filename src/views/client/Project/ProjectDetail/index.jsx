@@ -99,7 +99,14 @@ function ProjectDetail(props) {
     })
     const { id, friendlyurl } = useParams()
     console.log(id)
+
+    const [valueTrx, setValueTrx] = useState(1);
+    const [trxPrice, setTrxPrice] = useState();
     useEffect(() => {
+        fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=vnd")
+            .then(res => res.json())
+            .then(res => { setTrxPrice(res.tron.vnd) })
+
         // Lấy thông tin dự án từ API
         const fetchDataProject = async () => {
             const response = await projectApi.get(id)
@@ -273,15 +280,15 @@ function ProjectDetail(props) {
     }
 
     // API giá TRX
-    const [valueTrx, setValueTrx] = useState(1);
-    const [trxPrice, setTrxPrice] = useState();
-    useEffect(() => {
-        fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=vnd")
-            .then(res => res.json())
-            .then(res => { setTrxPrice(res.tron.vnd) })
+    // const [valueTrx, setValueTrx] = useState(1);
+    // const [trxPrice, setTrxPrice] = useState();
+    // useEffect(() => {
+    //     fetch("https://api.coingecko.com/api/v3/simple/price?ids=tron&vs_currencies=vnd")
+    //         .then(res => res.json())
+    //         .then(res => { setTrxPrice(res.tron.vnd) })
 
 
-    }, [])
+    // }, [])
 
     // useEffect(() => {
 
