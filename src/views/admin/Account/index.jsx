@@ -69,6 +69,7 @@ function AdminAccount() {
     const [isLoading, setIsLoading] = useState(true)
     const [show, setShow] = useState(false)
 
+    const [showChangePass,setShowChangePass]= useState(false)
     //------------------------------------------------------------useEffect
 
     //load danh sách từ API
@@ -346,6 +347,47 @@ function AdminAccount() {
             Swal.fire('Vui lòng điển đủ thông tin')
         }
     }
+    const handleCloseChangePass =()=>{
+        setShowChangePass(false)
+    }
+    const handleChangePassword = async(email)=>{
+        const responsi =await adminUser.changPassword(email)
+        if (responsi.isSuccess) {
+
+            Swal.fire(
+                `${email}`,
+                `Đăng nhập vào Email để tiến hành đổi mật khẩu`,
+                'success'
+              )
+           
+            
+        }
+        else{
+            Swal.fire("Thất bại")
+        }
+        // setUserDetail({
+        //     "fullName": "",
+        //     "email": email,
+        //     "phoneNumber": '',
+        //     "type": 2,
+        //     "avatar": '',
+        //     'content': "",
+        //     'address': '',
+        //     'password': '',
+        //     'acceptPassword':''
+        // })
+        // setShowChangePass(true)
+    }
+    const handleAcptChangPass=()=>{
+        if(userDetail.password.length >5 && userDetail.acceptPassword=== userDetail.password)
+        {
+            const param ={
+                "email": userDetail.email,
+            }
+            const respon = adminUser.changPassword(param)
+        }
+       
+    }
     return (
         <div className="flex-grow-1">
             {
@@ -448,11 +490,14 @@ function AdminAccount() {
 
                                                                             Chi tiết
                                                                         </Dropdown.Item>
+                                                                        <Dropdown.Item onClick={() => handleChangePassword(item.email)} className={clsx(Style.itemDrop)} ><i className={clsx("mdi mdi-lock-reset")}></i>
+                                                                            Đổi mật khẩu
+                                                                        </Dropdown.Item>
                                                                         <Dropdown.Item onClick={() => handleblockAcount('mở khóa', item.id)} className={clsx(Style.itemDrop, item.status === 1 ? "show" : "hide")} ><i className={clsx("mdi mdi-lock-reset")}></i>
                                                                             Mở khóa tài khoản
                                                                         </Dropdown.Item>
                                                                         <Dropdown.Item onClick={() => handleblockAcount('khóa', item.id)} className={clsx(Style.itemDrop, item.status === 1 ? "hide" : "show")} >
-                                                                            <i class="mdi mdi-block-helper"></i>
+                                                                            <i className="mdi mdi-block-helper"></i>
 
                                                                             Khóa tài khoản
                                                                         </Dropdown.Item>
@@ -614,8 +659,60 @@ function AdminAccount() {
 
                     </Modal.Footer>
                 </Modal>
+                {/* đổi mật khẩu */}
+                {/* <Modal show={showChangePass} onHide={handleCloseChangePass}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Đổi mật khẩu</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                    <Form>
+
+                        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                                readOnly={true}
+                                type="text"
+                                placeholder={userDetail.email}
+                                autoFocus
+                            />
+                        </Form.Group>
+
+                        <Form.Group className="mb-1" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Nhập mật khẩu mới</Form.Label>
+                            <Form.Control 
+                                type="password"
+                                value={userDetail.password}
+                                onChange={(e) => { setUserDetail({ ...userDetail, password: e.target.value }) }}
+                                placeholder={'Tối thiểu 6 ký tự'}
+                                autoFocus
+                            />
+                            <Form.Label style={{fontSize:'0.8rem'}} className={clsx('ps-2',(userDetail.password.length>5)?'text-info':"text-danger")}>{(userDetail.password.length>5)?'Hợp lệ':'Ít nhất 6 ký tự'}</Form.Label>
+                        </Form.Group>
+                        <Form.Group className="mb-2" controlId="exampleForm.ControlInput1">
+                            <Form.Label>Nhập lại mật khẩu</Form.Label>
+                            <Form.Control 
+                                type="password"
+                                value={userDetail.acceptPassword}
+                                onChange={(e) => { setUserDetail({ ...userDetail, acceptPassword: e.target.value }) }}
+                                autoFocus
+                            />
+                            <Form.Label style={{fontSize:'0.8rem'}} className={clsx('ps-2',(userDetail.acceptPassword===userDetail.password)?'text-info':"text-danger")}>{(userDetail.acceptPassword===userDetail.password)?'Trùng khớp':'Chưa trùng khớp với mật khẩu mới'}</Form.Label>
+                        </Form.Group>
+
+                    </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button className="me-2" variant="secondary" onClick={handleClose}>
+                        Đóng
+                    </Button>
+                    <Button style={{ backgroundColor: 'var(--nav-color)' }} onClick={() => { handleAcptChangPass() }}>
+                        Chấp thuận
+                    </Button>
+                    </Modal.Footer>
+                </Modal> */}
             </div>
         </div>
+        
     )
 }
 export default AdminAccount

@@ -452,6 +452,22 @@ function ClientProfile(props) {
     //         setIsFollow(!isFollow)
     //     }
     // }
+    const handleChangePassword = async(email)=>{
+        const responsi =await adminUser.changPassword(email)
+        if (responsi.isSuccess) {
+
+            Swal.fire(
+                `${email}`,
+                `Đăng nhập vào Email để tiến hành đổi mật khẩu`,
+                'success'
+              )
+           
+            
+        }
+        else{
+            Swal.fire("Thất bại")
+        }
+    }
     return (
         <>
 
@@ -1091,8 +1107,15 @@ function ClientProfile(props) {
                                 </div>
 
                             </Modal.Body>
-                            <Modal.Footer className="d-flex justify-content-end">
+                            <Modal.Footer className="d-flex justify-content-between">
+                                <div>
+                                    <Button className={clsx("bg-danger")}
+                                        style={{ backgroundColor:'var(--love-color-4) !important' }}
+                                        onClick={() => { handleChangePassword(userInfo.email) }}>
 
+                                        Đổi mật khẩu
+                                    </Button>
+                                </div>
                                 <div>
                                     <Button className="me-2" variant="secondary" onClick={handleCloseEdit}>
                                         Đóng

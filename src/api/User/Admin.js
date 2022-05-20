@@ -58,6 +58,10 @@ const adminUser = {
    getStatistical:(params)=>{
        const url=`/Dashboard/dash-board-statistical?Year=${params.Year}`
        return axiosClient.get(url)
+   },
+   changPassword:(email)=>{
+       const url=`/Auth/reset-password?useremail=${email}`
+       return axiosClient.post(url)
    }
 }
 
