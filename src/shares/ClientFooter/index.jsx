@@ -40,7 +40,7 @@ function ClientFooter(props) {
                         <div className={clsx(Style.title, "fs-5 fw-bold text-uppercase w-100 py-2")}>Liên hệ chúng tôi</div>
                         <div className={clsx(Style.content, "text-dark py-3")}>
                             <p className="m-0 text-uppercase py-1">Hotline: 098.916.3020</p>
-                            <p className="m-0 text-uppercase py-1">Email: thuanhieuthao@gmail.com</p>
+                            <p className="m-0 text-uppercase py-1">Email: 141800706@dntu.edu.vn</p>
                         </div>
                     </div>
                 </div>

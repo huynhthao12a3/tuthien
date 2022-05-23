@@ -24,6 +24,7 @@ import Tutorial from '../views/client/Tutorial';
 import About from '../views/client/About';
 import ClientProfile from "./../views/client/Profile/index";
 import ConfirmEmail from '../views/client/ConfirmEmail';
+import ChangePassword from '../views/client/ChangePassword';
 
 ClientLayout.propTypes = {
     
@@ -58,6 +59,7 @@ function ClientLayout(props) {
                 <Route exact path="/project-detail/:id/:friendlyurl" component={ProjectDetail}/>
                 <Route exact path="/bai-viet/:id/:friendlyurl" component={ArticalDetail}/>
                 <Route path="/confirm" component={ConfirmEmail}/>
+                <Route path="/resetpassword" component={ChangePassword}/>
                 
                 {/* Route bắt buộc phải Login mới xemm được */}
                 <ProtectedRoute exact path="/profile" component={ClientProfile} role='client'/>
