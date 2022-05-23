@@ -13,7 +13,7 @@ import Loading from "../../../shares/Loading"
 let powerCreate=1
 function AdminCategory()
 {
-    const imgDefault = "\\uploads\\Images\\project\\02052022_043453_default-image-620x600.jpg"
+    const imgDefault = "\\uploads\\Images\\Anonymous_Avatar\\23052022_022411_anymous_icon.png"
     const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
      //-------------------------------------------------------
     const arr=[

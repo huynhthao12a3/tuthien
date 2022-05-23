@@ -21,7 +21,8 @@ let powerCreate = 1
 function AdminAccount() {
 
     const imgFormat = ['jpeg', 'gif', 'png', 'tiff', 'raw', 'psd', 'jpg']
-    const avatarDefalt = "\\uploads\\Images\\Hide_User\\06052022_080221_anymous_icon.png"
+   
+    const avatarDefalt = "\\uploads\\Images\\Anonymous_Avatar\\23052022_022411_anymous_icon.png"
     // danh sách tạm
     const arr = [
         {
