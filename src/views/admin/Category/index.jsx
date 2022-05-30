@@ -389,7 +389,7 @@ function AdminCategory()
                                                                 </Dropdown.Toggle>
 
                                                                 <Dropdown.Menu className={clsx(Style.listDrop)} style={{}}>
-                                                                    <Dropdown.Item onClick={()=>{handleUpdateCategory(item.id,1)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Xem chi tiết</Dropdown.Item>
+                                                                    <Dropdown.Item onClick={()=>{handleUpdateCategory(item.id,2)}}  className={clsx(Style.itemDrop)}><i className="mdi mdi-window-restore "></i>Xem chi tiết</Dropdown.Item>
                                                                     {/* <Dropdown.Divider /> */}
                                                                    
                                                                   
