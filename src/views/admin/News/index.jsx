@@ -29,7 +29,7 @@ function AdminNews() {
             "id": 1,
             "title": "cứu trợ miền trung",
             "category": 1,
-            "endDate": '23/09/2021',
+            "createTime": '23/09/2021',
             "status": 2,
         },
     ]
@@ -347,9 +347,9 @@ function AdminNews() {
                                                             <th scope="row">{index + 1}</th>
 
                                                             <td className={clsx(Style.titleshowa)}>{item.title.length > 30 ? (item.title.slice(0, 30) + '...') : item.title}</td>
-                                                            <td >{moment(item.endDate).format("DD/MM/YYYY")}</td>
+                                                            <td >{moment(item.createTime).format("DD/MM/YYYY")}</td>
 
-                                                            <td >{moment(item.endDate).format("DD/MM/YYYY")}</td>
+                                                            <td >{moment(item.createTime).format("DD/MM/YYYY")}</td>
                                                             <td >
                                                                 <span className={clsx(Style.StatusItem, 'position-relative', item.status === 1 ? 'waitingStatus' : (item.status === 2 ? 'doneStatus' : 'doingStatus'))}>{HandleGetLable(filterStatus, item.status).label}
 
