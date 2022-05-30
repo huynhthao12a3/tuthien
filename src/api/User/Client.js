@@ -65,6 +65,10 @@ const clientUser = {
         const url =`/User/follow-project?projectid=${id}`
         return axiosClient.post(url)
     },
+    changePassword: (data) => {
+        const url =`/User/forget-password`
+        return axiosClient.patch(url,data)
+    }
 }
 
 export default clientUser;
