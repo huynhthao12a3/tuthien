@@ -44,7 +44,7 @@ ProjectDetail.propTypes = {
 
 function ProjectDetail(props) {
     const tronweb = window.tronWeb;
-
+    const history = useHistory();
     const locations = useLocation().pathname
     const [isLoading, setIsLoading] = useState(true)
     const [isFollow, setIsFollow] = useState(false)
@@ -388,7 +388,11 @@ function ProjectDetail(props) {
                                                     icon: "success",
                                                     confirmButtonColor: 'var(--love-color-1)'
 
-                                                });
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        window.location.reload();
+                                                    }
+                                                })
                                             }
                                             if (response.receipt.result !== "SUCCESS") {
                                                 clearInterval(checkConfirmTransaction)
