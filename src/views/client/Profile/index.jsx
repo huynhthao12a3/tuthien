@@ -967,8 +967,8 @@ function ClientProfile(props) {
                                                 <th scope="col" className={clsx(Style.lh, "text-center")} >Ảnh đại diện</th>
                                                 <th scope="col" className={clsx(Style.lh, "text-center")} >Người đóng góp</th>
                                                 <th scope="col" className={clsx(Style.lh, "text-center")} >Số tiền đóng góp</th>
-                                                <th scope="col" className={clsx(Style.lh, "text-center")} >Đơn vị tiền tệ</th>
                                                 <th scope="col" className={clsx(Style.lh, "text-center")} >Loại</th>
+                                                <th scope="col" className={clsx(Style.lh, "text-center")} >Thời gian</th>
                                                 <th scope="col" className={clsx(Style.lh, "text-center")} >Mã giao dịch</th>
                                             </tr>
                                         </thead>
@@ -986,9 +986,9 @@ function ClientProfile(props) {
                                                             </td>
 
                                                             <td className={clsx(Style.lh, "text-center")} style={{ minWidth: '200px' }}>{item.userName}</td>
-                                                            <td className={clsx(Style.titleshow, "text-center")} style={{ minWidth: '200px' }}>{item.amount}</td>
-                                                            <td className={clsx(Style.lh, "text-center")} style={{ minWidth: '100px' }}>TRX</td>
+                                                            <td className={clsx(Style.titleshow, "text-center")} style={{ minWidth: '200px' }}>{item.amount} TRX</td>
                                                             <td className={clsx(Style.lh, "text-center")} style={{ minWidth: '100px' }}>{item.type === 1 ? "Đóng góp" : (item.type === 2 ? 'Hoàn tiền' : 'Rút tiền')}</td>
+                                                            <td className={clsx(Style.lh, "text-center")} style={{ minWidth: '100px' }}>{moment.utc(item.createTime).local().format('DD/MM/yyyy hh:mm:ss A')}</td>
                                                             <td className={clsx(Style.hash, "text-center")} style={{ minWidth: '200px' }}>
                                                                 <a href={"https://nile.tronscan.org/#/transaction/" + item.hash}
                                                                     target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết giao dịch</a>
