@@ -69,7 +69,7 @@ function DashboardClient(props) {
     useEffect(() => {
         const fetchDataProjectList = async () => {
             const params = {
-                status: 2,
+                status: 3,
                 currentpage: 0
             }
             const response = await projectApi.getAll(params)
@@ -325,7 +325,7 @@ function DashboardClient(props) {
                         <div className={clsx(Style.projectDashboard)}>
                             <div className="container">
                                 <div className="text-center">
-                                    <p className={clsx(Style.title, "d-inline-block  fs-2 fw-bold position-relative")}>Các dự án đang thực thi</p>
+                                    <p className={clsx(Style.title, "d-inline-block  fs-2 fw-bold position-relative")}>Các dự án đã hoàn thành</p>
                                 </div>
                                 <div className="row">
 

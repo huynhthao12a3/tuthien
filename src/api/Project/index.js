@@ -40,9 +40,9 @@ const projectApi = {
         const url=`/Project/update-status-project/${id}?iscancelled=true`
         return axiosClient.patch(url)
     },
-    getTransaction:(id)=>{
-        const url=`/Project/get-transactions?projectid=${id}` 
-        return axiosClient.get(url)
+    getTransaction:(params)=>{
+        const url=`/Project/get-transactions` 
+        return axiosClient.get(url,{params})
     },
     getOwnerProject:(data)=>{
         const url=`/Project/get-ownerproject?currentpage=${data.currentpage}`

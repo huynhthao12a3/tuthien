@@ -414,7 +414,10 @@ function ClientProfile(props) {
 
     // Lịch sử giao dịch
     const [projectNameTransaction, setProjectNameTransaction] = useState('')
+    const [projectIdTransaction, setProjectIdTransaction] = useState()
     const [showTransaction, setShowTransaction] = useState(false)
+    const [pageindex, setPageindex] = useState(0)
+    console.log("page index: ", pageindex)
     const [transactionValues, setTransactionValues] = useState([{
 
         amount: '',
@@ -428,22 +431,33 @@ function ClientProfile(props) {
     )
     const handleShowTransaction = async (ProjectTitle, projectId) => {
         setProjectNameTransaction(ProjectTitle)
-        try {
-            const respons = await projectApi.getTransaction(projectId)
-            console.log("respons", respons)
-            if (respons.isSuccess) {
-                setTransactionValues(respons.data)
-                setShowTransaction(true)
-            }
-            else {
-                Swal.fire(`lấy dữ liệu lịch sử giao dịch thất bại`)
-            }
-        }
-        catch (e) {
-            console.error(e)
-        }
+        setProjectIdTransaction(projectId)
+        setShowTransaction(true)
+
 
     }
+    useEffect(() => {
+        const showTransaction = async () => {
+            try {
+                const params = {
+                    projectid: projectIdTransaction,
+                    pageindex
+                }
+                const respons = await projectApi.getTransaction(params)
+                console.log("respons", respons)
+                if (respons.isSuccess) {
+                    setTransactionValues(respons.data)
+                }
+                else {
+                    Swal.fire(`lấy dữ liệu lịch sử giao dịch thất bại`)
+                }
+            }
+            catch (e) {
+                console.error(e)
+            }
+        }
+        showTransaction()
+    }, [projectIdTransaction, pageindex]);
     console.log('follow: ', userInfo.projectFollow)
     // Theo dõi dự án
     // const handleFollow = async (id) => {
@@ -452,19 +466,19 @@ function ClientProfile(props) {
     //         setIsFollow(!isFollow)
     //     }
     // }
-    const handleChangePassword = async(email)=>{
-        const responsi =await adminUser.changPassword(email)
+    const handleChangePassword = async (email) => {
+        const responsi = await adminUser.changPassword(email)
         if (responsi.isSuccess) {
 
             Swal.fire(
                 `${email}`,
                 `Đăng nhập vào Email để tiến hành đổi mật khẩu`,
                 'success'
-              )
-           
-            
+            )
+
+
         }
-        else{
+        else {
             Swal.fire("Thất bại")
         }
     }
@@ -495,7 +509,11 @@ function ClientProfile(props) {
                                 </div>
                                 {/* Danh sách dự án cá nhân  */}
                                 <div className="col-12 col-lg-9 mt-4 mt-lg-0">
+
                                     <div className={clsx(Style.projectInfo, 'bg-white h-100 shadow p-4 d-flex flex-column justify-content-between')} style={{ minHeight: '500px' }}>
+                                        <div className="text-center">
+                                            <p className={clsx(Style.title, "d-inline-block  fs-2 fw-bold position-relative")}>Các dự án đã tạo</p>
+                                        </div>
                                         <div className="table-responsive h-100">
 
                                             <table className="table align-middle">
@@ -582,51 +600,9 @@ function ClientProfile(props) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row mt-4">
-                                <div className="col-12">
-                                    <div className={clsx(Style.projectInfo, 'bg-white h-100 shadow p-4 d-flex flex-column justify-content-between')} >
-                                        <div className="table-responsive ">
-
-                                            <table className="table align-middle">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th className={clsx(Style.tableTh)}>Tên dự án</th>
-                                                        <th className={clsx(Style.tableTh, 'text-end')}>Số tiền</th>
-                                                        <th className={clsx(Style.tableTh, 'text-end')}>Loại tiền</th>
-                                                        <th className={clsx(Style.tableTh, 'text-end')}>Thời gian</th>
-                                                        <th className={clsx(Style.tableTh, 'text-center')}></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {
-                                                        userTransaction.map((item, index) => (
-                                                            <tr key={index}>
-                                                                <td>{index + 1}</td>
-                                                                <td >{item.projectName.length > 35 ? item.projectName.slice(0, 35) + '...' : item.projectName}</td>
-                                                                <td className="text-end">{item.amount}</td>
-                                                                <td className="text-end">{item.currency}</td>
-                                                                <td className="text-end">{moment.utc(item.createTime).local().format('DD/MM/YYYY hh:mm A')}</td>
-                                                                <td className="text-end">
-                                                                    <a href={"https://nile.tronscan.org/#/transaction/" + item.hash}
-                                                                        target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center ")}>Chi tiết giao dịch</a>
-                                                                </td>
-
-
-                                                            </tr>
-                                                        ))
-
-                                                    }
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             {
                                 userInfo.projectFollow.length > 0 ? (
-                                    <div className="row mt-5">
+                                    <div className="row my-5 py-4 bg-white " style={{ borderRadius: "16px" }}>
 
                                         <div className="text-center">
                                             <p className={clsx(Style.title, "d-inline-block  fs-2 fw-bold position-relative")}>Các dự án đang theo dõi</p>
@@ -675,9 +651,56 @@ function ClientProfile(props) {
                                             ))
                                         }
                                     </div>
+
                                 ) :
                                     ""
                             }
+                            <div className="row mt-4">
+                                <div className="col-12">
+                                    <div className={clsx(Style.projectInfo, 'bg-white h-100 shadow p-4 d-flex flex-column justify-content-between')} >
+                                        <div className="text-center">
+                                            <p className={clsx(Style.title, "d-inline-block  fs-2 fw-bold position-relative")}>Lịch sử đóng góp</p>
+                                        </div>
+                                        <div className="table-responsive ">
+
+                                            <table className="table align-middle">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th className={clsx(Style.tableTh)}>Tên dự án</th>
+                                                        <th className={clsx(Style.tableTh, 'text-end')}>Số tiền</th>
+                                                        <th className={clsx(Style.tableTh, 'text-end')}>Loại tiền</th>
+                                                        <th className={clsx(Style.tableTh, 'text-end')}>Thời gian</th>
+                                                        <th className={clsx(Style.tableTh, 'text-center')}></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        userTransaction.map((item, index) => (
+                                                            <tr key={index}>
+                                                                <td>{index + 1}</td>
+                                                                <td >{item.projectName.length > 35 ? item.projectName.slice(0, 50) + '...' : item.projectName}</td>
+                                                                <td className="text-end">{item.amount}</td>
+                                                                <td className="text-end">{item.currency}</td>
+                                                                <td className="text-end">{moment.utc(item.createTime).local().format('DD/MM/YYYY hh:mm A')}</td>
+                                                                <td className="text-end">
+                                                                    <a href={"https://nile.tronscan.org/#/transaction/" + item.hash}
+                                                                        target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center ")}>Chi tiết giao dịch</a>
+                                                                </td>
+
+
+                                                            </tr>
+                                                        ))
+
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
 
                         </div>
                         {/* modal chọn tiến trình                        */}
@@ -923,7 +946,7 @@ function ClientProfile(props) {
                         <Modal
                             size='xl'
                             show={showTransaction}
-                            onHide={() => setShowTransaction(false)}
+                            onHide={() => (setShowTransaction(false), setPageindex(0))}
                             backdrop="static"
                             keyboard={false}
                             centered
@@ -944,8 +967,8 @@ function ClientProfile(props) {
                                                 <th scope="col" className={clsx(Style.lh, "text-center")} >Ảnh đại diện</th>
                                                 <th scope="col" className={clsx(Style.lh, "text-center")} >Người đóng góp</th>
                                                 <th scope="col" className={clsx(Style.lh, "text-center")} >Số tiền đóng góp</th>
-                                                <th scope="col" className={clsx(Style.lh, "text-center")} >Đơn vị tiền tệ</th>
                                                 <th scope="col" className={clsx(Style.lh, "text-center")} >Loại</th>
+                                                <th scope="col" className={clsx(Style.lh, "text-center")} >Thời gian</th>
                                                 <th scope="col" className={clsx(Style.lh, "text-center")} >Mã giao dịch</th>
                                             </tr>
                                         </thead>
@@ -963,9 +986,9 @@ function ClientProfile(props) {
                                                             </td>
 
                                                             <td className={clsx(Style.lh, "text-center")} style={{ minWidth: '200px' }}>{item.userName}</td>
-                                                            <td className={clsx(Style.titleshow, "text-center")} style={{ minWidth: '200px' }}>{item.amount}</td>
-                                                            <td className={clsx(Style.lh, "text-center")} style={{ minWidth: '100px' }}>TRX</td>
+                                                            <td className={clsx(Style.titleshow, "text-center")} style={{ minWidth: '200px' }}>{item.amount} TRX</td>
                                                             <td className={clsx(Style.lh, "text-center")} style={{ minWidth: '100px' }}>{item.type === 1 ? "Đóng góp" : (item.type === 2 ? 'Hoàn tiền' : 'Rút tiền')}</td>
+                                                            <td className={clsx(Style.lh, "text-center")} style={{ minWidth: '100px' }}>{moment.utc(item.createTime).local().format('DD/MM/yyyy hh:mm:ss A')}</td>
                                                             <td className={clsx(Style.hash, "text-center")} style={{ minWidth: '200px' }}>
                                                                 <a href={"https://nile.tronscan.org/#/transaction/" + item.hash}
                                                                     target="_blank" rel="noreferrer" className={clsx(Style.baseColor, "m-0 d-block text-center text-decoration-none")}>Chi tiết giao dịch</a>
@@ -982,10 +1005,22 @@ function ClientProfile(props) {
                                         </tbody>
                                     </table>
                                 </div>
-
+                                <div className="d-flex ">
+                                    <div>
+                                        <button onClick={() => (setPageindex(pageindex != 0 ? pageindex - 1 : pageindex),
+                                            handleShowTransaction(projectNameTransaction, projectIdTransaction))} className={clsx(Style.prevBtn, 'prevBtn px-2')}>
+                                            <span className="mdi mdi-chevron-double-left"></span>
+                                        </button>
+                                        <span className="px-3 text-secondary">{pageindex}</span>
+                                        <button onClick={() => (setPageindex(pageindex + 1),
+                                            handleShowTransaction(projectNameTransaction, projectIdTransaction))} className={clsx(Style.nextBtn, 'nextBtn px-2')}>
+                                            <span className="mdi mdi-chevron-double-right"></span>
+                                        </button>
+                                    </div>
+                                </div>
                             </Modal.Body>
                             <div className="d-flex justify-content-end pb-2 px-2">
-                                <Button variant="secondary" className="" style={{ width: '150px' }} onClick={() => setShowTransaction(false)}>
+                                <Button variant="secondary" className="" style={{ width: '150px' }} onClick={() => (setShowTransaction(false), setPageindex(0))}>
                                     Đóng
                                 </Button>
                             </div>
@@ -1110,7 +1145,7 @@ function ClientProfile(props) {
                             <Modal.Footer className="d-flex justify-content-between">
                                 <div>
                                     <Button className={clsx("bg-danger")}
-                                        style={{ backgroundColor:'var(--love-color-4) !important' }}
+                                        style={{ backgroundColor: 'var(--love-color-4) !important' }}
                                         onClick={() => { handleChangePassword(userInfo.email) }}>
 
                                         Đổi mật khẩu
