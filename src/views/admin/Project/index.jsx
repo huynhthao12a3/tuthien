@@ -424,7 +424,7 @@ function Project() {
     const handleShowTransaction = async (ProjectTitle, projectId) => {
         setProjectNameTransaction(ProjectTitle)
         try {
-            const respons = await projectApi.getTransaction(projectId)
+            const respons = await projectApi.getTransaction(8)
             console.log("respons", respons)
             if (respons.isSuccess) {
                 setTransactionValues(respons.data)
