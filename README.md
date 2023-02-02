@@ -1,70 +1,75 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Tấm Lòng Vàng
 
-## Available Scripts
+Applying Blockchain technology to the transparency of the transactions of charity projects is essential because Blockchain makes the transactions to raise money for a charity project transparent and clear, anyone can The transaction history can be viewed but cannot be edited.
 
-In the project directory, you can run:
+Website makes calling for charity easy and attracts more people to participate. Open and transparent about the project for everyone to follow.
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![Logo](https://tamlongvang.vercel.app/static/media/logo-charity-loading.777e1c45cf8ceb4fc752.png)
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Demo
+```
+https://tamlongvang.vercel.app
+```
 
-### `npm run build`
+## Features
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Charitable contributions.
+- Track charity project information.
+- Responsive Web Design.
+- Management: user, project, news, contribution information...
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Tech Stacks
 
-### `npm run eject`
+**Front-End:** React, Bootstrap, SASS
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Back-End:** ASP.NET Core API
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Database:** SQL Server
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Run Locally
 
-## Learn More
+Clone the project
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+  git clone https://github.com/huynhthao12a3/tuthien.git
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Go to the project directory
 
-### Code Splitting
+```bash
+  cd tuthien
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Install dependencies
 
-### Analyzing the Bundle Size
+```bash
+  npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Start the server
 
-### Making a Progressive Web App
+```bash
+  npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+## Authors
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- [@HuynhVanThao](https://github.com/huynhthao12a3)
+- [@TranVanThuan](https://github.com/Thuantran053102)
+- [@NguyenMinhHieu](https://github.com/nguyenminhhieu12234)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Screenshots
 
-### `npm run build` fails to minify
+#### Home page
+![App Screenshot](https://tuthienapi.azurewebsites.net/uploads/Images/screenshot/02022023_054453_home-page.png)
+![App Screenshot](https://tuthienapi.azurewebsites.net/uploads/Images/screenshot/02022023_054845_home-page1.png)
+![App Screenshot](https://tuthienapi.azurewebsites.net/uploads/Images/screenshot/02022023_055003_home-page2.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
