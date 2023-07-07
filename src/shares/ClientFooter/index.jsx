@@ -51,9 +51,9 @@ function ClientFooter(props) {
 							Liên hệ chúng tôi
 						</div>
 						<div className={clsx(Style.content, "text-dark py-3")}>
-							<p className="m-0 text-uppercase py-1">Nguyễn Đức Mạnh</p>
-							<p className="m-0 text-uppercase py-1">Hotline: 0358359145</p>
-							<p className="m-0 text-uppercase py-1">Email: 162001595@dntu.edu.vn</p>
+							<p className="m-0 text-uppercase py-1">Huỳnh Văn Thảo</p>
+							<p className="m-0 text-uppercase py-1">Hotline: 098.916.3020</p>
+							<p className="m-0 text-uppercase py-1">Email: 141800706@dntu.edu.vn</p>
 						</div>
 					</div>
 				</div>
